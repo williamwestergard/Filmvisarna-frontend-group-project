@@ -1,13 +1,13 @@
-// backend/moviesRoutes.js
+// backend/categoriesRoutes.js
 const express = require("express");
 
-function createMoviesRouter(pool) {
+function createCategoriesRouter(pool) {
   const router = express.Router();
 
-  // GET /api/movies
+  // GET /api/categories
   router.get("/", async (req, res) => {
     try {
-      const [rows] = await pool.query("SELECT * FROM movies");
+      const [rows] = await pool.query("SELECT * FROM categories");
       res.json(rows);
     } catch (e) {
       console.error(e);
@@ -15,12 +15,12 @@ function createMoviesRouter(pool) {
     }
   });
 
-  // POST /api/movies
+  // POST /api/categories
   router.post("/", async (req, res) => {
     try {
       const { title, releaseYear } = req.body;
       const [result] = await pool.query(
-        "INSERT INTO movies (title, releaseYear) VALUES (?, ?)",
+        "INSERT INTO categories (title, releaseYear) VALUES (?, ?)",
         [title, releaseYear]
       );
       res.json({ id: result.insertId, title, releaseYear });
@@ -30,13 +30,13 @@ function createMoviesRouter(pool) {
     }
   });
 
-  // DELETE all movies
+  // DELETE all categories
   router.delete("/", async (req, res) => {
     try {
-      const [result] = await pool.query("DELETE FROM movies");
+      const [result] = await pool.query("DELETE FROM categories");
       res.json({
         ok: true,
-        message: `Deleted ${result.affectedRows} movie(s)`,
+        message: `Deleted ${result.affectedRows} categorie(s)`,
       });
     } catch (e) {
       console.error(e);
@@ -47,4 +47,4 @@ function createMoviesRouter(pool) {
   return router;
 }
 
-module.exports = createMoviesRouter;
+module.exports = createCategoriesRouter;

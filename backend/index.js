@@ -5,6 +5,7 @@ const cors = require("cors");
 const mysql = require("mysql2/promise");
 
 const createMoviesRouter = require("./routes/moviesRoutes");
+const createCategoriesRouter = require("./routes/moviesRoutes");
 
 const app = express();
 app.use(cors());
@@ -39,6 +40,9 @@ app.get("/health", async (req, res) => {
 
 // Mount movies routes
 app.use("/api/movies", createMoviesRouter(pool));
+
+// Mount movies routes
+app.use("/api/categories", createCategoriesRouter(pool));
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`API running on http://localhost:${port}`));
