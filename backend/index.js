@@ -9,6 +9,8 @@ const createCategoriesRouter = require("./routes/categoriesRoutes");
 const createAuditoriumsRouter = require("./routes/auditoriumsRoutes");
 const createSeatsRouter = require("./routes/seatsRoutes");
 const createScreeningsRouter = require("./routes/screeningsRoutes");
+const createTicketTypesRouter = require("./routes/ticketTypesRoutes");
+
 
 const app = express();
 app.use(cors());
@@ -55,6 +57,9 @@ app.use("/api/seats", createSeatsRouter(pool));
 
 // Mount screenings routes
 app.use("/api/screenings", createScreeningsRouter(pool));
+
+// Mount ticket types routes
+app.use("/api/ticket-types", createTicketTypesRouter(pool));
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`API running on http://localhost:${port}`));
