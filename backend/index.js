@@ -6,7 +6,7 @@ const mysql = require("mysql2/promise");
 
 const createMoviesRouter = require("./routes/moviesRoutes");
 const createCategoriesRouter = require("./routes/categoriesRoutes");
-const createAuditoriumRouter = require("./routes/auditoriumRoutes");
+const createAuditoriumRouter = require("./routes/auditoriumsRoutes");
 
 const app = express();
 app.use(cors());
@@ -46,7 +46,7 @@ app.use("/api/movies", createMoviesRouter(pool));
 app.use("/api/categories", createCategoriesRouter(pool));
 
 // Mount auditorium routes
-app.use("/api/auditorium", createAuditoriumRouter(pool));
+app.use("/api/auditoriums", createAuditoriumRouter(pool));
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`API running on http://localhost:${port}`));

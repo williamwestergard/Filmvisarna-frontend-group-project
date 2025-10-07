@@ -1,4 +1,3 @@
-// backend/auditoriumRoutes.js
 const express = require("express");
 
 function createAuditoriumRouter(pool) {
@@ -7,7 +6,7 @@ function createAuditoriumRouter(pool) {
   // GET /api/auditorium
   router.get("/", async (req, res) => {
     try {
-      const [rows] = await pool.query("SELECT * FROM auditorium");
+      const [rows] = await pool.query("SELECT * FROM auditoriums");
       res.json(rows);
     } catch (e) {
       console.error(e);
@@ -18,22 +17,22 @@ function createAuditoriumRouter(pool) {
   // POST /api/auditorium
   router.post("/", async (req, res) => {
     try {
-      const { title, releaseYear } = req.body;
+      const { name } = req.body;
       const [result] = await pool.query(
-        "INSERT INTO auditorium (title, releaseYear) VALUES (?, ?)",
-        [title, releaseYear]
+        "INSERT INTO auditoriums (name) VALUES (?)",
+        [name]
       );
-      res.json({ id: result.insertId, title, releaseYear });
+      res.json({ id: result.insertId, name });
     } catch (e) {
       console.error(e);
       res.status(500).json({ ok: false, message: e.message });
     }
   });
 
-  // DELETE all auditorium
+  // DELETE all auditoriums
   router.delete("/", async (req, res) => {
     try {
-      const [result] = await pool.query("DELETE FROM auditorium");
+      const [result] = await pool.query("DELETE FROM auditoriums");
       res.json({
         ok: true,
         message: `Deleted ${result.affectedRows} auditorium(s)`,
