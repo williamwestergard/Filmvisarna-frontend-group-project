@@ -5,7 +5,7 @@ const cors = require("cors");
 const mysql = require("mysql2/promise");
 
 const createMoviesRouter = require("./routes/moviesRoutes");
-const createCategoriesRouter = require("./routes/moviesRoutes");
+const createCategoriesRouter = require("./routes/categoriesRoutes");
 
 const app = express();
 app.use(cors());
