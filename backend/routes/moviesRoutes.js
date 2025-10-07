@@ -45,9 +45,9 @@ function createMoviesRouter(pool) {
   });
 
   // GET /api/movies/full  → visar alla filmer + deras kategorier + id
-router.get("/categories", async (req, res) => {
-  try {
-    const [rows] = await pool.query(`
+  router.get("/categories", async (req, res) => {
+    try {
+      const [rows] = await pool.query(`
       SELECT 
         m.id AS movie_id,
         m.title AS film,
@@ -59,12 +59,13 @@ router.get("/categories", async (req, res) => {
       ORDER BY m.title;
     `);
 
-    res.json(rows);
-  } catch (err) {
-    console.error("MOVIES FULL VIEW ERROR:", err);
-    res.status(500).json({ ok: false, message: err.message });
-  }
-});
+      res.json(rows);
+    } catch (err) {
+      console.error("MOVIES FULL VIEW ERROR:", err);
+      res.status(500).json({ ok: false, message: err.message });
+    }
+  });
+
   return router;
 }
 
