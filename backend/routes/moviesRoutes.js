@@ -44,6 +44,7 @@ function createMoviesRouter(pool) {
     }
   });
 
+
   // GET /api/movies/categories → visar filmer + kategorier
   router.get("/categories", async (req, res) => {
     try {
