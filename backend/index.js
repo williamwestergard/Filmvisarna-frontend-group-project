@@ -1,7 +1,6 @@
 // backend/index.js
 require("dotenv").config({ path: __dirname + "/.env" });
 const express = require("express");
-const cors = require("cors");
 const mysql = require("mysql2/promise");
 
 const createMoviesRouter = require("./routes/moviesRoutes");
@@ -11,12 +10,10 @@ const createSeatsRouter = require("./routes/seatsRoutes");
 const createScreeningsRouter = require("./routes/screeningsRoutes");
 const createTicketTypesRouter = require("./routes/ticketTypesRoutes");
 
-
 const app = express();
-app.use(cors());
-app.use(express.json());
+app.use(express.json()); // ✅ JSON parsing only — no CORS
 
-// Databaspool
+// Database pool
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
@@ -27,7 +24,7 @@ const pool = mysql.createPool({
   connectionLimit: 10,
 });
 
-// Grundroute
+// Root route
 app.get("/", (req, res) => {
   res.send("Filmvisarna API är igång.");
 });
@@ -46,7 +43,7 @@ app.get("/health", async (req, res) => {
 // Mount movies routes
 app.use("/api/movies", createMoviesRouter(pool));
 
-// Mount movies routes
+// Mount categories routes
 app.use("/api/categories", createCategoriesRouter(pool));
 
 // Mount auditorium routes
