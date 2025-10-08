@@ -9,6 +9,8 @@ const createAuditoriumsRouter = require("./routes/auditoriumsRoutes");
 const createSeatsRouter = require("./routes/seatsRoutes");
 const createScreeningsRouter = require("./routes/screeningsRoutes");
 const createTicketTypesRouter = require("./routes/ticketTypesRoutes");
+const createBookingsRouter = require("./routes/bookingsRoutes");
+const createUsersRouter = require("./routes/usersRoutes");
 
 const app = express();
 app.use(express.json()); // ✅ JSON parsing only — no CORS
@@ -57,6 +59,12 @@ app.use("/api/screenings", createScreeningsRouter(pool));
 
 // Mount ticket types routes
 app.use("/api/ticket-types", createTicketTypesRouter(pool));
+
+// Mount booking types routes
+app.use("/api/bookings", createBookingsRouter(pool));
+
+// Mount user types routes
+app.use("/api/users", createUsersRouter(pool));
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`API running on http://localhost:${port}`));
