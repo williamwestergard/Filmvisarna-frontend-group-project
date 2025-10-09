@@ -4,62 +4,123 @@ const crypto = require("crypto");
 function createBookingsRouter(pool) {
   const router = express.Router();
 
-  // ✅ GET all bookings
+  // ✅ GET all bookings + seats
   router.get("/", async (req, res) => {
     try {
-      const [rows] = await pool.query("SELECT * FROM bookings");
-      res.json(rows);
+      const [rows] = await pool.query(`
+        SELECT 
+          b.id AS bookingId,
+          b.bookingNumber,
+          b.screeningId,
+          b.userId,
+          b.status,
+          bs.seatId,
+          bs.ticketTypeId
+        FROM bookings b
+        LEFT JOIN bookingSeats bs ON b.id = bs.bookingId
+      `);
+
+      const grouped = {};
+      for (const row of rows) {
+        if (!grouped[row.bookingId]) {
+          grouped[row.bookingId] = {
+            id: row.bookingId,
+            bookingNumber: row.bookingNumber,
+            screeningId: row.screeningId,
+            userId: row.userId,
+            status: row.status,
+            seats: [],
+          };
+        }
+        if (row.seatId) {
+          grouped[row.bookingId].seats.push({
+            seatId: row.seatId,
+            ticketTypeId: row.ticketTypeId,
+          });
+        }
+      }
+
+      res.json({ ok: true, bookings: Object.values(grouped) });
     } catch (e) {
-      console.error(e);
+      console.error("GET /bookings failed:", e);
       res.status(500).json({ ok: false, message: e.message });
     }
   });
 
-  // ✅ POST - create a booking (single or multiple)
+  // ✅ POST - create a booking (with seats)
   router.post("/", async (req, res) => {
+    const connection = await pool.getConnection();
     try {
-      const body = req.body;
+      const { userId, screeningId, seats = [] } = req.body;
 
-      // Handle both single object and array of bookings
-      const bookings = Array.isArray(body) ? body : [body];
-
-      const results = [];
-
-      for (const b of bookings) {
-        const { screeningId, userId } = b;
-
-        if (!screeningId || !userId) {
-          return res.status(400).json({
-            ok: false,
-            message: "screeningId and userId are required",
-          });
-        }
-
-        // Generate a unique booking number
-        const bookingNumber = crypto
-          .randomBytes(6)
-          .toString("hex")
-          .toUpperCase();
-
-        const [result] = await pool.query(
-          `INSERT INTO bookings (bookingNumber, screeningId, userId)
-           VALUES (?, ?, ?)`,
-          [bookingNumber, screeningId, userId]
-        );
-
-        results.push({
-          id: result.insertId,
-          bookingNumber,
-          screeningId,
-          userId,
-          status: "booked",
+      if (!userId || !screeningId) {
+        return res.status(400).json({
+          ok: false,
+          message: "userId and screeningId are required",
         });
       }
 
-      res.status(201).json({ ok: true, bookings: results });
+      await connection.beginTransaction();
+
+      const bookingNumber = crypto.randomBytes(6).toString("hex").toUpperCase();
+
+      // ✅ Insert booking
+      const [bookingResult] = await connection.query(
+        `INSERT INTO bookings (bookingNumber, screeningId, userId, status)
+         VALUES (?, ?, ?, 'active')`,
+        [bookingNumber, screeningId, userId]
+      );
+
+      const bookingId = bookingResult.insertId;
+
+      // ✅ Insert seat records (include screeningId!)
+      if (seats.length > 0) {
+        for (const seat of seats) {
+          try {
+            await connection.query(
+              `INSERT INTO bookingSeats (bookingId, screeningId, seatId, ticketTypeId)
+         VALUES (?, ?, ?, ?)`,
+              [bookingId, screeningId, seat.seatId, seat.ticketTypeId]
+            );
+            console.log(
+              `Seat inserted: bookingId=${bookingId}, seatId=${seat.seatId}`
+            );
+          } catch (err) {
+            console.error(
+              `Seat insert failed: bookingId=${bookingId}, seatId=${seat.seatId}`,
+              err.message
+            );
+          }
+        }
+      }
+
+      // ✅ Fetch inserted seats
+      const [seatRows] = await connection.query(
+        `SELECT seatId, ticketTypeId FROM bookingSeats WHERE bookingId = ?`,
+        [bookingId]
+      );
+
+      await connection.commit();
+
+      res.status(201).json({
+        ok: true,
+        bookings: [
+          {
+            id: bookingId,
+            bookingNumber,
+            screeningId,
+            userId,
+            status: "active",
+            seats: seatRows,
+          },
+        ],
+      });
     } catch (e) {
-      console.error(e);
+      await connection.rollback();
+      console.error("Booking creation failed:", e);
       res.status(500).json({ ok: false, message: e.message });
+    } finally {
+      connection.release();
     }
   });
 
@@ -67,7 +128,6 @@ function createBookingsRouter(pool) {
   router.patch("/:id/cancel", async (req, res) => {
     try {
       const { id } = req.params;
-
       const [result] = await pool.query(
         `UPDATE bookings
          SET status = 'cancelled', cancelledAt = NOW()
@@ -82,6 +142,20 @@ function createBookingsRouter(pool) {
       }
 
       res.json({ ok: true, message: "Booking cancelled" });
+    } catch (e) {
+      console.error("Cancel booking failed:", e);
+      res.status(500).json({ ok: false, message: e.message });
+    }
+  });
+
+  // DELETE all bookings
+  router.delete("/", async (req, res) => {
+    try {
+      const [result] = await pool.query("DELETE FROM bookings");
+      res.json({
+        ok: true,
+        message: `Deleted ${result.affectedRows} booking(s)`,
+      });
     } catch (e) {
       console.error(e);
       res.status(500).json({ ok: false, message: e.message });

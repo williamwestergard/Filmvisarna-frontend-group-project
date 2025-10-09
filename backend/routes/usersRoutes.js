@@ -17,11 +17,24 @@ function createUsersRouter(pool) {
   // POST /api/users
   router.post("/", async (req, res) => {
     try {
-      const { name } = req.body;
-      const [result] = await pool.query("INSERT INTO users (name) VALUES (?)", [
-        name,
-      ]);
-      res.json({ id: result.insertId, name });
+      const { email, password, firstName, lastName, phoneNumber } = req.body;
+
+      const [result] = await pool.query(
+        `INSERT INTO users (email, password, firstName, lastName, phoneNumber)
+       VALUES (?, ?, ?, ?, ?)`,
+        [email, password, firstName, lastName, phoneNumber]
+      );
+
+      res.json({
+        ok: true,
+        user: {
+          id: result.insertId,
+          email,
+          firstName,
+          lastName,
+          phoneNumber,
+        },
+      });
     } catch (e) {
       console.error(e);
       res.status(500).json({ ok: false, message: e.message });
