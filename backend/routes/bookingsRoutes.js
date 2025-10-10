@@ -53,10 +53,10 @@ function createBookingsRouter(pool) {
     try {
       const { userId, screeningId, seats = [] } = req.body;
 
-      if (!userId || !screeningId) {
+      if (!screeningId) {
         return res.status(400).json({
           ok: false,
-          message: "userId and screeningId are required",
+          message: "screeningId is required",
         });
       }
 
@@ -68,29 +68,35 @@ function createBookingsRouter(pool) {
       const [bookingResult] = await connection.query(
         `INSERT INTO bookings (bookingNumber, screeningId, userId, status)
          VALUES (?, ?, ?, 'active')`,
-        [bookingNumber, screeningId, userId]
+        [bookingNumber, screeningId, userId || null]
       );
 
       const bookingId = bookingResult.insertId;
 
-      // ✅ Insert seat records (include screeningId!)
+      // ✅ Check and insert seat records
       if (seats.length > 0) {
         for (const seat of seats) {
-          try {
-            await connection.query(
-              `INSERT INTO bookingSeats (bookingId, screeningId, seatId, ticketTypeId)
-         VALUES (?, ?, ?, ?)`,
-              [bookingId, screeningId, seat.seatId, seat.ticketTypeId]
-            );
-            console.log(
-              `Seat inserted: bookingId=${bookingId}, seatId=${seat.seatId}`
-            );
-          } catch (err) {
-            console.error(
-              `Seat insert failed: bookingId=${bookingId}, seatId=${seat.seatId}`,
-              err.message
+          // 🔍 Check if seat already booked for this screening
+          const [existing] = await connection.query(
+            `SELECT bs.id
+             FROM bookingSeats bs
+             JOIN bookings b ON bs.bookingId = b.id
+             WHERE bs.screeningId = ? AND bs.seatId = ? AND b.status = 'active'`,
+            [screeningId, seat.seatId]
+          );
+
+          if (existing.length > 0) {
+            throw new Error(
+              `Seat ${seat.seatId} is already booked for this screening`
             );
           }
+
+          // ✅ Insert seat if available
+          await connection.query(
+            `INSERT INTO bookingSeats (bookingId, screeningId, seatId, ticketTypeId)
+             VALUES (?, ?, ?, ?)`,
+            [bookingId, screeningId, seat.seatId, seat.ticketTypeId]
+          );
         }
       }
 
@@ -121,6 +127,32 @@ function createBookingsRouter(pool) {
       res.status(500).json({ ok: false, message: e.message });
     } finally {
       connection.release();
+    }
+  });
+
+  // ✅ GET booking totals (sum of ticket prices per booking)
+  router.get("/booking-totals", async (req, res) => {
+    try {
+      const [rows] = await pool.query(`
+        SELECT 
+          b.id AS bookingId,
+          b.bookingNumber,
+          b.userId,
+          b.screeningId,
+          b.status,
+          COALESCE(SUM(tt.price), 0) AS totalPrice,
+          COUNT(bs.id) AS totalSeats
+        FROM bookings b
+        LEFT JOIN bookingSeats bs ON b.id = bs.bookingId
+        LEFT JOIN ticketTypes tt ON bs.ticketTypeId = tt.id
+        GROUP BY b.id, b.bookingNumber, b.userId, b.screeningId, b.status
+        ORDER BY b.id DESC
+      `);
+
+      res.json({ ok: true, totals: rows });
+    } catch (e) {
+      console.error("GET /booking-totals failed:", e);
+      res.status(500).json({ ok: false, message: e.message });
     }
   });
 
