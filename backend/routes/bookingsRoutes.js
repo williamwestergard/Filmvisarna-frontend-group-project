@@ -4,6 +4,33 @@ const crypto = require("crypto");
 function createBookingsRouter(pool) {
   const router = express.Router();
 
+  // 🧩 Helper: Insert seats safely
+  async function insertSeats(connection, bookingId, screeningId, seats) {
+    for (const seat of seats) {
+      // 🔍 Check if seat is already booked for this screening
+      const [existing] = await connection.query(
+        `SELECT bs.id
+         FROM bookingSeats bs
+         JOIN bookings b ON bs.bookingId = b.id
+         WHERE bs.screeningId = ? AND bs.seatId = ? AND b.status = 'active'`,
+        [screeningId, seat.seatId]
+      );
+
+      if (existing.length > 0) {
+        throw new Error(
+          `Seat ${seat.seatId} is already booked for this screening`
+        );
+      }
+
+      // ✅ Insert the seat
+      await connection.query(
+        `INSERT INTO bookingSeats (bookingId, screeningId, seatId, ticketTypeId)
+         VALUES (?, ?, ?, ?)`,
+        [bookingId, screeningId, seat.seatId, seat.ticketTypeId]
+      );
+    }
+  }
+
   // ✅ GET all bookings + seats
   router.get("/", async (req, res) => {
     try {
@@ -73,31 +100,9 @@ function createBookingsRouter(pool) {
 
       const bookingId = bookingResult.insertId;
 
-      // ✅ Check and insert seat records
+      // ✅ Insert all seat records using helper
       if (seats.length > 0) {
-        for (const seat of seats) {
-          // 🔍 Check if seat already booked for this screening
-          const [existing] = await connection.query(
-            `SELECT bs.id
-             FROM bookingSeats bs
-             JOIN bookings b ON bs.bookingId = b.id
-             WHERE bs.screeningId = ? AND bs.seatId = ? AND b.status = 'active'`,
-            [screeningId, seat.seatId]
-          );
-
-          if (existing.length > 0) {
-            throw new Error(
-              `Seat ${seat.seatId} is already booked for this screening`
-            );
-          }
-
-          // ✅ Insert seat if available
-          await connection.query(
-            `INSERT INTO bookingSeats (bookingId, screeningId, seatId, ticketTypeId)
-             VALUES (?, ?, ?, ?)`,
-            [bookingId, screeningId, seat.seatId, seat.ticketTypeId]
-          );
-        }
+        await insertSeats(connection, bookingId, screeningId, seats);
       }
 
       // ✅ Fetch inserted seats
@@ -130,7 +135,7 @@ function createBookingsRouter(pool) {
     }
   });
 
-  // ✅ GET booking totals (sum of ticket prices per booking)
+  // ✅ GET booking totals
   router.get("/booking-totals", async (req, res) => {
     try {
       const [rows] = await pool.query(`
@@ -180,7 +185,7 @@ function createBookingsRouter(pool) {
     }
   });
 
-  // DELETE all bookings
+  // 🗑️ DELETE all bookings
   router.delete("/", async (req, res) => {
     try {
       const [result] = await pool.query("DELETE FROM bookings");
