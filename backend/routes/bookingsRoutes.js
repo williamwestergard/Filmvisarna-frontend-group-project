@@ -4,10 +4,10 @@ const crypto = require("crypto");
 function createBookingsRouter(pool) {
   const router = express.Router();
 
-  // 🧩 Helper: Insert seats safely
+  // Helper: Insert seats safely
   async function insertSeats(connection, bookingId, screeningId, seats) {
     for (const seat of seats) {
-      // 🔍 Check if seat is already booked for this screening
+      // Check if seat is already booked for this screening
       const [existing] = await connection.query(
         `SELECT bs.id
          FROM bookingSeats bs
@@ -22,7 +22,7 @@ function createBookingsRouter(pool) {
         );
       }
 
-      // ✅ Insert the seat
+      // Insert the seat
       await connection.query(
         `INSERT INTO bookingSeats (bookingId, screeningId, seatId, ticketTypeId)
          VALUES (?, ?, ?, ?)`,
@@ -31,7 +31,7 @@ function createBookingsRouter(pool) {
     }
   }
 
-  // ✅ GET all bookings + seats
+  // GET all bookings + seats
   router.get("/", async (req, res) => {
     try {
       const [rows] = await pool.query(`
@@ -74,7 +74,7 @@ function createBookingsRouter(pool) {
     }
   });
 
-  // ✅ POST - create a booking (with seats)
+  // POST - create a booking (with seats)
   router.post("/", async (req, res) => {
     const connection = await pool.getConnection();
     try {
@@ -91,7 +91,7 @@ function createBookingsRouter(pool) {
 
       const bookingNumber = crypto.randomBytes(6).toString("hex").toUpperCase();
 
-      // ✅ Insert booking
+      // Insert booking
       const [bookingResult] = await connection.query(
         `INSERT INTO bookings (bookingNumber, screeningId, userId, status)
          VALUES (?, ?, ?, 'active')`,
@@ -100,12 +100,12 @@ function createBookingsRouter(pool) {
 
       const bookingId = bookingResult.insertId;
 
-      // ✅ Insert all seat records using helper
+      // Insert all seat records using helper
       if (seats.length > 0) {
         await insertSeats(connection, bookingId, screeningId, seats);
       }
 
-      // ✅ Fetch inserted seats
+      // Fetch inserted seats
       const [seatRows] = await connection.query(
         `SELECT seatId, ticketTypeId FROM bookingSeats WHERE bookingId = ?`,
         [bookingId]
@@ -135,7 +135,7 @@ function createBookingsRouter(pool) {
     }
   });
 
-  // ✅ GET booking totals
+  // GET booking totals
   router.get("/booking-totals", async (req, res) => {
     try {
       const [rows] = await pool.query(`
@@ -161,7 +161,7 @@ function createBookingsRouter(pool) {
     }
   });
 
-  // ✅ PATCH - cancel a booking
+  // PATCH - cancel a booking
   router.patch("/:id/cancel", async (req, res) => {
     try {
       const { id } = req.params;
@@ -185,7 +185,7 @@ function createBookingsRouter(pool) {
     }
   });
 
-  // 🗑️ DELETE all bookings
+  // DELETE all bookings
   router.delete("/", async (req, res) => {
     try {
       const [result] = await pool.query("DELETE FROM bookings");
