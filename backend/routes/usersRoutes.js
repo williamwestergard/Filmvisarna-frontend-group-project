@@ -24,6 +24,36 @@ function createUsersRouter(pool) {
       const lastName = req.body.lastName?.replace(/\s+/g, "") || null;
       const phoneNumber = req.body.phoneNumber?.replace(/\s+/g, "") || null;
 
+      // Email needs to be valid. Name can't have numbers. Phone number can't have letters.
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/;
+      const phoneRegex = /^[0-9+\-\s()]+$/;
+
+      if (!emailRegex.test(email)) {
+        return res
+          .status(400)
+          .json({ ok: false, message: "Invalid email format" });
+      }
+      if (!nameRegex.test(firstName)) {
+        return res
+          .status(400)
+          .json({ ok: false, message: "First name must contain only letters" });
+      }
+
+      if (!nameRegex.test(lastName)) {
+        return res
+          .status(400)
+          .json({ ok: false, message: "Last name must contain only letters" });
+      }
+
+      if (!phoneRegex.test(phoneNumber)) {
+        return res.status(400).json({
+          ok: false,
+          message:
+            "Phone number must contain only numbers and valid symbols (+ - space ())",
+        });
+      }
+
       // Insert cleaned values into the DB
       const [result] = await pool.query(
         `INSERT INTO users (email, password, firstName, lastName, phoneNumber)
