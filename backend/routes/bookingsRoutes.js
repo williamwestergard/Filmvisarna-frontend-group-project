@@ -199,6 +199,28 @@ function createBookingsRouter(pool) {
     }
   });
 
+  // DELETE /api/bookings/:id - delete one booking by ID
+  router.delete("/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      const [result] = await pool.query("DELETE FROM bookings WHERE id = ?", [
+        id,
+      ]);
+
+      if (result.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ ok: false, message: "Booking not found" });
+      }
+
+      res.json({ ok: true, message: `Booking ${id} deleted successfully` });
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({ ok: false, message: e.message });
+    }
+  });
+
   return router;
 }
 
