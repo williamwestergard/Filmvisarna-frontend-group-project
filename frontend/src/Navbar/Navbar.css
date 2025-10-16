@@ -1,0 +1,204 @@
+/* Fil: Navbar.css */
+
+:root {
+  --red-primary: #c41230;
+  --button-bg: #5f5263;
+  --text-light: #ffffff;
+  --page-bg: #e0e0e0;
+  --navbar-height: 60px;
+}
+
+/* Global stil för att matcha bakgrunden på bilden */
+body {
+  background-color: var(--page-bg);
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+}
+
+/* Behållare som centrerar navbaren och ger den luft */
+.site-header {
+  padding: 40px 20px;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  position: relative; /* Viktigt för att positionera loggan */
+  background-color: var(--red-primary);
+  height: var(--navbar-height);
+  border-radius: 30px;
+  padding: 0 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Logotypen och texten */
+.navbar-logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  /* Nyckeln till att placera loggan utanför */
+  position: absolute;
+  left: -5px; /* Justera för att passa din logga */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.logo-image {
+  height: 70px; /* Justera storleken efter din logga */
+}
+
+.logo-text {
+  color: var(--text-light);
+  font-weight: bold;
+  font-size: 1.6rem;
+  margin-left: -15px; /* Låt texten överlappa bilden lite */
+  text-transform: uppercase;
+}
+
+/* Behållare för alla menyer, för att hantera responsivitet */
+.nav-menu-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  /* Skapa utrymme för loggan till vänster */
+  margin-left: 250px; /* Justera detta värde baserat på din loggas bredd */
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.nav-menu {
+  gap: 2rem; /* Mellanrum mellan "Upptäck", "På bio nu", "Mer" */
+}
+
+.nav-link {
+  color: var(--text-light);
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 10px 0;
+  transition: opacity 0.2s ease;
+}
+
+.nav-link:hover {
+  opacity: 0.8;
+}
+
+.dropdown-arrow {
+  font-size: 0.7em;
+  margin-left: 4px;
+}
+
+/* Knappar för Logga in / Skapa konto */
+.nav-actions {
+  gap: 0.8rem;
+}
+
+.nav-button {
+  background-color: var(--button-bg);
+  color: var(--text-light);
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.nav-button:hover {
+  background-color: #4a3f4e; /* Lite mörkare vid hover */
+}
+
+/* Hamburgarikonen (gömd på desktop) */
+.menu-icon {
+  display: none;
+  cursor: pointer;
+  z-index: 20;
+}
+
+/* RESPONSIVITET - När skärmen blir mindre */
+@media screen and (max-width: 1024px) {
+  .logo-text {
+    display: none; /* Göm texten för att spara plats */
+  }
+
+  .nav-menu-container {
+    margin-left: 120px; /* Minska marginalen eftersom texten är borta */
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navbar {
+    justify-content: flex-end; /* Flytta allt till höger så loggan får plats */
+    padding: 0 20px;
+  }
+  
+  .menu-icon {
+    display: flex; /* Visa hamburgarikonen */
+    flex-direction: column;
+    justify-content: space-around;
+    width: 28px;
+    height: 22px;
+  }
+
+  .menu-icon .bar {
+    height: 3px;
+    width: 100%;
+    background-color: var(--text-light);
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Animation för hamburgarikonen */
+  .menu-icon .bar.open:nth-child(1) { transform: translateY(9.5px) rotate(45deg); }
+  .menu-icon .bar.open:nth-child(2) { opacity: 0; }
+  .menu-icon .bar.open:nth-child(3) { transform: translateY(-9.5px) rotate(-45deg); }
+
+  /* Göm menyn och förbered för mobilvyn */
+  .nav-menu-container {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #222; /* Mörk bakgrund för mobilmenyn */
+    position: fixed;
+    top: 0;
+    left: -100%; /* Börja utanför skärmen */
+    width: 100%;
+    height: 100vh;
+    padding-top: 100px;
+    margin-left: 0;
+    transition: left 0.4s ease-in-out;
+  }
+
+  .nav-menu-container.active {
+    left: 0; /* Skjut in menyn */
+  }
+
+  .nav-menu, .nav-actions {
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .nav-actions {
+    margin-top: 2rem;
+  }
+
+  .nav-item {
+    width: 100%;
+  }
+
+  .nav-link, .nav-button {
+    display: block;
+    padding: 1rem;
+    font-size: 1.5rem;
+  }
+}
