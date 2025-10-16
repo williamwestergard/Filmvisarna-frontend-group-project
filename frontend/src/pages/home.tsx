@@ -1,52 +1,18 @@
 import "./home.css";
 
-// Sample movie data
+// All movies (placeholders for now)
 const movies = [
-  {
-    id: 17,
-    title: "Dirty Dancing",
-    releaseYear: 1987,
-    ageLimit: 11,
-    kategorier: "Drama, Romantik"
-  },
-  {
-    id: 14,
-    title: "Good Will Hunting",
-    releaseYear: 1997,
-    ageLimit: 11,
-    kategorier: "Drama"
-  },
-  {
-    id: 19,
-    title: "Jurassic Park",
-    releaseYear: 1993,
-    ageLimit: 11,
-    kategorier: "Äventyr, Sci-Fi"
-  },
-  {
-    id: 13,
-    title: "The Land Before Time",
-    releaseYear: 1988,
-    ageLimit: 7,
-    kategorier: "Animerad/familj, Äventyr"
-  },
-  {
-    id: 18,
-    title: "Titanic",
-    releaseYear: 1997,
-    ageLimit: 15,
-    kategorier: "Drama, Romantik"
-  },
-  {
-    id: 15,
-    title: "Toy Story",
-    releaseYear: 1995,
-    ageLimit: 7,
-    kategorier: "Animerad/familj, Äventyr"
-  }
+  { id: 12, title: "The Shining", kategorier: "Horror" },
+  { id: 13, title: "The Land Before Time", kategorier: "Animerad/familj, Äventyr" },
+  { id: 14, title: "Good Will Hunting", kategorier: "Drama" },
+  { id: 15, title: "Toy Story", kategorier: "Animerad/familj, Äventyr" },
+  { id: 16, title: "Scream", kategorier: "Horror" },
+  { id: 17, title: "Dirty Dancing", kategorier: "Drama, Romantik" },
+  { id: 18, title: "Titanic", kategorier: "Drama, Romantik" },
+  { id: 19, title: "Jurassic Park", kategorier: "Äventyr, Sci-Fi" }
 ];
 
-function Startpage() {
+function Home() {
   return (
     <main className="home-container">
       {/* Page title */}
@@ -65,7 +31,7 @@ function Startpage() {
       {/* Movie grid */}
       <section className="movie-grid">
         {movies.map((movie) => (
-          <article key={movie.id} className="movie-card">
+          <article key={movie.id} className="movie-card placeholder">
             <h2 className="movie-title">{movie.title}</h2>
             <p className="movie-genre">{movie.kategorier}</p>
           </article>
@@ -75,4 +41,4 @@ function Startpage() {
   );
 }
 
-export default Startpage;
+export default Home;

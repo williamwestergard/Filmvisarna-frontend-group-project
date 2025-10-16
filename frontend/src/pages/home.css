@@ -55,12 +55,28 @@ html, body {
   gap: 2rem;
   justify-items: center;
   width: 100%;
-  max-width: 600px;
+  max-width: 1200px;           /* keeps grid centered on large screens */
+  grid-template-columns: repeat(2, 1fr); /* default mobile: 2 per row */
+}
+
+/* Tablet: 3 movies per row */
+@media screen and (min-width: 768px) {
+  .movie-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Desktop: 4 movies per row */
+@media screen and (min-width: 1024px) {
+  .movie-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 /* Movie cards */
 .movie-card {
   width: 150px;
+  height: 200px;           /* Fixed height for all cards */
   background-color: #262640;
   border-radius: 10px;
   padding: 1rem;
@@ -69,6 +85,11 @@ html, body {
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.5s forwards;
+
+  display: flex;           /* Use flex to layout content */
+  flex-direction: column;
+  justify-content: center; /* Vertically center content */
+  gap: 0.5rem;             /* Space between title and genre */
 }
 
 .movie-card:hover {
