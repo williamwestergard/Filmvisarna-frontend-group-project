@@ -1,0 +1,48 @@
+.site-footer {
+  background-color: #11111A; 
+  color: #ffffff; 
+  text-align: center;
+  font-family: system-ui, sans-serif;
+  width: 100vw; 
+  margin-left: calc(-50vw + 50%);
+  position: absolute;
+  bottom: 0;
+  margin: 0 auto;
+  width:auto;
+  
+}
+
+.footer-brand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.footer-brand img {
+  width: 45px;
+  height: 45px;
+}
+
+.footer-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.footer-contact {
+  font-style: normal; 
+  line-height: 1.5;
+  color: #e6e6e6;
+}
+
+.footer-contact a {
+  color: #e6e6e6;
+  text-decoration: none;
+}
+
+.footer-contact a:hover {
+  text-decoration: underline;
+}

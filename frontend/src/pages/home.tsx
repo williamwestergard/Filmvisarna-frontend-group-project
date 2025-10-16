@@ -1,15 +1,20 @@
+import Footer from "../components/Footer.tsx";
 
-function Startpage() {
+function Home() {
 
   return (
     <>
-      <h1>Filmvisarna</h1>
+     <main>
+       <h1>Filmvisarna</h1>
 
         <p>
           Din lokala bio i Småstad!
         </p>
+        </main>
+        
+      <Footer />
     </>
   )
 }
 
-export default Startpage
+export default Home
