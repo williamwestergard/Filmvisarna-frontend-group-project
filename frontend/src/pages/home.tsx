@@ -1,15 +1,28 @@
+import "./home.css";
+import MoviesList from "../components/movies"
+import Footer from "../components/Footer"
 
-function Startpage() {
 
+function Home() {
   return (
-    <>
-      <h1>Filmvisarna</h1>
+    <main className="home-container">
+      {/* Page title */}
+      <h1 className="home-title">Aktuella filmer</h1>
 
-        <p>
-          Din lokala bio i Småstad!
-        </p>
-    </>
-  )
+      {/* Filter section */}
+      <section className="filter-section">
+        <select className="filter-dropdown">
+          <option>Alla dagar</option>
+        </select>
+        <select className="filter-dropdown">
+          <option>Kategorier</option>
+        </select>
+      </section>
+
+<MoviesList />
+            <Footer />
+    </main>
+  );
 }
 
-export default Startpage
+export default Home;

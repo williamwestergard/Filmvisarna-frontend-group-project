@@ -11,10 +11,12 @@ const createScreeningsRouter = require("./routes/screeningsRoutes");
 const createTicketTypesRouter = require("./routes/ticketTypesRoutes");
 const createBookingsRouter = require("./routes/bookingsRoutes");
 const createUsersRouter = require("./routes/usersRoutes");
-const createBookingTotalsRouter = require("./routes/bookingTotalsRoutes")
+const createBookingTotalsRouter = require("./routes/bookingTotalsRoutes");
 
 const app = express();
-app.use(express.json()); // ✅ JSON parsing only — no CORS
+app.use(express.json());
+const path = require("path");
+app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 // Database pool
 const pool = mysql.createPool({
@@ -69,7 +71,6 @@ app.use("/api/users", createUsersRouter(pool));
 
 // Mount booking totals routes
 app.use("/api/booking-totals", createBookingTotalsRouter(pool));
-
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`API running on http://localhost:${port}`));
