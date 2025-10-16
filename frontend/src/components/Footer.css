@@ -1,0 +1,59 @@
+.site-footer {
+  background-color: #11111A; 
+  color: #ffffff; 
+  text-align: center;
+  font-family: system-ui, sans-serif;
+  width: 100vw; 
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  min-height: 250px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+}
+
+.footer-brand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; /* staplar innehållet snyggt på mobil */
+  gap: 1rem;
+}
+
+.footer-brand img {
+  width: 300px;
+  height: 150px;
+  position: static;
+  
+}
+
+.footer-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  
+}
+
+.footer-contact {
+  margin-left: 100px;
+  margin-top: -35px;
+  font-style: normal; 
+  font-size: small;
+  line-height: 0.3;
+  color: #817F7F;
+}
+
+.footer-contact a:hover {
+  text-decoration: underline;
+}
+
+.footer-contact p:first-child {
+  font-size: 0.8rem; 
+  font-weight: 700;  
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #a4a4a4;
+}
