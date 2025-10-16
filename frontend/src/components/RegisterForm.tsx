@@ -9,9 +9,10 @@ interface RegisterFormProps {
     email: string;
     password: string;
   }) => void;
+  onCancel?: () => void; // optional callback for when user clicks Avbryt
 }
 
-function RegisterForm({ onRegister }: RegisterFormProps) { {/* { onRegister } is destructuring, it pulls the onLogin prop out of the props object for easier use inside the component */}
+function RegisterForm({ onRegister, onCancel }: RegisterFormProps) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
@@ -19,22 +20,30 @@ function RegisterForm({ onRegister }: RegisterFormProps) { {/* { onRegister } is
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => { {/* called when user clicks submit button */}
-    e.preventDefault();  {/*prevents browser from reloading page which is default form behavior */}
-
-    // Basic validation
-    if (!email || !password || !firstName || !lastName) {
-      alert("Fyll i alla obligatoriska fält!");
-      return;
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
 
     if (password !== confirmPassword) {
       alert("Lösenorden matchar inte!");
       return;
     }
 
-    // Call the required function with structured data
-    onRegister({ firstName, lastName, phone, email, password });
+    const userData = { firstName, lastName, phone, email, password };
+    console.log("Skapa Konto:", userData);
+    onRegister?.(userData);
+  };
+
+  const handleCancel = () => {
+    // Optional: reset form fields
+    setFirstName("");
+    setLastName("");
+    setPhone("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+
+    // Trigger optional parent callback
+    onCancel?.();
   };
 
   return (
@@ -58,6 +67,7 @@ function RegisterForm({ onRegister }: RegisterFormProps) { {/* { onRegister } is
         placeholder="Telefonnummer"
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
+        required
       />
       <input
         type="email"
@@ -80,8 +90,19 @@ function RegisterForm({ onRegister }: RegisterFormProps) { {/* { onRegister } is
         onChange={(e) => setConfirmPassword(e.target.value)}
         required
       />
+
+      {/* Submit button */}
       <button type="submit" className="register-button">
         Skapa Konto
+      </button>
+
+      {/* Cancel button */}
+      <button
+        type="button"
+        className="cancel-button"
+        onClick={handleCancel}
+      >
+        Avbryt
       </button>
     </form>
   );
