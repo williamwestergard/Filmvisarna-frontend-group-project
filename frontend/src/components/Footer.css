@@ -4,11 +4,9 @@
   text-align: center;
   font-family: system-ui, sans-serif;
   width: 100vw; 
-  margin-left: calc(-50vw + 50%);
   position: absolute;
   bottom: 0;
-  margin: 0 auto;
-  width:auto;
+  left: 0;
   
 }
 
