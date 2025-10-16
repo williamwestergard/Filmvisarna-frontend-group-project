@@ -2,29 +2,17 @@ import { useState } from "react";
 import "./LoginForm.css";
 
 interface LoginFormProps {
-    onLogin: (data: { email: string; password: string }) => void; 
-    // onLogin is required, takes an object with email and password, returns nothing
+    onLogin?: (email: string, password: string) => void; // onLogin takes email and password, but returns nothing
 }
 
-function LoginForm({ onLogin }: LoginFormProps) { 
-    // { onLogin } is destructuring, it pulls the onLogin prop out of the props object for easier use inside the component
+function LoginForm({ onLogin }: LoginFormProps) { {/* { onLogin } is destructuring, it pulls the onLogin prop out of the props object for easier use inside the component */}
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleSubmit = (e: React.FormEvent) => { 
-        // called when user clicks submit button
-        e.preventDefault(); 
-        // prevents browser from reloading page which is default form behavior
-
-        // Basic validation before calling onLogin
-        if (!email || !password) {
-            alert("Fyll i både e-postadress och lösenord!");
-            return;
-        }
-
+    const handleSubmit = (e: React.FormEvent) => { {/* called when user clicks submit button */}
+        e.preventDefault(); {/*prevents browser from reloading page which is default form behavior */}
         console.log("Logga in:", { email, password });
-        onLogin({ email, password }); 
-        // calls required onLogin function with structured data
+        onLogin?.(email, password); {/* calls optional onLogin function if it exists*/}
     };
 
     return (
@@ -33,8 +21,7 @@ function LoginForm({ onLogin }: LoginFormProps) {
                 type="email"
                 placeholder="E-postadress"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)} 
-                // e.target.value updates state whenever the user types
+                onChange={(e) => setEmail(e.target.value)} /*e.target.value updates state whenever the user types */
                 required
             />
             <input

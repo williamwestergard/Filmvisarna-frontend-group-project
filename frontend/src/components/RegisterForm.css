@@ -1,0 +1,46 @@
+/* Register form container */
+.register-form {
+  display: flex;              /* layout inputs vertically */
+  flex-direction: column;
+  gap: 1rem;                  /* space between inputs */
+  background-color: #232231;  /* same as home background */
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 400px;           /* keeps form from being too wide */
+  margin: 2rem auto;          /* centers form horizontally */
+  text-align: center;
+  color: #F9F9F9;             /* all text in the form is white */
+  font-family: Arial, sans-serif;
+}
+
+/* Inputs */
+.register-form input {
+  padding: 0.75rem 1rem;
+  border: 1px solid #C4C4C4;
+  border-radius: 6px;
+  background-color: #1b1b2f;
+  color: #F9F9F9;
+  font-size: 1rem;
+}
+
+.register-form input::placeholder {
+  color: #F9F9F9;
+  opacity: 0.7;
+}
+
+/* Register button */
+.register-button {
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  background-color: #232231;  /* dark button same as background */
+  color: #FFFFFF;
+  border: 1px solid #C4C4C4; /* border for contrast */
+}
+
+.register-button:hover {
+  background-color: #1a1a2b;  /* slightly darker hover */
+}

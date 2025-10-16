@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./RegisterForm.css";
 
 interface RegisterFormProps {
-  onRegister: (data: {
+  onRegister?: (data: {
     firstName: string;
     lastName: string;
     phone: string;
