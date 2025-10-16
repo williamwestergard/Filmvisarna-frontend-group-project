@@ -1,7 +1,7 @@
 // Fil: Navbar.tsx
 import React, { useState } from 'react';
 import './Navbar.css';
-import logo from './logo.svg'; // Importera din logotyp
+import logo from './logo.png'; // Importera din logotyp
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,8 +15,8 @@ const Navbar: React.FC = () => {
       <nav className="navbar">
         {/* Logotyp som är en länk till startsidan */}
         <a href="/" className="navbar-logo-link">
-          <img src={logo} alt="Filmvisarna Logotyp" className="logo-image" />
-          <span className="logo-text">FILMVISARNA</span>
+        <img src={logo} alt="Filmvisarna Logotyp" className="logo-image" />
+          {/* <span className="logo-text">FILMVISARNA</span> */}
         </a>
 
         {/* Hamburgarikon för mobil (visas bara på mindre skärmar) */}
