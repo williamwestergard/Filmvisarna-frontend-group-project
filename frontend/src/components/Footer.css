@@ -46,12 +46,7 @@
   font-style: normal; 
   font-size: small;
   line-height: 0.3;
-  color: #e6e6e6;
-}
-
-.footer-contact a {
-  color: #e6e6e6;
-  text-decoration: none;
+  color: #817F7F;
 }
 
 .footer-contact a:hover {
@@ -59,8 +54,9 @@
 }
 
 .footer-contact p:first-child {
-  font-size: 0.8rem; /* gör texten större */
-  font-weight: 700;  /* gör den fetare */
+  font-size: 0.8rem; 
+  font-weight: 700;  
   letter-spacing: 0.5px;
   text-transform: uppercase;
+  color: #a4a4a4;
 }
