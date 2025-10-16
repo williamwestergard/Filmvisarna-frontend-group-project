@@ -24,7 +24,7 @@ export default function MovieList() {
       <section className="movie-grid">
         {movies.map((movie) => (
           <article key={movie.id} >
-             <img
+             <img className="movie-card"
             src={`http://localhost:4000/images/posters/${movie.posterUrl}`}
             alt={movie.title}
             width={200}

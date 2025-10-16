@@ -1,7 +1,7 @@
 // Fil: Navbar.tsx
 import React, { useState } from 'react';
 import './Navbar.css';
-import logo from './logo.png'; // Importera din logotyp
+import logo from './navbar-logo.png'; // Importera din logotyp
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -46,10 +46,10 @@ const Navbar: React.FC = () => {
           {/* Knappar för inloggning/registrering */}
           <ul className="nav-actions">
             <li className="nav-item">
-              <a href="/login" className="nav-button login-button">Logga in</a>
+              <a href="/login" className="nav-button">Logga in</a>
             </li>
             <li className="nav-item">
-              <a href="/register" className="nav-button register-button">Skapa konto</a>
+              <a href="/register" className="nav-button">Skapa konto</a>
             </li>
           </ul>
         </div>

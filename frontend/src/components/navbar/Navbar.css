@@ -1,17 +1,7 @@
-/* Fil: Navbar.css */
-
-:root {
-  --red-primary: #c41230;
-  --button-bg: #5f5263;
-  --text-light: #ffffff;
-  --page-bg: #e0e0e0;
-  --navbar-height: 60px;
-}
-
 /* Global stil för att matcha bakgrunden på bilden */
 body {
   background-color: var(--page-bg);
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Helvetica Neue", Arial, sans-serif;
   margin: 0;
 }
 
@@ -25,11 +15,13 @@ body {
   align-items: center;
   position: relative; /* Viktigt för att positionera loggan */
   background-color: var(--red-primary);
-  height: var(--navbar-height);
+  height: 60px;
   border-radius: 30px;
   padding: 0 30px;
   max-width: 1200px;
   margin: 0 auto;
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.512));
+  margin-top: 1vh;
 }
 
 /* Logotypen och texten */
@@ -46,7 +38,9 @@ body {
 }
 
 .logo-image {
-  height: 70px; /* Justera storleken efter din logga */
+  position: relative;
+  top: -4px;
+  height: 103px; /* Justera storleken efter ogga */
 }
 
 .logo-text {
@@ -139,7 +133,7 @@ ul {
     justify-content: flex-end; /* Flytta allt till höger så loggan får plats */
     padding: 0 20px;
   }
-  
+
   .menu-icon {
     display: flex; /* Visa hamburgarikonen */
     flex-direction: column;
@@ -155,11 +149,17 @@ ul {
     border-radius: 10px;
     transition: all 0.3s ease-in-out;
   }
-  
+
   /* Animation för hamburgarikonen */
-  .menu-icon .bar.open:nth-child(1) { transform: translateY(9.5px) rotate(45deg); }
-  .menu-icon .bar.open:nth-child(2) { opacity: 0; }
-  .menu-icon .bar.open:nth-child(3) { transform: translateY(-9.5px) rotate(-45deg); }
+  .menu-icon .bar.open:nth-child(1) {
+    transform: translateY(9.5px) rotate(45deg);
+  }
+  .menu-icon .bar.open:nth-child(2) {
+    opacity: 0;
+  }
+  .menu-icon .bar.open:nth-child(3) {
+    transform: translateY(-9.5px) rotate(-45deg);
+  }
 
   /* Göm menyn och förbered för mobilvyn */
   .nav-menu-container {
@@ -181,7 +181,8 @@ ul {
     left: 0; /* Skjut in menyn */
   }
 
-  .nav-menu, .nav-actions {
+  .nav-menu,
+  .nav-actions {
     flex-direction: column;
     width: 100%;
     text-align: center;
@@ -196,7 +197,8 @@ ul {
     width: 100%;
   }
 
-  .nav-link, .nav-button {
+  .nav-link,
+  .nav-button {
     display: block;
     padding: 1rem;
     font-size: 1.5rem;

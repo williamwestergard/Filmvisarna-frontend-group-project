@@ -1,6 +1,6 @@
 import "./home.css";
 import MoviesList from "../components/movies"
-import Footer from "../components/Footer"
+
 
 
 function Home() {
@@ -20,7 +20,7 @@ function Home() {
       </section>
 
 <MoviesList />
-            <Footer />
+    
     </main>
   );
 }
