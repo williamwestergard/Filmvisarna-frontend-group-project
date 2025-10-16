@@ -1,7 +1,17 @@
 import "./home.css";
 
+//Interface for movies
+interface Movie {
+  id: number;
+  title: string;
+  kategorier: string;
+  releaseYear?: number;
+  ageLimit?: number;
+  description?: string
+}
+
 // All movies (placeholders for now)
-const movies = [
+const movies: Movie[] = [
   { id: 12, title: "The Shining", kategorier: "Horror" },
   { id: 13, title: "The Land Before Time", kategorier: "Animerad/familj, Äventyr" },
   { id: 14, title: "Good Will Hunting", kategorier: "Drama" },
