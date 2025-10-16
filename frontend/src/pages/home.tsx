@@ -1,3 +1,5 @@
+import "./home.css";
+
 // Sample movie data
 const movies = [
   {
