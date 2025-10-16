@@ -8,6 +8,7 @@ import ConfirmationPage  from "./pages/confirmation";
 import Shop from "./pages/shop";
 import TicketPage from "./pages/ticket";
 
+
 function App() {
   return (
     <Routes>
@@ -20,7 +21,7 @@ function App() {
         <Route path="/confirmation-page" element={<ConfirmationPage />} />
           <Route path="/ticket" element={<TicketPage />} />
       
-    </Routes>
+    </Routes> 
   );
 }
 
