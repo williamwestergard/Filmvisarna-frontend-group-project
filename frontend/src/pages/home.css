@@ -66,6 +66,10 @@
   width: 100%;
   max-width: 1200px; /* keeps grid centered on large screens */
   grid-template-columns: repeat(2, 1fr); /* default mobile: 2 per row */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.7s forwards;
+  animation-timing-function: ease-in-out;
 }
 
 /* Tablet: 3 movies per row */
@@ -87,14 +91,10 @@
   border-radius: 5px;
   box-shadow: 0 0px 15px rgba(0, 0, 0, 0.564);
   transition: transform 0.3s, box-shadow 0.3s;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.5s forwards;
 }
 
 .movie-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
 
 /* Movie title and genre */
@@ -102,22 +102,24 @@
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
   color: #f9f9f9;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.5s forwards;
 }
 
 .movie-genre {
   font-size: 0.9rem;
   color: #f9f9f9;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.5s forwards;
 }
 
 /* Fade-in animation */
 @keyframes fadeInUp {
-  to {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  20% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
     opacity: 1;
     transform: translateY(0);
   }
