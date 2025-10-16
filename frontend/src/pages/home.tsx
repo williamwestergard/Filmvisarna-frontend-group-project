@@ -47,11 +47,6 @@ const movies = [
 function Startpage() {
   return (
     <main className="home-container">
-      {/* Header */}
-      <header className="site-header">
-        <p>HEADER</p>
-      </header>
-
       {/* Page title */}
       <h1 className="home-title">Aktuella filmer</h1>
 
