@@ -1,4 +1,6 @@
 
+import MoviesList from "../components/movies"
+
 function Startpage() {
 
   return (
@@ -8,6 +10,8 @@ function Startpage() {
         <p>
           Din lokala bio i Småstad!
         </p>
+
+        <MoviesList />
     </>
   )
 }
