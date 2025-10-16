@@ -36,11 +36,15 @@ const Navbar: React.FC = () => {
             <li className="nav-item">
               <a href="/bio-nu" className="nav-link">På bio nu</a>
             </li>
-            <li className="nav-item">
-              <a href="#" className="nav-link">
-                Mer <span className="dropdown-arrow">▼</span>
-              </a>
-            </li>
+           <li className="nav-item dropdown">
+  <a href="#" className="nav-link" onClick={(e) => e.preventDefault()}>
+    Mer <span className="dropdown-arrow">▼</span>
+  </a>
+  <ul className="dropdown-menu">
+    <li><a href="/om-oss" className="dropdown-link">Om oss</a></li>
+    <li><a href="/shop" className="dropdown-link">Vår Kiosk</a></li>
+  </ul>
+</li>
           </ul>
 
           {/* Knappar för inloggning/registrering */}

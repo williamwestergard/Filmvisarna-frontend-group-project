@@ -12,6 +12,7 @@ import TicketPage from "./pages/ticket";
 import Footer from "./components/Footer";
 import Login from "./pages/login";
 import Register from "./pages/register";
+import GradientBottom from "./assets/images/gradient-bottom.png"
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <Route path="/register" element={<Register />} />
         </Routes>
       </main>
+       <img className="gradient-bottom" src={GradientBottom }/>
           <Footer />
     </>
   );

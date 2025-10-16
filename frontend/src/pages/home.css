@@ -1,3 +1,29 @@
+.bg-overlay {
+  background-image: url("../assets/images/home-bg.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  width: 100%;
+  height: auto;
+  top: -23vh;
+  z-index: -1;
+  opacity: 0.45;
+  filter: contrast(116%) blur(5px);
+}
+.gradient-bottom {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  padding: 0;
+  mix-blend-mode: screen;
+  opacity: 0.4;
+  filter: contrast(141%) saturate(14%) brightness(150%);
+}
+
 /* Main container */
 .home-container {
   min-height: 100vh;
@@ -37,6 +63,7 @@
   background-color: #1b1b2f;
   color: #f9f9f9;
   border: none;
+  border: 1px solid rgba(255, 255, 255, 0.065);
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -87,9 +114,9 @@
 }
 
 .movie-card {
-  border: 1px solid rgba(255, 255, 255, 0.081);
+  border: 1px solid rgba(255, 255, 255, 0.067);
   border-radius: 5px;
-  box-shadow: 0 0px 15px rgba(0, 0, 0, 0.564);
+  box-shadow: 0 0px 25px rgba(0, 0, 0, 0.401);
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
@@ -99,14 +126,15 @@
 
 /* Movie title and genre */
 .movie-title {
-  font-size: 1.2rem;
+  font-size: 1.14rem;
+  font-weight: 600;
   margin-bottom: 0.5rem;
   color: #f9f9f9;
 }
 
 .movie-genre {
   font-size: 0.9rem;
-  color: #f9f9f9;
+  color: #a6a5a5;
 }
 
 /* Fade-in animation */

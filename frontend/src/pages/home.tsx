@@ -1,10 +1,14 @@
 import "./home.css";
 import MoviesList from "../components/movies"
-
+import BgOverlay from "../assets/images/home-bg.jpg"
 
 
 function Home() {
   return (
+
+    <> 
+ <img className="bg-overlay" src={BgOverlay } alt="Image of a man and woman watching a movie" />
+    
     <main className="home-container">
       {/* Page title */}
       <h1 className="home-title">Aktuella filmer</h1>
@@ -20,8 +24,10 @@ function Home() {
       </section>
 
 <MoviesList />
-    
+
     </main>
+  
+    </>
   );
 }
 
