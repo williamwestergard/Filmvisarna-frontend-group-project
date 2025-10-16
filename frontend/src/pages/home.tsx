@@ -1,20 +1,28 @@
-import Footer from "../components/Footer.tsx";
+import "./home.css";
+import MoviesList from "../components/movies"
+import Footer from "../components/Footer"
+
 
 function Home() {
-
   return (
-    <>
-     <main>
-       <h1>Filmvisarna</h1>
+    <main className="home-container">
+      {/* Page title */}
+      <h1 className="home-title">Aktuella filmer</h1>
 
-        <p>
-          Din lokala bio i Småstad!
-        </p>
-        </main>
-        
-      <Footer />
-    </>
-  )
+      {/* Filter section */}
+      <section className="filter-section">
+        <select className="filter-dropdown">
+          <option>Alla dagar</option>
+        </select>
+        <select className="filter-dropdown">
+          <option>Kategorier</option>
+        </select>
+      </section>
+
+<MoviesList />
+            <Footer />
+    </main>
+  );
 }
 
-export default Home
+export default Home;
