@@ -39,7 +39,7 @@ body {
   text-decoration: none;
   /* Nyckeln till att placera loggan utanför */
   position: absolute;
-  left: 0px; /* Justera för att passa din logga */
+  left: -5px; /* Justera för att passa din logga */
   top: 50%;
   transform: translateY(-50%);
   z-index: 10;
@@ -64,7 +64,7 @@ body {
   align-items: center;
   width: 100%;
   /* Skapa utrymme för loggan till vänster */
-  margin-left: 280px; /* Justera detta värde baserat på din loggas bredd */
+  margin-left: 250px; /* Justera detta värde baserat på din loggas bredd */
 }
 
 ul {
