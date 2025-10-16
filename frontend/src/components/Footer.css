@@ -7,20 +7,30 @@
   position: absolute;
   bottom: 0;
   left: 0;
-  
+  min-height: 250px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
 }
 
 .footer-brand {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.6rem;
-  margin-bottom: 1rem;
+  gap: rem;  
+  margin-bottom: 100px;
 }
 
+.footer-brand h2 {
+  margin: 10px;
+}
 .footer-brand img {
-  width: 45px;
-  height: 45px;
+  width: 300px;
+  height: 150px;
+  position: absolute;
+  bottom: 65px;
+  left: 700px;
 }
 
 .footer-title {
@@ -28,11 +38,14 @@
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
+  
 }
 
 .footer-contact {
+  margin-left: 20px;
   font-style: normal; 
-  line-height: 1.5;
+  font-size: small;
+  line-height: 0.5;
   color: #e6e6e6;
 }
 
@@ -43,4 +56,11 @@
 
 .footer-contact a:hover {
   text-decoration: underline;
+}
+
+.footer-contact p:first-child {
+  font-size: 0.8rem; /* gör texten större */
+  font-weight: 700;  /* gör den fetare */
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }

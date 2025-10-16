@@ -4,15 +4,17 @@ export default function Footer() {
   return (
     <footer className="site-footer">
       <section className="footer-brand">
-        <img src="/images/logo.png" alt="Filmvisarna logotyp" />
-        <h2 className="footer-title">FILMVISARNA</h2>
+        <img src="/public/filmvisarnafooterbilden.png" alt="filmvisarnafooterbild" />
+        
       </section>
 
-      <address className="footer-contact">
-        <p>FILMVISARNA AB</p>
-        <p>Småstadsgatan 12, Småstad</p>
-        <p>Tel: <a href="tel:0761231232">076 123 123 2</a></p>
-      </address>
+     <address className="footer-contact">
+  <p>FILMVISARNA AB</p>
+  <p>Småstadsgatan 12</p>
+  <p>Småstad</p>
+  <p>Tel: 076 123 312 3</p>
+</address>
+
     </footer>
   );
 }
