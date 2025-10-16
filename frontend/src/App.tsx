@@ -9,8 +9,6 @@ import Shop from "./pages/shop";
 import TicketPage from "./pages/ticket";
 
 
-
-
 function App() {
   return (
     <Routes>
