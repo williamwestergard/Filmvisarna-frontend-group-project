@@ -103,8 +103,8 @@
   align-self: flex-start;
   width: 800px;
   border-radius: 5px;
-  filter: drop-shadow(0px 0px 2px rgba(117, 158, 255, 0.257))
-    drop-shadow(0px 0px 25px rgba(176, 194, 255, 0.2));
+  filter: drop-shadow(0px 0px 2px rgba(117, 158, 255, 0.2))
+    drop-shadow(0px 0px 25px rgba(176, 194, 255, 0.176));
 }
 
 .trailer-thumbnail {
@@ -138,18 +138,21 @@ iframe {
   border-radius: 12px;
   height: 300px; /* initial height */
   transition: height 0.5s ease;
-  box-shadow: inset 0px 0px 2px rgba(115, 150, 240, 0.657),
+  box-shadow: inset 0px 0px 2px rgba(115, 150, 240, 0.794),
     inset 0px 0px 70px rgba(29, 29, 92, 0.224),
     inset 0px 0px 200px rgba(17, 26, 80, 0.222);
 }
 
 .trailer-frame-container.expanded {
   height: 500px; /* expanded height */
+  filter: drop-shadow(0px 0px 2px rgba(117, 158, 255, 0.226))
+    drop-shadow(0px 0px 25px rgba(176, 194, 255, 0.082));
 }
 
 .trailer-frame-container iframe {
   width: 100%;
   height: 100%; /* fill container */
+
   border-radius: 12px;
 }
 
@@ -161,7 +164,7 @@ iframe {
   width: 100%;
   height: 100%;
   cursor: pointer;
-  background: rgba(10, 3, 57, 0.831);
+  background: rgba(10, 3, 57, 0);
   mix-blend-mode: screen;
   z-index: 999; /* make sure it's on top */
   pointer-events: auto;
