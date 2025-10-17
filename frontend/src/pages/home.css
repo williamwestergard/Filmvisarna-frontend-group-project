@@ -137,6 +137,10 @@
   color: #a6a5a5;
 }
 
+a {
+  text-decoration: none;
+}
+
 /* Fade-in animation */
 @keyframes fadeInUp {
   0% {
