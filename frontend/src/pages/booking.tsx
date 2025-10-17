@@ -4,11 +4,13 @@ import { getMovies, getMoviesInformation} from "../api/MoviesListApi";
 import "./booking.css";
 
 
+
 type Movie = {
   id: number;
   title: string;
   category: string[]; 
   posterUrl: string;
+  backdropUrl: string;
   trailerUrl: string,
   language: string
 };
@@ -32,29 +34,38 @@ useEffect(() => {
   Promise.all([getMovies(), getMoviesInformation()])
     .then(([moviesData, trailersData]) => {
       const merged = moviesData.map((movie: Movie) => {
-        const trailerMatch = trailersData.find(
-          (t: { posterUrl?: string }) => 
+        const infoMatch = trailersData.find(
+          (t: { posterUrl?: string }) =>
             t.posterUrl && t.posterUrl.trim() === movie.posterUrl.trim()
         );
-        return { ...movie, trailerUrl: trailerMatch?.trailerUrl || "" };
+
+        return {
+          ...movie,
+          trailerUrl: infoMatch?.trailerUrl || "",
+          backdropUrl: infoMatch?.backdropUrl || movie.backdropUrl,
+        };
       });
+
       setMovies(merged);
     })
-    .catch((err) => console.error("Error fetching movie or trailer data:", err));
+    .catch((err) =>
+      console.error("Error fetching movie or trailer data:", err)
+    );
 }, []);
-
 
 
 
 
   const movie = movies.find(
     (m) => m.title?.toLowerCase().replace(/\s+/g, "-") === movieTitle
+    
   );
   if (!movie) return <p></p>;
     
   return (
     <>
 
+     <img className="booking-movie-backdrop" src={`http://localhost:4000/images/backdrops/${movie.backdropUrl}`} alt={movie.title}/>
 
     <main  key={movie.id} className="booking-page">
       
@@ -79,8 +90,9 @@ useEffect(() => {
          <section className="movie-runtime-genre-container">
        <p className="movie-runtime">2 tim, 15 min</p>
      
-       <p className="movie-booking-genre">Drama</p>
-        <p className="movie-booking-genre">Romantik</p>
+  {movie.category.map((genre, index) => (
+  <p key={index} className="movie-booking-genre">{genre}</p>
+))}
        </section>
        </section>
 

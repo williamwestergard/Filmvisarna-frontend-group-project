@@ -11,6 +11,7 @@ export async function getMovies() {
     title: m.film,
     category: m.kategorier ? m.kategorier.split(", ") : [],
      posterUrl: m.posterUrl,
+     backdropUrl: m.backdropUrl
 
   }));
   
@@ -26,6 +27,7 @@ export async function getMoviesInformation() {
     title: m.film,
     category: m.kategorier ? m.kategorier.split(", ") : [],
     posterUrl: m.posterUrl,
+    backdropUrl: m.backdropUrl,
     description: m.description,
     trailerUrl: m.trailerUrl,
     runtimeMin: m.runtimeMin,
