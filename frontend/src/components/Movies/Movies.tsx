@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getMovies } from "../api/moviesApi";
+import { getMovies } from "../../api/moviesApi";
 
 type Movie = {
   id: number;

@@ -36,32 +36,27 @@
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s;
-  background-color: #CC1E00;  /* same red as login button */
-  color: #FFFFFF;
-  width: 100%;                /* full width */
-  border: none;               /* remove border to match login button */
+  background-color: var(--red-primary); /* same red as login button */
+  color: #ffffff;
+  width: 100%; /* full width */
+  border: none; /* remove border to match login button */
 }
-
-.register-button:hover {
-  background-color: #a11700;  /* slightly darker hover */
-}
-
 
 /* Cancel button */
 .cancel-button {
-  margin-top: 0.5rem;          /* small space below Skapa Konto button */
-  padding: 0.75rem;            /* same padding as register button */
-  font-size: 1rem;             /* same font size */
+  margin-top: 0.5rem; /* small space below Skapa Konto button */
+  padding: 0.75rem; /* same padding as register button */
+  font-size: 1rem; /* same font size */
   font-weight: bold;
   border-radius: 6px;
-  width: 100%;                 /* full width of form */
+  width: 100%; /* full width of form */
   cursor: pointer;
-  background-color: #555555;   /* gray background for cancel */
-  color: #FFFFFF;
+  background-color: #555555; /* gray background for cancel */
+  color: #ffffff;
   border: none;
   transition: background-color 0.3s;
 }
 
 .cancel-button:hover {
-  background-color: #444444;   /* slightly darker on hover */
+  background-color: #444444; /* slightly darker on hover */
 }

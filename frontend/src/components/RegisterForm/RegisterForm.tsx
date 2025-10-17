@@ -12,6 +12,8 @@ interface RegisterFormProps {
   }) => void;
 }
 
+
+
 function RegisterForm({ onRegister }: RegisterFormProps) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");

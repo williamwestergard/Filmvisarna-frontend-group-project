@@ -3,6 +3,7 @@
   text-align: center;
   --red-primary: #c41230;
   --button-bg: #5f5263;
+  --button-bg-hover: #4a3f4e;
   --text-light: #f9f9f9;
   --page-bg: #e0e0e0;
 }
@@ -11,9 +12,11 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background-color: #0d0d1a;
   color: var(--text-light);
   font-family: Arial, sans-serif;
+}
+body {
+  background-color: #0d0d1a;
 }
 
 main {
