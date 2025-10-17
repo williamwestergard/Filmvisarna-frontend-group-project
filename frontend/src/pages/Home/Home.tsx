@@ -1,5 +1,5 @@
 import "./Home.css";
-import MoviesList from "../../components/Movies/Movies"
+import MoviesList from "../../components/Movies/MoviesList"
 import BgOverlay from "../../assets/images/home-bg.jpg"
 
 

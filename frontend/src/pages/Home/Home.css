@@ -24,6 +24,10 @@
   filter: contrast(141%) saturate(14%) brightness(150%);
 }
 
+a {
+  text-decoration: none;
+}
+
 /* Main container */
 .home-container {
   min-height: 100vh;
