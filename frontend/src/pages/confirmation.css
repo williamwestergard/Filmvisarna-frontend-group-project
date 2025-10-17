@@ -1,0 +1,234 @@
+.confirmation-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;       
+  justify-content: center;  
+  min-height: 100vh;        
+  background-color: transparent;
+  position: relative;        
+  top: -100px;              
+}
+
+/* === MAIN BOOKING CARD === */
+.booking-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background-color: #353445;
+  padding: 2.5rem 3rem;
+  border-radius: 10px;
+  width: 700px;
+  min-height: 350px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+/* === LEFT INFO SECTION === */
+.booking-info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  flex: 1;
+  position: relative;
+  top: -10px;
+  left: -10px;
+}
+
+/* Movie title */
+.booking-info h2 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+  color: white;
+  margin-top: 10px;
+}
+
+/* Subtitle (language info) */
+.booking-info .language {
+  color: #bdbdbd;
+  font-size: 1rem;
+  margin-top: -5px;
+  margin-bottom: 1.2em;
+  margin-left: 7px;
+}
+
+/* General booking text (date, time, auditorium) */
+.booking-info p {
+  margin: 0.25rem 7px;
+  color: #e0e0e0;
+  font-size: 1.2rem;
+}
+
+/* Sum line - positioned lower within text area */
+.sum {
+  position: absolute;
+  bottom: 104px;
+  font-weight: bolder;
+  color: white;
+}
+
+/* === MOVIE POSTER === */
+.poster {
+  display: flex;
+  position: relative;
+  width: 270px;
+  height: 350px;
+  border-radius: 6px;
+  align-self: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* === BUTTON GROUP BELOW TEXT === */
+.button-group {
+  display: flex;
+  margin-top: 6.2rem;
+  margin-left: 5rem;
+  height: 63px;
+}
+
+/* Red booking button */
+.book-btn {
+  background-color: #cc0028;
+  border: none;
+  padding: 0.3rem 3rem;
+  color: white;
+  font-weight: bold;
+  font-size: medium;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.book-btn:hover {
+  background-color: #e00633;
+}
+
+/* Top “back” button (above card) */
+.back-btn-top {
+  position: relative;
+  right: 350px;
+  bottom: 7px;
+  background-color: #4a495a;
+  border: none;
+  padding: 0.9rem 0.7rem;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.back-btn-top:hover {
+  background-color: #5b5a6b;
+}
+
+/* Loading state */
+.loading {
+  color: white;
+  text-align: center;
+  margin-top: 5rem;
+  font-size: 1.2rem;
+}
+
+
+
+
+/* === RESPONSIVE DESIGN === */
+
+/* Laptop / medium screens */
+@media (max-width: 1024px) {
+  .booking-card {
+    width: 600px;
+    height: auto;
+    padding: 2rem;
+  }
+
+  .poster {
+    width: 220px;
+    height: 300px;
+  }
+
+  .booking-info h2 {
+    font-size: 2.2rem;
+  }
+
+  .book-btn {
+    padding: 0.5rem 2rem;
+    font-size: 0.95rem;
+  }
+
+  .back-btn-top {
+    right: 250px;
+  }
+}
+
+/* Tablet layout */
+@media (max-width: 768px) {
+  .booking-card {
+    flex-direction: column;   /* Stack content vertically */
+    align-items: center;
+    text-align: center;
+    width: 90%;
+    height: auto;
+    padding: 1.5rem;
+  }
+
+  .poster {
+    width: 200px;
+    margin-top: 1rem;
+  }
+
+  .booking-info {
+    align-items: center;
+    text-align: center;
+    position: static;
+  }
+
+  .sum {
+    position: static;
+    margin-top: 1rem;
+  }
+
+  .button-group {
+    justify-content: center;
+    margin: 1.5rem 0 0 0;
+  }
+
+  .back-btn-top {
+    position: static;
+    margin-bottom: 1rem;
+    align-self: center;
+  }
+}
+
+/* Mobile layout */
+@media (max-width: 480px) {
+  .booking-card {
+    width: 95%;
+    padding: 1rem;
+  }
+
+  .booking-info h2 {
+    font-size: 1.8rem;
+  }
+
+  .booking-info p {
+    font-size: 1rem;
+  }
+
+  .poster {
+    width: 220px;
+    height: 190px;
+  }
+
+  .book-btn {
+    width: 100%;
+    padding: 0.8rem;
+  }
+
+  .back-btn-top {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
