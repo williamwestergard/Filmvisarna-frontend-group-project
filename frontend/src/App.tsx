@@ -23,10 +23,12 @@ function App() {
       
       <main> 
         <Routes>
+          
           <Route path="/" element={<Home />} />
           <Route path="/about-us" element={<About />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/booking-page" element={<BookingPage />} />
+          <Route path="/confirmation/:bookingId" element={<ConfirmationPage />} />
           <Route path="/confirmation-page" element={<ConfirmationPage />} />
           <Route path="/ticket" element={<TicketPage />} />
           <Route path="/login" element={<Login />} />
