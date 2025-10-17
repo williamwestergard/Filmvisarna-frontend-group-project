@@ -11,6 +11,7 @@
   text-align: center;
   color: #f9f9f9; /* all text in the form is white */
   font-family: Arial, sans-serif;
+  box-sizing: border-box;
 }
 
 /* Inputs */
