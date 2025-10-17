@@ -1,11 +1,26 @@
-/* Global stil för att matcha bakgrunden på bilden */
+/* Fil: Navbar.css */
+
+/* --- Variabler och Globala Stilar --- */
+:root {
+  --red-primary: #a41d24;
+  --text-light: #f5f5f5;
+  --button-bg: #3a323e;
+  --button-bg-hover: #4a3f4e;
+  --page-bg: #121212;
+  --menu-overlay-bg: rgba(20, 20, 20, 0.98);
+}
+
 body {
   background-color: var(--page-bg);
   font-family: "Helvetica Neue", Arial, sans-serif;
   margin: 0;
 }
 
-/* Behållare som centrerar navbaren och ger den luft */
+body.no-scroll {
+  overflow: hidden;
+}
+
+/* --- Header och Navbar (Desktop-först) --- */
 .site-header {
   padding: 40px 20px;
 }
@@ -13,52 +28,43 @@ body {
 .navbar {
   display: flex;
   align-items: center;
-  position: relative; /* Viktigt för att positionera loggan */
+  position: relative; /* Viktigt för att kunna positionera barn-element */
   background-color: var(--red-primary);
   height: 60px;
   border-radius: 30px;
   padding: 0 30px;
   max-width: 1200px;
   margin: 0 auto;
-  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.512));
-  margin-top: 1vh;
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.5));
+  z-index: 1000;
 }
 
-/* Logotypen och texten */
+/* Logotyp */
 .navbar-logo-link {
   display: flex;
   align-items: center;
   text-decoration: none;
-  /* Nyckeln till att placera loggan utanför */
   position: absolute;
-  left: -5px; /* Justera för att passa din logga */
+  left: -5px;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 10;
+  z-index: 1010;
 }
 
 .logo-image {
+  height: 103px;
   position: relative;
   top: -4px;
-  height: 103px; /* Justera storleken efter ogga */
 }
 
-.logo-text {
-  color: var(--text-light);
-  font-weight: bold;
-  font-size: 1.6rem;
-  margin-left: -15px; /* Låt texten överlappa bilden lite */
-  text-transform: uppercase;
-}
-
-/* Behållare för alla menyer, för att hantera responsivitet */
+/* Menybehållare */
 .nav-menu-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  /* Skapa utrymme för loggan till vänster */
-  margin-left: 250px; /* Justera detta värde baserat på din loggas bredd */
+  /* FIX 1: Öka marginalen för att ge loggan mer utrymme. */
+  margin-left: 240px; /* Justera detta värde baserat på din logos bredd + önskat mellanrum */
 }
 
 ul {
@@ -70,7 +76,7 @@ ul {
 }
 
 .nav-menu {
-  gap: 2rem; /* Mellanrum mellan "Upptäck", "På bio nu", "Mer" */
+  gap: 2rem;
 }
 
 .nav-link {
@@ -80,18 +86,15 @@ ul {
   font-weight: 500;
   padding: 10px 0;
   transition: opacity 0.2s ease;
+  display: flex;
+  align-items: center;
 }
 
 .nav-link:hover {
   opacity: 0.8;
 }
 
-.dropdown-arrow {
-  font-size: 0.7em;
-  margin-left: 4px;
-}
-
-/* Knappar för Logga in / Skapa konto */
+/* Knappar */
 .nav-actions {
   gap: 0.8rem;
 }
@@ -107,44 +110,46 @@ ul {
 }
 
 .nav-button:hover {
-  background-color: #4a3f4e; /* Lite mörkare vid hover */
+  background-color: var(--button-bg-hover);
 }
 
-/* Hamburgarikonen (gömd på desktop) */
+/* Hamburgarikon (gömd på desktop) */
 .menu-icon {
   display: none;
   cursor: pointer;
-  z-index: 20;
 }
 
-/* Parent dropdown */
+/* --- Dropdown-meny (Desktop) --- */
 .nav-item.dropdown {
   position: relative;
 }
 
-/* Hide dropdown by default */
+.dropdown-arrow {
+  font-size: 0.7em;
+  margin-left: 5px;
+  transition: transform 0.3s ease;
+}
+
 .dropdown-menu {
   position: absolute;
-  top: 3vh;
+  top: 100%;
   left: 0;
   background-color: #1b1b2f;
   border-radius: 5px;
-  overflow: hidden;
+  padding: 5px 0;
   display: none;
   min-width: 150px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-  z-index: 1000;
+  z-index: 1100;
 }
 
-/* Show dropdown on hover (desktop) */
 .nav-item.dropdown:hover .dropdown-menu {
   display: block;
 }
 
-/* Dropdown links */
 .dropdown-link {
   display: block;
-  padding: 0.7rem 1.2rem;
+  padding: 0.8rem 1.2rem;
   color: #f9f9f9;
   text-decoration: none;
   transition: background-color 0.2s;
@@ -154,37 +159,33 @@ ul {
   background-color: #2a2a45;
 }
 
-/* Arrow styling */
-.dropdown-arrow {
-  position: relative;
-  top: -2px;
-  margin-left: 0.3rem;
-  font-size: 0.7rem;
-}
 
-/* RESPONSIVITET - När skärmen blir mindre */
-@media screen and (max-width: 1024px) {
-  .logo-text {
-    display: none; /* Göm texten för att spara plats */
-  }
-
-  .nav-menu-container {
-    margin-left: 120px; /* Minska marginalen eftersom texten är borta */
-  }
-}
+/* ==================================================== */
+/* =============== MOBILANPASSNING ==================== */
+/* ==================================================== */
 
 @media screen and (max-width: 768px) {
   .navbar {
-    justify-content: flex-end; /* Flytta allt till höger så loggan får plats */
-    padding: 0 20px;
+    padding: 0 15px;
   }
 
+  .logo-image {
+    height: 90px;
+  }
+  
+  /* --- Hamburgarikonen (Mobil) --- */
   .menu-icon {
-    display: flex; /* Visa hamburgarikonen */
+    display: flex;
     flex-direction: column;
     justify-content: space-around;
     width: 28px;
     height: 22px;
+    z-index: 1100;
+    /* FIX 2: Byt till `position: absolute` för att linjera med navbaren. */
+    position: absolute; /* Positionera relativt till .navbar */
+    top: 50%;
+    transform: translateY(-50%); /* Centrera vertikalt perfekt */
+    right: 15px; /* Samma som navbarens padding för perfekt linjering */
   }
 
   .menu-icon .bar {
@@ -194,58 +195,104 @@ ul {
     border-radius: 10px;
     transition: all 0.3s ease-in-out;
   }
-
-  /* Animation för hamburgarikonen */
-  .menu-icon .bar.open:nth-child(1) {
-    transform: translateY(9.5px) rotate(45deg);
-  }
-  .menu-icon .bar.open:nth-child(2) {
-    opacity: 0;
-  }
-  .menu-icon .bar.open:nth-child(3) {
-    transform: translateY(-9.5px) rotate(-45deg);
+  
+  /* Ändra färgen på hamburgaren när menyn är öppen för bättre kontrast */
+  .menu-icon .bar.open {
+      background-color: var(--text-light);
   }
 
-  /* Göm menyn och förbered för mobilvyn */
+  .menu-icon .bar.open:nth-child(1) { transform: translateY(9.5px) rotate(45deg); }
+  .menu-icon .bar.open:nth-child(2) { opacity: 0; }
+  .menu-icon .bar.open:nth-child(3) { transform: translateY(-9.5px) rotate(-45deg); }
+
+  /* --- Menybehållaren (Mobil) --- */
   .nav-menu-container {
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    background-color: #222; /* Mörk bakgrund för mobilmenyn */
+    background-color: var(--menu-overlay-bg);
+    backdrop-filter: blur(5px);
     position: fixed;
     top: 0;
-    left: -100%; /* Börja utanför skärmen */
+    left: -100%;
     width: 100%;
-    height: 100vh;
-    padding-top: 100px;
+    height: 100%;
     margin-left: 0;
-    transition: left 0.4s ease-in-out;
+    padding: 0;
+    transition: left 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+    z-index: 1050;
   }
 
   .nav-menu-container.active {
-    left: 0; /* Skjut in menyn */
+    left: 0;
   }
 
+  /* Länklistor i mobilmenyn */
   .nav-menu,
   .nav-actions {
     flex-direction: column;
     width: 100%;
     text-align: center;
-    gap: 1rem;
+    gap: 0;
   }
 
   .nav-actions {
     margin-top: 2rem;
+    gap: 1rem;
   }
 
   .nav-item {
     width: 100%;
   }
 
-  .nav-link,
-  .nav-button {
+  .nav-link {
     display: block;
+    padding: 1.2rem;
+    font-size: 1.8rem;
+    justify-content: center;
+  }
+  
+  .nav-button {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+  }
+  
+  /* --- Dropdown-meny (Mobil) --- */
+  .nav-item.dropdown:hover .dropdown-menu {
+    display: none;
+  }
+  
+  .nav-item.dropdown.open .dropdown-arrow {
+    transform: rotate(180deg);
+  }
+  
+  .dropdown-menu {
+    position: static;
+    background-color: transparent;
+    box-shadow: none;
+    min-width: auto;
+    width: 100%;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+
+  .nav-item.dropdown.open .dropdown-menu {
+    max-height: 200px;
+    margin-top: 0.5rem;
+  }
+
+  .dropdown-link {
+    font-size: 1.2rem;
+    background-color: rgba(255, 255, 255, 0.05);
     padding: 1rem;
-    font-size: 1.5rem;
+  }
+  
+  .dropdown-menu li:first-child .dropdown-link {
+    border-radius: 10px 10px 0 0;
+  }
+  .dropdown-menu li:last-child .dropdown-link {
+    border-radius: 0 0 10px 10px;
   }
 }
