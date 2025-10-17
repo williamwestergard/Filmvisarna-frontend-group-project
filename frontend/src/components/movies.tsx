@@ -4,7 +4,9 @@ import { getMovies } from "../api/moviesApi";
 type Movie = {
   id: number;
   title: string;
-  ageLimit: number;
+  category: string[]; 
+  posterUrl: string;
+
 };
 
 export default function MovieList() {
@@ -18,10 +20,25 @@ export default function MovieList() {
 
   return (
     <>
-      <h2>Filmer</h2>
-      {movies.map(movie => (
-        <div key={movie.id}>{movie.title}{movie.ageLimit}</div>
-      ))}
+
+      <section className="movie-grid">
+        {movies.map((movie) => (
+          <article key={movie.id} >
+             <img className="movie-card"
+            src={`http://localhost:4000/images/posters/${movie.posterUrl}`}
+            alt={movie.title}
+            width={200}
+            
+          />
+            <h2 className="movie-title">{movie.title}</h2>
+            <p className="movie-genre">{movie.category.join(", ")}</p>
+          </article>
+        ))}
+      </section>
+
+
+
+
     </>
   );
 }
