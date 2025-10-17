@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getMovies} from "../api/MoviesListApi";
+import { getMovies, getMoviesInformation} from "../api/MoviesListApi";
 import "./booking.css";
-// import MovieBooking from "../components/MovieBooking"
 
 
 type Movie = {
@@ -16,12 +15,8 @@ type Movie = {
 
 function getVideoId(url: string) {
   if (!url) return "";
-  if (url.includes("youtu.be")) {
-    return url.split("/").pop()?.split("?")[0];
-  }
-  if (url.includes("youtube.com/watch?v=")) {
-    return url.split("v=")[1]?.split("&")[0];
-  }
+  if (url.includes("youtu.be")) return url.split("/").pop()?.split("?")[0];
+  if (url.includes("youtube.com/watch?v=")) return url.split("v=")[1]?.split("&")[0];
   return "";
 }
 
@@ -29,24 +24,32 @@ function BookingPage() {
   const { movieTitle } = useParams<{ movieTitle: string }>();
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isTrailerExpanded, setIsTrailerExpanded] = useState(false);
+
+  
 
 useEffect(() => {
-  getMovies()
-    .then((data: Movie[]) => {
-      console.log(data); // Check if trailerUrl and language exist
-      setMovies(data);
+  Promise.all([getMovies(), getMoviesInformation()])
+    .then(([moviesData, trailersData]) => {
+      const merged = moviesData.map((movie: Movie) => {
+        const trailerMatch = trailersData.find(
+          (t: { posterUrl?: string }) => 
+            t.posterUrl && t.posterUrl.trim() === movie.posterUrl.trim()
+        );
+        return { ...movie, trailerUrl: trailerMatch?.trailerUrl || "" };
+      });
+      setMovies(merged);
     })
-    .catch((err) => console.error("Error fetching movies:", err));
+    .catch((err) => console.error("Error fetching movie or trailer data:", err));
 }, []);
 
 
 
 
-  // Find the movie matching the URL slug
-const movie = movies.find(
-  (m) => m.title?.toLowerCase().replace(/\s+/g, "-") === movieTitle
-);
 
+  const movie = movies.find(
+    (m) => m.title?.toLowerCase().replace(/\s+/g, "-") === movieTitle
+  );
   if (!movie) return <p></p>;
     
   return (
@@ -56,7 +59,6 @@ const movie = movies.find(
     <main  key={movie.id} className="booking-page">
       
     <section className="booking-page-movie-content">
-      {/* <MovieBooking/> */}
        <section className="booking-page-movie-text">
       <h1 className="booking-movie-title">{movie.title}</h1>
       <p className="movie-lang-sub">Eng tal, Sve text</p>
@@ -85,10 +87,10 @@ const movie = movies.find(
 
        <article className="booking-movie-poster">
         <img
-                className="movie-card"
+                className="booking-movie-card"
                 src={`http://localhost:4000/images/posters/${movie.posterUrl}`}
                 alt={movie.title}
-                width={200}
+             
               />
 
        </article>
@@ -97,21 +99,42 @@ const movie = movies.find(
 
       </section>
 <article className="trailer">
-  <p>Se trailer</p>
- {movie.trailerUrl ? (
-  <iframe
-    width="100%"
-    height="360"
-    src={`https://www.youtube.com/embed/${getVideoId(movie.trailerUrl)}`}
-    title={`${movie.title} Trailer`}
-    frameBorder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowFullScreen
-  ></iframe>
-) : (
-  <p>Trailer not available</p>
-)}
+  {movie.trailerUrl ? (
+    <div
+      className={`trailer-frame-container ${isTrailerExpanded ? "expanded" : ""}`}
+    >
+      {/* Only show "Se trailer" if the trailer isn't expanded */}
+      {!isTrailerExpanded && <p className="trailer-text">Se trailer</p>}
+
+      {!isTrailerExpanded ? (
+        // Thumbnail overlay
+        <div
+          className="trailer-overlay"
+          onClick={() => setIsTrailerExpanded(true)}
+        >
+          <img
+            src={`https://img.youtube.com/vi/${getVideoId(movie.trailerUrl)}/hqdefault.jpg`}
+            alt={`${movie.title} Trailer`}
+            className="trailer-thumbnail"
+          />
+  
+        </div>
+      ) : (
+        // Video iframe
+        <iframe
+          src={`https://www.youtube.com/embed/${getVideoId(movie.trailerUrl)}?autoplay=1&controls=1&modestbranding=1&rel=0&iv_load_policy=3`}
+          title={`${movie.title} Trailer`}
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        ></iframe>
+      )}
+    </div>
+  ) : (
+    <p>Trailer not available</p>
+  )}
 </article>
+
 
     </main>
 
