@@ -1,6 +1,6 @@
-import "./home.css";
-import MoviesList from "../components/movies"
-import BgOverlay from "../assets/images/home-bg.jpg"
+import "./Home.css";
+import MoviesList from "../../components/Movies/Movies"
+import BgOverlay from "../../assets/images/home-bg.jpg"
 
 
 function Home() {

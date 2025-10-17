@@ -1,17 +1,16 @@
-// Fil: App.tsx
 
 import "./App.css"
 import { Routes, Route } from "react-router-dom";
-import Navbar from "./components/navbar/Navbar";
-import Home from "./pages/home";
-import About from "./pages/about-us";
-import BookingPage from "./pages/booking";
-import ConfirmationPage  from "./pages/confirmation";
-import Shop from "./pages/shop";
-import TicketPage from "./pages/ticket";
-import Footer from "./components/Footer";
-import Login from "./pages/login";
-import Register from "./pages/register";
+import Navbar from "./components/Navbar/Navbar";
+import Home from "./pages/Home/Home";
+import About from "./pages/AboutUs/AboutUs";
+import BookingPage from "./pages/Booking/Booking";
+import ConfirmationPage  from "./pages/Confirmation/Confirmation";
+import Shop from "./pages/Shop/Shop";
+import TicketPage from "./pages/Ticket/Ticket";
+import Footer from "./components/Footer/Footer";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
 import GradientBottom from "./assets/images/gradient-bottom.png"
 
 
