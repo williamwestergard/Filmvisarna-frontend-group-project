@@ -1,6 +1,7 @@
 
+import { useEffect } from "react";
 import "./App.css"
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./pages/Home/Home";
 import About from "./pages/AboutUs/AboutUs";
@@ -14,6 +15,16 @@ import Register from "./pages/Register/Register";
 import GradientBottom from "./assets/images/gradient-bottom.png"
 
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 function App() {
   return (
     
@@ -21,17 +32,18 @@ function App() {
       <Navbar /> 
       
       <main> 
+             <ScrollToTop />
         <Routes>
-          
           <Route path="/" element={<Home />} />
           <Route path="/about-us" element={<About />} />
           <Route path="/shop" element={<Shop />} />
-          <Route path="/booking-page" element={<BookingPage />} />
+          <Route path="/booking" element={<BookingPage />} />
           <Route path="/confirmation/:bookingId" element={<ConfirmationPage />} />
           <Route path="/confirmation-page" element={<ConfirmationPage />} />
           <Route path="/ticket" element={<TicketPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+         <Route path="/booking/:movieTitle" element={<BookingPage />} />
         </Routes>
       </main>
        <img className="gradient-bottom" src={GradientBottom }/>
