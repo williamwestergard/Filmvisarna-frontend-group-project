@@ -121,12 +121,14 @@
 }
 
 .trailer-thumbnail {
+  pointer-events: none;
   position: absolute;
   left: 0;
   top: -10vh;
   display: flex;
   align-self: center;
   width: 100%;
+  height: auto;
   border-radius: 5px;
 }
 
