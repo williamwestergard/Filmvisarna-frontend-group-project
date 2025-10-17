@@ -1,6 +1,6 @@
-/* Fil: Navbar.css */
 
-/* --- Variabler och Globala Stilar --- */
+
+/* ---------- Grundinställningar ---------- */
 :root {
   --red-primary: #a41d24;
   --text-light: #f5f5f5;
@@ -11,101 +11,103 @@
 }
 
 body {
+  margin: 0;
   background-color: var(--page-bg);
   font-family: "Helvetica Neue", Arial, sans-serif;
-  margin: 0;
 }
 
 body.no-scroll {
   overflow: hidden;
 }
 
-/* --- Header och Navbar (Desktop-först) --- */
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+/* ---------- Struktur ---------- */
 .site-header {
   padding: 40px 20px;
 }
 
 .navbar {
+  position: relative;
+  z-index: 1000;
   display: flex;
   align-items: center;
-  position: relative; /* Viktigt för att kunna positionera barn-element */
-  background-color: var(--red-primary);
   height: 60px;
-  border-radius: 30px;
-  padding: 0 30px;
-  max-width: 1200px;
   margin: 0 auto;
+  max-width: 1200px;
+  padding: 0 30px;
+  border-radius: 30px;
+  background-color: var(--red-primary);
   filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.5));
-  z-index: 1000;
 }
 
-/* Logotyp */
+.nav-menu-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-left: 240px; /* Skapar utrymme så logotypen inte kolliderar med menyn */
+}
+
+/* ---------- Varumärke ---------- */
 .navbar-logo-link {
+  position: absolute;
+  top: 50%;
+  left: -5px;
+  z-index: 1010;
   display: flex;
   align-items: center;
   text-decoration: none;
-  position: absolute;
-  left: -5px;
-  top: 50%;
   transform: translateY(-50%);
-  z-index: 1010;
 }
 
 .logo-image {
-  height: 103px;
   position: relative;
   top: -4px;
+  height: 103px;
 }
 
-/* Menybehållare */
-.nav-menu-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  /* FIX 1: Öka marginalen för att ge loggan mer utrymme. */
-  margin-left: 240px; /* Justera detta värde baserat på din logos bredd + önskat mellanrum */
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  align-items: center;
-}
-
+/* ---------- Navigation ---------- */
 .nav-menu {
   gap: 2rem;
 }
 
+.nav-actions {
+  gap: 0.8rem;
+}
+
 .nav-link {
-  color: var(--text-light);
-  text-decoration: none;
-  font-size: 1.1rem;
-  font-weight: 500;
-  padding: 10px 0;
-  transition: opacity 0.2s ease;
   display: flex;
   align-items: center;
+  padding: 10px 0;
+  color: var(--text-light);
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
 }
 
 .nav-link:hover {
   opacity: 0.8;
 }
 
-/* Knappar */
-.nav-actions {
-  gap: 0.8rem;
-}
-
+/* ---------- Knappar ---------- */
 .nav-button {
-  background-color: var(--button-bg);
-  color: var(--text-light);
-  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 10px 20px;
   border-radius: 20px;
+  background-color: var(--button-bg);
+  color: var(--text-light);
   font-weight: 500;
+  text-decoration: none;
   transition: background-color 0.2s ease;
 }
 
@@ -113,20 +115,14 @@ ul {
   background-color: var(--button-bg-hover);
 }
 
-/* Hamburgarikon (gömd på desktop) */
-.menu-icon {
-  display: none;
-  cursor: pointer;
-}
-
-/* --- Dropdown-meny (Desktop) --- */
+/* ---------- Dropdown (desktop) ---------- */
 .nav-item.dropdown {
   position: relative;
 }
 
 .dropdown-arrow {
-  font-size: 0.7em;
   margin-left: 5px;
+  font-size: 0.7em;
   transition: transform 0.3s ease;
 }
 
@@ -134,13 +130,13 @@ ul {
   position: absolute;
   top: 100%;
   left: 0;
-  background-color: #1b1b2f;
-  border-radius: 5px;
-  padding: 5px 0;
-  display: none;
-  min-width: 150px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
   z-index: 1100;
+  min-width: 150px;
+  padding: 5px 0;
+  border-radius: 5px;
+  background-color: #1b1b2f;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  display: none;
 }
 
 .nav-item.dropdown:hover .dropdown-menu {
@@ -152,18 +148,44 @@ ul {
   padding: 0.8rem 1.2rem;
   color: #f9f9f9;
   text-decoration: none;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s ease;
 }
 
 .dropdown-link:hover {
   background-color: #2a2a45;
 }
 
+/* ---------- Hamburgare & animation ---------- */
+.menu-icon {
+  display: none;
+  cursor: pointer;
+}
 
-/* ==================================================== */
-/* =============== MOBILANPASSNING ==================== */
-/* ==================================================== */
+.menu-icon .bar {
+  width: 100%;
+  height: 3px;
+  border-radius: 10px;
+  background-color: var(--text-light);
+  transition: all 0.3s ease-in-out;
+}
 
+.menu-icon .bar.open {
+  background-color: var(--text-light);
+}
+
+.menu-icon .bar.open:nth-child(1) {
+  transform: translateY(9.5px) rotate(45deg);
+}
+
+.menu-icon .bar.open:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-icon .bar.open:nth-child(3) {
+  transform: translateY(-9.5px) rotate(-45deg);
+}
+
+/* ---------- Responsivitet: max 768px ---------- */
 @media screen and (max-width: 768px) {
   .navbar {
     padding: 0 15px;
@@ -172,62 +194,42 @@ ul {
   .logo-image {
     height: 90px;
   }
-  
-  /* --- Hamburgarikonen (Mobil) --- */
+
   .menu-icon {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    z-index: 1100;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     width: 28px;
     height: 22px;
-    z-index: 1100;
-    /* FIX 2: Byt till `position: absolute` för att linjera med navbaren. */
-    position: absolute; /* Positionera relativt till .navbar */
-    top: 50%;
-    transform: translateY(-50%); /* Centrera vertikalt perfekt */
-    right: 15px; /* Samma som navbarens padding för perfekt linjering */
+    transform: translateY(-50%);
   }
 
-  .menu-icon .bar {
-    height: 3px;
-    width: 100%;
-    background-color: var(--text-light);
-    border-radius: 10px;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  /* Ändra färgen på hamburgaren när menyn är öppen för bättre kontrast */
-  .menu-icon .bar.open {
-      background-color: var(--text-light);
-  }
-
-  .menu-icon .bar.open:nth-child(1) { transform: translateY(9.5px) rotate(45deg); }
-  .menu-icon .bar.open:nth-child(2) { opacity: 0; }
-  .menu-icon .bar.open:nth-child(3) { transform: translateY(-9.5px) rotate(-45deg); }
-
-  /* --- Menybehållaren (Mobil) --- */
   .nav-menu-container {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--menu-overlay-bg);
-    backdrop-filter: blur(5px);
     position: fixed;
     top: 0;
     left: -100%;
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
     margin-left: 0;
     padding: 0;
+    background-color: var(--menu-overlay-bg);
+    backdrop-filter: blur(5px);
     transition: left 0.4s cubic-bezier(0.77, 0, 0.175, 1);
-    z-index: 1050;
   }
 
   .nav-menu-container.active {
     left: 0;
   }
 
-  /* Länklistor i mobilmenyn */
   .nav-menu,
   .nav-actions {
     flex-direction: column;
@@ -247,32 +249,32 @@ ul {
 
   .nav-link {
     display: block;
+    justify-content: center;
     padding: 1.2rem;
     font-size: 1.8rem;
-    justify-content: center;
   }
-  
+
   .nav-button {
     padding: 1rem 2rem;
     font-size: 1.2rem;
   }
-  
-  /* --- Dropdown-meny (Mobil) --- */
+
   .nav-item.dropdown:hover .dropdown-menu {
     display: none;
   }
-  
+
   .nav-item.dropdown.open .dropdown-arrow {
     transform: rotate(180deg);
   }
-  
+
   .dropdown-menu {
     position: static;
-    background-color: transparent;
-    box-shadow: none;
-    min-width: auto;
     width: 100%;
+    min-width: auto;
+    margin-top: 0;
     padding: 0;
+    box-shadow: none;
+    background-color: transparent;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.4s ease;
@@ -284,14 +286,15 @@ ul {
   }
 
   .dropdown-link {
+    padding: 1rem;
     font-size: 1.2rem;
     background-color: rgba(255, 255, 255, 0.05);
-    padding: 1rem;
   }
-  
+
   .dropdown-menu li:first-child .dropdown-link {
     border-radius: 10px 10px 0 0;
   }
+
   .dropdown-menu li:last-child .dropdown-link {
     border-radius: 0 0 10px 10px;
   }
