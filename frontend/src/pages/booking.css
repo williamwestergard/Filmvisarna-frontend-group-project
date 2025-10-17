@@ -103,7 +103,7 @@
   align-self: flex-start;
   width: 800px;
   border-radius: 5px;
-  filter: drop-shadow(0px 0px 2px rgba(117, 158, 255, 0.631))
+  filter: drop-shadow(0px 0px 2px rgba(117, 158, 255, 0.257))
     drop-shadow(0px 0px 25px rgba(176, 194, 255, 0.2));
 }
 
