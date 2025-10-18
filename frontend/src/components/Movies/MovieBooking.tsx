@@ -12,11 +12,20 @@ type Movie = {
   backdropUrl: string;
   trailerUrl: string,
   language: string,
-  description: string
+  description: string,
+  runtimeMin: number
 };
 type MovieBookingProps = {
   onMovieLoaded?: () => void;
 };
+
+
+function formatRuntime(minutes: number) {
+  if (!minutes) return "N/A";
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return `${hours} ${hours === 1 ? "tim" : "tim"}${mins > 0 ? ` ${mins} min` : ""}`;
+}
 
 function getVideoId(url: string) {
   if (!url) return "";
@@ -47,6 +56,8 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
             trailerUrl: infoMatch?.trailerUrl || "",
             backdropUrl: infoMatch?.backdropUrl || movie.backdropUrl,
             description: infoMatch?.description || movie.description,
+            runtimeMin: infoMatch?.runtimeMin || movie.runtimeMin,
+            language: infoMatch?.language || movie.language,
           };
         });
 
@@ -80,7 +91,7 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
     <section className="booking-page-movie-content">
        <section className="booking-page-movie-text">
       <h1 className="booking-movie-title">{movie.title}</h1>
-      <p className="movie-lang-sub">Eng tal, Sve text</p>
+      <p className="movie-lang-sub">{movie.language}</p>
         <p className={`movie-desc ${isExpanded ? "expanded" : ""}`}>
      {movie.description}
       </p>
@@ -91,7 +102,7 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
             {isExpanded ? "Visa mindre" : "Mer information"}
           </p>
          <section className="movie-runtime-genre-container">
-       <p className="movie-runtime">2 tim, 15 min</p>
+       <p className="movie-runtime">{formatRuntime(movie.runtimeMin)}</p>
      
   {movie.category.map((genre, index) => (
   <p key={index} className="movie-booking-genre">{genre}</p>
