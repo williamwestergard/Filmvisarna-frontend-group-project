@@ -11,7 +11,8 @@ type Movie = {
   posterUrl: string;
   backdropUrl: string;
   trailerUrl: string,
-  language: string
+  language: string,
+  description: string
 };
 type MovieBookingProps = {
   onMovieLoaded?: () => void;
@@ -45,6 +46,7 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
             ...movie,
             trailerUrl: infoMatch?.trailerUrl || "",
             backdropUrl: infoMatch?.backdropUrl || movie.backdropUrl,
+            description: infoMatch?.description || movie.description,
           };
         });
 
@@ -80,13 +82,8 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
       <h1 className="booking-movie-title">{movie.title}</h1>
       <p className="movie-lang-sub">Eng tal, Sve text</p>
         <p className={`movie-desc ${isExpanded ? "expanded" : ""}`}>
-        
-        Året är 1963. Den 17-åriga Frances "Baby" Houseman
-        följer med sina föräldrar till ett pensionat i Catskillbergen
-       i New York för några lediga sommarveckor innan hon ska börja på college. 
-       <br/> <br/>
-       Hon bråkar med sin äldre syster Lisa och passar inte riktigt in bland de andra gästerna 
-       och de arrangerade aktiviteterna utan söker efter något mer genuint och stimulerande.</p>
+     {movie.description}
+      </p>
        <p
             className="movie-toggle-desc"
             onClick={() => setIsExpanded(!isExpanded)}
