@@ -11,7 +11,6 @@
 }
 
 .booking-movie-backdrop {
-  background-image: url("../assets/images/home-bg.png");
   background-repeat: no-repeat;
   background-size: contain;
   position: absolute;
@@ -154,14 +153,14 @@ iframe {
   height: 300px; /* initial height */
   transition: height 0.5s ease;
   box-shadow: inset 0px 0px 2px rgba(151, 179, 251, 0.486),
-    inset 0px 0px 70px rgba(29, 29, 92, 0.224),
-    inset 0px 0px 200px rgba(17, 26, 80, 0.222);
+    inset 0px 0px 70px rgba(29, 29, 92, 0.145),
+    inset 0px 0px 200px rgba(17, 26, 80, 0.092);
 }
 
 .trailer-frame-container.expanded {
   height: 500px; /* expanded height */
   filter: drop-shadow(0px 0px 2px rgba(117, 158, 255, 0.226))
-    drop-shadow(0px 0px 25px rgba(176, 194, 255, 0.082));
+    drop-shadow(0px 0px 25px rgba(176, 194, 255, 0.133));
 }
 
 .trailer-frame-container iframe {
@@ -183,4 +182,169 @@ iframe {
   mix-blend-mode: screen;
   z-index: 999; /* make sure it's on top */
   pointer-events: auto;
+}
+
+/* Phone layout */
+@media only screen and (max-width: 600px) {
+  .booking-page {
+    min-height: 100vh;
+    padding: 0.7rem;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    gap: 2rem;
+    max-width: 90%;
+  }
+
+  .booking-movie-backdrop {
+    display: none;
+  }
+
+  .booking-page-movie-content {
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+  }
+
+  .booking-page-movie-text {
+    width: 100%;
+  }
+
+  .booking-movie-title {
+    font-size: clamp(1.5rem, 7.6vw, 2rem);
+    width: 90%;
+  }
+
+  .movie-lang-sub {
+    font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+    color: #999999;
+  }
+
+  .movie-desc {
+    font-size: clamp(0.75rem, 1vw, 0.9rem);
+    width: 88%;
+    color: #999999;
+    line-height: 1.44;
+    position: relative;
+  }
+  .movie-toggle-desc {
+    cursor: pointer;
+    display: inline-block;
+    margin: 0;
+    font-size: clamp(0.8rem, 1vw, 0.95rem);
+    letter-spacing: 0.2px;
+    font-weight: 600;
+    width: 0 auto;
+  }
+
+  .movie-runtime-genre-container {
+    font-size: clamp(0.8rem, 1vw, 1rem);
+    display: flex;
+    align-items: center;
+    gap: 3vw;
+    margin-top: 2.3vh;
+  }
+
+  .movie-runtime {
+    font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+    margin-right: 0vw;
+    position: absolute;
+  }
+
+  .movie-booking-genre {
+    color: #999999;
+    border: 1px solid #999999;
+    position: relative;
+    left: 37vw;
+    border-radius: 5px;
+    padding: 0.3vw 1.8vw;
+  }
+
+  .booking-movie-poster {
+    width: auto;
+    position: relative;
+    top: 25px;
+    margin: 0;
+    padding: 0;
+  }
+  .booking-movie-card {
+    border: 1px solid rgba(255, 255, 255, 0.584);
+    border-radius: 3px;
+    width: clamp(90px, 20vw, 105px);
+    position: relative;
+    left: -2vw;
+  }
+  .trailer {
+    position: relative;
+    left: 0;
+    text-align: left;
+    align-self: flex-start;
+    margin: 0 auto;
+    width: 100%;
+    filter: drop-shadow(0px 0px 2px rgba(117, 158, 255, 0.138))
+      drop-shadow(0px 0px 25px rgba(176, 194, 255, 0.171));
+  }
+
+  .trailer-thumbnail {
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    top: -5vh;
+    display: flex;
+    align-self: center;
+    width: 100%;
+    height: auto;
+  }
+
+  iframe {
+    border-radius: 5px;
+  }
+
+  .trailer p {
+    z-index: 10000;
+    background-color: #0d0d1a;
+    border: 1px solid rgba(255, 255, 255, 0.169);
+    border-radius: 4px;
+    padding: 1vw 3vw;
+    position: absolute;
+    right: 4vw;
+    bottom: -0.4vh;
+  }
+
+  .trailer-frame-container {
+    position: relative; /* required for overlay positioning */
+    overflow: hidden;
+    border-radius: 7px;
+    height: 170px; /* initial height */
+    transition: height 0.5s ease;
+    box-shadow: inset 0px 0px 2px rgba(151, 179, 251, 0.486),
+      inset 0px 0px 70px rgba(29, 29, 92, 0.145),
+      inset 0px 0px 200px rgba(17, 26, 80, 0.092);
+  }
+
+  .trailer-frame-container.expanded {
+    height: 230px; /* expanded height */
+    filter: drop-shadow(0px 0px 2px rgba(117, 158, 255, 0.226))
+      drop-shadow(0px 0px 25px rgba(176, 194, 255, 0.133));
+  }
+
+  .trailer-frame-container iframe {
+    width: 100%;
+    height: 100%; /* fill container */
+    border-radius: 12px;
+  }
+
+  /* Overlay to capture clicks */
+  .trailer-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    background: rgba(10, 3, 57, 0);
+    mix-blend-mode: screen;
+    z-index: 999; /* make sure it's on top */
+    pointer-events: auto;
+  }
 }

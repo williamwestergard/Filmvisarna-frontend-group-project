@@ -13,11 +13,17 @@ type Movie = {
 export default function MovieList() {
   const [movies, setMovies] = useState<Movie[]>([]); 
 
-  useEffect(() => {
-    getMovies()
-      .then((data: Movie[]) => setMovies(data))
-      .catch(err => console.error("Error fetching movies:", err));
-  }, []);
+useEffect(() => {
+  getMovies()
+    .then((data: Movie[]) => {
+      const titanic = data.find(movie => movie.title.toLowerCase() === "titanic");
+      const others = data.filter(movie => movie.title.toLowerCase() !== "titanic");
+      const ordered = titanic ? [titanic, ...others] : data;
+
+      setMovies(ordered);
+    })
+    .catch(err => console.error("Error fetching movies:", err));
+}, []);
 
   return (
     <>
