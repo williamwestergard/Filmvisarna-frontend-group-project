@@ -50,11 +50,15 @@
 
 .booking-movie-title {
   font-size: clamp(2rem, 3vw, 3rem);
+  position: relative;
+  left: -0.4vw;
 }
 
 .movie-lang-sub {
   font-size: clamp(1.2rem, 1.6vw, 1.5rem);
   color: #999999;
+  position: relative;
+  top: -3vh;
 }
 
 .movie-desc {
@@ -80,6 +84,8 @@
   width: 100%;
   color: #999999;
   line-height: 1.4;
+  position: relative;
+  top: -1vh;
 }
 .movie-toggle-desc {
   cursor: pointer;
@@ -91,6 +97,8 @@
   color: #c4c4c4;
   user-select: none;
   width: 0 auto;
+  position: relative;
+  top: -1vh;
 }
 
 .movie-runtime-genre-container {
@@ -99,6 +107,7 @@
   align-items: center;
   gap: 1vw;
   margin-top: 2.3vh;
+  width: 120%;
 }
 
 .movie-runtime {
@@ -118,7 +127,7 @@
   height: 290px;
   width: auto;
   position: relative;
-  top: 20px;
+  top: 30px;
 }
 .booking-movie-card {
   border: 1px solid rgba(255, 255, 255, 0.067);
@@ -207,7 +216,7 @@ iframe {
 }
 
 .booking-price-card-content {
-  margin-top: 4vh;
+  margin-top: 5vh;
   padding: 1.5vh 1.5vw;
   border: 1px solid #80808030;
   border-radius: 5px;
