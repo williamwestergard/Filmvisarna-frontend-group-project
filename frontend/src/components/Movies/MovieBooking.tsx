@@ -13,6 +13,9 @@ type Movie = {
   trailerUrl: string,
   language: string
 };
+type MovieBookingProps = {
+  onMovieLoaded?: () => void;
+};
 
 function getVideoId(url: string) {
   if (!url) return "";
@@ -21,45 +24,49 @@ function getVideoId(url: string) {
   return "";
 }
 
-function MovieBooking() {
+function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
   const { movieTitle } = useParams<{ movieTitle: string }>();
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isTrailerExpanded, setIsTrailerExpanded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // 👈 new
 
-  
+  useEffect(() => {
+    setIsLoading(true);
+    Promise.all([getMovies(), getMoviesInformation()])
+      .then(([moviesData, trailersData]) => {
+        const merged = moviesData.map((movie: Movie) => {
+          const infoMatch = trailersData.find(
+            (t: { posterUrl?: string }) =>
+              t.posterUrl && t.posterUrl.trim() === movie.posterUrl.trim()
+          );
 
-useEffect(() => {
-  Promise.all([getMovies(), getMoviesInformation()])
-    .then(([moviesData, trailersData]) => {
-      const merged = moviesData.map((movie: Movie) => {
-        const infoMatch = trailersData.find(
-          (t: { posterUrl?: string }) =>
-            t.posterUrl && t.posterUrl.trim() === movie.posterUrl.trim()
-        );
+          return {
+            ...movie,
+            trailerUrl: infoMatch?.trailerUrl || "",
+            backdropUrl: infoMatch?.backdropUrl || movie.backdropUrl,
+          };
+        });
 
-        return {
-          ...movie,
-          trailerUrl: infoMatch?.trailerUrl || "",
-          backdropUrl: infoMatch?.backdropUrl || movie.backdropUrl,
-        };
-      });
-
-      setMovies(merged);
-    })
-    .catch((err) =>
-      console.error("Error fetching movie or trailer data:", err)
-    );
-}, []);
-
-
-
+        setMovies(merged);
+      })
+      .catch((err) =>
+        console.error("Error fetching movie or trailer data:", err)
+      )
+      .finally(() => setIsLoading(false));
+  }, []);
 
   const movie = movies.find(
     (m) => m.title?.toLowerCase().replace(/\s+/g, "-") === movieTitle
-    
   );
-  if (!movie) return <p></p>;
+
+  useEffect(() => {
+    if (movie && !isLoading) onMovieLoaded?.();
+  }, [movie, isLoading, onMovieLoaded]);
+
+  // 👇 Don’t render anything while loading
+  if (isLoading || !movie) return null;
+
     
   return (
     <>
