@@ -1,3 +1,11 @@
+.booking-page-content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  overflow: visible;
+  max-width: 1200px;
+}
+
 .booking-page {
   min-height: 100vh;
   padding: 1rem;
@@ -5,9 +13,9 @@
   flex-direction: column;
   align-items: left;
   gap: 2rem;
-  color: #f9f9f9;
-  font-family: Arial, sans-serif;
-  max-width: 1200px;
+  width: 40vw;
+  position: relative;
+  left: -1vw;
 }
 
 .booking-movie-backdrop {
@@ -17,6 +25,7 @@
   width: 100%;
   height: auto;
   top: -23vh;
+  left: 0;
   z-index: -1;
   opacity: 0.45;
   filter: contrast(116%) blur(5px);
@@ -25,11 +34,12 @@
 .booking-page-movie-content {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   text-align: left;
 }
 
 .booking-page-movie-text {
-  width: 50%;
+  width: 55%;
 }
 
 .booking-movie-title {
@@ -60,7 +70,7 @@
 
 .movie-desc {
   font-size: clamp(0.8rem, 1vw, 1rem);
-  width: 70%;
+  width: 100%;
   color: #999999;
   line-height: 1.4;
 }
@@ -113,7 +123,7 @@
   left: 0;
   text-align: left;
   align-self: flex-start;
-  width: 800px;
+  width: 100%;
   border-radius: 5px;
   filter: drop-shadow(0px 0px 2px rgba(117, 158, 255, 0.146))
     drop-shadow(0px 0px 25px rgba(176, 194, 255, 0.111));
@@ -133,6 +143,7 @@
 
 iframe {
   border-radius: 5px;
+  width: 80vw;
 }
 
 .trailer p {
@@ -182,6 +193,57 @@ iframe {
   mix-blend-mode: screen;
   z-index: 999; /* make sure it's on top */
   pointer-events: auto;
+}
+
+.booking-price-card-top {
+  position: sticky;
+  top: 4vh;
+  margin-left: 2vw;
+}
+
+.booking-price-card-content {
+  margin-top: 4vh;
+  padding: 1.5vh 1.5vw;
+  border: 1px solid #80808030;
+  border-radius: 5px;
+  background-color: #232232;
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.5));
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.booking-price-card-customer-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.booking-price-card-price-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  gap: 2vw;
+  margin-bottom: 1.5vh;
+}
+
+.booking-price-card-underline {
+  position: absolute;
+  background-color: #ffffff2b;
+  width: 100%;
+  margin: 0 auto;
+  align-self: center;
+  height: 1px;
+}
+
+.booking-price-card-total-price {
+  align-self: flex-end;
+  font-size: 1.1rem;
+  font-weight: 500;
+  position: relative;
+  top: 0.8vh;
 }
 
 /* Phone layout */
@@ -346,5 +408,8 @@ iframe {
     mix-blend-mode: screen;
     z-index: 999; /* make sure it's on top */
     pointer-events: auto;
+  }
+  .booking-price-card-content {
+    display: none;
   }
 }
