@@ -1,0 +1,55 @@
+.about {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 24px 16px 64px;
+    box-sizing: border-box;
+  }
+  
+  .about-card {
+    width: 100%;
+    max-width: 760px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 20px 16px;
+    text-align: left;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  }
+  
+  .about-eyebrow {
+    margin: 0 0 8px 0;
+    font-size: 0.85rem;
+    opacity: 0.8;
+  }
+  
+  .about-title {
+    margin: 0 0 16px 0;
+    font-size: 1.65rem;
+    line-height: 1.25;
+    font-weight: 700;
+    color: var(--text-light);
+  }
+  
+  .about-section {
+    margin-top: 12px;
+  }
+  
+  .about-section p {
+    margin: 0 0 10px 0;
+    line-height: 1.55;
+    color: var(--text-light);
+    opacity: 0.95;
+  }
+  
+  .about-subtitle {
+    margin: 10px 0 6px 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-light);
+  }
+  
+  .about-lead {
+    margin: 0;
+    opacity: 0.9;
+  }
