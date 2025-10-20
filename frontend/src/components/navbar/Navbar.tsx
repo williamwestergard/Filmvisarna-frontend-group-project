@@ -6,6 +6,7 @@ import logo from './navbar-logo.png'; // Importera din logotyp
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isAccountOpen, setIsAccountOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -19,6 +20,7 @@ const Navbar: React.FC = () => {
   const closeMenu = () => {
     setIsMenuOpen(false);
     setIsDropdownOpen(false);
+    setIsAccountOpen(false);
   };
 
   // Effekt för att förhindra scrolling av body när mobilmenyn är öppen
@@ -27,8 +29,9 @@ const Navbar: React.FC = () => {
       document.body.classList.add('no-scroll');
     } else {
       document.body.classList.remove('no-scroll');
-      // Stäng även dropdown när huvudmenyn stängs
+      // Stäng även dropdown och konto-panel när huvudmenyn stängs
       setIsDropdownOpen(false);
+      setIsAccountOpen(false);
     }
 
     // Cleanup-funktion för att ta bort klassen om komponenten tas bort
@@ -50,7 +53,10 @@ const Navbar: React.FC = () => {
           <li className="nav-item">
             <a href="/bio-nu" className="nav-link">På bio nu</a>
           </li>
-          <li className="nav-item dropdown">
+          <li
+            className={`nav-item dropdown ${isDropdownOpen ? 'open' : ''}`}
+            onMouseLeave={() => setIsDropdownOpen(false)}
+          >
             <a href="#" className="nav-link" onClick={toggleDropdown} onKeyDown={(e) => e.key === 'Enter' && toggleDropdown(e)}>
               Mer <span className="dropdown-arrow">▼</span>
             </a>
@@ -73,6 +79,15 @@ const Navbar: React.FC = () => {
     </nav>
   );
 
+  const toggleAccountPanel = () => {
+    setIsAccountOpen((prev) => !prev);
+  };
+
+  const openAccountLink = () => {
+    setIsAccountOpen(false);
+    closeMenu();
+  };
+
   const mobileNavigation = (
     <nav className="navbar navbar-mobile">
       <a href="/" className="navbar-logo-link">
@@ -92,6 +107,15 @@ const Navbar: React.FC = () => {
       </button>
 
       <div className={isMenuOpen ? 'mobile-menu-panel active' : 'mobile-menu-panel'}>
+        <button
+          type="button"
+          className={`nav-button nav-button-account ${isAccountOpen ? 'open' : ''}`}
+          onClick={toggleAccountPanel}
+          aria-expanded={isAccountOpen}
+        >
+          Ditt konto
+        </button>
+
         <ul className="nav-menu nav-menu-mobile">
           <li className="nav-item">
             <a href="/upptack" className="nav-link" onClick={closeMenu}>Upptäck</a>
@@ -99,30 +123,24 @@ const Navbar: React.FC = () => {
           <li className="nav-item">
             <a href="/bio-nu" className="nav-link" onClick={closeMenu}>På bio nu</a>
           </li>
-          <li className={`nav-item dropdown ${isDropdownOpen ? 'open' : ''}`}>
-            <button
-              type="button"
-              className="nav-link dropdown-toggle"
-              onClick={() => toggleDropdown()}
-              aria-expanded={isDropdownOpen}
-            >
-              Mer <span className="dropdown-arrow">▼</span>
-            </button>
-            <ul className="dropdown-menu">
-              <li><a href="/om-oss" className="dropdown-link" onClick={closeMenu}>Om oss</a></li>
-              <li><a href="/shop" className="dropdown-link" onClick={closeMenu}>Vår Kiosk</a></li>
-            </ul>
-          </li>
-        </ul>
-
-        <ul className="nav-actions nav-actions-mobile">
           <li className="nav-item">
-            <a href="/login" className="nav-button" onClick={closeMenu}>Logga in</a>
+            <a href="/om-oss" className="nav-link" onClick={closeMenu}>Om oss</a>
           </li>
           <li className="nav-item">
-            <a href="/register" className="nav-button" onClick={closeMenu}>Skapa konto</a>
+            <a href="/shop" className="nav-link" onClick={closeMenu}>Vår Kiosk</a>
           </li>
         </ul>
+        <div className={isAccountOpen ? 'mobile-account-panel open' : 'mobile-account-panel'}>
+          <button
+            type="button"
+            className="nav-link nav-link-back"
+            onClick={() => setIsAccountOpen(false)}
+          >
+            ‹ Tillbaka
+          </button>
+          <a href="/login" className="nav-button" onClick={openAccountLink}>Logga in</a>
+          <a href="/register" className="nav-button" onClick={openAccountLink}>Skapa konto</a>
+        </div>
       </div>
     </nav>
   );
