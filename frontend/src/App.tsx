@@ -12,7 +12,7 @@ import TicketPage from "./pages/Ticket/Ticket";
 import Footer from "./components/Footer/Footer";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
-import GradientBottom from "./assets/images/gradient-bottom.png"
+import GradientBottom from "./assets/images/gradient-bottom.png" 
 
 import Discover from "./pages/Discover/Discover";
 
