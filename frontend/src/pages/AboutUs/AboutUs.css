@@ -34,29 +34,30 @@
   margin-top: 12px;
 }
 
-/* Textblock */
+/* text-block */
 .about-section {
   max-width: 760px;
-  margin: 38px 0;
-  line-height: 1.65;
+  margin: 42px 0;
+  line-height: 1.7; 
   font-size: 1rem;
   text-align: left;
 }
 
-.about-section p 
-{ margin: 0 0 12px; 
+.about-section p {
+  margin: 0 0 14px; 
 }
 
 .about-subtitle {
   font-size: 24px;
   font-weight: 700;
-  margin: 0 0 1px;
+  margin: 56px 0 0px;
 }
 
 .about-lead {
-  line-height: 0.5;
+  line-height: 1.6;
   font-style: italic;
-  opacity: 0.7;
+  opacity: 0.8;
+  margin-bottom: 40px;
 }
 
 /* pictures */
