@@ -221,3 +221,27 @@ a {
     margin-bottom: 5vh;
   }
 }
+
+
+/* Search input styling */
+.search-input {
+  width: 320px;
+  padding: 0.6rem 1rem;
+  margin: top;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #1b1b2f;
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.search-input::placeholder {
+  color: #9b9b9b;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #cc0028;
+  box-shadow: 0 0 5px rgba(204, 0, 40, 0.5);
+}
