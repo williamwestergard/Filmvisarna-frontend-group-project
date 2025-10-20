@@ -14,6 +14,8 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import GradientBottom from "./assets/images/gradient-bottom.png"
 
+import Discover from "./pages/Discover/Discover";
+
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -44,6 +46,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
          <Route path="/booking/:movieTitle" element={<BookingPage />} />
+
+         <Route path="/upptack" element={<Discover />} />
         </Routes>
       </main>
        <img className="gradient-bottom" src={GradientBottom }/>

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import './Navbar.css';
 import logo from './navbar-logo.png'; // Importera din logotyp
+import { Link } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -52,7 +53,7 @@ const Navbar: React.FC = () => {
           {/* Primära navigationslänkar */}
           <ul className="nav-menu">
             <li className="nav-item">
-              <a href="/upptack" className="nav-link">Upptäck</a>
+              <Link to="/upptack" className="nav-link">Upptäck</Link>
             </li>
             <li className="nav-item">
               <a href="/bio-nu" className="nav-link">På bio nu</a>
