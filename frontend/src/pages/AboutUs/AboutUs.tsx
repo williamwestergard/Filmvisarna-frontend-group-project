@@ -1,4 +1,3 @@
-import React from "react";
 import "./AboutUs.css";
 
 import filmRetro1 from "../../assets/images/about/filmretro1.png";
@@ -41,7 +40,7 @@ export default function AboutUs() {
 
         <section className="about-gallery" aria-label="Historiska bilder">
           <figure className="about-figure">
-            <img src={filmRetro1} alt="Filmvisarna öppnar – kö utanför den klassiska entrén." className="about-image" />
+            <img src={filmRetro1} alt="Filmvisarna öppnar – kö utanför entrén." className="about-image" />
             <figcaption className="about-caption">
               Filmvisarna öppnade sina dörrar 1951 – en ny mötesplats för filmälskare i Småstad.
             </figcaption>
