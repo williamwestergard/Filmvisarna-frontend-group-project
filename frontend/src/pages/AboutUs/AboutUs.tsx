@@ -1,4 +1,9 @@
+import React from "react";
 import "./AboutUs.css";
+
+import filmRetro1 from "../../assets/images/about/filmretro1.png";
+import filmRetro2 from "../../assets/images/about/filmretro2.png";
+import filmRetro3 from "../../assets/images/about/filmretro3.png";
 
 export default function AboutUs() {
   return (
@@ -27,6 +32,38 @@ export default function AboutUs() {
           </p>
         </section>
 
+        <section className="about-section">
+          <h2 className="about-subtitle">För oss är bio mer än bara film</h2>
+          <p className="about-lead">
+            – det är en gemenskap, en tidsresa och ett sätt att hålla filmens guldålder levande i Småstad.
+          </p>
+        </section>
+
+        <section className="about-gallery" aria-label="Historiska bilder">
+          <figure className="about-figure">
+            <img src={filmRetro1} alt="Filmvisarna öppnar – kö utanför den klassiska entrén." className="about-image" />
+            <figcaption className="about-caption">
+              Filmvisarna öppnade sina dörrar 1951 – en ny mötesplats för filmälskare i Småstad.
+            </figcaption>
+          </figure>
+
+          <figure className="about-figure">
+            <img src={filmRetro3} alt="Salongen med duk och sammetsstolar redo för visning." className="about-image" />
+            <figcaption className="about-caption">
+              Publiken tar plats – redo för magiska filmupplevelser på den vita duken.
+            </figcaption>
+          </figure>
+
+          <figure className="about-figure">
+            <img src={filmRetro2} alt="Kvällsbild på biografens neonskylt, människor samlas." className="about-image" />
+            <figcaption className="about-caption">
+              Kön ringlade sig lång när Filmvisarna slog upp portarna för första gången.
+            </figcaption>
+          </figure>
+        </section>
+        <br /><br />
+
+        <p className="about-welcome">Varmt välkomna!</p>
       </article>
     </main>
   );
