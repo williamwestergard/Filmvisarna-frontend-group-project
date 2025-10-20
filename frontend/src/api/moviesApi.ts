@@ -1,5 +1,4 @@
 
-
 export async function getMovies() {
   const res = await fetch("/api/movies/categories");
   if (!res.ok) throw new Error("Failed to fetch movies with categories");
@@ -15,6 +14,32 @@ export async function getMovies() {
 
   }));
   
+}
+
+export async function getCategories() {
+  const res = await fetch("/api/categories");
+  if (!res.ok) throw new Error("Failed to fetch categories");
+
+  const data = await res.json();
+
+  return data.map((c: any) => ({
+    id: c.id,
+    title: c.title,
+  }));
+}
+
+export async function getShowtimes() {
+  const res = await fetch("/api/showtimes");
+  if (!res.ok) throw new Error("Failed to fetch showtimes");
+
+  const data = await res.json();
+
+  return data.map((showtime: any) => ({
+    screeningId: showtime.screeningId,
+    movieId: showtime.movieId,
+    date: showtime.date,
+    time: showtime.time,
+  }));
 }
 export async function getMoviesInformation() {
   const res = await fetch("/api/movies");
