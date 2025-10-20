@@ -11,12 +11,12 @@ export default function Shop() {
       <header className="shop-header">
         <h1 className="shop-title">Kiosk</h1>
         <p className="shop-intro">
-          När du besöker Filmvisarna kan du räkna med att bioupplevelsen börjar redan i kiosken. <br />
+          När du besöker Filmvisarna kan du räkna med att bioupplevelsen börjar redan i kiosken.
           Här möts du av doften av nygjorda popcorn, svalkande drycker och ett utbud av snacks och godsaker.
         </p>
       </header>
-{/* section 1*/}
-<section className="shop-section">
+    {/* section 1*/}
+    <section className="shop-section">
         <div className="shop-text">
           <h2 className="shop-subtitle">Popcorn – bioklassikern</h2>
           <p>
@@ -31,9 +31,6 @@ export default function Shop() {
       </section>
     {/* section 2 */}
     <section className="shop-section">
-        <figure className="shop-image-wrap">
-          <img src={imgDrink} alt="Kalla drycker i flaskor" className="shop-image" />
-        </figure>
 
         <div className="shop-text">
           <h2 className="shop-subtitle">Dryck – något för alla smaker</h2>
@@ -43,6 +40,9 @@ export default function Shop() {
             serverar vi våra drycker kylda för bästa smak.
           </p>
         </div>
+        <figure className="shop-image-wrap">
+          <img src={imgDrink} alt="Kalla drycker i flaskor" className="shop-image" />
+        </figure>
       </section>
 
       {/* section 3 */}
