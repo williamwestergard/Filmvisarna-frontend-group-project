@@ -109,6 +109,7 @@ function createMoviesRouter(pool) {
       // Paketpris 
       film.paketpris = {
         liten: { antal: 2, pris: 60 },
+        litenEn: { antal: 1, pris: 30 }
       };
       res.json(film);
     } catch (err) {
