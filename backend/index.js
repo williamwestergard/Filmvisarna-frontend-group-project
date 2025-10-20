@@ -12,6 +12,7 @@ const createTicketTypesRouter = require("./routes/ticketTypesRoutes");
 const createBookingsRouter = require("./routes/bookingsRoutes");
 const createUsersRouter = require("./routes/usersRoutes");
 const createBookingTotalsRouter = require("./routes/bookingTotalsRoutes");
+const createShowtimesRouter = require("./routes/showtimesRoutes");
 
 const app = express();
 app.use(express.json());
@@ -59,6 +60,9 @@ app.use("/api/seats", createSeatsRouter(pool));
 
 // Mount screenings routes
 app.use("/api/screenings", createScreeningsRouter(pool));
+
+// Mount showtimes routes
+app.use("/api/showtimes", createShowtimesRouter(pool));
 
 // Mount ticket types routes
 app.use("/api/ticket-types", createTicketTypesRouter(pool));
