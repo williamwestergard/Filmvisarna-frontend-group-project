@@ -98,6 +98,26 @@ function createMoviesRouter(pool) {
     }
   });
 
+  // VECKANS FILM 
+  router.get("/weekly", async (req, res) => {
+    try {
+      const [rows] = await pool.query("SELECT * FROM movies ORDER BY RAND() LIMIT 1");
+      if (rows.length === 0) return res.status(404).json({ ok: false, message: "No movies found" });
+
+      const film = rows[0];
+
+      // Paketpris 
+      film.paketpris = {
+        liten: { antal: 2, pris: 60 },
+      };
+      res.json(film);
+    } catch (err) {
+      console.error("FEL VID HÄMNTNING AV VECKANS FILM:", err);
+      res.status(500).json({ ok: false, message: err.message });
+    }
+  });
+  // VECKANS FILM end
+
   return router;
 }
 
