@@ -1,55 +1,88 @@
 .about {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding: 24px 16px 64px;
-    box-sizing: border-box;
-  }
-  
-  .about-card {
-    width: 100%;
-    max-width: 760px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 14px;
-    padding: 20px 16px;
-    text-align: left;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
-  }
-  
-  .about-eyebrow {
-    margin: 0 0 8px 0;
-    font-size: 0.85rem;
-    opacity: 0.8;
-  }
-  
-  .about-title {
-    margin: 0 0 16px 0;
-    font-size: 1.65rem;
-    line-height: 1.25;
-    font-weight: 700;
-    color: var(--text-light);
-  }
-  
-  .about-section {
-    margin-top: 12px;
-  }
-  
-  .about-section p {
-    margin: 0 0 10px 0;
-    line-height: 1.55;
-    color: var(--text-light);
-    opacity: 0.95;
-  }
-  
-  .about-subtitle {
-    margin: 10px 0 6px 0;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--text-light);
-  }
-  
-  .about-lead {
-    margin: 0;
-    opacity: 0.9;
-  }
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 16px 64px;
+  color: var(--text-light);
+}
+
+/* Header */
+.about-eyebrow {
+  margin: 0 0 6px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  text-align: left;
+}
+
+.about-title {
+  margin: 0 0 8px;
+  font-weight: 800;
+  font-size: 32px;
+  text-align: left;
+  position: relative;
+}
+
+/*underline*/
+.about-title::after {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 3px;
+  background: var(--red-primary);
+  border-radius: 2px;
+  margin-top: 12px;
+}
+
+/* Textblock */
+.about-section {
+  max-width: 760px;
+  margin: 38px 0;
+  line-height: 1.65;
+  font-size: 1rem;
+  text-align: left;
+}
+
+.about-section p 
+{ margin: 0 0 12px; 
+}
+
+.about-subtitle {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 1px;
+}
+
+.about-lead {
+  line-height: 0.5;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+/* pictures */
+.about-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin: 36px 0 12px;
+}
+
+.about-figure {
+  margin: 0;
+  text-align: left;
+}
+
+.about-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+
+.about-caption {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  opacity: 0.9;
+}
