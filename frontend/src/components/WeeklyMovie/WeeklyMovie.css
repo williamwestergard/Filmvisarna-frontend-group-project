@@ -1,0 +1,74 @@
+.weekly-movie-card {
+  width: 320px;
+  padding: 20px;
+  margin: 20px auto;
+  background-color: #f4e1d2; /* warm vintage paper color */
+  border: 2px solid #b85c38; /* retro border */
+  border-radius: 12px;
+  box-shadow: 4px 4px 0px #d4a373; /* blocky shadow for old poster look */
+  font-family: 'Courier New', Courier, monospace; /* vintage font style */
+  text-align: center;
+  color: #3e2f2f; /* dark sepia text */
+  position: relative;
+}
+
+.weekly-movie-card .badge {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  background-color: #b85c38;
+  color: #fff;
+  padding: 5px 12px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  box-shadow: 2px 2px 0px #d4a373;
+}
+
+.weekly-movie-card .film-poster {
+  width: 100%;
+  height: auto;
+  border: 3px solid #b85c38; /* retro border around image */
+  border-radius: 6px;
+  margin-bottom: 12px;
+  box-shadow: 3px 3px 0px #d4a373;
+  object-fit: cover;
+  filter: sepia(0.3) contrast(1.1); /* vintage photo effect */
+}
+
+.weekly-movie-card h2 {
+  font-size: 1.4rem;
+  margin: 10px 0 5px 0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.weekly-movie-card p {
+  font-size: 0.9rem;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+
+.weekly-movie-card .paketpris {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #8b3d2f;
+  margin-bottom: 12px;
+}
+
+.weekly-movie-card .book-button {
+  padding: 8px 20px;
+  background-color: #b85c38;
+  color: #fff;
+  font-weight: bold;
+  border: 2px solid #3e2f2f;
+  border-radius: 6px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 2px 2px 0px #d4a373;
+}
+
+.weekly-movie-card .book-button:hover {
+  background-color: #a04f31;
+}
