@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import './Navbar.css';
 import logo from './navbar-logo.png'; // Importera din logotyp
-import { Link } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -141,36 +140,6 @@ const Navbar: React.FC = () => {
           </button>
           <a href="/login" className="nav-button" onClick={openAccountLink}>Logga in</a>
           <a href="/register" className="nav-button" onClick={openAccountLink}>Skapa konto</a>
-        {/* Behållare för alla länkar och knappar */}
-        <div className={isMenuOpen ? 'nav-menu-container active' : 'nav-menu-container'}>
-          {/* Primära navigationslänkar */}
-          <ul className="nav-menu">
-            <li className="nav-item">
-              <Link to="/upptack" className="nav-link">Upptäck</Link>
-            </li>
-            <li className="nav-item">
-              <a href="/bio-nu" className="nav-link">På bio nu</a>
-            </li>
-            <li className={`nav-item dropdown ${isDropdownOpen ? 'open' : ''}`}>
-              <a href="#" className="nav-link" onClick={toggleDropdown}>
-                Mer <span className="dropdown-arrow">▼</span>
-              </a>
-              <ul className="dropdown-menu">
-                <li><a href="/om-oss" className="dropdown-link">Om oss</a></li>
-                <li><a href="/shop" className="dropdown-link">Vår Kiosk</a></li>
-              </ul>
-            </li>
-          </ul>
-
-          {/* Knappar för inloggning/registrering */}
-          <ul className="nav-actions">
-            <li className="nav-item">
-              <a href="/login" className="nav-button">Logga in</a>
-            </li>
-            <li className="nav-item">
-              <a href="/register" className="nav-button">Skapa konto</a>
-            </li>
-          </ul>
         </div>
       </div>
     </nav>
