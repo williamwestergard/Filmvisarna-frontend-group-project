@@ -36,5 +36,7 @@ export async function getMoviesInformation() {
     language: m.language,
     country: m.country,
     castJson: m.castJson
+  ? (typeof m.castJson === "string" ? JSON.parse(m.castJson) : m.castJson)
+  : []
   }));
 }
