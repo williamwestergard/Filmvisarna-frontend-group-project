@@ -13,10 +13,15 @@ type Movie = {
   trailerUrl: string,
   language: string,
   description: string,
-  runtimeMin: number
+  runtimeMin: number,
+ castJson: CastMember[];
 };
 type MovieBookingProps = {
   onMovieLoaded?: () => void;
+};
+type CastMember = {
+  actorName: string;
+  characterName?: string; // optional if you don’t have character names yet
 };
 
 
@@ -58,6 +63,7 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
             description: infoMatch?.description || movie.description,
             runtimeMin: infoMatch?.runtimeMin || movie.runtimeMin,
             language: infoMatch?.language || movie.language,
+            castJson: infoMatch?.castJson || movie.castJson,
           };
         });
 
@@ -94,7 +100,15 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
       <p className="movie-lang-sub">{movie.language}</p>
         <p className={`movie-desc ${isExpanded ? "expanded" : ""}`}>
      {movie.description}
+         <br/>   <br/><br/>
+  <strong>Skådespelare:</strong>{" "}
+       <br/>  
+  {movie.castJson.map((c) => c.actorName).join(", ")}
+
       </p>
+      
+         
+      
        <p
             className="movie-toggle-desc"
             onClick={() => setIsExpanded(!isExpanded)}
