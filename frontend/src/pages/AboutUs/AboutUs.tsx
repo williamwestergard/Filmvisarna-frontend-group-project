@@ -60,9 +60,6 @@ export default function AboutUs() {
             </figcaption>
           </figure>
         </section>
-        <br /><br />
-
-        <p className="about-welcome">Varmt välkomna!</p>
       </article>
     </main>
   );
