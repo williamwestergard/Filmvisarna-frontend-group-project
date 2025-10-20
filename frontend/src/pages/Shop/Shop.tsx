@@ -1,5 +1,5 @@
 import "./Shop.css";
-
+import shopImg from "../../assets/images/shop/shop.jpeg";
 
 export default function Shop() {
   return (
@@ -69,6 +69,13 @@ export default function Shop() {
               </li>
             </ul>
           </div>
+             {/* picture */}
+             <figure className="shop-photo">
+            <img
+              src={shopImg}
+              alt="Kiosken på Filmvisarna."
+            />
+          </figure>
         </div>
       </div>
     </section>
