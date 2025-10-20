@@ -42,18 +42,18 @@ const WeeklyMovie: React.FC = () => {
 
   return (
     <div className="weekly-movie-card">
-      <div className="badge">🎬 Veckans Film!</div>
+      <div className="badge">Veckans Film!</div>
       <img className="film-poster" src={posterSrc} alt={film.title} />
       <h2>
         {film.title} ({film.releaseYear})
       </h2>
       <p>{film.description}</p>
       <div className="paketpris">
-        ✨ Paketpris: {film.paketpris.liten.antal} liten popcorn för{' '}
-        {film.paketpris.liten.pris}kr 🍿
+        Paketpris: {film.paketpris.liten.antal} liten popcorn för{' '}
+        {film.paketpris.liten.pris}kr 
         <br />
         Eller: {film.paketpris.litenEn.antal} liten popcorn för{' '}
-        {film.paketpris.litenEn.pris}kr 🍿
+        {film.paketpris.litenEn.pris}kr 
      </div>
         <button
          className="book-button"
