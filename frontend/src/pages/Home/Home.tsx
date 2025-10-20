@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import "./Home.css";
 import MoviesList from "../../components/Movies/MoviesList";
 import BgOverlay from "../../assets/images/home-bg.jpg";
-import { getCategories, getShowtimes } from "../../api/MoviesApi";
+import { getCategories, getShowtimes } from "../../api/moviesApi";
+import SearchBar from "../../components/SearchBar/SearchBar"; // 👈 import
 
 type Category = {
   id: number;
@@ -21,6 +22,7 @@ function Home() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [showtimes, setShowtimes] = useState<Showtime[]>([]);
   const [selectedDate, setSelectedDate] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // 👈 nytt state
 
   useEffect(() => {
     getCategories()
@@ -43,8 +45,10 @@ function Home() {
       />
 
       <main className="home-container">
-        {/* Page title */}
         <h1 className="home-title">Aktuella filmer</h1>
+
+        {/* 🔍 SearchBar */}
+        <SearchBar onSearch={(value) => setSearchTerm(value)} />
 
         {/* Filter section */}
         <section className="filter-section">
@@ -68,10 +72,12 @@ function Home() {
           </select>
         </section>
 
+        {/* Movies list */}
         <MoviesList
           selectedCategory={selectedCategory}
           selectedDate={selectedDate}
           showtimes={showtimes}
+          searchTerm={searchTerm} 
         />
       </main>
     </>
