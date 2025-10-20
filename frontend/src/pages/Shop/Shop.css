@@ -86,6 +86,7 @@
   .shop-section {
     gap: 20px;
   }
+
   .shop-image {
     max-width: 360px;
   }
@@ -109,15 +110,20 @@
     text-align: left;
   }
 
+  .shop-image-wrap {
+    order: 1;
+    justify-content: center;
+  }
+
+  .shop-text {
+    order: 2;
+  }
+
   .shop-text,
   .shop-image-wrap {
     flex: none;
     width: 100%;
     max-width: 720px;
-  }
-
-  .shop-image-wrap {
-    justify-content: center;
   }
 
   .shop-image {
