@@ -29,6 +29,24 @@ export default function Shop() {
               </p>
             </div>
           </div>
+           {/* menu popcorn */}
+           <aside className="shop-popcorn">
+            <h2 className="shop-subtitle">Popcorn</h2>
+            <ul className="price-list">
+              <li className="price-item">
+                <span className="price-name">Liten</span>
+                <span className="price-amount">60 kr</span>
+              </li>
+              <li className="price-item">
+                <span className="price-name">Mellan</span>
+                <span className="price-amount">70 kr</span>
+              </li>
+              <li className="price-item">
+                <span className="price-name">Stor</span>
+                <span className="price-amount">80 kr</span>
+              </li>
+            </ul>
+          </aside>
         </div>
       </div>
     </section>
