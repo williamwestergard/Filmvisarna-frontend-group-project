@@ -1,5 +1,6 @@
 // src/components/WeeklyMovie/WeeklyMovie.tsx
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './WeeklyMovie.css';
 
 interface Paketpris {
@@ -18,6 +19,7 @@ interface Film {
 
 const WeeklyMovie: React.FC = () => {
   const [film, setFilm] = useState<Film | null>(null);
+  const navigate = useNavigate(); // initialize use avigate
 
   useEffect(() => {
     fetch('/api/movies/weekly') // relative URL works with Vite proxy
@@ -52,8 +54,18 @@ const WeeklyMovie: React.FC = () => {
         <br />
         Eller: {film.paketpris.litenEn.antal} liten popcorn för{' '}
         {film.paketpris.litenEn.pris}kr 🍿
-      </div>
-      <button className="book-button">Boka Nu</button>
+     </div>
+        <button
+         className="book-button"
+        onClick={() => {
+             if (film) {
+            // Redirect to BookingPage for this movie, pass paketpris along
+            navigate(`/booking/${film.id}`, { state: { paketpris: film.paketpris } });
+          }
+        }}
+            >
+            Boka Nu
+        </button>
     </div>
   );
 };
