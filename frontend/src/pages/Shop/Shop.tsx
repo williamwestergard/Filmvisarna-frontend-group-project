@@ -20,9 +20,8 @@ export default function Shop() {
         <div className="shop-text">
           <h2 className="shop-subtitle">Popcorn – bioklassikern</h2>
           <p>
-            Hos oss poppas popcornen alltid färska! Välj mellan liten, mellan eller
-            stor – serverade med perfekt sälta och den där oemotståndliga doften
-            som hör biobesöket till.
+          Hos oss poppas popcornen alltid färska, precis som förr. Doften sprider sig genom salongen och sätter stämningen redan innan filmen börjat. Välj mellan liten, mellan eller stor – alltid med perfekt sälta och rätt mängd smörsmak.
+          Vi använder traditionella popcornmaskiner som ger den där äkta biokänslan, och för den som vill lyxa till det lite extra finns smaksatta alternativ och nyrostade nötter vid sidan av. På Filmvisarna är popcorn mer än bara ett snacks – det är en del av upplevelsen.
           </p>
         </div>
         <figure className="shop-image-wrap">
@@ -35,9 +34,8 @@ export default function Shop() {
         <div className="shop-text">
           <h2 className="shop-subtitle">Dryck – något för alla smaker</h2>
           <p>
-            Oavsett om du föredrar iskall läsk, bubbelvatten eller något sött och
-            fruktigt har vi drycker som passar till varje filmupplevelse. Självklart
-            serverar vi våra drycker kylda för bästa smak.
+          Oavsett om du föredrar iskall läsk, bubbelvatten eller något sött och fruktigt, hittar du alltid något som passar till filmen. Vi erbjuder ett brett sortiment av både klassiska favoriter och nya smaker som byts ut efter säsong.
+          Alla drycker serveras väl kylda, och vid våra specialvisningar kan du även beställa varm choklad, kaffe eller alkoholfritt bubbel. För oss handlar det inte bara om att släcka törsten – utan om att skapa den perfekta biostunden, där varje detalj känns genomtänkt.
           </p>
         </div>
         <figure className="shop-image-wrap">
@@ -50,9 +48,9 @@ export default function Shop() {
         <div className="shop-text">
           <h2 className="shop-subtitle">Bar &amp; Bistro – servering i salongen</h2>
           <p>
-            På utvalda biovisningar erbjuder vi en full Bar &amp; Bistro-upplevelse
-            med mat, snacks och dryck som serveras direkt till din plats. Här kan du beställa, 
-            luta dig tillbaka och njuta av filmen i lugn och ro.
+          Vid utvalda visningar bjuder vi på något alldeles extra – en full Bar & Bistro-upplevelse mitt i biosalongen. Här kan du beställa mat, snacks och dryck som serveras direkt till din plats, utan att missa en enda scen.
+Menyn varierar beroende på filmtema och årstid – ibland klassiskt med pizza och sliders, ibland mer exklusivt med plocktallrikar och lokala specialiteter.
+Oavsett vad du väljer är målet detsamma: att du ska kunna luta dig tillbaka, njuta av filmen och känna dig som hemma i Filmvisarnas varma, nostalgiska miljö.
           </p>
         </div>
 
