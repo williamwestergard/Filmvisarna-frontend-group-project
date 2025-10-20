@@ -47,6 +47,28 @@ export default function Shop() {
               </li>
             </ul>
           </aside>
+           {/* menu */}
+           <div className="shop-other">
+            <h3 className="shop-section">Övrigt</h3>
+            <ul className="simple-list">
+              <li className="simple-row">
+                <span className="simple-name">Choklad</span>
+                <span className="simple-price">40 kr</span>
+              </li>
+              <li className="simple-row">
+                <span className="simple-name">Chips</span>
+                <span className="simple-price">40 kr</span>
+              </li>
+              <li className="simple-row">
+                <span className="simple-name">Godispåse</span>
+                <span className="simple-price">40 kr</span>
+              </li>
+              <li className="simple-row">
+                <span className="simple-name">Dricka</span>
+                <span className="simple-price">40 kr</span>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
