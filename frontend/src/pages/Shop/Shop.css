@@ -1,0 +1,153 @@
+.shop {
+  width: 80%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 16px;
+  color: var(--text-light);
+  text-align: left;
+}
+
+.shop-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  margin-bottom: 40px;
+}
+
+.shop-title {
+  margin: 0 0 12px;
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 800;
+  text-align: center;
+  position: relative;
+}
+
+/* underline */
+.shop-title::after {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 3px;
+  background: var(--red-primary);
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+.shop-intro {
+  max-width: 720px;
+  margin: 0 auto;
+  line-height: 1.6;
+  opacity: 0.95;
+  text-align: left;
+}
+
+.shop-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 48px 0;
+}
+
+.shop-text {
+  flex: 1 1 55%;
+}
+
+.shop-subtitle {
+  margin: 0 0 8px;
+  font-size: clamp(20px, 2.4vw, 26px);
+  font-weight: 700;
+}
+
+.shop p {
+  margin: 0 0 10px;
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+.shop-image-wrap {
+  flex: 1 1 45%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.shop-image {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 1024px) {
+  .shop-section {
+    gap: 20px;
+  }
+
+  .shop-image {
+    max-width: 360px;
+  }
+}
+
+@media (max-width: 900px) {
+  .shop {
+    padding: 24px 12px;
+  }
+
+  .shop-header {
+    margin-bottom: 28px;
+  }
+
+  .shop-section {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16px;
+    margin: 28px 0;
+    text-align: left;
+  }
+
+  .shop-image-wrap {
+    order: 1;
+    justify-content: center;
+  }
+
+  .shop-text {
+    order: 2;
+  }
+
+  .shop-text,
+  .shop-image-wrap {
+    flex: none;
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .shop-image {
+    width: 90%;
+    max-width: 320px;
+    border-radius: 10px;
+  }
+
+  .shop-title {
+    font-size: 26px;
+  }
+
+  .shop-subtitle {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 400px) {
+  .shop-image {
+    width: 100%;
+    max-width: 260px;
+  }
+
+  .shop-subtitle {
+    font-size: 18px;
+  }
+}
