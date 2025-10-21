@@ -2,14 +2,14 @@
     width: 100%;
     display: grid;
     place-items: center;
-    padding: 56px 16px 80px;
+    padding: 60px 16px 80px;
   }
   
   /* Ticket-card */
   .ticket { 
     position: relative;
     width: 100%;
-    max-width: 900px;
+    max-width: 600px;
     background: 
       radial-gradient(1200px 500px at 50% 0%, rgba(255,255,255,0.06), transparent 60%),
       linear-gradient(180deg, #34303a 0%, #2b2731 100%);
@@ -64,30 +64,34 @@
 
   /* section on side */
   .ticket-note {
+    position: relative;
+    right: -110px; /* move to right */
     border: 1px solid rgba(255,255,255,.14);
-    border-radius: 10px;
-    padding: 12px 14px;
-    background: rgba(11, 9, 9, 0.119);
-    box-shadow: inset 0 0 18px rgba(0,0,0,.25);
+    border-radius: 8px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,.04);
+    box-shadow: inset 0 0 12px rgba(0,0,0,.25);
     color: #f1f1f1;
-    max-width: 240px;
-    min-height: 100px;
+    max-width: 150px;   /* passar mindre biljett */
+    min-height: 50px;
     align-self: start;
   }
+  
   .note-title {
-    margin: 0 0 8px;
-    font-weight: 800;
-    font-size: 14px;
+    margin: 0 0 4px;
+    font-weight: 700;
+    font-size: 13px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.4px;
     color: #ffffff;
   }
+  
   .note-text {
     margin: 0;
+    line-height: 1.4;
+    font-size: 13px;
+    opacity: 0.85;
     text-align: left;
-    line-height: 1.5;
-    font-size: 15px;
-    opacity: 0.9;
   }
 
   /* Perfored line */
