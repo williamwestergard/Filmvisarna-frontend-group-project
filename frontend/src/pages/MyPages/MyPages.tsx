@@ -1,4 +1,6 @@
 import "./MyPages.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 
 interface User {
   name: string;
@@ -24,7 +26,8 @@ const MyPages: React.FC = () => {
           {/* User info */}
           <div className="profile-top">
             <div className="profile-img-placeholder">
-              <i className="fa fa-user"></i>
+              {/* 👇 React Font Awesome component */}
+              <FontAwesomeIcon icon={faCircleUser} className="profile-icon" />
             </div>
             <div className="profile-info">
               <h2>{user.name || "Användarnamn"}</h2>

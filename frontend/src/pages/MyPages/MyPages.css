@@ -1,4 +1,3 @@
-/* Keep the page transparent so it uses your global site background */
 .my-pages {
   display: flex;
   justify-content: center;
@@ -13,14 +12,14 @@
   max-width: 420px;
 }
 
-/* The box itself */
+/* The box  */
 .profile-card {
-  background-color: rgba(255, 255, 255, 0.08); /* subtle background */
+  background-color: rgba(255, 255, 255, 0.08); 
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   padding: 1.8rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* nice soft shadow */
-  
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); 
+  backdrop-filter: blur(8px); 
 }
 
 /* Profile header */
@@ -31,23 +30,37 @@
   margin-bottom: 1.5rem;
 }
 
+/* Profile icon placeholder */
 .profile-img-placeholder {
-  width: 60px;
-  height: 60px;
+  width: 80px; 
+  height: 80px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
 }
 
+/* React Font Awesome icon */
+.profile-icon {
+  width: 120%;    
+  height: 120%;     
+  color: #fff;
+  opacity: 0.95;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+}
+
+/* Text information beside the icon */
 .profile-info h2 {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 600;
 }
 
 .profile-info p {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: #ccc;
 }
 
@@ -75,10 +88,27 @@
   background: transparent;
   color: #fff;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, transform 0.2s ease;
   margin-top: 1rem;
 }
 
 .logout-btn:hover {
   background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.02);
+}
+
+/* tweaks for mobile */
+@media (max-width: 480px) {
+  .profile-img-placeholder {
+    width: 80px;
+    height: 80px;
+  }
+
+  .profile-img-placeholder i {
+    font-size: 55px;
+  }
+
+  .profile-card {
+    padding: 1.2rem;
+  }
 }
