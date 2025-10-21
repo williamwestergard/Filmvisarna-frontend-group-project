@@ -13,11 +13,17 @@ export default function TicketPage() {
           <h1 className="ticket-title">Dina biljetter är bokade!</h1>
         </header>
 
-        {/* section on side */} 
-        <div className="ticket-body"> 
-          <div className="ticket-info" aria-hidden="true" /> 
-          <aside className="ticket-note" aria-hidden="true" /> 
-        </div>
+        {/* section on side */}
+<div className="ticket-body">
+  <div className="ticket-info" aria-hidden="true" />
+
+  <aside className="ticket-note" aria-label="Viktig information">
+    <p className="note-title">OBS:</p>
+    <p className="note-text">
+      Visa upp bokningsnumret till personalen i kassan för att använda dina bokade platser.
+    </p>
+  </aside>
+</div>
 
         {/* Perforated divider */}
         <div className="ticket-divider" aria-hidden="true" /> 
