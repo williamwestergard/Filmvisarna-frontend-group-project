@@ -9,7 +9,9 @@ export default function TicketPage() {
         <span className="ticket-notch ticket-notch--right" aria-hidden="true" />
 
         {/* Grey headerband */}
-        <header className="ticket-header" aria-hidden="true" />
+        <header className="ticket-header">
+          <h1 className="ticket-title">Dina biljetter är bokade!</h1>
+        </header>
 
         {/* section on side */} 
         <div className="ticket-body"> 
