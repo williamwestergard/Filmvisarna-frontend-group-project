@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getMovies } from "../../api/moviesApi";
+import { getMovies } from "../../api/MoviesApi";
 import { Link } from "react-router-dom";
 
 type Movie = {

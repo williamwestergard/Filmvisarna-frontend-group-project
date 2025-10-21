@@ -91,7 +91,6 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
     <>
 
      <img className="booking-movie-backdrop" src={`http://localhost:4000/images/backdrops/${movie.backdropUrl}`} alt={movie.title}/>
-
     <main  key={movie.id} className="booking-page">
       
     <section className="booking-page-movie-content">

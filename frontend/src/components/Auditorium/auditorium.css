@@ -4,6 +4,77 @@
   margin: 0 auto;
   background-color: #d9d9d93c;
   border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auditorium-text {
+  color: #999999;
+  text-transform: uppercase;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  top: 15px;
+}
+
+.auditorium {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: auto;
+  padding: 5vh;
+  background-color: rgb(41, 38, 51);
+  border-radius: 5px;
+  margin: 0 auto;
+}
+
+.auditorium-seats-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  width: fit-content; /* 👈 only as wide as the seats */
+}
+.auditorium-one-seats-first-row,
+.auditorium-one-seats-second-row,
+.auditorium-one-seats-third-row,
+.auditorium-one-seats-fourth-row,
+.auditorium-one-seats-fifth-row,
+.auditorium-one-seats-sixth-row {
+  display: grid;
+  grid-template-columns: repeat(8, auto);
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  margin-bottom: 2vh;
+  gap: 1vw;
+}
+
+.auditorium-two-seats-first-row,
+.auditorium-two-seats-second-row,
+.auditorium-two-seats-third-row,
+.auditorium-two-seats-fourth-row {
+  display: grid;
+  grid-template-columns: repeat(6, auto);
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  margin-bottom: 2vh;
+  gap: 1vw;
+}
+
+.seat-placeholder {
+  width: clamp(30px, 2.6vw, 50px);
+  height: clamp(30px, 2.6vw, 50px);
+  visibility: hidden;
+}
+.auditorium-seat {
+  height: clamp(30px, 2.6vw, 50px);
+  width: clamp(30px, 2.6vw, 50px);
+  background-color: rgb(200, 199, 199);
+  border-radius: 5px;
 }
 
 .auditorium-information-bottom {
