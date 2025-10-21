@@ -1,0 +1,84 @@
+/* Keep the page transparent so it uses your global site background */
+.my-pages {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* start from top */
+  padding: 4rem 1rem;
+  color: #fff;
+}
+
+/* Center and size the profile box */
+.profile-container {
+  width: 100%;
+  max-width: 420px;
+}
+
+/* The box itself */
+.profile-card {
+  background-color: rgba(255, 255, 255, 0.08); /* subtle background */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 1.8rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* nice soft shadow */
+  
+}
+
+/* Profile header */
+.profile-top {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.profile-img-placeholder {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-info h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.profile-info p {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+/* Sections inside the card */
+.profile-section {
+  margin-bottom: 1rem;
+}
+
+.profile-section h3 {
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.profile-section p {
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+/* Log out button */
+.logout-btn {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 6px;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 1rem;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}

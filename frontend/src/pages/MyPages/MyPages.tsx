@@ -1,41 +1,41 @@
 import "./MyPages.css";
 
 interface User {
-    name: string;
-    email: string;
-    phone?: string; // optional
-    history: string[];
-    tickets: string[];
+  name: string;
+  email: string;
+  phone?: string; // optional
+  history: string[];
+  tickets: string[];
 }
 
-const myPages: React.FC = () => {
-    const user: User = { // placeholder data, will be replaced with real logged-in user info
-        name: "",
-        email: "",
-        phone: "",
-        history: [],
-        tickets: [],
-    };
+const MyPages: React.FC = () => {
+  const user: User = {
+    name: "",
+    email: "",
+    phone: "",
+    history: [],
+    tickets: [],
+  };
 
-     return (
+  return (
     <div className="my-pages">
-
-      <main className="profile-container">
+      <section className="profile-container">
         <div className="profile-card">
+          {/* User info */}
           <div className="profile-top">
             <div className="profile-img-placeholder">
               <i className="fa fa-user"></i>
             </div>
             <div className="profile-info">
-              <h2>{user.name || "Username"}</h2>
-              <p>{user.email || "Email"}</p>
+              <h2>{user.name || "Användarnamn"}</h2>
+              <p>{user.email || "E-postadress"}</p>
               {user.phone && <p>{user.phone}</p>}
             </div>
           </div>
 
           {/* History */}
           <div className="profile-section">
-            <h3>History:</h3>
+            <h3>Historik:</h3>
             {user.history.length > 0 ? (
               <ul>
                 {user.history.map((item, index) => (
@@ -43,13 +43,13 @@ const myPages: React.FC = () => {
                 ))}
               </ul>
             ) : (
-              <p>Your viewing history will appear here.</p>
+              <p>Din filmhistorik kommer visas här.</p>
             )}
           </div>
 
           {/* Tickets */}
           <div className="profile-section">
-            <h3>Tickets:</h3>
+            <h3>Biljetter:</h3>
             {user.tickets.length > 0 ? (
               <ul>
                 {user.tickets.map((ticket, index) => (
@@ -57,15 +57,15 @@ const myPages: React.FC = () => {
                 ))}
               </ul>
             ) : (
-              <p>You don’t have any active tickets.</p>
+              <p>Du har inga aktiva biljetter.</p>
             )}
           </div>
 
-          <button className="logout-btn">Log out</button>
+          <button className="logout-btn">Logga ut</button>
         </div>
-      </main>
+      </section>
     </div>
   );
 };
 
-export default myPages;
+export default MyPages;
