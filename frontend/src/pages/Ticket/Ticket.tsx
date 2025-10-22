@@ -28,9 +28,10 @@ export default function TicketPage() {
         {/* Perforated divider */}
         <div className="ticket-divider" aria-hidden="true" /> 
 
-        {/* Footer for bookingnumber */}
-        <footer className="ticket-footer">
-          <div className="ticket-number-slot" aria-hidden="true" />
+         {/* Footer for bookingnumber */}
+         <footer className="ticket-footer">
+          <p className="ticket-footer-label">Bokningsnummer:</p>
+          <div className="ticket-number-slot" aria-hidden="true" /> {/* Place for booking number // {bookingId} from backend */}
         </footer>
       </div>
     </section>
