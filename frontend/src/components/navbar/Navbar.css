@@ -15,11 +15,11 @@ ul {
 
 .navbar {
   position: relative;
-  z-index: 1200;
+  z-index: 1000;
   margin: 0 auto;
   margin-top: 5vh;
   height: 60px;
-  max-width: 1000px;
+  max-width: 1200px;
   padding: 2px 28px; /* Reduced vertical padding even more */
   box-sizing: border-box;
   border-radius: 0px 20px 20px 0px;
