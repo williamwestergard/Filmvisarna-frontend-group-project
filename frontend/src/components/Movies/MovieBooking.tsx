@@ -44,7 +44,7 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isTrailerExpanded, setIsTrailerExpanded] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // 👈 new
+  const [isLoading, setIsLoading] = useState(true); 
 
   useEffect(() => {
     setIsLoading(true);
@@ -83,7 +83,7 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
     if (movie && !isLoading) onMovieLoaded?.();
   }, [movie, isLoading, onMovieLoaded]);
 
-  // 👇 Don’t render anything while loading
+  // Don’t render anything while loading
   if (isLoading || !movie) return null;
 
     
@@ -91,7 +91,6 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
     <>
 
      <img className="booking-movie-backdrop" src={`http://localhost:4000/images/backdrops/${movie.backdropUrl}`} alt={movie.title}/>
-
     <main  key={movie.id} className="booking-page">
       
     <section className="booking-page-movie-content">
@@ -143,11 +142,11 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
     <div
       className={`trailer-frame-container ${isTrailerExpanded ? "expanded" : ""}`}
     >
-      {/* Only show "Se trailer" if the trailer isn't expanded */}
+
       {!isTrailerExpanded && <p className="trailer-text">Se trailer</p>}
 
       {!isTrailerExpanded ? (
-        // Thumbnail overlay
+    
         <div
           className="trailer-overlay"
           onClick={() => setIsTrailerExpanded(true)}
@@ -160,7 +159,7 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
   
         </div>
       ) : (
-        // Video iframe
+
         <iframe
           src={`https://www.youtube.com/embed/${getVideoId(movie.trailerUrl)}?autoplay=1&controls=1&modestbranding=1&rel=0&iv_load_policy=3`}
           title={`${movie.title} Trailer`}

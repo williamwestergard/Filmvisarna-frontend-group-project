@@ -4,7 +4,8 @@ import MovieBooking from "../../components/Movies/MovieBooking";
 import "./booking.css";
 import AvailableDates from "../../components/AvailableDates/AvailableDates";
 import TicketsAmount from "../../components/TicketsAmount/TicketsAmount";
-import Auditorium from "../../components/Auditorium/Auditorium";
+import AuditoriumOne from "../../components/Auditorium/AuditoriumOne";
+import AuditoriumTwo from "../../components/Auditorium/AuditoriumTwo";
 
 function BookingPage() {
   const [movieLoaded, setMovieLoaded] = useState(false);
@@ -16,7 +17,8 @@ function BookingPage() {
   <MovieBooking onMovieLoaded={() => setMovieLoaded(true)} />
     <AvailableDates/>
 <TicketsAmount/>
-<Auditorium/>
+<AuditoriumOne/>
+<AuditoriumTwo/>
 </section>
 </section>
   {movieLoaded && (

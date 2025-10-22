@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./Home.css";
 import MoviesList from "../../components/Movies/MoviesList";
 import BgOverlay from "../../assets/images/home-bg.jpg";
-import { getCategories, getShowtimes } from "../../api/moviesApi";
+import { getCategories, getShowtimes } from "../../api/MoviesApi";
 import SearchBar from "../../components/SearchBar/SearchBar"; // 👈 import
 
 type Category = {
