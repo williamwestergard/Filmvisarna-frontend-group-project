@@ -19,20 +19,21 @@ type Movie = {
   paketpris?: Paketpris; // optional, because not all movies have this
 };
 
+
 function BookingPage() {
   const [movieLoaded, setMovieLoaded] = useState(false);
   const [currentMovie, setCurrentMovie] = useState<Movie | null>(null);
-  const [weeklyMovie, setWeeklyMovie] = useState(null);
+  const [weeklyMovie, setWeeklyMovie] = useState<Movie | null>(null);
   const location = useLocation();
 
   // Paketpris passed from "Boka nu" (if the user came via WeeklyMovie)
-  const paketprisFromState = location.state?.paketpris;
+  const paketprisFromState = location.state?.paketpris as Paketpris | undefined;
 
   // Fetch veckans film when page loads
   useEffect(() => {
     fetch("/api/movies/weekly")
       .then((res) => res.json())
-      .then((data) => setWeeklyMovie(data))
+      .then((data: Movie) => setWeeklyMovie(data))
       .catch((err) => console.error("Error fetching weekly movie:", err));
   }, []);
 
@@ -49,12 +50,12 @@ function BookingPage() {
       <section className="booking-page-left-side">
         <section className="booking-page-left-side-content">
           {/* Send movie info up from MovieBooking */}
-          <MovieBooking
-            onMovieLoaded={(movie) => {
-              setCurrentMovie(movie);
-              setMovieLoaded(true);
-            }}
-          />
+         <MovieBooking
+          onMovieLoaded={(movie: Movie) => {
+          setCurrentMovie(movie);
+          setMovieLoaded(true);
+        }}
+/>
 
           <AvailableDates />
           <TicketsAmount />
@@ -84,7 +85,7 @@ function BookingPage() {
       {/*Price card shows after movie is loaded */}
       {movieLoaded && (
         <article className="booking-price-card-top">
-          <BookingPriceCard />
+          <BookingPriceCard paketpris={paketprisToShow} />
         </article>
       )}
     </main>
