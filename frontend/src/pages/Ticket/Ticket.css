@@ -203,3 +203,121 @@
   color: #c41230;
   text-shadow: 0 1px 0 rgba(0,0,0,.4);
 }
+
+
+
+@media (max-width: 900px) {
+  .ticket {
+    max-width: 480px;
+    transform: scale(0.95);
+  }
+  .ticket-title {
+    font-size: 24px;
+  }
+  .ticket-body {
+    grid-template-columns: 1fr; /* one line */
+    gap: 18px;
+    padding: 20px 18px 16px;
+  }
+  .ticket-info-panel {
+    font-size: 15px;
+    padding: 16px 18px;
+  }
+  .ti-title {
+    font-size: 18px;
+  }
+  .ticket-note {
+    width: 100%;
+    max-width: 260px;
+    margin: 0 auto;
+  }
+  .ticket-number-slot {
+    min-width: 180px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 600px) {
+  .ticket {
+    max-width: 360px;
+    transform: scale(0.9);
+    border-radius: 12px;
+  }
+  .ticket-header {
+    padding: 14px 16px;
+  }
+  .ticket-title {
+    font-size: 20px;
+    letter-spacing: 0.4px;
+  }
+  .ticket-body {
+    gap: 14px;
+    padding: 18px 16px 10px;
+  }
+  .ticket-info-panel {
+    font-size: 14px;
+    padding: 14px 16px;
+  }
+  .ti-title {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  .ti-row {
+    grid-template-columns: 110px 1fr;
+    gap: 6px;
+    padding-bottom: 6px;
+  }
+  .ticket-note {
+    max-width: 220px;
+    font-size: 12px;
+    padding: 8px 10px;
+    min-height: 50px;
+  }
+  .note-title {
+    font-size: 12px;
+  }
+  .note-text {
+    font-size: 12px;
+  }
+  .ticket-divider {
+    margin: 8px 0;
+    height: 18px;
+    opacity: 0.7;
+  }
+  .ticket-footer {
+    padding: 10px 14px 20px;
+  }
+  .ticket-footer-label {
+    font-size: 12px;
+  }
+  .ticket-number-slot {
+    min-width: 160px;
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .ticket {
+    max-width: 320px;
+    transform: scale(0.88);
+  }
+  .ticket-title {
+    font-size: 18px;
+  }
+  .ticket-info-panel {
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+  .ti-title {
+    font-size: 15px;
+  }
+  .ticket-note {
+    max-width: 200px;
+    padding: 6px 8px;
+  }
+  .ticket-number-slot {
+    font-size: 12px;
+    min-width: 140px;
+  }
+}
