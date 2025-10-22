@@ -55,7 +55,7 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
       try {
         setIsLoading(true);
 
-        // 🎬 Fetch the movie directly from backend by slug
+        // Fetch the movie directly from backend by slug
         const res = await fetch(`/api/movies/slug/${movieTitle}`);
         const data = await res.json();
 
