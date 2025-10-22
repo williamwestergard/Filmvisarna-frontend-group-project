@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
       <div className="nav-menu-container nav-menu-container-desktop">
         <ul className="nav-menu nav-menu-desktop">
           <li className="nav-item">
-            <a href="/upptack" className="nav-link">Upptäck</a>
+            <a href="/upptack" className="nav-link">Veckans Film</a>
           </li>
           <li className="nav-item">
             <a href="/bio-nu" className="nav-link">På bio nu</a>
@@ -118,7 +118,7 @@ const Navbar: React.FC = () => {
 
         <ul className="nav-menu nav-menu-mobile">
           <li className="nav-item">
-            <a href="/upptack" className="nav-link" onClick={closeMenu}>Upptäck</a>
+            <a href="/upptack" className="nav-link" onClick={closeMenu}>Veckans Film</a>
           </li>
           <li className="nav-item">
             <a href="/bio-nu" className="nav-link" onClick={closeMenu}>På bio nu</a>
