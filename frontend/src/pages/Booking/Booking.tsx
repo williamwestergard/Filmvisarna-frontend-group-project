@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import BookingPriceCard from "../../components/BookingPriceCard/BookingPriceCard";
 import MovieBooking from "../../components/Movies/MovieBooking";
@@ -16,19 +16,19 @@ type Paketpris = {
 type Movie = {
   id: number;
   title: string;
-  paketpris?: Paketpris; // optional, because not all movies have this
+  paketpris?: Paketpris;
 };
 
 function BookingPage() {
   const [movieLoaded, setMovieLoaded] = useState(false);
   const [currentMovie, setCurrentMovie] = useState<Movie | null>(null);
-  const [weeklyMovie, setWeeklyMovie] = useState(null);
+  const [weeklyMovie, setWeeklyMovie] = useState<Movie | null>(null);
   const location = useLocation();
 
-  // Paketpris passed from "Boka nu" (if the user came via WeeklyMovie)
+  // 🍿 Paketpris passed from "Boka nu" (if user came via WeeklyMovie)
   const paketprisFromState = location.state?.paketpris;
 
-  // Fetch veckans film when page loads
+  // 🎬 Fetch veckans film when page loads
   useEffect(() => {
     fetch("/api/movies/weekly")
       .then((res) => res.json())
@@ -36,35 +36,39 @@ function BookingPage() {
       .catch((err) => console.error("Error fetching weekly movie:", err));
   }, []);
 
-  // Compare current movie to veckans film
+  // ✅ Wrap callback to prevent re-renders / blinking
+  const handleMovieLoaded = useCallback((movie: Movie) => {
+    setCurrentMovie(movie);
+    setMovieLoaded(true);
+  }, []);
+
+  // 🧩 Compare current movie to veckans film
   const isWeekly =
     currentMovie && weeklyMovie && currentMovie.id === weeklyMovie.id;
 
-  // Determine which paketpris to show
+  // 🎁 Determine which paketpris to show
   const paketprisToShow =
-    paketprisFromState || (isWeekly ? weeklyMovie?.paketpris : null);
+    paketprisFromState ||
+    currentMovie?.paketpris || // ✅ allow paketpris from backend
+    (isWeekly ? weeklyMovie?.paketpris : null);
 
   return (
     <main className={`booking-page-content ${movieLoaded ? "loaded" : ""}`}>
       <section className="booking-page-left-side">
         <section className="booking-page-left-side-content">
-          {/* Send movie info up from MovieBooking */}
-          <MovieBooking
-            onMovieLoaded={(movie) => {
-              setCurrentMovie(movie);
-              setMovieLoaded(true);
-            }}
-          />
+          {/* 🎥 Load movie and pass data up */}
+          <MovieBooking onMovieLoaded={handleMovieLoaded} />
 
+          {/* 🗓️ Booking flow components */}
           <AvailableDates />
           <TicketsAmount />
           <AuditoriumOne />
           <AuditoriumTwo />
 
-          {/* Show paketpris if it's veckans film */}
+          {/* 🍿 Paketpris section */}
           {paketprisToShow && (
             <section className="paketpris-info">
-              <h3>Veckans film – Paketpris</h3>
+              <h3>🎬 Veckans film – Paketpris</h3>
               <p>
                 {paketprisToShow.liten.antal} liten popcorn för{" "}
                 {paketprisToShow.liten.pris} kr
@@ -81,10 +85,10 @@ function BookingPage() {
         </section>
       </section>
 
-      {/*Price card shows after movie is loaded */}
+      {/* 💳 Price card — only shows when movie is loaded */}
       {movieLoaded && (
         <article className="booking-price-card-top">
-          <BookingPriceCard />
+          <BookingPriceCard paketpris={paketprisToShow} />
         </article>
       )}
     </main>
