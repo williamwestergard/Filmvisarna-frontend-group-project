@@ -17,10 +17,12 @@ ul {
   position: relative;
   z-index: 1000;
   margin: 0 auto;
+  margin-top: 5vh;
+  height: 60px;
   max-width: 1000px;
   padding: 2px 28px; /* Reduced vertical padding even more */
   box-sizing: border-box;
-  border-radius: 20px;
+  border-radius: 0px 20px 20px 0px;
   background-color: var(--red-primary);
   filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.5));
 }
@@ -32,8 +34,13 @@ ul {
   min-height: clamp(30px, 4vw, 40px); /* Further reduced min-height values */
 }
 
-.navbar-desktop { position: relative; z-index: 1000; }
-.navbar-mobile { display: none; }
+.navbar-desktop {
+  position: relative;
+  z-index: 1000;
+}
+.navbar-mobile {
+  display: none;
+}
 
 .nav-menu-container-desktop {
   display: flex;
@@ -61,6 +68,7 @@ ul {
 .logo-image {
   position: relative;
   height: clamp(56px, 8vw, 100px);
+  top: -5px;
 }
 
 /* ---------- Navigation ---------- */
@@ -237,7 +245,7 @@ ul {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    width: 28px;  /* keep bar width */
+    width: 28px; /* keep bar width */
     height: 18px; /* slightly reduced height */
     padding: 10px; /* larger tap area */
     margin-left: auto;
@@ -245,20 +253,20 @@ ul {
 
   .mobile-menu-panel {
     position: fixed;
-    top: calc(8px + clamp(40px, 14vw, 55px));           /* align just below navbar */
-    right: 16px;         /* dock to top-right */
+    top: calc(8px + clamp(40px, 14vw, 55px)); /* align just below navbar */
+    right: 16px; /* dock to top-right */
     z-index: 9999;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
-    width: min(92vw, 200px);      /* compact panel */
+    width: min(92vw, 200px); /* compact panel */
     margin-left: 0;
-    padding: 14px 12px 12px;      /* space for close button */
+    padding: 14px 12px 12px; /* space for close button */
     background-color: var(--menu-panel-bg, #1b1b2f);
     border-radius: 14px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.45);
-    transform: translateX(120%);  /* hidden off-canvas to the right */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+    transform: translateX(120%); /* hidden off-canvas to the right */
     opacity: 0;
     pointer-events: none;
     transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
@@ -273,7 +281,9 @@ ul {
     pointer-events: auto;
   }
 
-  .menu-icon { box-sizing: content-box; }
+  .menu-icon {
+    box-sizing: content-box;
+  }
 
   .nav-button-account {
     display: inline-flex;
@@ -342,7 +352,7 @@ ul {
     border-radius: 16px;
     font-size: 1.05rem;
     font-weight: 600;
-    background-color: #CC1E00;
+    background-color: #cc1e00;
     color: var(--text-light);
   }
 
