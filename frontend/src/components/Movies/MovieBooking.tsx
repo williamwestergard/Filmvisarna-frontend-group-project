@@ -22,7 +22,7 @@ type Movie = {
   description: string;
   runtimeMin: number;
   castJson: CastMember[];
-  paketpris?: Paketpris; // 🎁 Added from backend when it's Veckans film
+  paketpris?: Paketpris; // Added from backend when it's Veckans film
 };
 
 type MovieBookingProps = {
