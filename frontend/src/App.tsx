@@ -15,6 +15,7 @@ import Register from "./pages/Register/Register";
 import GradientBottom from "./assets/images/gradient-bottom.png" 
 
 import Discover from "./pages/Discover/Discover";
+import MyPages from "./pages/MyPages/MyPages";
 
 
 function ScrollToTop() {
@@ -46,7 +47,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
          <Route path="/booking/:movieTitle" element={<BookingPage />} />
-
+         <Route path="/mina-sidor" element={<MyPages />} />
          <Route path="/upptack" element={<Discover />} />
         </Routes>
       </main>
