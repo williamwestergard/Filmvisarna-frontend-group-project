@@ -6,8 +6,8 @@ export default function TicketPage() {
 
   // Mocked booking data, this will later be replaced with data from the backend
   const booking = {
-    movieTitle: "The Conjuring",
-    dateLabel: "Tisdag 18 september",
+    movieTitle: "Filmtitel",
+    dateLabel: "Tisdag 18 sept.",
     timeLabel: "kl 14:30",
     priceType: "Ordinarie",
     seats: [
@@ -34,11 +34,11 @@ export default function TicketPage() {
                 <dd>{booking.dateLabel}</dd>
               </div>
               <div className="ti-row">
-                <dt>Klockslag</dt>
+                <dt>Tid</dt>
                 <dd>{booking.timeLabel}</dd>
               </div>
               <div className="ti-row">
-                <dt>Priskategori</dt>
+                <dt>Biljettyp</dt>
                 <dd>{booking.priceType}</dd>
               </div>
               <div className="ti-row">
