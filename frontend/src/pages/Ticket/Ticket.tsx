@@ -14,7 +14,7 @@ export default function TicketPage() {
       { row: "E", number: 20, auditorium: "Salong 2" },
       { row: "E", number: 21, auditorium: "Salong 2" },
     ],
-    bookingCode: bookingId ?? "BOKNING-VISAS-SENARE",
+    bookingCode: bookingId ?? "HÄR KOMMER ETT BOKNINGSNUMMER",
   };
 
   return (

@@ -1,132 +1,205 @@
 .ticket-page {
-    width: 100%;
-    display: grid;
-    place-items: center;
-    padding: 60px 16px 80px;
-  }
-  
-  /* Ticket-card */
-  .ticket { 
-    position: relative;
-    width: 100%;
-    max-width: 600px;
-    background: 
-      radial-gradient(1200px 500px at 50% 0%, rgba(255,255,255,0.06), transparent 60%),
-      linear-gradient(180deg, #34303a 0%, #2b2731 100%);
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 18px 40px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06);
-  }
-  
-  /* Cutouts left/right */
-  .ticket-notch {
-    position: absolute;
-    top: 50%;
-    width: 56px;
-    height: 56px;
-    background: #0d0d1a;
-    border-radius: 50%;
-    transform: translateY(-50%);
-    z-index: 2;
-    box-shadow: 0 0 0 1px rgba(255,255,255,.05) inset;
-  }
-  .ticket-notch--left { left: -28px; }
-  .ticket-notch--right { right: -28px; }
+  width: 100%;
+  display: grid;
+  place-items: center;
+  padding: 60px 16px 80px;
+}
+/* ticket */
+.ticket {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  background:
+    radial-gradient(1200px 500px at 50% 0%, rgba(255,255,255,0.06), transparent 60%),
+    linear-gradient(180deg, #34303a 0%, #2b2731 100%);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow:
+    0 18px 40px rgba(0,0,0,.55),
+    inset 0 1px 0 rgba(255,255,255,.06);
+  --notch: 40px; /* notch size */
+}
 
-  /* Header  */
-  .ticket-header {
-    height: auto;
-    background: linear-gradient(180deg, #3b3642 0%, #2f2b36 100%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 20px 24px;
-    text-align: center;
-  }
-  
-  .ticket-title {
-    margin: 0;
-    font-size: 28px;
-    font-weight: 700;
-    color: #f5f5f7;
-    letter-spacing: 0.5px;
-  }
-  
-  /*  */
-  .ticket-body {
-    display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: 28px;
-    padding: 22px 24px 12px;
-    min-height: 200px;
-  }
-  .ticket-info {
-    min-height: 140px;
-  }
+/* header */
+.ticket-header {
+  height: auto;
+  background: linear-gradient(180deg, #3b3642 0%, #2f2b36 100%);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 20px 24px;
+  text-align: center;
+}
+.ticket-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #f5f5f7;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 0 rgba(0,0,0,.3);
+}
 
-  /* section on side */
-  .ticket-note {
-    position: relative;
-    right: -110px; /* move to right */
-    border: 1px solid rgba(255,255,255,.14);
-    border-radius: 8px;
-    padding: 10px 12px;
-    background: rgba(255,255,255,.04);
-    box-shadow: inset 0 0 12px rgba(0,0,0,.25);
-    color: #f1f1f1;
-    max-width: 150px;   /* passar mindre biljett */
-    min-height: 50px;
-    align-self: start;
-  }
-  
-  .note-title {
-    margin: 0 0 4px;
-    font-weight: 700;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    color: #ffffff;
-  }
-  
-  .note-text {
-    margin: 0;
-    line-height: 1.4;
-    font-size: 13px;
-    opacity: 0.85;
-    text-align: left;
-  }
+/* ticket-body info/left + obs/right */
+.ticket-body {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 28px;
+  padding: 26px 28px 16px;
+  min-height: 200px;
+  align-items: start;
+}
 
-  /* Perfored line */
-  .ticket-divider {
-    height: 24px;
-    margin: 6px 0;
-    background-image: repeating-linear-gradient(
-      90deg,
-      transparent 0 16px,
-      rgba(0,0,0,.45) 16px 24px
-    );
-    opacity: .8;
-  }
-  /* Footer */
-  .ticket-footer {
-    padding: 16px 24px 32px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .ticket-footer-label {
-    font-size: 14px;
-    letter-spacing: 0.3px;
-    color: #e0e0e0;
-    opacity: 0.9;
-    font-weight: 600;
-    text-transform: uppercase;
-  }
-  
-  .ticket-number-slot {
-    width: 160px;
-    height: 36px;
-    border-radius: 6px;
-    border: 1px dashed rgba(255, 255, 255, 0.3);
-    background: rgba(255, 255, 255, 0.05);
-  }
+/* booking info - left */
+.ticket-info-panel {
+  color: #ffffff;
+  text-align: left;
+  line-height: 1.7;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 20px 24px;
+  border-radius: 10px;
+  box-shadow:
+    inset 0 0 20px rgba(0, 0, 0, 0.25),
+    0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.ti-title {
+  margin: 0 0 14px;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+  padding-bottom: 8px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.ti-list {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+/* rows + label */
+.ti-row {
+  display: grid;
+  grid-template-columns: 150px 1fr; /* label | value */
+  gap: 10px;
+  align-items: start;
+  padding-bottom: 8px;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.12);
+}
+.ti-row:last-child { border-bottom: none; }
+
+.ti-row dt {
+  font-weight: 700;
+  color: #e6e6eb;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.45px;
+  opacity: .95;
+}
+.ti-row dd {
+  margin: 0;
+  font-weight: 500;
+  color: #fff;
+  font-size: 15px;
+}
+
+/* seats */
+.ti-seat {
+  display: block;
+  color: #f7f7f7;
+  font-size: 14px;
+  margin-top: 2px;
+  opacity: 0.92;
+}
+
+/* OBS - booking */
+.ticket-note {
+  border: 1px solid rgba(175, 12, 12, 0.14);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,.04);
+  box-shadow: inset 0 0 12px rgba(0,0,0,.25);
+  color: #f1f1f1;
+  width: 160px;
+  min-height: 60px;
+  text-align: left;
+}
+.note-title {
+  margin: 0 0 4px;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #ffffff;
+}
+.note-text {
+  margin: 0;
+  line-height: 1.4;
+  font-size: 13px;
+  opacity: 0.85;
+  text-align: left;
+}
+
+/* perffored line */
+.ticket-divider {
+  position: relative;
+  height: 24px;
+  margin: 12px 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0 16px,
+    rgba(0,0,0,.45) 16px 24px
+  );
+  opacity: .8;
+}
+
+/* notch placed right/left */
+.ticket-divider::before,
+.ticket-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: calc(var(--notch) * 2);
+  height: calc(var(--notch) * 2);
+  border-radius: 50%;
+  background: #0d0d1a; /* note to self- change! */
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.05);
+  pointer-events: none;
+}
+.ticket-divider::before { left: calc(-1 * var(--notch)); }
+.ticket-divider::after  { right: calc(-1 * var(--notch)); }
+
+/* footer + ticket number */
+.ticket-footer {
+  padding: 12px 24px 28px;
+  display: grid;
+  place-items: center;
+  gap: 6px;
+}
+.ticket-footer-label {
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: .4px;
+  color: #e0e0e0;
+  opacity: .9;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.ticket-number-slot {
+  min-width: 200px;
+  min-height: 40px;
+  display: grid;
+  place-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px rgba(255, 255, 255, 0.32);
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #c41230;
+  text-shadow: 0 1px 0 rgba(0,0,0,.4);
+}
