@@ -216,9 +216,11 @@ ul {
     z-index: 1000;
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    width: 90%;
     padding: 0;
     gap: 12px;
+    max-width: 450px;
+    max-height: 45px;
   }
 
   .navbar-mobile .navbar-logo-link {
@@ -231,8 +233,8 @@ ul {
   }
 
   .navbar-mobile .logo-image {
-    margin-left: 0;
-    height: clamp(40px, 14vw, 55px);
+    margin-left: -60px;
+    height: clamp(40px, 13vw, 80px);
   }
 
   .navbar {
