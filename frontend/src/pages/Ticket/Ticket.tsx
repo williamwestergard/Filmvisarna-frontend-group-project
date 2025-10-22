@@ -20,9 +20,6 @@ export default function TicketPage() {
   return (
     <section className="ticket-page">
       <div className="ticket">
-        <span className="ticket-notch ticket-notch--left" aria-hidden="true" />
-        <span className="ticket-notch ticket-notch--right" aria-hidden="true" />
-
         <header className="ticket-header">
           <h1 className="ticket-title">Dina biljetter är bokade!</h1>
         </header>
