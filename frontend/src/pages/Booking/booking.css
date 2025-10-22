@@ -43,7 +43,7 @@
   left: 0;
   z-index: -1;
   opacity: 0.45;
-  filter: contrast(116%) blur(5px);
+  filter: blur(5px);
 }
 
 .booking-page-movie-content {

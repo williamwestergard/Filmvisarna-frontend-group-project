@@ -1,8 +1,8 @@
 import "./auditorium.css"
 import AuditoriumScreen from "../../assets/images/auditorium/auditorium-screen.png"
 
-function Auditorium() {
-
+function AuditoriumOne() {
+  
   return (
     <>
     <section className="auditorium-content">
@@ -10,6 +10,7 @@ function Auditorium() {
       <h2>Välj platser</h2>
       <section className="auditorium-container">
        
+
 <article className="auditorium">
   <img  className="auditorium-screen" src={AuditoriumScreen} alt="Bild på en bioduk" />
 <section className="auditorium-seats-container">
@@ -99,4 +100,4 @@ function Auditorium() {
   )
 }
 
-export default  Auditorium
+export default  AuditoriumOne

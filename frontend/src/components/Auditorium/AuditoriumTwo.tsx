@@ -1,7 +1,7 @@
 import "./auditorium.css"
 import AuditoriumScreen from "../../assets/images/auditorium/auditorium-screen.png"
 
-function Auditorium() {
+function AuditoriumTwo() {
 
   return (
     <>
@@ -70,4 +70,4 @@ function Auditorium() {
   )
 }
 
-export default  Auditorium
+export default  AuditoriumTwo
