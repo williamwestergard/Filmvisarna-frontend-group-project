@@ -19,7 +19,7 @@ interface Film {
 
 const WeeklyMovie: React.FC = () => {
   const [film, setFilm] = useState<Film | null>(null);
-  const navigate = useNavigate(); // initialize use avigate
+  const navigate = useNavigate(); // initialize use navigate
 
   useEffect(() => {
     fetch('/api/movies/weekly') // relative URL works with Vite proxy
@@ -38,7 +38,23 @@ const WeeklyMovie: React.FC = () => {
   ? `http://localhost:4000/images/posters/${film.posterUrl}`
   : '/placeholder-poster.jpg';
 
-  console.log('Poster URL:', posterSrc); // Debug the image URL
+  // 🪄 Slugify helper to handle Swedish letters and spaces
+  const slugify = (title: string) =>
+    title
+      .toLowerCase()
+      .replace(/å/g, 'a')
+      .replace(/ä/g, 'a')
+      .replace(/ö/g, 'o')
+      .replace(/\s+/g, '-');
+
+  const handleBookingClick = () => {
+    if (film) {
+      const movieSlug = slugify(film.title);
+      navigate(`/booking/${movieSlug}`, {
+        state: { paketpris: film.paketpris },
+      });
+    }
+  };
 
   return (
     <div className="weekly-movie-card">
@@ -55,17 +71,9 @@ const WeeklyMovie: React.FC = () => {
         Eller: {film.paketpris.litenEn.antal} liten popcorn för{' '}
         {film.paketpris.litenEn.pris}kr 
      </div>
-        <button
-         className="book-button"
-        onClick={() => {
-             if (film) {
-            // Redirect to BookingPage for this movie, pass paketpris along
-            navigate(`/booking/${film.id}`, { state: { paketpris: film.paketpris } });
-          }
-        }}
-            >
-            Boka Nu
-        </button>
+       <button className="book-button" onClick={handleBookingClick}>
+        Boka nu
+      </button>
     </div>
   );
 };

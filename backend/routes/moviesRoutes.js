@@ -130,6 +130,24 @@ function createMoviesRouter(pool) {
       res.status(500).json({ ok: false, message: err.message });
     }
   });
+
+  //get one specific movie by ID
+  router.get("/:id", async (req, res) => { 
+    try {
+      const { id } = req.params;
+      const [rows] = await pool.query("SELECT * FROM movies WHERE id = ?", [id]);
+
+      if (rows.length === 0) {
+        return res.status(404).json({ ok: false, message: "Filmen hittades inte" });
+      }
+
+      const film = rows[0];
+      res.json(film);
+    } catch (err) {
+      console.error("FEL VID HÄMNTNING AV FILM:", err);
+      res.status(500).json({ ok: false, message: err.message });
+    }
+  });
   // VECKANS FILM end
 
   return router;
