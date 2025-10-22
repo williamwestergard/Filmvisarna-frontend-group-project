@@ -111,15 +111,15 @@ router.get("/weekly", async (req, res) => {
   try {
     const now = new Date();
 
-    // 🧩 Try to load cached weekly movie from file (if available)
+    // Try to load cached weekly movie from file (if available)
     if (!cachedWeeklyMovie && fs.existsSync(WEEKLY_FILE)) {
       const saved = JSON.parse(fs.readFileSync(WEEKLY_FILE, "utf8"));
       cachedWeeklyMovie = saved.movie;
       lastPicked = new Date(saved.timestamp);
-      console.log("📂 Loaded weekly movie from file:", cachedWeeklyMovie.title);
+      console.log("Loaded weekly movie from file:", cachedWeeklyMovie.title);
     }
 
-    // 🎬 Pick a new one if none cached or more than a week has passed
+    // Pick a new one if none cached or more than a week has passed
     if (!cachedWeeklyMovie || !lastPicked || now - lastPicked > ONE_WEEK) {
       const [rows] = await pool.query("SELECT * FROM movies ORDER BY RAND() LIMIT 1");
 
@@ -133,22 +133,23 @@ router.get("/weekly", async (req, res) => {
       };
       lastPicked = now;
 
-      // 💾 Save the new weekly movie to file
+      // Save the new weekly movie to file
       fs.writeFileSync(
         WEEKLY_FILE,
         JSON.stringify({ movie: cachedWeeklyMovie, timestamp: now }, null, 2)
       );
 
-      console.log("💾 Saved new weekly movie:", cachedWeeklyMovie.title);
+      console.log("Saved new weekly movie:", cachedWeeklyMovie.title);
     }
 
-    console.log("✅ Weekly movie cached:", cachedWeeklyMovie.title, "ID:", cachedWeeklyMovie.id);
+    console.log("Weekly movie cached:", cachedWeeklyMovie.title, "ID:", cachedWeeklyMovie.id);
     res.json(cachedWeeklyMovie);
   } catch (err) {
     console.error("FEL VID HÄMNTNING AV VECKANS FILM:", err);
     res.status(500).json({ ok: false, message: err.message });
   }
 });
+// VECKANS FILM END
 
   return router;
 }
