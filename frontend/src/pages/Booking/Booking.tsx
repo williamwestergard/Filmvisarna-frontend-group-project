@@ -16,16 +16,24 @@ type Paketpris = {
 type Movie = {
   id: number;
   title: string;
-  paketpris?: Paketpris; // optional, because not all movies have this
+  paketpris?: Paketpris; // optional
+};
+
+type Screening = {
+  id: number;
+  time: string;
+  movieId: number;
+  auditoriumId: number;
 };
 
 function BookingPage() {
   const [movieLoaded, setMovieLoaded] = useState(false);
   const [currentMovie, setCurrentMovie] = useState<Movie | null>(null);
-  const [weeklyMovie, setWeeklyMovie] = useState(null);
+  const [weeklyMovie, setWeeklyMovie] = useState<Movie | null>(null);
+  const [selectedScreening, setSelectedScreening] = useState<Screening | null>(null);
   const location = useLocation();
 
-  // Paketpris passed from "Boka nu" (if the user came via WeeklyMovie)
+  // Paketpris passed from "Boka nu" (if user came via WeeklyMovie)
   const paketprisFromState = location.state?.paketpris;
 
   // Fetch veckans film when page loads
@@ -56,7 +64,14 @@ function BookingPage() {
             }}
           />
 
-          <AvailableDates />
+          {/* Available dates only show when movie is loaded */}
+          {currentMovie && (
+            <AvailableDates
+              movieId={currentMovie.id}
+              onSelectScreening={(screening) => setSelectedScreening(screening)}
+            />
+          )}
+
           <TicketsAmount />
           <AuditoriumOne />
           <AuditoriumTwo />
@@ -81,7 +96,7 @@ function BookingPage() {
         </section>
       </section>
 
-      {/*Price card shows after movie is loaded */}
+      {/* Price card shows after movie is loaded */}
       {movieLoaded && (
         <article className="booking-price-card-top">
           <BookingPriceCard />
