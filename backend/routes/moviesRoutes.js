@@ -1,9 +1,6 @@
 // backend/moviesRoutes.js
 const express = require("express");
 
-const fs = require("fs");
-const WEEKLY_FILE = "./weeklyMovie.json";
-
 function createMoviesRouter(pool) {
   const router = express.Router();
 
@@ -101,55 +98,57 @@ function createMoviesRouter(pool) {
     }
   });
 
- // VECKANS FILM 
-let cachedWeeklyMovie = null; // store the movie object
-let lastPicked = null; // store the timestamp of last pick
+  // VECKANS FILM 
+  let cachedWeeklyMovie = null; // store the movie object
+  let lastPicked = null; // store the timestamp of last pick
 
-const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // one week in milliseconds
+  const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // one week in milliseconds
 
-router.get("/weekly", async (req, res) => {
-  try {
-    const now = new Date();
+  router.get("/weekly", async (req, res) => {
+    try {
+      const now = new Date();
 
-    // Try to load cached weekly movie from file (if available)
-    if (!cachedWeeklyMovie && fs.existsSync(WEEKLY_FILE)) {
-      const saved = JSON.parse(fs.readFileSync(WEEKLY_FILE, "utf8"));
-      cachedWeeklyMovie = saved.movie;
-      lastPicked = new Date(saved.timestamp);
-      console.log("Loaded weekly movie from file:", cachedWeeklyMovie.title);
-    }
-
-    // Pick a new one if none cached or more than a week has passed
+    // Pick a new weekly movie if none cached or more than a week has passed
     if (!cachedWeeklyMovie || !lastPicked || now - lastPicked > ONE_WEEK) {
       const [rows] = await pool.query("SELECT * FROM movies ORDER BY RAND() LIMIT 1");
 
-      if (rows.length === 0)
-        return res.status(404).json({ ok: false, message: "No movies found" });
+      if (rows.length === 0) return res.status(404).json({ ok: false, message: "No movies found" });
 
       cachedWeeklyMovie = rows[0];
-      cachedWeeklyMovie.paketpris = {
-        liten: { antal: 2, pris: 60 },
-        litenEn: { antal: 1, pris: 30 },
-      };
       lastPicked = now;
 
-      // Save the new weekly movie to file
-      fs.writeFileSync(
-        WEEKLY_FILE,
-        JSON.stringify({ movie: cachedWeeklyMovie, timestamp: now }, null, 2)
-      );
-
-      console.log("Saved new weekly movie:", cachedWeeklyMovie.title);
+      // Paketpris logic
+      cachedWeeklyMovie.paketpris = {
+        liten: { antal: 2, pris: 60 },
+        litenEn: { antal: 1, pris: 30 }
+      };
     }
 
-    console.log("Weekly movie cached:", cachedWeeklyMovie.title, "ID:", cachedWeeklyMovie.id);
     res.json(cachedWeeklyMovie);
-  } catch (err) {
-    console.error("FEL VID HÄMNTNING AV VECKANS FILM:", err);
-    res.status(500).json({ ok: false, message: err.message });
-  }
-});
-// VECKANS FILM END
+    } catch (err) {
+      console.error("FEL VID HÄMNTNING AV VECKANS FILM:", err);
+      res.status(500).json({ ok: false, message: err.message });
+    }
+  });
+
+  //get one specific movie by ID
+  router.get("/:id", async (req, res) => { 
+    try {
+      const { id } = req.params;
+      const [rows] = await pool.query("SELECT * FROM movies WHERE id = ?", [id]);
+
+      if (rows.length === 0) {
+        return res.status(404).json({ ok: false, message: "Filmen hittades inte" });
+      }
+
+      const film = rows[0];
+      res.json(film);
+    } catch (err) {
+      console.error("FEL VID HÄMNTNING AV FILM:", err);
+      res.status(500).json({ ok: false, message: err.message });
+    }
+  });
+  // VECKANS FILM end
 
   return router;
 }
