@@ -5,9 +5,6 @@ function AuditoriumTwo() {
 
   return (
     <>
-    <section className="auditorium-content">
-           <p className="auditorium-text">Salong - Halvan</p>
-      <h2>Välj platser</h2>
       <section className="auditorium-container">
        
 <article className="auditorium">
@@ -46,11 +43,7 @@ function AuditoriumTwo() {
         <article className="auditorium-seat"></article>
         <article className="auditorium-seat"></article>
 </section>
-
-
-
 </section>
-
 </article>
 
       </section>
@@ -64,8 +57,6 @@ function AuditoriumTwo() {
         <p>Upptagen</p>
       </article>
       </article>
-</section>
-  
     </>
   )
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getMovies, getMoviesInformation} from "../../api/MoviesApi";
-
+import { useBooking } from "../../BookingContext/BookingContext";
 
 type Movie = {
   id: number;
@@ -40,6 +40,7 @@ function getVideoId(url: string) {
 
 function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
   const { movieTitle } = useParams<{ movieTitle: string }>();
+  const { setMovie } = useBooking();
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isTrailerExpanded, setIsTrailerExpanded] = useState(false);
@@ -79,9 +80,11 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
   );
 
 useEffect(() => {
-  if (movie && !isLoading) onMovieLoaded?.(movie); // pass movie
-}, [movie, isLoading, onMovieLoaded]);
-
+  if (movie && !isLoading) {
+    onMovieLoaded?.(movie); // optional, still notify parent
+    setMovie(movie); // store movie in context
+  }
+}, [movie, isLoading, onMovieLoaded, setMovie]);
   // Don’t render anything while loading
   if (isLoading || !movie) return null;
 
