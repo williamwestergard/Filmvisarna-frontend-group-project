@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getMovies, getMoviesInformation} from "../../api/MoviesApi";
-import { useBooking } from "../../BookingContext/BookingContext";
+import { useBooking } from "../../Context/BookingContext";
 
 type Movie = {
   id: number;

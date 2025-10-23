@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { useBooking } from "../../BookingContext/BookingContext";
+import { useBooking } from "../../Context/BookingContext";
 import BookingPriceCard from "../../components/BookingPriceCard/BookingPriceCard";
 import MovieBooking from "../../components/Movies/MovieBooking";
 import AvailableDates from "../../components/AvailableDates/AvailableDates";
