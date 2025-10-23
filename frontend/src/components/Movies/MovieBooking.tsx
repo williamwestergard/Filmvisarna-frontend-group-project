@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getMovies, getMoviesInformation} from "../../api/MoviesApi";
-import { useBooking } from "../../Context/BookingContext";
+import { getMovies, getMoviesInformation} from "../../api/moviesApi";
+import { useBooking } from "../../context/BookingContext";
 
 type Movie = {
   id: number;
@@ -13,6 +13,7 @@ type Movie = {
   language: string,
   description: string,
   runtimeMin: number,
+  ageLimit?: number; 
  castJson: CastMember[];
 };
 type MovieBookingProps = {
@@ -63,8 +64,9 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
             description: infoMatch?.description || movie.description,
             runtimeMin: infoMatch?.runtimeMin || movie.runtimeMin,
             language: infoMatch?.language || movie.language,
-            castJson: infoMatch?.castJson || movie.castJson,
-          };
+            castJson: infoMatch?.castJson || movie.castJson || [],
+            ageLimit: infoMatch?.ageLimit, 
+          } as Movie;
         });
 
         setMovies(merged);
