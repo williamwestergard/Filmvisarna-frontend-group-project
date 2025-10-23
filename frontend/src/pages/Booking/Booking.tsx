@@ -1,4 +1,4 @@
-import { BookingProvider } from "../../Context/BookingContext";
+import { BookingProvider } from "../../context/BookingContext";
 import BookingContent from "./BookingContent"; 
 
 function BookingPage() {

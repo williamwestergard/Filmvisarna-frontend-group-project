@@ -1,5 +1,5 @@
 import "./auditorium.css";
-import { useBooking } from "../../Context/BookingContext";
+import { useBooking } from "../../context/BookingContext";
 import AuditoriumOne from "./AuditoriumOne";
 import AuditoriumTwo from "./AuditoriumTwo";
 
