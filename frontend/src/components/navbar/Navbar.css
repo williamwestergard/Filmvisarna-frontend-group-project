@@ -31,7 +31,7 @@ ul {
 .navbar-mobile {
   display: flex;
   align-items: center;
-  min-height: clamp(30px, 4vw, 40px); /* Further reduced min-height values */
+  min-height: clamp(30px, 4vw, 50px); /* Further reduced min-height values */
 }
 
 .navbar-desktop {
@@ -59,16 +59,21 @@ ul {
   z-index: 1010;
   display: flex;
   align-items: center;
-  flex-shrink: 0;
+  flex: 0 0 auto;
+  gap: clamp(0.5rem, 2vw, 1rem);
   text-decoration: none;
   margin-right: clamp(1rem, 4vw, 3rem);
-  margin-left: -100px;
+  margin-left: -20px; /* Added negative margin to move left */
 }
 
 .logo-image {
-  position: relative;
-  height: clamp(56px, 8vw, 100px);
-  top: -5px;
+  height: clamp(56px, 50vw, 100px);
+  width: auto;
+  max-height: 100%;
+  display: block;
+  object-fit: contain;
+  top: 0;
+  transform: translateX(-25px); /* Added transform to move left */
 }
 
 /* ---------- Navigation ---------- */
@@ -206,7 +211,7 @@ ul {
 }
 
 /* ---------- Responsivitet: max 768px ---------- */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 800px) {
   .navbar-desktop {
     display: none;
   }
@@ -229,12 +234,12 @@ ul {
     margin: 0;
     display: flex;
     align-items: center;
-    margin-right: 12px;
+    margin-right: 15px;
   }
 
   .navbar-mobile .logo-image {
-    margin-left: -60px;
-    height: clamp(40px, 13vw, 80px);
+    margin-left: -20px;
+    height: clamp(70px, 15vw, 100px); /* Increased height values */
   }
 
   .navbar {
