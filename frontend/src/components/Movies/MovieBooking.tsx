@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { getMovies, getMoviesInformation} from "../../api/MoviesApi";
 
 
-
 type Movie = {
   id: number;
   title: string;
@@ -17,7 +16,7 @@ type Movie = {
  castJson: CastMember[];
 };
 type MovieBookingProps = {
-  onMovieLoaded?: () => void;
+  onMovieLoaded?: (movie: Movie) => void; // <-- now it accepts a movie
 };
 type CastMember = {
   actorName: string;
@@ -79,9 +78,9 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
     (m) => m.title?.toLowerCase().replace(/\s+/g, "-") === movieTitle
   );
 
-  useEffect(() => {
-    if (movie && !isLoading) onMovieLoaded?.();
-  }, [movie, isLoading, onMovieLoaded]);
+useEffect(() => {
+  if (movie && !isLoading) onMovieLoaded?.(movie); // pass movie
+}, [movie, isLoading, onMovieLoaded]);
 
   // Don’t render anything while loading
   if (isLoading || !movie) return null;
