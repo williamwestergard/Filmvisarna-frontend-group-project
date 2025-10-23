@@ -270,20 +270,20 @@ ul {
 
   .mobile-menu-panel {
     position: fixed;
-    top: calc(8px + clamp(40px, 14vw, 55px)); /* align just below navbar */
+    top: calc(8px + clamp(40px, 14vw, 55px));
     right: 16px; 
     z-index: 9999;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
-    width: min(92vw, 200px); /* compact panel */
+    width: min(92vw, 200px);
     margin-left: 0;
-    padding: 14px 12px 12px; /* space for close button */
+    padding: 14px 12px 12px;
     background-color: var(--menu-panel-bg, #1b1b2f);
     border-radius: 14px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
-    transform: translateX(120%); /* hidden off-canvas to the right */
+    transform: translateX(120%);
     opacity: 0;
     pointer-events: none;
     transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
@@ -311,12 +311,19 @@ ul {
     border-radius: 16px;
     font-size: 1.05rem;
     font-weight: 600;
+    background-color: var(--button-bg);
+    color: var(--text-light);
     transition: background-color 0.2s ease, color 0.2s ease;
+    border: none; /*removed border*/
+  }
+
+  .nav-button-account:hover {
+    background-color: var(--button-bg-hover);
   }
 
   .nav-button-account.open {
     background-color: var(--text-light);
-    color: #1b1b2f;
+    color: var(--menu-panel-bg, #1b1b2f);
   }
 
   .nav-menu-mobile {
