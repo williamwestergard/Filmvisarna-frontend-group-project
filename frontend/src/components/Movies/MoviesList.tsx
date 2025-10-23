@@ -20,7 +20,7 @@ type MovieListProps = {
   selectedCategory: string;
   selectedDate: string;
   showtimes: Showtime[];
-  searchTerm: string; // ny prop
+  searchTerm: string; // 👈 ny prop
 };
 
 export default function MovieList({
