@@ -10,7 +10,7 @@ ul {
 
 /* ---------- Struktur ---------- */
 .site-header {
-  padding: 5px 20px; /* Reduced vertical padding again */
+  padding: 5px 20px;
 }
 
 .navbar {
@@ -20,7 +20,7 @@ ul {
   margin-top: 5vh;
   height: 60px;
   max-width: 1200px;
-  padding: 2px 28px; /* Reduced vertical padding even more */
+  padding: 2px 28px; 
   box-sizing: border-box;
   border-radius: 0px 20px 20px 0px;
   background-color: var(--red-primary);
@@ -63,7 +63,7 @@ ul {
   gap: clamp(0.5rem, 2vw, 1rem);
   text-decoration: none;
   margin-right: clamp(1rem, 4vw, 3rem);
-  margin-left: -20px; /* Added negative margin to move left */
+  margin-left: -20px; 
 }
 
 .logo-image {
@@ -73,7 +73,7 @@ ul {
   display: block;
   object-fit: contain;
   top: 0;
-  transform: translateX(-25px); /* Added transform to move left */
+  transform: translateX(-25px);
 }
 
 /* ---------- Navigation ---------- */
@@ -210,7 +210,7 @@ ul {
   transform: translateY(-9.5px) rotate(-45deg);
 }
 
-/* ---------- Responsivitet: max 768px ---------- */
+/* ---------- Responsivitet: max 800px ---------- */
 @media screen and (max-width: 800px) {
   .navbar-desktop {
     display: none;
@@ -261,7 +261,7 @@ ul {
   .mobile-menu-panel {
     position: fixed;
     top: calc(8px + clamp(40px, 14vw, 55px)); /* align just below navbar */
-    right: 16px; /* dock to top-right */
+    right: 16px; 
     z-index: 9999;
     display: flex;
     flex-direction: column;
