@@ -26,7 +26,9 @@ function createScreeningsRouter(pool) {
         [id]
       );
       if (!row) {
-        return res.status(404).json({ ok: false, message: "Screening not found" });
+        return res
+          .status(404)
+          .json({ ok: false, message: "Screening not found" });
       }
       res.json(row);
     } catch (e) {
@@ -79,7 +81,7 @@ function createScreeningsRouter(pool) {
   // Stöd för ?onlyFree=1 för att bara visa lediga platser
   router.get("/:id/seats", async (req, res) => {
     try {
-      const { id } = req.params;           // screeningId
+      const { id } = req.params; // screeningId
       const onlyFree = req.query.onlyFree == "1";
 
       const [rows] = await pool.query(
@@ -109,8 +111,8 @@ function createScreeningsRouter(pool) {
         seats: rows,
         summary: {
           total: rows.length,
-          booked: rows.filter(r => r.isBooked === 1).length,
-          free: rows.filter(r => r.isBooked === 0).length,
+          booked: rows.filter((r) => r.isBooked === 1).length,
+          free: rows.filter((r) => r.isBooked === 0).length,
         },
       });
     } catch (e) {

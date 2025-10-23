@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: space-between;
   margin: 0 auto;
-  margin-bottom: 2vh;
+  margin-bottom: 3vh;
   width: 95%;
 }
 
@@ -18,6 +18,7 @@
   flex-direction: row;
   align-items: center;
   gap: 1.2vw;
+  position: relative;
 }
 .day-and-month-container h3 {
   font-size: clamp(1.1rem, 1.5vw, 1.2rem);
@@ -52,20 +53,29 @@
   border-radius: 5px;
 }
 
+.choose-week-arrow-left.disabled,
+.choose-week-arrow-right.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background-color: #aeabc21d;
+  pointer-events: none;
+}
+
 .dates-container {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  width: 87%;
+  width: 85%;
   margin: 0 auto;
-  margin-bottom: 5vh;
+  margin-bottom: 6vh;
 }
 
 .date-card {
   cursor: pointer;
   background-color: #4a4a5f;
   border: 1px solid #070714;
-  padding: 0.5vh 2.2vh;
+  padding: 0.5vh 2vh;
+  width: clamp(20px, 1.6vw, 30px);
   border-radius: 5px;
 }
 
@@ -114,4 +124,44 @@
 .choose-day-time {
   font-size: clamp(1rem, 1vw, 1¨1rem);
   font-weight: 700;
+}
+
+.date-card {
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.date-card:hover {
+  transform: scale(1.05);
+}
+
+.date-card.selected {
+  background-color: #c41230;
+  color: white;
+  transform: scale(1.05);
+  font-weight: bold;
+}
+
+.date-card.no-screening {
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.413);
+  background-color: #1e1e2d;
+  color: #999;
+  position: relative;
+}
+
+/* Center the X inside no-screening date cards */
+.date-card.no-screening {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.date-card-cross {
+  font-size: clamp(1rem, 1vw, 1.2rem);
+  color: #888888;
+  margin: 0;
+  user-select: none;
 }

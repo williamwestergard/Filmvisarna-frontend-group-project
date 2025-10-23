@@ -20,11 +20,20 @@ ul {
   margin-top: 5vh;
   height: 60px;
   max-width: 1200px;
-  padding: 2px 28px; 
+  width: 95%; /* Added width property */
+  padding: 2px 28px;
   box-sizing: border-box;
   border-radius: 0px 20px 20px 0px;
   background-color: var(--red-primary);
   filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.5));
+}
+
+@media screen and (max-width: 768px) {
+  .navbar {
+    width: 85%; /* Smaller width on mobile devices */
+    max-width: 450px;
+    padding: 2px 15px;
+  }
 }
 
 .navbar-desktop,
@@ -63,7 +72,8 @@ ul {
   gap: clamp(0.5rem, 2vw, 1rem);
   text-decoration: none;
   margin-right: clamp(1rem, 4vw, 3rem);
-  margin-left: -20px; 
+  margin-left: -60px; /* Reduced from -100px to align better */
+  transform: translateY(5px); /* Added to adjust vertical alignment */
 }
 
 .logo-image {
