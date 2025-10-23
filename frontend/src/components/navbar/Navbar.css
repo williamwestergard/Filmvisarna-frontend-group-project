@@ -72,8 +72,8 @@ ul {
   gap: clamp(0.5rem, 2vw, 1rem);
   text-decoration: none;
   margin-right: clamp(1rem, 4vw, 3rem);
-  margin-left: -60px; /* Reduced from -100px to align better */
-  transform: translateY(5px); /* Added to adjust vertical alignment */
+  margin-left: -60px;
+  transform: translateY(-5px); 
 }
 
 .logo-image {
@@ -83,7 +83,7 @@ ul {
   display: block;
   object-fit: contain;
   top: 0;
-  transform: translateX(-15px);
+  transform: translateX(-5px);
 }
 
 /* ---------- Navigation ---------- */
