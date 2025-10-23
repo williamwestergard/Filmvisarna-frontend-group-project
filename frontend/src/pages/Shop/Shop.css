@@ -1,5 +1,5 @@
 .shop {
-  width: 80%;
+  width: 70%;
   max-width: 1100px;
   margin: 0 auto;
   padding: 32px 16px;
@@ -10,7 +10,7 @@
 .shop-header {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   text-align: left;
   margin-bottom: 40px;
@@ -18,9 +18,9 @@
 
 .shop-title {
   margin: 0 0 12px;
-  font-size: clamp(28px, 4vw, 38px);
+  font-size: 38px;
   font-weight: 800;
-  text-align: center;
+  text-align: left; 
   position: relative;
 }
 
@@ -31,7 +31,7 @@
   width: 72px;
   height: 3px;
   background: var(--red-primary);
-  margin: 10px auto 0;
+  margin: 10px 0 0 0;
   border-radius: 2px;
 }
 
@@ -58,11 +58,12 @@
 
 .shop-subtitle {
   margin: 0 0 8px;
-  font-size: clamp(20px, 2.4vw, 26px);
+  font-size: 26px;
   font-weight: 700;
 }
 
 .shop p {
+  font-size: 16px;
   margin: 0 0 10px;
   line-height: 1.6;
   opacity: 0.95;
