@@ -13,7 +13,7 @@ type Movie = {
   language: string,
   description: string,
   runtimeMin: number,
-  ageLimit?: number; 
+  ageLimit?: number | string;
  castJson: CastMember[];
 };
 type MovieBookingProps = {
