@@ -324,7 +324,7 @@ iframe {
   text-transform: uppercase;
   letter-spacing: 1px;
   color: #ff4c6d;
-  text-shadow: 0 0 8px rgba(255, 76, 109, 0.5);
+  text-shadow: 0 0 8px rgba(255, 76, 109, 0.5); /* glow effect */
   animation: shimmer 2s ease-in-out infinite;
   
 }
@@ -350,6 +350,7 @@ iframe {
   60% { transform: translateY(-5px); opacity: 1; }
   100% { transform: translateY(0); opacity: 1; }
 }
+
 @keyframes shimmer {
   0% {
     text-shadow: 0 0 6px rgba(255, 76, 109, 0.4),
