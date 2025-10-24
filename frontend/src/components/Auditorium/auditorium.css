@@ -25,12 +25,15 @@
   padding: 5vh;
   border-radius: 5px;
   margin: 0 auto;
+  position: relative;
+  z-index: 0;
 }
 
 .auditorium-screen {
   width: 100%;
-  margin: 0 auto;
-  margin-bottom: 10vh;
+  margin: 0 auto 10vh;
+  pointer-events: none; 
+  z-index: 0;
 }
 
 .auditorium-seats-container {
@@ -39,8 +42,10 @@
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  width: fit-content; /* 👈 only as wide as the seats */
+  width: fit-content;
+  z-index: 1;
 }
+
 .auditorium-one-seats-first-row,
 .auditorium-one-seats-second-row,
 .auditorium-one-seats-third-row,
@@ -74,11 +79,38 @@
   height: clamp(30px, 2.6vw, 50px);
   visibility: hidden;
 }
+
 .auditorium-seat {
   height: clamp(30px, 2.6vw, 50px);
   width: clamp(30px, 2.6vw, 50px);
   background-color: rgb(200, 199, 199);
   border-radius: 5px;
+  cursor: pointer; 
+  transition: background-color 0.15s ease, transform 0.1s ease;
+  z-index: 2;
+}
+
+.auditorium-seat:hover:not(.is-occupied):not(.is-disabled) {
+  transform: scale(1.08);
+  background-color: rgb(220, 220, 220);
+}
+
+/* selected*/
+.auditorium-seat.is-selected {
+  background-color: #c41230;
+}
+
+/* occupied */
+.auditorium-seat.is-occupied {
+  background-color: #353535;
+  border: 1px solid rgba(255, 255, 255, 0.418);
+  cursor: not-allowed;
+}
+
+/* disabled */
+.auditorium-seat.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .auditorium-information-bottom {
