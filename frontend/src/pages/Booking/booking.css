@@ -290,6 +290,70 @@ iframe {
   margin-bottom: 4vh;
 }
 
+/*                      Popcorn-paketpris styling                             */
+.paketpris-info {
+  background-color: #1c1b24;
+  border: 1px solid #2a2835;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  color: #f2f2f2;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.paketpris-info:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+}
+
+.paketpris-info h3 {
+  font-size: 1.2rem;
+  color: #CC0028;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #2f2c3d;
+  padding-bottom: 0.5rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.paketpris-info p {
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+  color: #d1cfd7;
+  text-align: center;
+}
+
+.paketpris-info .paketpris-note {
+  display: block;
+  margin-top: 0.8rem;
+  font-size: 0.8rem;
+  color: #8f8d9b;
+  font-style: italic;
+  text-align: center;
+}
+
+@keyframes bounce {
+  0% { transform: translateY(10px); opacity: 0; }
+  60% { transform: translateY(-5px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.paketpris-info:hover::after {
+  content: "🍿";
+  display: block;
+  font-size: 2rem;
+  text-align: center;
+  animation: bounce 0.4s ease forwards;
+  margin-top: 0.5rem;
+}
+
+
+
 /* Phone layout */
 @media only screen and (max-width: 600px) {
   .booking-page {
