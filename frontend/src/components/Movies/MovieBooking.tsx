@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { getMovies, getMoviesInformation} from "../../api/moviesApi";
 import { useBooking } from "../../context/BookingContext";
 
@@ -99,6 +99,7 @@ useEffect(() => {
       
     <section className="booking-page-movie-content">
        <section className="booking-page-movie-text">
+      <Link to="/" className="booking-back-link">← Tillbaka</Link>
       <h1 className="booking-movie-title">{movie.title}</h1>
       <p className="movie-lang-sub">{movie.language}</p>
         <p className={`movie-desc ${isExpanded ? "expanded" : ""}`}>
