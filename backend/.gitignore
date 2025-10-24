@@ -1,2 +1,23 @@
+# Node modules
 node_modules/
+
+# Environment variables
 .env
+
+# Gmail secrets
+gmail-secret.json
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Optional build folders
+dist/
+build/
