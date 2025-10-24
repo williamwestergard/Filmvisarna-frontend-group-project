@@ -61,7 +61,7 @@ export default function TicketsAmount() {
           <section className="tickets-amount-type">
             <p>Barn</p>
           </section>
-          // children ticket controls
+         {/* Children ticket control */}
           <section className="tickets-amount-add-amount-container">
             <article
               className="ticket-amount-button minus"
