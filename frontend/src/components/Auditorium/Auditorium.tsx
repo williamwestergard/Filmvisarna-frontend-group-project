@@ -1,38 +1,23 @@
-import "./auditorium.css";
-import { useBooking } from "../../context/BookingContext";
 import AuditoriumOne from "./AuditoriumOne";
 import AuditoriumTwo from "./AuditoriumTwo";
+import { useBooking } from "../../context/BookingContext";
 
+export default function Auditorium() {
+  const { screening } = useBooking();
 
-function Auditorium() {
-  const { screening } = useBooking(); 
-
+  // Don't show anything until the user has selected a date and time (screening should then be set)
+  if (!screening?.id) return null;
   
+  const name =
+    screening.auditoriumName ??
+    (screening.auditoriumId === 1
+      ? "Helan"
+      : screening.auditoriumId === 2
+      ? "Halvan"
+      : undefined);
 
-  return (
-    <section className="auditorium-content">
+  if (name === "Halvan") return <AuditoriumTwo />;
 
-     {screening ? (
-            screening.auditoriumId === 1 ? (
-              <p className="auditorium-text">Salong - Helan</p>
-            ) : screening.auditoriumId === 2 ? (
-                 <p className="auditorium-text">Salong - Halvan</p>
-            ) : null
-          ) : null}
-
-      <h2>Välj platser</h2>
-
-      {screening ? (
-            screening.auditoriumId === 1 ? (
-              <AuditoriumOne />
-            ) : screening.auditoriumId === 2 ? (
-              <AuditoriumTwo />
-            ) : null
-          ) : null}
-
-    
-    </section>
-  );
+  // Default: Helan
+  return <AuditoriumOne />;
 }
-
-export default Auditorium;
