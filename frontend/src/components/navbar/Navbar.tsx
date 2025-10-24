@@ -51,7 +51,7 @@ const Navbar: React.FC = () => {
             <a href="/upptack" className="nav-link">Veckans Film</a>
           </li>
           <li className="nav-item">
-            <a href="/bio-nu" className="nav-link">På bio nu</a>
+            <a href="/" className="nav-link">På bio nu</a>
           </li>
           <li
             className={`nav-item dropdown ${isDropdownOpen ? 'open' : ''}`}
@@ -121,7 +121,7 @@ const Navbar: React.FC = () => {
             <a href="/upptack" className="nav-link" onClick={closeMenu}>Veckans Film</a>
           </li>
           <li className="nav-item">
-            <a href="/bio-nu" className="nav-link" onClick={closeMenu}>På bio nu</a>
+            <a href="/" className="nav-link" onClick={closeMenu}>På bio nu</a>
           </li>
           <li className="nav-item">
             <a href="/om-oss" className="nav-link" onClick={closeMenu}>Om oss</a>
