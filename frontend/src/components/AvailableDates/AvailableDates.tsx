@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./availableDates.css";
-import { useBooking } from "../../Context/BookingContext";
+import { useBooking } from "../../context/BookingContext";
 import ArrowLeft from "../../assets/images/auditorium/arrow-triangle-left.png";
 import ArrowRight from "../../assets/images/auditorium/arrow-triangle-right.png";
 
