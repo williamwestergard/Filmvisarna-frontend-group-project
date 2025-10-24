@@ -67,7 +67,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
   const [prices] = useState<TicketPrices>({
     adult: 140,
     senior: 126,
-    child: 100,
+    child: 80,
   });
   // Determine if children are allowed based on movie's age limit
   const childAllowed = useMemo(() => {
