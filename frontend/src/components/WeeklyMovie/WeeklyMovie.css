@@ -1,17 +1,17 @@
 .weekly-movie-card {
-  width: 320px;
+  width: 90%;              /* fills most of the screen on mobile */
+  max-width: 320px;        /* keeps your nice small mobile size */
   padding: 20px;
   margin: 20px auto;
-  background-color: #f4e1d2; /* warm vintage paper color */
-  border: 2px solid #b85c38; /* retro border */
+  background-color: #f4e1d2;
+  border: 2px solid #b85c38;
   border-radius: 12px;
-  box-shadow: 4px 4px 0px #d4a373; /* blocky shadow for old poster look */
-  font-family: 'Courier New', Courier, monospace; /* vintage font style */
+  box-shadow: 4px 4px 0px #d4a373;
+  font-family: 'Courier New', Courier, monospace;
   text-align: center;
-  color: #3e2f2f; /* dark sepia text */
+  color: #3e2f2f;
   position: relative;
 }
-
 .weekly-movie-card .badge {
   position: absolute;
   top: -10px;
@@ -71,4 +71,24 @@
 
 .weekly-movie-card .book-button:hover {
   background-color: #a04f31;
+}
+
+@media (max-width: 400px) {
+  .weekly-movie-card {
+    width: 94%;      /* slightly less fixed space */
+    max-width: 290px; /* keeps proportions tighter */
+    padding: 16px;   /* trims inner padding to fit better */
+  }
+}
+
+@media (min-width: 768px) {
+  .weekly-movie-card {
+    width: 450px; 
+  }
+}
+
+@media (min-width: 1200px) {
+  .weekly-movie-card {
+    max-width: 500px;
+  }
 }
