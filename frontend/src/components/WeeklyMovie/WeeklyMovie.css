@@ -1,6 +1,6 @@
 .weekly-movie-card {
-  width: 90%;              /* fills most of the screen on mobile */
-  max-width: 320px;        /* keeps your nice small mobile size */
+  width: 90%;             
+  max-width: 320px;        
   padding: 20px;
   margin: 20px auto;
   background-color: #f4e1d2;
