@@ -37,6 +37,7 @@ function BookingContent() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Paketpris passed from "Boka nu" (if user came via WeeklyMovie)
   const paketprisFromState = (location.state as any)?.paketpris;
 
   // Load weekly movie for package info
@@ -170,9 +171,15 @@ function BookingContent() {
           />
 
           {movie && <AvailableDates movieId={movie.id} />}
+
+          {/* Ticket counts */}
           <TicketsAmount />
           <Auditorium />
 
+          {/* Auditorium appears after date/time selection per your logic */}
+          <Auditorium />
+
+          {/* Paketpris info */}
           {paketprisToShow && (
             <section className="paketpris-info">
               <h3>Weekly Movie Deal</h3>
@@ -181,9 +188,34 @@ function BookingContent() {
               <p className="paketpris-note">(Offer valid at checkout)</p>
             </section>
           )}
+
+          {/* Button "slutför bokning" */}
+          <section className="confirm-actions">
+            <button
+              className="confirm-btn"
+              disabled={!isReady}
+              onClick={handleFinish}
+              title={
+                isReady
+                  ? "Gå vidare till bekräftelse"
+                  : "Välj visning, biljetter och platser först"
+              }
+            >
+              Slutför bokning
+            </button>
+
+           {/* Hint text when not ready*/}
+            {!isReady && ( 
+              <p className="confirm-hint">
+                Välj visning, antal biljetter och markera {totalTickets} plats
+                {totalTickets === 1 ? "" : "er"} i salongen.
+              </p>
+            )}
+          </section>
         </section>
       </section>
 
+      {/* Price summary on the right/top as before */}
       {movieLoaded && (
         <article className="booking-price-card-top">
           <BookingPriceCard />

@@ -30,6 +30,7 @@
 }
 
 .ticket-amount-button {
+  cursor: pointer;
   background-color: #d9d9d9;
   border-radius: 5px;
   height: 15px;
