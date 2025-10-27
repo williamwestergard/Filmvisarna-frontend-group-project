@@ -1,8 +1,30 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./AgeLimitInfo.css";
 
 export default function AgeLimitInfo() {
   const [open, setOpen] = useState(false);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+
+    function onClickOutside(e: MouseEvent) {
+      if (dialogRef.current && !dialogRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("mousedown", onClickOutside);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("mousedown", onClickOutside);
+    };
+  }, [open]);
 
   return (
     <section className="ageinfo-wrap" aria-label="Information om åldersgränser">
@@ -21,7 +43,7 @@ export default function AgeLimitInfo() {
 
       {open && (
         <div className="ageinfo-overlay">
-          <div className="ageinfo-dialog">
+          <div className="ageinfo-dialog" ref={dialogRef}>
             <header className="ageinfo-header">
               <h3>Åldersgränser på Filmvisarna</h3>
               <button
