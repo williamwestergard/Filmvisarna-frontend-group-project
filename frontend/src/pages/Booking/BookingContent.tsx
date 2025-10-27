@@ -193,23 +193,16 @@ function BookingContent() {
             <button
               className="confirm-btn"
               disabled={!canProceed}
-              onClick={handleBooking}
-              title={
-                canProceed
-                  ? "Gå vidare till bekräftelse"
-                  : "Välj visning, biljetter och platser först"
-              }
-            >
-              Slutför bokning
+              onClick={handleBooking}>
+              Gå vidare
+     {!canProceed && (
+            <p className="confirm-btn-nonclickable-text" style={{ opacity: 0.7, textAlign: "center" }}>
+             Välj tid och antal platser för att fortsätta.
+            </p>
+          )}
             </button>
 
-           {/* Hint text when not ready*/}
-            {!canProceed && ( 
-              <p className="confirm-hint">
-                Välj visning, antal biljetter och markera {totalTickets} plats
-                {totalTickets === 1 ? "" : "er"} i salongen.
-              </p>
-            )}
+          
           </section>
         </section>
       </section>
@@ -225,21 +218,21 @@ function BookingContent() {
               style={{
                 padding: "0.8rem 1.2rem",
                 fontWeight: 600,
-                borderRadius: 8,
+                fontSize:"15px",
+                borderRadius: 5,
                 border: "none",
+                width:"100%",
                 cursor: canProceed && !loadingBooking ? "pointer" : "not-allowed",
+                backgroundColor: canProceed && !loadingBooking ? "#c41230" : "",
+                color: canProceed && !loadingBooking ? "#fff" : "",
                 opacity: canProceed ? 1 : 0.5,
               }}
             >
-              {loadingBooking ? "Bokar..." : "Slutför bokningen"}
+              {loadingBooking ? "Bokar..." : "Gå vidare"}
             </button>
           </div>
 
-          {!canProceed && (
-            <p style={{ fontSize: 14, opacity: 0.7, textAlign: "right" }}>
-             Välj tid och antal platser för att fortsätta.
-            </p>
-          )}
+     
         </article>
       )}
     </main>
