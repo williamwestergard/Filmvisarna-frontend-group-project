@@ -54,6 +54,7 @@ function Home() {
         <section className="filter-section">
           <input
             type="date"
+            lang="sv-SE"
             className="filter-dropdown"
             value={selectedDate}
             onChange={(event) => setSelectedDate(event.target.value)}
@@ -66,7 +67,7 @@ function Home() {
             <option value="all">Alla kategorier</option>
             {categories.map((category) => (
               <option key={category.id} value={category.title}>
-                {category.title}
+          {category.title}
               </option>
             ))}
           </select>
