@@ -193,13 +193,20 @@ function BookingContent() {
             <button
               className="confirm-btn"
               disabled={!canProceed}
-              onClick={handleBooking}>
-              Gå vidare
+              onClick={handleBooking}
+                
+              style={{
+                backgroundColor: canProceed && !loadingBooking ? "#c41230" : "#716d7a",
+                pointerEvents: canProceed && !loadingBooking ? "auto" : "none",
+                   }}>
+              {loadingBooking ? "Bokar..." : "Gå vidare"}
      {!canProceed && (
             <p className="confirm-btn-nonclickable-text" style={{ opacity: 0.7, textAlign: "center" }}>
              Välj tid och antal platser för att fortsätta.
             </p>
           )}
+
+          
             </button>
 
           
@@ -222,7 +229,7 @@ function BookingContent() {
                 borderRadius: 5,
                 border: "none",
                 width:"100%",
-                cursor: canProceed && !loadingBooking ? "pointer" : "not-allowed",
+                pointerEvents: canProceed && !loadingBooking ? "auto" : "none",
                 backgroundColor: canProceed && !loadingBooking ? "#c41230" : "#716d7a",
                 color: canProceed && !loadingBooking ? "#fff" : "#dbdbdb",
                 opacity: canProceed ? 1 : 0.9,
