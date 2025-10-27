@@ -1,74 +1,213 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Confirmation.css";
 
-interface Booking {
-  movieTitle: string;
-  language: string;
-  date: string;
-  time: string;
-  auditorium: string;
-  totalPrice: number;
-  posterUrl: string;
+interface BookingSeat {
+  seatId: number;
+  ticketTypeId: number;
 }
 
-export default function ConfirmationPage() {
-  const { bookingId } = useParams(); // currently unused, reserved for dynamic backend data
-  const navigate = useNavigate();
+interface Booking {
+  id: number;
+  screeningId: number;
+  userId: number;
+  createdAt: string;
+  seats: BookingSeat[];
+}
+
+interface Screening {
+  id: number;
+  movieId: number;
+  auditoriumId: number;
+  time: string;
+}
+
+interface Movie {
+  id: number;
+  title: string;
+  language: string;
+  posterUrl?: string;
+}
+
+interface Auditorium {
+  id: number;
+  name: string;
+}
+
+interface Seat {
+  id: number;
+  rowLetter: string;
+  seatNumber: number;
+}
+
+interface BookingTotals {
+  totalPrice: number;
+}
+
+export default function Confirmation() {
   const [booking, setBooking] = useState<Booking | null>(null);
+  const [movie, setMovie] = useState<Movie | null>(null);
+  const [screening, setScreening] = useState<Screening | null>(null);
+  const [auditorium, setAuditorium] = useState<Auditorium | null>(null);
+  const [seats, setSeats] = useState<Seat[]>([]);
+  const [totals, setTotals] = useState<BookingTotals | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Temporary mock data for layout testing (no backend connection yet)
-    setBooking({
-      movieTitle: "The Shining",
-      language: "Engelskt tal, Svensk text",
-      date: "Fredag, 18 Oktober",
-      time: "19:00",
-      auditorium: "2",
-      totalPrice: 280,
-      posterUrl: "/public/the-shining-poster.jpg",
-    });
-  }, []);
+    async function loadBooking() {
+      try {
+        // Load booking from localStorage
+        const stored = localStorage.getItem("filmvisarna-booking");
+        if (!stored) {
+          setErrorMsg("No booking found.");
+          return;
+        }
 
-  if (!booking) {
-    return <p className="loading">Laddar bokning...</p>;
+        let bookingData;
+        try {
+          bookingData = JSON.parse(stored);
+        } catch {
+          setErrorMsg("Invalid booking data.");
+          return;
+        }
+
+        const bookingId = bookingData?.id || bookingData?.bookingId;
+        if (!bookingId) {
+          setErrorMsg("Invalid booking ID.");
+          return;
+        }
+
+        // Fetch booking info
+        const bookingRes = await fetch(`/api/bookings/${bookingId}`);
+        if (!bookingRes.ok) throw new Error("Failed to fetch booking");
+        const bookingJson = await bookingRes.json();
+        const fetchedBooking = bookingJson.booking || bookingJson;
+        setBooking(fetchedBooking);
+
+        // Fetch screening info
+        const screeningRes = await fetch(`/api/screenings/${fetchedBooking.screeningId}`);
+        if (!screeningRes.ok) throw new Error("Failed to fetch screening");
+        const screeningJson = await screeningRes.json();
+        setScreening(screeningJson);
+
+        // Fetch movie info
+        const movieRes = await fetch(`/api/movies/${screeningJson.movieId}`);
+        if (!movieRes.ok) throw new Error("Failed to fetch movie");
+        const movieJson = await movieRes.json();
+        setMovie(movieJson);
+
+        // Fetch auditorium info
+        const audRes = await fetch(`/api/auditoriums/${screeningJson.auditoriumId}`);
+        if (!audRes.ok) throw new Error("Failed to fetch auditorium");
+        const audJson = await audRes.json();
+        setAuditorium(audJson);
+
+        // Fetch total price
+        const totalsRes = await fetch(`/api/booking-totals/${bookingId}`);
+        if (totalsRes.ok) {
+          const totalsJson = await totalsRes.json();
+          setTotals(totalsJson);
+        }
+
+        // Fetch seats for auditorium
+        const seatsRes = await fetch(`/api/seats/auditorium/${screeningJson.auditoriumId}`);
+        if (seatsRes.ok) {
+          const seatsJson = await seatsRes.json();
+          setSeats(seatsJson.seats || seatsJson);
+        }
+      } catch (err) {
+        console.error("Error loading booking:", err);
+        setErrorMsg("Could not load booking information.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadBooking();
+  }, [navigate]);
+
+  if (loading) return <p className="loading">Loading booking...</p>;
+
+  if (errorMsg) {
+    return (
+      <main className="confirmation-page">
+        <p style={{ color: "white", textAlign: "center" }}>{errorMsg}</p>
+        <button
+          className="book-btn"
+          onClick={() => navigate("/")}
+          style={{ marginTop: "2rem" }}
+        >
+          Back to Home
+        </button>
+      </main>
+    );
   }
 
+  if (!booking || !movie || !screening) {
+    return <p style={{ color: "white", textAlign: "center" }}>Booking not found.</p>;
+  }
+
+  // Format date and time
+  const dateObj = new Date(screening.time);
+  const formattedDate = dateObj.toLocaleDateString("sv-SE", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  const formattedTime = dateObj.toLocaleTimeString("sv-SE", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  // Build readable seat labels
+  const seatLabels =
+    booking.seats
+      ?.map((b) => {
+        const found = seats.find((s) => s.id === b.seatId);
+        return found ? `${found.rowLetter}${found.seatNumber}` : `#${b.seatId}`;
+      })
+      .join(", ") || "Not available";
+
+  // Render confirmation card
   return (
     <main className="confirmation-page">
-      {/* Top back button (returns to previous page) */}
       <button className="back-btn-top" onClick={() => navigate(-1)}>
-        Gå tillbaka
+        ← Go Back
       </button>
 
-      {/* Main booking card with all booking details */}
       <section className="booking-card">
         <div className="booking-info">
-          <h2>{booking.movieTitle}</h2>
-          <p className="language">{booking.language}</p>
-          <p>
-            <strong>{booking.date}</strong>
+          <h2>{movie.title}</h2>
+          <p className="language">{movie.language}</p>
+          <p><strong>{formattedDate}</strong></p>
+          <p>Time: {formattedTime}</p>
+          <p>Auditorium: {auditorium?.name ?? `Auditorium ${screening.auditoriumId}`}</p>
+          <p>Seats: {seatLabels}</p>
+          <p className="sum">
+            Total: {totals?.totalPrice ? `${totals.totalPrice} kr` : "Not available"}
           </p>
-          <p>Tid: {booking.time}</p>
-          <p>Salong: {booking.auditorium}</p>
-          <p className="sum">Summa: {booking.totalPrice} kr</p>
 
-          {/* Bottom booking button */}
           <div className="button-group">
             <button
               className="book-btn"
-              onClick={() => alert("Biljetterna bokades!")}
+              onClick={() => {
+                alert("Thank you for your booking! 🎬");
+                localStorage.removeItem("filmvisarna-booking");
+                navigate("/");
+              }}
             >
-              Boka biljetterna
+              Done – Back to Home
             </button>
           </div>
         </div>
 
-        {/* Movie poster image */}
         <img
           className="poster"
-          src={booking.posterUrl}
-          alt={`Affisch för ${booking.movieTitle}`}
+          src={movie.posterUrl || "/poster-placeholder.jpg"}
+          alt={`Poster for ${movie.title}`}
         />
       </section>
     </main>

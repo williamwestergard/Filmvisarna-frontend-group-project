@@ -3,7 +3,7 @@ const express = require("express");
 function createAuditoriumRouter(pool) {
   const router = express.Router();
 
-  // GET /api/auditorium
+  // Get all auditoriums
   router.get("/", async (req, res) => {
     try {
       const [rows] = await pool.query("SELECT * FROM auditoriums");
@@ -14,7 +14,25 @@ function createAuditoriumRouter(pool) {
     }
   });
 
-  // POST /api/auditorium
+  // Get one auditorium by ID
+  router.get("/:id", async (req, res) => {
+    try {
+      const [rows] = await pool.query("SELECT * FROM auditoriums WHERE id = ?", [
+        req.params.id,
+      ]);
+
+      if (rows.length === 0) {
+        return res.status(404).json({ ok: false, message: "Auditorium not found" });
+      }
+
+      res.json(rows[0]);
+    } catch (e) {
+      console.error("GET /auditoriums/:id failed:", e);
+      res.status(500).json({ ok: false, message: e.message });
+    }
+  });
+
+  // Create a new auditorium
   router.post("/", async (req, res) => {
     try {
       const { name } = req.body;
@@ -29,7 +47,7 @@ function createAuditoriumRouter(pool) {
     }
   });
 
-  // DELETE all auditoriums
+  // Delete all auditoriums
   router.delete("/", async (req, res) => {
     try {
       const [result] = await pool.query("DELETE FROM auditoriums");
