@@ -91,9 +91,13 @@
   z-index: 2;
 }
 
-.auditorium-seat:hover:not(.is-occupied):not(.is-disabled) {
+.auditorium-seat:hover:not(.is-occupied):not(.is-disabled):not(.is-selected) {
   transform: scale(1.08);
   background-color: rgb(220, 220, 220);
+}
+
+.auditorium-seat:hover:not(.is-occupied):not(.is-disabled) {
+  background-color: #c41230;
 }
 
 /* selected*/
