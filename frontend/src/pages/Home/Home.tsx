@@ -44,10 +44,9 @@ function Home() {
         src={BgOverlay}
         alt="Image of a man and woman watching a movie"
       />
-
+      
       {/* AgeLimitInfo */}
        <AgeLimitInfo />
-       
       <main className="home-container">
         <h1 className="home-title">Aktuella filmer</h1>
 
