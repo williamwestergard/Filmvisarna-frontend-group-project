@@ -4,6 +4,7 @@ import MoviesList from "../../components/Movies/MoviesList";
 import BgOverlay from "../../assets/images/home-bg.jpg";
 import { getCategories, getShowtimes } from "../../api/MoviesApi";
 import SearchBar from "../../components/SearchBar/SearchBar"; // 👈 import
+import AgeLimitInfo from "../../components/AgeLimitInfo/AgeLimitInfo";
 
 type Category = {
   id: number;
@@ -44,6 +45,9 @@ function Home() {
         alt="Image of a man and woman watching a movie"
       />
 
+      {/* AgeLimitInfo */}
+       <AgeLimitInfo />
+       
       <main className="home-container">
         <h1 className="home-title">Aktuella filmer</h1>
 
