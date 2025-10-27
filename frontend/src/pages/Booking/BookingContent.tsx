@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useBooking } from "../../context/BookingContext";
 import BookingPriceCard from "../../components/BookingPriceCard/BookingPriceCard";
 import MovieBooking from "../../components/Movies/MovieBooking";
@@ -18,14 +18,16 @@ type Movie = {
   title: string;
   paketpris?: Paketpris;
 };
+
 function BookingContent() {
-  const { movie, setMovie } = useBooking(); 
+  const navigate = useNavigate();
+  const { movie, setMovie, screening, selectedSeats, totalTickets } = useBooking();
   const [movieLoaded, setMovieLoaded] = useState(false);
   const [weeklyMovie, setWeeklyMovie] = useState<Movie | null>(null);
   const location = useLocation();
 
   // Paketpris passed from "Boka nu" (if user came via WeeklyMovie)
-  const paketprisFromState = location.state?.paketpris;
+  const paketprisFromState = (location.state as any)?.paketpris;
 
   useEffect(() => {
     fetch("/api/movies/weekly")
@@ -39,13 +41,31 @@ function BookingContent() {
   const paketprisToShow =
     paketprisFromState || (isWeekly ? weeklyMovie?.paketpris : null);
 
+  // Ready for “Complete booking” when:
+  // - a screening is selected
+  // - at least one ticket is chosen (totalTickets > 0)
+  // - exactly as many seats are selected as tickets
+  const isReady =
+    Boolean(screening?.id) &&
+    totalTickets > 0 &&
+    selectedSeats.length === totalTickets;
+
+  function handleFinish() {
+   // Here we later make a POST request → backend to get a bookingId
+  // For now (demo): navigate to your existing confirmation page
+  // Uses the static route you already have: /confirmation-page
+    navigate("/confirmation-page");
+   // Alternative when backend is connected:
+  // navigate(`/confirmation/${bookingId}`);
+  }
+
   return (
     <main className={`booking-page-content ${movieLoaded ? "loaded" : ""}`}>
       <section className="booking-page-left-side">
         <section className="booking-page-left-side-content">
           {/* Movie selection */}
           <MovieBooking
-            onMovieLoaded={(loadedMovie) => {
+            onMovieLoaded={(loadedMovie: Movie) => {
               setMovie(loadedMovie);
               setMovieLoaded(true);
             }}
@@ -54,9 +74,11 @@ function BookingContent() {
           {/* Available dates */}
           {movie && <AvailableDates movieId={movie.id} />}
 
+          {/* Ticket counts */}
           <TicketsAmount />
 
-       <Auditorium />
+          {/* Auditorium appears after date/time selection per your logic */}
+          <Auditorium />
 
           {/* Paketpris info */}
           {paketprisToShow && (
@@ -75,10 +97,34 @@ function BookingContent() {
               </p>
             </section>
           )}
+
+          {/* Button "slutför bokning" */}
+          <section className="confirm-actions">
+            <button
+              className="confirm-btn"
+              disabled={!isReady}
+              onClick={handleFinish}
+              title={
+                isReady
+                  ? "Gå vidare till bekräftelse"
+                  : "Välj visning, biljetter och platser först"
+              }
+            >
+              Slutför bokning
+            </button>
+
+           {/* Hint text when not ready*/}
+            {!isReady && ( 
+              <p className="confirm-hint">
+                Välj visning, antal biljetter och markera {totalTickets} plats
+                {totalTickets === 1 ? "" : "er"} i salongen.
+              </p>
+            )}
+          </section>
         </section>
       </section>
 
-      {/* Price summary */}
+      {/* Price summary on the right/top as before */}
       {movieLoaded && (
         <article className="booking-price-card-top">
           <BookingPriceCard />
