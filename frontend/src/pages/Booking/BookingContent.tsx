@@ -198,6 +198,7 @@ function BookingContent() {
               style={{
                 backgroundColor: canProceed && !loadingBooking ? "#c41230" : "#716d7a",
                 pointerEvents: canProceed && !loadingBooking ? "auto" : "none",
+                cursor: canProceed && !loadingBooking ? "pointer" : "not-allowed",
                    }}>
               {loadingBooking ? "Bokar..." : "Gå vidare"}
      {!canProceed && (
@@ -229,6 +230,7 @@ function BookingContent() {
                 borderRadius: 5,
                 border: "none",
                 width:"100%",
+                cursor: canProceed && !loadingBooking ? "pointer" : "not-allowed",
                 pointerEvents: canProceed && !loadingBooking ? "auto" : "none",
                 backgroundColor: canProceed && !loadingBooking ? "#c41230" : "#716d7a",
                 color: canProceed && !loadingBooking ? "#fff" : "#dbdbdb",
