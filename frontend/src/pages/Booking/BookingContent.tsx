@@ -231,13 +231,13 @@ function BookingContent() {
                 opacity: canProceed ? 1 : 0.5,
               }}
             >
-              {loadingBooking ? "Booking..." : "Go to Confirmation"}
+              {loadingBooking ? "Bokar..." : "Slutför bokningen"}
             </button>
           </div>
 
           {!canProceed && (
             <p style={{ fontSize: 14, opacity: 0.7, textAlign: "right" }}>
-              Please select movie, time, and seats to continue.
+             Välj tid och antal platser för att fortsätta.
             </p>
           )}
         </article>
