@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./availableDates.css";
-import { useBooking } from "../../context/BookingContext";
+import { useBooking } from "../../Context/BookingContext";
 import ArrowLeft from "../../assets/images/auditorium/arrow-triangle-left.png";
 import ArrowRight from "../../assets/images/auditorium/arrow-triangle-right.png";
 
@@ -16,7 +16,8 @@ type AvailableDatesProps = {
   onSelectScreening?: (screening: Screening) => void;
 };
 
-// Helper: get ISO week number (Monday–Sunday)
+
+// Get week number (Monday–Sunday)
 function getWeekNumber(date: Date) {
   const tempDate = new Date(date);
   tempDate.setHours(0, 0, 0, 0);
@@ -31,11 +32,11 @@ function getWeekOffset(allDates: string[], selectedDate: string) {
   return Math.floor(index / 7);
 }
 
-// Helper: get Monday for any given date
+// Get Monday for any given date
 function getMonday(date: Date) {
   const d = new Date(date);
   const day = d.getDay();
-  const diff = d.getDate() - (day === 0 ? 6 : day - 1); // shift to Monday
+  const diff = d.getDate() - (day === 0 ? 6 : day - 1); // Shift to Monday
   return new Date(d.setDate(diff));
 }
 
@@ -45,6 +46,44 @@ function AvailableDates({ movieId, onSelectScreening }: AvailableDatesProps) {
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [selectedScreeningId, setSelectedScreeningId] = useState<number | null>(null);
   const [weekOffset, setWeekOffset] = useState(0);
+
+
+   // Fetch screenings 
+  useEffect(() => {
+    if (!movieId) return;
+    fetch(`/api/screenings?movieId=${movieId}`)
+      .then((res) => res.json())
+      .then((data: Screening[]) => {
+        const movieScreenings = data.filter((s) => s.movieId === movieId);
+        setScreenings(movieScreenings);
+      })
+      .catch((err) => console.error(err));
+  }, [movieId]);
+
+
+useEffect(() => {
+  const savedData = localStorage.getItem("selectedScreening");
+  if (!savedData) return;
+
+  const { movieId: savedMovieId, screening, selectedDate: savedDate, weekOffset: savedWeekOffset, expiresAt } = JSON.parse(savedData);
+
+  if (savedMovieId === movieId && Date.now() < expiresAt) {
+    setSelectedDate(savedDate);
+    setSelectedScreeningId(screening?.id || null);
+    setScreening(screening || null);
+    setWeekOffset(savedWeekOffset || 0);
+  }
+}, [screenings, movieId, setScreening]);
+
+
+ useEffect(() => {
+  return () => {
+    // Only clear if leaving the booking page
+    if (!location.pathname.startsWith("/booking")) {
+      localStorage.removeItem("selectedScreening");
+    }
+  };
+}, [location.pathname]);
 
   useEffect(() => {
     if (!movieId) return;
@@ -87,53 +126,52 @@ function AvailableDates({ movieId, onSelectScreening }: AvailableDatesProps) {
     (s) => s.time.slice(0, 10) === selectedDate
   );
 
-  const handleSelectDate = (date: string) => {
-    if (screenings.some((s) => s.time.slice(0, 10) === date)) {
-      setSelectedDate(date);
-      setSelectedScreeningId(null);
-
-      const expiresAt = Date.now() + 10 * 60 * 1000;
-      const data = { movieId, screening: null, selectedDate: date, expiresAt };
-      localStorage.setItem("selectedScreening", JSON.stringify(data));
-    }
-  };
-
-  const handleSelectTime = (screening: Screening) => {
-    setSelectedScreeningId(screening.id);
-    setSelectedDate(screening.time.slice(0, 10));
-    onSelectScreening?.(screening);
-    setScreening(screening);
+const handleSelectDate = (date: string) => {
+  if (screenings.some((s) => s.time.slice(0, 10) === date)) {
+    setSelectedDate(date);
+    setSelectedScreeningId(null);
 
     const expiresAt = Date.now() + 10 * 60 * 1000;
-    const data = { movieId, screening, selectedDate: screening.time.slice(0, 10), expiresAt };
+    const data = { movieId, screening: null, selectedDate: date, weekOffset, expiresAt };
     localStorage.setItem("selectedScreening", JSON.stringify(data));
-  };
+  }
+};
 
-  // Restore saved screening/date if valid
+const handleSelectTime = (screening: Screening) => {
+  setSelectedScreeningId(screening.id);
+  setSelectedDate(screening.time.slice(0, 10));
+  onSelectScreening?.(screening);
+  setScreening(screening);
+
+  const expiresAt = Date.now() + 10 * 60 * 1000;
+  const data = { movieId, screening, selectedDate: screening.time.slice(0, 10), weekOffset, expiresAt };
+  localStorage.setItem("selectedScreening", JSON.stringify(data));
+};
+
   useEffect(() => {
     if (screenings.length === 0) return;
-
     const savedData = localStorage.getItem("selectedScreening");
     if (!savedData) return;
 
-    const { movieId: savedMovieId, screening, selectedDate: savedDate, expiresAt } = JSON.parse(savedData);
+    const { movieId: savedMovieId, screening, selectedDate: savedDate, weekOffset: savedWeekOffset, expiresAt } = JSON.parse(savedData);
 
-    if (savedMovieId !== movieId || Date.now() >= expiresAt) {
-      localStorage.removeItem("selectedScreening");
-      return;
-    }
-
-    if (screenings.some((s) => s.id === screening?.id) || !screening) {
+    if (savedMovieId === movieId && Date.now() < expiresAt) {
       setSelectedDate(savedDate);
       setSelectedScreeningId(screening?.id || null);
       setScreening(screening || null);
-      setWeekOffset(getWeekOffset(allDates, savedDate));
+      setWeekOffset(savedWeekOffset || 0);
     }
-  }, [screenings, movieId]);
+  }, [screenings, movieId, setScreening]);
 
+  // Clear localStorage when leaving booking page
   useEffect(() => {
-    setWeekOffset(0);
-  }, [movieId]);
+    return () => {
+      if (!location.pathname.startsWith("/booking")) {
+        localStorage.removeItem("selectedScreening");
+      }
+    };
+  }, [location.pathname]);
+
 
   return (
     <section className="available-dates">
@@ -185,7 +223,7 @@ function AvailableDates({ movieId, onSelectScreening }: AvailableDatesProps) {
           </article>
         </section>
 
-        {/* Dates (Mon–Sun) */}
+        {/* Dates (Mån–Sön) */}
         <section className="dates-container">
           {datesForCurrentWeek.map(date => {
             const hasScreening = screenings.some(s => s.time.slice(0, 10) === date);
