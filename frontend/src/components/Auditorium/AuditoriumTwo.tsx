@@ -1,5 +1,5 @@
 import "./auditorium.css";
-import { useBooking } from "../../context/BookingContext";
+import { useBooking } from "../../Context/BookingContext";
 import AuditoriumScreen from "../../assets/images/auditorium/auditorium-screen.png";
 
 // Create seat ID so we can toggle in a stable way.
@@ -76,12 +76,15 @@ export default function AuditoriumTwo() {
   // define the seating layout: two rows with 4 seats each on top,
   // two rows with 6 seats each on bottom
   const rowsTop = [
-    { row: "A", seats: [1, 2, 3, 4] },
-    { row: "B", seats: [1, 2, 3, 4] },
+    { row: "A", seats: [1, 2, 3, 4, 5, 6] },
+    { row: "B", seats: [1, 2, 3, 4, 5, 6, 7, 8] },
+    
   ];
   const rowsBottom = [
-    { row: "C", seats: [1, 2, 3, 4, 5, 6] },
-    { row: "D", seats: [1, 2, 3, 4, 5, 6] },
+    { row: "C", seats: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+    { row: "D", seats: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
+     { row: "E", seats: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
+    { row: "F", seats: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
   ];
   // determine if max seats selected
   const maxReached = totalTickets > 0 && selectedSeats.length >= totalTickets;
@@ -100,9 +103,11 @@ export default function AuditoriumTwo() {
 />
 
           <section className="auditorium-seats-container">
-            {/* */}
             <section className="auditorium-two-seats-first-row">
-              <div className="seat-placeholder" />
+            <div className="seat-placeholder" />
+            <div className="seat-placeholder" />
+       <div className="seat-placeholder" />
+
               {rowsTop[0].seats.map((n) => {
                 const selected = isSelected("A", n);
                 const occupied = isOccupied("A", n);
@@ -119,11 +124,16 @@ export default function AuditoriumTwo() {
                   />
                 );
               })}
-              <div className="seat-placeholder" />
+            <div className="seat-placeholder" />
+            <div className="seat-placeholder" />
+           <div className="seat-placeholder" />
+  
             </section>
 
             <section className="auditorium-two-seats-second-row">
               <div className="seat-placeholder" />
+              <div className="seat-placeholder" />
+
               {rowsTop[1].seats.map((n) => {
                 const selected = isSelected("B", n);
                 const occupied = isOccupied("B", n);
@@ -140,30 +150,36 @@ export default function AuditoriumTwo() {
                   />
                 );
               })}
-              <div className="seat-placeholder" />
+            <div className="seat-placeholder" />
+            <div className="seat-placeholder" />
+
             </section>
 
-            {/* */}
-            <section className="auditorium-two-seats-third-row">
-              {rowsBottom[0].seats.map((n) => {
-                const selected = isSelected("C", n);
-                const occupied = isOccupied("C", n);
-                const disabled = occupied || (maxReached && !selected);
-                return (
-                  <SeatBox
-                    key={`C${n}`}
-                    row="C"
-                    number={n}
-                    selected={selected}
-                    occupied={occupied}
-                    disabled={disabled}
-                    onClick={() => onToggle("C", n)}
-                  />
-                );
-              })}
-            </section>
+       
+      <section className="auditorium-two-seats-third-row">
+  <div className="seat-placeholder" />
+  {rowsBottom[0].seats.map((n) => {
+    const selected = isSelected("C", n);
+    const occupied = isOccupied("C", n);
+    const disabled = occupied || (maxReached && !selected);
+    return (
+      <SeatBox
+        key={`C${n}`}
+        row="C"
+        number={n}
+        selected={selected}
+        occupied={occupied}
+        disabled={disabled}
+        onClick={() => onToggle("C", n)}
+      />
+    );
+  })}
+    <div className="seat-placeholder" />
+      <div className="seat-placeholder" />
+</section>
           
             <section className="auditorium-two-seats-fourth-row">
+         <div className="seat-placeholder" />
               {rowsBottom[1].seats.map((n) => {
                 const selected = isSelected("D", n);
                 const occupied = isOccupied("D", n);
@@ -180,7 +196,50 @@ export default function AuditoriumTwo() {
                   />
                 );
               })}
+               <div className="seat-placeholder" />
             </section>
+
+ <section className="auditorium-two-seats-fifth-row">
+   <div className="seat-placeholder" />
+  {rowsBottom[2].seats.map((n) => {
+    const selected = isSelected("E", n);
+    const occupied = isOccupied("E", n);
+    const disabled = occupied || (maxReached && !selected);
+    return (
+      <SeatBox
+        key={`E${n}`}
+        row="E"
+        number={n}
+        selected={selected}
+        occupied={occupied}
+        disabled={disabled}
+        onClick={() => onToggle("E", n)}
+      />
+    );
+  })}
+   <div className="seat-placeholder" />
+</section>
+
+<section className="auditorium-two-seats-sixth-row">
+  {rowsBottom[3].seats.map((n) => {
+    const selected = isSelected("F", n);
+    const occupied = isOccupied("F", n);
+    const disabled = occupied || (maxReached && !selected);
+    return (
+      <SeatBox
+        key={`F${n}`}
+        row="F"
+        number={n}
+        selected={selected}
+        occupied={occupied}
+        disabled={disabled}
+        onClick={() => onToggle("F", n)}
+      />
+    );
+  })}
+</section>
+
+
           </section>
         </article>
       </section>
