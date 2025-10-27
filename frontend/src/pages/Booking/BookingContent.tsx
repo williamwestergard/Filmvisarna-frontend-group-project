@@ -223,9 +223,10 @@ function BookingContent() {
                 border: "none",
                 width:"100%",
                 cursor: canProceed && !loadingBooking ? "pointer" : "not-allowed",
-                backgroundColor: canProceed && !loadingBooking ? "#c41230" : "",
-                color: canProceed && !loadingBooking ? "#fff" : "",
-                opacity: canProceed ? 1 : 0.5,
+                backgroundColor: canProceed && !loadingBooking ? "#c41230" : "#716d7a",
+                color: canProceed && !loadingBooking ? "#fff" : "#dbdbdb",
+                opacity: canProceed ? 1 : 0.9,
+                display: canProceed ? "block" : "none",
               }}
             >
               {loadingBooking ? "Bokar..." : "Gå vidare"}
