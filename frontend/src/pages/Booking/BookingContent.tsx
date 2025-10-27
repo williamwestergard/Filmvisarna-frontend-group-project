@@ -27,6 +27,7 @@ type ApiSeat = {
   isBooked?: number;
 };
 
+
 function BookingContent() {
   const { movie, setMovie, screening, totalTickets, selectedSeats, counts } = useBooking();
 
@@ -38,7 +39,7 @@ function BookingContent() {
   const navigate = useNavigate();
 
   // Paketpris passed from "Boka nu" (if user came via WeeklyMovie)
-  const paketprisFromState = (location.state as any)?.paketpris;
+ const paketprisFromState = (location.state as any)?.paketpris;
 
   // Load weekly movie for package info
   useEffect(() => {
@@ -100,7 +101,7 @@ function BookingContent() {
 
       const realSeatIds: number[] = [];
 
-      // Match frontend-selected seats with real seat IDs in DB
+     // Match frontend-selected seats with real seat IDs in DB
       for (const sel of selectedSeats) {
         const sameRow = apiSeats.filter(
           (s) => s.rowLabel === sel.row && s.auditoriumId === screening.auditoriumId
@@ -109,7 +110,7 @@ function BookingContent() {
         const sortedRow = sameRow.sort((a, b) => a.seatNumber - b.seatNumber);
         const seatInRow = sortedRow[sel.number - 1];
 
-        if (!seatInRow) {
+            if (!seatInRow) {
           alert(`Could not find seat ID for ${sel.row}-${sel.number}`);
           setLoadingBooking(false);
           return;
@@ -158,6 +159,7 @@ function BookingContent() {
     }
   }
 
+
   // --- Render ---
   return (
     <main className={`booking-page-content ${movieLoaded ? "loaded" : ""}`}>
@@ -176,9 +178,6 @@ function BookingContent() {
           <TicketsAmount />
           <Auditorium />
 
-          {/* Auditorium appears after date/time selection per your logic */}
-          <Auditorium />
-
           {/* Paketpris info */}
           {paketprisToShow && (
             <section className="paketpris-info">
@@ -193,10 +192,10 @@ function BookingContent() {
           <section className="confirm-actions">
             <button
               className="confirm-btn"
-              disabled={!isReady}
-              onClick={handleFinish}
+              disabled={!canProceed}
+              onClick={handleBooking}
               title={
-                isReady
+                canProceed
                   ? "Gå vidare till bekräftelse"
                   : "Välj visning, biljetter och platser först"
               }
@@ -205,7 +204,7 @@ function BookingContent() {
             </button>
 
            {/* Hint text when not ready*/}
-            {!isReady && ( 
+            {!canProceed && ( 
               <p className="confirm-hint">
                 Välj visning, antal biljetter och markera {totalTickets} plats
                 {totalTickets === 1 ? "" : "er"} i salongen.
@@ -218,7 +217,7 @@ function BookingContent() {
       {/* Price summary on the right/top as before */}
       {movieLoaded && (
         <article className="booking-price-card-top">
-          <BookingPriceCard />
+           <BookingPriceCard />
           <div style={{ marginTop: "1rem", display: "flex", justifyContent: "flex-end" }}>
             <button
               onClick={handleBooking}

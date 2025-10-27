@@ -16,7 +16,9 @@ function createBookingsRouter(pool) {
       );
 
       if (existing.length > 0) {
-        throw new Error(`Seat ${seat.seatId} is already booked for this screening`);
+        throw new Error(
+          `Seat ${seat.seatId} is already booked for this screening`
+        );
       }
 
       await connection.query(
@@ -75,9 +77,13 @@ function createBookingsRouter(pool) {
     try {
       const bookingId = req.params.id;
 
-      const [rows] = await pool.query(`SELECT * FROM bookings WHERE id = ?`, [bookingId]);
+      const [rows] = await pool.query(`SELECT * FROM bookings WHERE id = ?`, [
+        bookingId,
+      ]);
       if (rows.length === 0) {
-        return res.status(404).json({ ok: false, message: "Booking not found" });
+        return res
+          .status(404)
+          .json({ ok: false, message: "Booking not found" });
       }
 
       const [seatRows] = await pool.query(
@@ -102,7 +108,9 @@ function createBookingsRouter(pool) {
       const { userId, screeningId, seats = [] } = req.body;
 
       if (!screeningId) {
-        return res.status(400).json({ ok: false, message: "screeningId is required" });
+        return res
+          .status(400)
+          .json({ ok: false, message: "screeningId is required" });
       }
 
       await connection.beginTransaction();
@@ -116,7 +124,8 @@ function createBookingsRouter(pool) {
       );
 
       const bookingId = bookingResult.insertId;
-      if (seats.length > 0) await insertSeats(connection, bookingId, screeningId, seats);
+      if (seats.length > 0)
+        await insertSeats(connection, bookingId, screeningId, seats);
 
       const [seatRows] = await connection.query(
         `SELECT seatId, ticketTypeId FROM bookingSeats WHERE bookingId = ?`,
@@ -176,7 +185,9 @@ function createBookingsRouter(pool) {
       );
 
       if (result.affectedRows === 0) {
-        return res.status(404).json({ ok: false, message: "Booking not found" });
+        return res
+          .status(404)
+          .json({ ok: false, message: "Booking not found" });
       }
 
       res.json({ ok: true, message: "Booking cancelled" });
@@ -190,7 +201,10 @@ function createBookingsRouter(pool) {
   router.delete("/", async (req, res) => {
     try {
       const [result] = await pool.query("DELETE FROM bookings");
-      res.json({ ok: true, message: `Deleted ${result.affectedRows} booking(s)` });
+      res.json({
+        ok: true,
+        message: `Deleted ${result.affectedRows} booking(s)`,
+      });
     } catch (e) {
       console.error(e);
       res.status(500).json({ ok: false, message: e.message });
@@ -201,10 +215,14 @@ function createBookingsRouter(pool) {
   router.delete("/:id", async (req, res) => {
     try {
       const { id } = req.params;
-      const [result] = await pool.query("DELETE FROM bookings WHERE id = ?", [id]);
+      const [result] = await pool.query("DELETE FROM bookings WHERE id = ?", [
+        id,
+      ]);
 
       if (result.affectedRows === 0) {
-        return res.status(404).json({ ok: false, message: "Booking not found" });
+        return res
+          .status(404)
+          .json({ ok: false, message: "Booking not found" });
       }
 
       res.json({ ok: true, message: `Booking ${id} deleted successfully` });
