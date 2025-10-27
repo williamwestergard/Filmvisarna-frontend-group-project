@@ -1,0 +1,29 @@
+.ageinfo-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 8px 20px 0;
+  }
+  
+  .ageinfo-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 9px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: #232232;
+    color: var(--text-light, #f9f9f9);
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: .2px;
+    transition: background .2s ease, border-color .2s ease, transform .05s ease;
+  }
+  
+  .ageinfo-trigger:hover {
+    background: #2d2d3d;
+    border-color: rgba(255,255,255,0.2);
+  }
+  
+  .ageinfo-trigger:active {
+    transform: translateY(1px);
+  }
