@@ -12,97 +12,125 @@ interface RegisterFormProps {
   }) => void;
 }
 
-function RegisterForm({ onRegister }: RegisterFormProps) {
+export default function RegisterForm({ onRegister }: RegisterFormProps) {
   const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName]   = useState("");
-  const [phone, setPhone]         = useState("");
-  const [email, setEmail]         = useState("");
-  const [password, setPassword]   = useState("");
+  const [lastName,  setLastName]  = useState("");
+  const [phone,     setPhone]     = useState("");
+  const [email,     setEmail]     = useState("");
+  const [password,  setPassword]  = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-
     if (password !== confirmPassword) {
       alert("Lösenorden matchar inte!");
       return;
     }
+    onRegister?.({ firstName, lastName, phone, email, password });
+  }
 
-    const userData = { firstName, lastName, phone, email, password };
-    console.log("Skapa Konto:", userData);
-    onRegister?.(userData);
-  };
-
-  const handleCancel = () => {
+  function handleCancel() {
     navigate("/");
-  };
+  }
 
   return (
-    <section className="register-wrap" aria-label="Registrering">
+    <section className="register-wrap" aria-label="Skapa konto">
       <div className="register-card">
-        <header className="register-header">
-          <img
-            src="/filmvisarnafooterbilden.png"
-            alt="Filmvisarna"
-            className="register-logo"
-          />
-          <h2 className="register-title">Skapa konto</h2>
-        </header>
+        {/* Logga + titel */}
+        <img
+          className="register-logo"
+          src="/filmvisarnafooterbilden.png"
+          alt="Filmvisarna"
+        />
+        <h2 className="register-title">Skapa konto</h2>
 
+        {/* Formulär */}
         <form className="register-form" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Förnamn"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Efternamn"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-          />
-          <input
-            type="tel"
-            placeholder="Telefonnummer"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            required
-          />
-          <input
-            type="email"
-            placeholder="E-postadress"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Lösenord"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Upprepa Lösenord"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
+          <div className="register-field">
+            <label htmlFor="firstName">Förnamn</label>
+            <input
+              id="firstName"
+              type="text"
+              placeholder="Förnamn"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
+          </div>
 
-          <button type="submit" className="register-button">Skapa Konto</button>
-          <button type="button" className="cancel-button" onClick={handleCancel}>
-            Avbryt
-          </button>
+          <div className="register-field">
+            <label htmlFor="lastName">Efternamn</label>
+            <input
+              id="lastName"
+              type="text"
+              placeholder="Efternamn"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="register-field">
+            <label htmlFor="phone">Telefonnummer</label>
+            <input
+              id="phone"
+              type="tel"
+              placeholder="Telefonnummer"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="register-field">
+            <label htmlFor="email">E-postadress</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="namn@exempel.se"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoComplete="email"
+            />
+          </div>
+
+          <div className="register-field">
+            <label htmlFor="password">Lösenord</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              autoComplete="new-password"
+            />
+          </div>
+
+          <div className="register-field">
+            <label htmlFor="confirmPassword">Upprepa lösenord</label>
+            <input
+              id="confirmPassword"
+              type="password"
+              placeholder="••••••••"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              autoComplete="new-password"
+            />
+          </div>
+
+          <div className="register-actions">
+            <button type="submit" className="btn btn-primary">Skapa konto</button>
+            <button type="button" className="btn btn-secondary" onClick={handleCancel}>
+              Avbryt
+            </button>
+          </div>
         </form>
       </div>
     </section>
   );
 }
-
-export default RegisterForm;
