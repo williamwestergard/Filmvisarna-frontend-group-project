@@ -13,46 +13,58 @@ function LoginForm({ onLogin }: LoginFormProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Logga in:", { email, password });
     onLogin?.(email, password);
   };
 
-  const handleCancel = () => {
-    navigate("/");
-  };
+  const handleCancel = () => navigate("/");
 
   return (
-    <form className="login-form" onSubmit={handleSubmit}>
-      {/* Filmvisarna-logga i toppen av rutan */}
+    <form className="login-form" onSubmit={handleSubmit} aria-label="Logga in">
+      {/* Logo */}
       <img
-        src="/filmvisarnafooterbilden.png"
-        alt="Filmvisarna logotyp"
         className="login-logo-inside"
+        src="/filmvisarnafooterbilden.png"
+        alt="Filmvisarna"
       />
 
-      <input
-        type="email"
-        placeholder="E-postadress"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
+      {/* Header */}
+      <h2 className="login-title">Logga in</h2>
 
-      <input
-        type="password"
-        placeholder="Lösenord"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
+      {/* Email - field */}
+      <div className="login-field">
+        <label htmlFor="login-email">E-postadress</label>
+        <input
+          id="login-email"
+          type="email"
+          placeholder="namn@exempel.se"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          autoComplete="email"
+        />
+      </div>
 
-      <button type="submit" className="login-button">
-        Logga in
-      </button>
+      {/* Password- field */}
+      <div className="login-field">
+        <label htmlFor="login-password">Lösenord</label>
+        <input
+          id="login-password"
+          type="password"
+          placeholder="••••••••"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          autoComplete="current-password"
+        />
+      </div>
 
-      <button type="button" className="cancel-button" onClick={handleCancel}>
-        Avbryt
-      </button>
+      {/* Buttons */}
+      <div className="login-actions">
+        <button type="submit" className="login-button">Logga in</button>
+        <button type="button" className="cancel-button" onClick={handleCancel}>
+          Avbryt
+        </button>
+      </div>
     </form>
   );
 }
