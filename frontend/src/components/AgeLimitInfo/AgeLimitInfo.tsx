@@ -72,7 +72,25 @@ export default function AgeLimitInfo() {
             </header>
 
             <div className="ageinfo-body" id="ageinfo-desc">
-            
+              <ul className="ageinfo-list">
+                <li>
+                  <strong>Barntillåten</strong> – Alla åldrar välkomna.
+                </li>
+                <li>
+                  <strong>7+</strong> – Barn under 7 år i vuxet sällskap.
+                </li>
+                <li>
+                  <strong>11+</strong> – Barn 7–10 år i vuxet sällskap.
+                </li>
+                <li>
+                  <strong>15+</strong> – Från 15 år. Yngre får inte se filmen.
+                </li>
+              </ul>
+              <p className="ageinfo-note">
+                Tips: På filmsidan visar vi åldersgränsen bredvid genrerna. När
+                du väljer biljetter kan <em>barnbiljett</em> endast väljas för
+                barntillåtna visningar.
+              </p>
             </div>
 
             <footer className="ageinfo-footer">
