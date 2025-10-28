@@ -83,7 +83,7 @@ export default function AgeLimitInfo() {
                   <strong>11+</strong> – Barn 7–10 år i vuxet sällskap.
                 </li>
                 <li>
-                  <strong>15+</strong> – Från 15 år. Yngre får inte se filmen.
+                  <strong>15+</strong> – Från 15 år. 
                 </li>
               </ul>
               <p className="ageinfo-note">

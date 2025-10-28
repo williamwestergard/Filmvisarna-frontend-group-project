@@ -4,6 +4,7 @@
   padding: 8px 20px 0;
 }
 
+/* Button - Homepage */
 .ageinfo-trigger {
   display: inline-flex;
   align-items: center;
@@ -28,6 +29,7 @@
   transform: translateY(1px);
 }
 
+/*  */
 .ageinfo-overlay {
   position: fixed;
   inset: 0;
@@ -48,6 +50,7 @@
   overflow: hidden;
 }
 
+/*  */
 .ageinfo-header {
   display: flex;
   align-items: center;
@@ -77,30 +80,68 @@
 }
 .ageinfo-close:hover { opacity: 1; background: rgba(255,255,255,0.08); }
 
+/* Body */
 .ageinfo-body {
-  padding: 19px 16px 4px;
+  padding: 22px 26px 10px;
+  text-align: left; 
+  line-height: 1.6;
 }
 
+/* List */
 .ageinfo-list {
-  margin: 0 0 10px;
-  padding-left: 18px;
+  margin: 0 0 18px;
+  padding-left: 0;
+  list-style: none;
 }
-.ageinfo-list li + li { margin-top: 6px; }
 
+.ageinfo-list li {
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 22px;
+}
+
+/* Dotted */
+.ageinfo-list li::before {
+  content: "•";
+  position: absolute;
+  left: 5px;
+  top: 0;
+  color: var(--red-primary, #c41230);
+  font-weight: bold;
+}
+
+/* Kategories - color */
+.ageinfo-list li strong {
+  font-weight: 800;
+  color: #ffb3bf;
+  margin-right: 6px;
+  letter-spacing: 0.3px;
+}
+
+/* Text-section */
+.ageinfo-list li {
+  color: #d9daef;
+  font-size: 0.96rem;
+}
+
+/* Notis-text */
 .ageinfo-note {
-  margin: 22px 0 0;
+  margin-top: 26px;
   font-size: .95rem;
   color: #cfd3ff;
   opacity: .9;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 12px;
 }
 
+/* Footer */
 .ageinfo-footer {
   display: flex;
   justify-content: flex-end;
   padding: 12px 16px 14px;
   gap: 8px;
 }
-
+/*Button*/
 .ageinfo-ok {
   appearance: none;
   border: none;
@@ -116,3 +157,29 @@
 }
 .ageinfo-ok:hover { filter: brightness(1.07); }
 .ageinfo-ok:active { transform: translateY(1px); }
+
+@media (max-width: 600px) {
+  .ageinfo-dialog {
+    width: 70vw;             /* gör rutan mindre */
+    border-radius: 8px;
+  }
+
+  .ageinfo-body {
+    padding: 18px 16px 10px;
+    font-size: 0.9rem;
+  }
+
+  .ageinfo-list li {
+    padding-left: 18px;
+    margin-bottom: 8px;
+  }
+
+  .ageinfo-header h3 {
+    font-size: 1rem;
+  }
+
+  .ageinfo-ok {
+    padding: 9px 12px;
+    font-size: 0.9rem;
+  }
+}
