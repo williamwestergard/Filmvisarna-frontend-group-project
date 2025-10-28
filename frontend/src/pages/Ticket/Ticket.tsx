@@ -1,73 +1,185 @@
 import "./Ticket.css";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+
+interface BookingSeat {
+  seatId: number;
+  ticketTypeId: number;
+}
+
+interface Booking {
+  id: number;
+  bookingNumber: string;
+  screeningId: number;
+  userId: number;
+  status: string;
+  seats: BookingSeat[];
+}
+
+interface Screening {
+  id: number;
+  movieId: number;
+  auditoriumId: number;
+  time: string;
+}
+
+interface Movie {
+  id: number;
+  title: string;
+  language: string;
+}
+
+interface Auditorium {
+  id: number;
+  name: string;
+}
+
+interface Seat {
+  id: number;
+  rowLetter: string;
+  seatNumber: number;
+}
 
 export default function TicketPage() {
   const { bookingId } = useParams();
+  const navigate = useNavigate();
 
-  // Mocked booking data, this will later be replaced with data from the backend
-  const booking = {
-    movieTitle: "Filmtitel",
-    dateLabel: "Tisdag 18 sept.",
-    timeLabel: "kl 14:30",
-    priceType: "Ordinarie",
-    seats: [
-      { row: "E", number: 20, auditorium: "Salong 2" },
-      { row: "E", number: 21, auditorium: "Salong 2" },
-    ],
-    bookingCode: bookingId ?? "HÄR KOMMER ETT BOKNINGSNUMMER",
-  };
+  const [booking, setBooking] = useState<Booking | null>(null);
+  const [movie, setMovie] = useState<Movie | null>(null);
+  const [screening, setScreening] = useState<Screening | null>(null);
+  const [auditorium, setAuditorium] = useState<Auditorium | null>(null);
+  const [seats, setSeats] = useState<Seat[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadTicket() {
+      try {
+        if (!bookingId) {
+          setErrorMsg("No booking ID provided.");
+          return;
+        }
+
+        // Fetch booking data
+        const bookingRes = await fetch(`/api/bookings/${bookingId}`);
+        if (!bookingRes.ok) throw new Error("Failed to fetch booking");
+        const bookingJson = await bookingRes.json();
+        const currentBooking = bookingJson.booking || bookingJson;
+        setBooking(currentBooking);
+
+        // Fetch screening data
+        const screeningRes = await fetch(`/api/screenings/${currentBooking.screeningId}`);
+        if (!screeningRes.ok) throw new Error("Failed to fetch screening");
+        const screeningJson = await screeningRes.json();
+        setScreening(screeningJson);
+
+        // Fetch movie data
+        const movieRes = await fetch(`/api/movies/${screeningJson.movieId}`);
+        if (!movieRes.ok) throw new Error("Failed to fetch movie");
+        const movieJson = await movieRes.json();
+        setMovie(movieJson);
+
+        // Fetch auditorium data
+        const audRes = await fetch(`/api/auditoriums/${screeningJson.auditoriumId}`);
+        if (!audRes.ok) throw new Error("Failed to fetch auditorium");
+        const audJson = await audRes.json();
+        setAuditorium(audJson);
+
+        // Fetch seats for this auditorium
+        const seatsRes = await fetch(`/api/seats/auditorium/${screeningJson.auditoriumId}`);
+        if (seatsRes.ok) {
+          const seatsJson = await seatsRes.json();
+          setSeats(seatsJson.seats || seatsJson);
+        }
+      } catch (err) {
+        console.error("Error loading ticket:", err);
+        setErrorMsg("Could not load ticket information.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadTicket();
+  }, [bookingId]);
+
+  if (loading) return <p className="loading">Loading ticket...</p>;
+  if (errorMsg) return <p style={{ color: "white", textAlign: "center" }}>{errorMsg}</p>;
+
+  if (!booking || !movie || !screening) {
+    return <p style={{ color: "white", textAlign: "center" }}>Ticket not found.</p>;
+  }
+
+  const dateObj = new Date(screening.time);
+  const formattedDate = dateObj.toLocaleDateString("sv-SE", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  const formattedTime = dateObj.toLocaleTimeString("sv-SE", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  const seatLabels =
+    booking.seats
+      ?.map((b) => {
+        const found = seats.find((s) => s.id === b.seatId);
+        return found ? `Row ${found.rowLetter} – Seat ${found.seatNumber}` : `#${b.seatId}`;
+      })
+      .join(", ") || "N/A";
 
   return (
     <section className="ticket-page">
       <div className="ticket">
         <header className="ticket-header">
-          <h1 className="ticket-title">Dina biljetter är bokade!</h1>
+          <h1 className="ticket-title">Your tickets are booked!</h1>
         </header>
 
-        {/* bookibg information */}
         <div className="ticket-body">
-          <section className="ticket-info-panel" aria-label="Bokningsinformation">
-            <h2 className="ti-title">{booking.movieTitle}</h2>
+          <section className="ticket-info-panel" aria-label="Booking information">
+            <h2 className="ti-title">{movie.title}</h2>
             <dl className="ti-list">
               <div className="ti-row">
-                <dt>Dag och datum</dt>
-                <dd>{booking.dateLabel}</dd>
+                <dt>Date</dt>
+                <dd>{formattedDate}</dd>
               </div>
               <div className="ti-row">
-                <dt>Tid</dt>
-                <dd>{booking.timeLabel}</dd>
+                <dt>Time</dt>
+                <dd>{formattedTime}</dd>
               </div>
               <div className="ti-row">
-                <dt>Biljettyp</dt>
-                <dd>{booking.priceType}</dd>
+                <dt>Auditorium</dt>
+                <dd>{auditorium?.name ?? "Unknown"}</dd>
               </div>
               <div className="ti-row">
-                <dt>Platser</dt>
-                <dd>
-                  {booking.seats.map((s, i) => (
-                    <span key={i} className="ti-seat">
-                      Rad {s.row} – stol {s.number} ({s.auditorium})
-                    </span>
-                  ))}
-                </dd>
+                <dt>Seats</dt>
+                <dd>{seatLabels}</dd>
               </div>
             </dl>
           </section>
 
-          {/* Right panel for information */}
-          <aside className="ticket-note" aria-label="Viktig information">
-            <p className="note-title">OBS:</p>
+          <aside className="ticket-note" aria-label="Important information">
+            <p className="note-title">Note:</p>
             <p className="note-text">
-              Visa upp bokningsnumret till personalen i kassan för att använda dina bokade platser.
+              Show your booking number at the counter to confirm your tickets.
             </p>
           </aside>
         </div>
 
         <div className="ticket-divider" aria-hidden="true" />
-          {/* Booking number footer */}
+
         <footer className="ticket-footer">
-          <p className="ticket-footer-label">Bokningsnummer:</p>
-          <div className="ticket-number-slot">{booking.bookingCode}</div>
+          <p className="ticket-footer-label">Booking number:</p>
+          <div className="ticket-number-slot">{booking.bookingNumber}</div>
+
+          <button
+            className="book-btn"
+            style={{ marginTop: "1rem" }}
+            onClick={() => navigate("/")}
+          >
+            Back to Home
+          </button>
         </footer>
       </div>
     </section>
