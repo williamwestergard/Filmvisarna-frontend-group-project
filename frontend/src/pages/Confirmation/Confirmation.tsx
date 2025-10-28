@@ -58,7 +58,6 @@ export default function Confirmation() {
   useEffect(() => {
     async function loadBooking() {
       try {
-        // Load booking from localStorage
         const stored = localStorage.getItem("filmvisarna-booking");
         if (!stored) {
           setErrorMsg("No booking found.");
@@ -111,7 +110,7 @@ export default function Confirmation() {
           setTotals(totalsJson);
         }
 
-        // Fetch seats for auditorium
+        // Fetch seats
         const seatsRes = await fetch(`/api/seats/auditorium/${screeningJson.auditoriumId}`);
         if (seatsRes.ok) {
           const seatsJson = await seatsRes.json();
@@ -149,7 +148,7 @@ export default function Confirmation() {
     return <p style={{ color: "white", textAlign: "center" }}>Booking not found.</p>;
   }
 
-  // Format date and time
+  // Format date/time
   const dateObj = new Date(screening.time);
   const formattedDate = dateObj.toLocaleDateString("sv-SE", {
     weekday: "long",
@@ -162,7 +161,7 @@ export default function Confirmation() {
     minute: "2-digit",
   });
 
-  // Build readable seat labels
+  // Seat labels
   const seatLabels =
     booking.seats
       ?.map((b) => {
@@ -171,7 +170,6 @@ export default function Confirmation() {
       })
       .join(", ") || "Not available";
 
-  // Render confirmation card
   return (
     <main className="confirmation-page">
       <button className="back-btn-top" onClick={() => navigate(-1)}>
@@ -183,28 +181,28 @@ export default function Confirmation() {
           <h2>{movie.title}</h2>
           <p className="language">{movie.language}</p>
           <p><strong>{formattedDate}</strong></p>
-          <p>Tid: {formattedTime}</p>
-          <p>Salong: {auditorium?.name ?? `Auditorium ${screening.auditoriumId}`}</p>
-          <p>Säten: {seatLabels}</p>
+          <p>Time: {formattedTime}</p>
+          <p>Auditorium: {auditorium?.name ?? `Auditorium ${screening.auditoriumId}`}</p>
+          <p>Seats: {seatLabels}</p>
           <p className="sum">
-            Totalt pris: {totals?.totalPrice ? `${totals.totalPrice} kr` : "Not available"}
+            Total: {totals?.totalPrice ? `${totals.totalPrice} kr` : "Not available"}
           </p>
 
           <div className="button-group">
-            <a href="/ticket">
-            <button 
-              className="book-btn">
-              Boka biljetterna
+            <button
+              className="book-btn"
+              onClick={() => navigate(`/ticket/${booking.id}`)}
+            >
+              Visa biljetterna
             </button>
-            </a>
           </div>
         </div>
 
-        <img 
-              className="booking-movie-card"
-              src={`http://localhost:4000/images/posters/${movie.posterUrl}`}
-              alt={movie.title}
-            />
+        <img
+          className="booking-movie-card"
+          src={`http://localhost:4000/images/posters/${movie.posterUrl}`}
+          alt={movie.title}
+        />
       </section>
     </main>
   );
