@@ -1,12 +1,12 @@
 .confirmation-page {
   display: flex;
   flex-direction: column;
-  align-items: center;       
-  justify-content: center;  
-  min-height: 100vh;        
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
   background-color: transparent;
-  position: relative;        
-  top: -100px;              
+  position: relative;
+  top: -100px;
 }
 
 /* === MAIN BOOKING CARD === */
@@ -87,9 +87,9 @@
 
 /* Red booking button */
 .book-btn {
-  background-color: #cc0028;
+  background-color: #c41230;
   border: none;
-  padding: 0.3rem 3rem;
+  padding: 1.3rem 3rem;
   color: white;
   font-weight: bold;
   font-size: medium;
@@ -99,7 +99,7 @@
 }
 
 .book-btn:hover {
-  background-color: #e00633;
+  background-color: #b40f2b;
 }
 
 /* Top “back” button (above card) */
@@ -129,9 +129,6 @@
   margin-top: 5rem;
   font-size: 1.2rem;
 }
-
-
-
 
 /* === RESPONSIVE DESIGN === */
 
@@ -165,7 +162,7 @@
 /* Tablet layout */
 @media (max-width: 768px) {
   .booking-card {
-    flex-direction: column;   /* Stack content vertically */
+    flex-direction: column; /* Stack content vertically */
     align-items: center;
     text-align: center;
     width: 90%;
@@ -231,4 +228,3 @@
     font-size: 0.9rem;
   }
 }
-

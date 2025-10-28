@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useBooking } from "../../context/BookingContext";
+import { useBooking } from "../../Context/BookingContext";
 import BookingPriceCard from "../../components/BookingPriceCard/BookingPriceCard";
 import MovieBooking from "../../components/Movies/MovieBooking";
 import AvailableDates from "../../components/AvailableDates/AvailableDates";
@@ -194,22 +194,23 @@ function BookingContent() {
               className="confirm-btn"
               disabled={!canProceed}
               onClick={handleBooking}
-              title={
-                canProceed
-                  ? "Gå vidare till bekräftelse"
-                  : "Välj visning, biljetter och platser först"
-              }
-            >
-              Slutför bokning
+                
+              style={{
+                backgroundColor: canProceed && !loadingBooking ? "#c41230" : "#716d7a",
+                pointerEvents: canProceed && !loadingBooking ? "auto" : "none",
+                cursor: canProceed && !loadingBooking ? "pointer" : "not-allowed",
+                   }}>
+              {loadingBooking ? "Bokar..." : "Gå vidare"}
+     {!canProceed && (
+            <p className="confirm-btn-nonclickable-text" style={{ opacity: 0.7, textAlign: "center" }}>
+             Välj tid och antal platser för att fortsätta.
+            </p>
+          )}
+
+          
             </button>
 
-           {/* Hint text when not ready*/}
-            {!canProceed && ( 
-              <p className="confirm-hint">
-                Välj visning, antal biljetter och markera {totalTickets} plats
-                {totalTickets === 1 ? "" : "er"} i salongen.
-              </p>
-            )}
+          
           </section>
         </section>
       </section>
@@ -225,21 +226,23 @@ function BookingContent() {
               style={{
                 padding: "0.8rem 1.2rem",
                 fontWeight: 600,
-                borderRadius: 8,
+                fontSize:"15px",
+                borderRadius: 5,
                 border: "none",
+                width:"100%",
                 cursor: canProceed && !loadingBooking ? "pointer" : "not-allowed",
-                opacity: canProceed ? 1 : 0.5,
+                pointerEvents: canProceed && !loadingBooking ? "auto" : "none",
+                backgroundColor: canProceed && !loadingBooking ? "#c41230" : "#716d7a",
+                color: canProceed && !loadingBooking ? "#fff" : "#dbdbdb",
+                opacity: canProceed ? 1 : 0.9,
+                display: canProceed ? "block" : "none",
               }}
             >
-              {loadingBooking ? "Booking..." : "Go to Confirmation"}
+              {loadingBooking ? "Bokar..." : "Gå vidare"}
             </button>
           </div>
 
-          {!canProceed && (
-            <p style={{ fontSize: 14, opacity: 0.7, textAlign: "right" }}>
-              Please select movie, time, and seats to continue.
-            </p>
-          )}
+     
         </article>
       )}
     </main>
