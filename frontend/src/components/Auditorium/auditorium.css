@@ -46,41 +46,27 @@
   z-index: 0;
 }
 
+/* === Ny dynamisk layout === */
 .auditorium-seats-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 2vh;
   margin: 0 auto;
   width: fit-content;
   z-index: 1;
 }
 
-[class^="auditorium-one-seats-"] {
-  display: grid;
-  grid-template-columns: repeat(12, auto);
+/* Varje rad med stolar (A, B, C...) */
+.auditorium-row {
+  display: flex;
   justify-content: center;
-  justify-items: center;
   align-items: center;
-  margin-bottom: 2vh;
-  gap: 0.5vw;
+  gap: 0.6vw;
 }
 
-[class^="auditorium-two-seats-"] {
-  display: grid;
-  grid-template-columns: repeat(12, auto);
-  justify-content: center;
-  justify-items: center;
-  align-items: center;
-  margin-bottom: 2vh;
-  gap: 0.5vw;
-}
-.seat-placeholder {
-  height: clamp(30px, 2.6vw, 40px);
-  width: clamp(30px, 2.6vw, 40px);
-  visibility: hidden;
-}
-
+/* === Stolar === */
 .auditorium-seat {
   height: clamp(30px, 2.6vw, 40px);
   width: clamp(30px, 2.6vw, 40px);
@@ -88,9 +74,13 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.15s ease, transform 0.1s ease;
-  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
 }
 
+/* Hover-effekter */
 .auditorium-seat:hover:not(.is-occupied):not(.is-disabled):not(.is-selected) {
   transform: scale(1.08);
   background-color: rgb(220, 220, 220);
@@ -100,15 +90,17 @@
   background-color: #c41230;
 }
 
-/* selected*/
+/* selected */
 .auditorium-seat.is-selected {
   background-color: #c41230;
+  color: white;
 }
 
 /* occupied */
 .auditorium-seat.is-occupied {
   background-color: #353535;
-  border: 1px solid rgba(255, 255, 255, 0.418);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: white;
   cursor: not-allowed;
 }
 
@@ -118,6 +110,7 @@
   cursor: not-allowed;
 }
 
+/* === Info-sektion nedanför stolarna === */
 .auditorium-information-bottom {
   display: flex;
   flex-direction: row;
@@ -147,13 +140,13 @@
 .auditorium-information-bottom-occupied-seat {
   height: clamp(30px, 2.6vw, 40px);
   width: clamp(30px, 2.6vw, 40px);
-  background-color: rgb(200, 199, 199);
   border-radius: 5px;
 }
 
 .auditorium-information-bottom-user-seat {
   background-color: #c41230;
 }
+
 .auditorium-information-bottom-occupied-seat {
   background-color: #353535;
   border: 1px solid rgba(255, 255, 255, 0.418);
