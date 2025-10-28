@@ -21,7 +21,10 @@ function Home() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [showtimes, setShowtimes] = useState<Showtime[]>([]);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState(() => {
+  const today = new Date();
+  return today.toISOString().split("T")[0]; // Format: YYYY-MM-DD
+});
   const [searchTerm, setSearchTerm] = useState(""); // 👈 nytt state
 
   useEffect(() => {
@@ -58,6 +61,12 @@ function Home() {
             className="filter-dropdown"
             value={selectedDate}
             onChange={(event) => setSelectedDate(event.target.value)}
+             min={new Date().toISOString().split("T")[0]} // today
+            max={(() => {
+            const date = new Date();
+            date.setDate(date.getDate() + 14); // +14 days
+            return date.toISOString().split("T")[0];
+            })()} // 2 weeks ahead
           />
           <select
             className="filter-dropdown"
