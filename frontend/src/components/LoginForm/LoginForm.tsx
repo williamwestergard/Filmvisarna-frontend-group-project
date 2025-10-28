@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // For cancel button to go back to home page
+import { useNavigate } from "react-router-dom";
 import "./LoginForm.css";
 
 interface LoginFormProps {
@@ -9,8 +9,7 @@ interface LoginFormProps {
 function LoginForm({ onLogin }: LoginFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const navigate = useNavigate(); // hook, initialize the navigate function
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,11 +18,18 @@ function LoginForm({ onLogin }: LoginFormProps) {
   };
 
   const handleCancel = () => {
-    navigate("/"); // takes us back to home page
+    navigate("/");
   };
 
   return (
     <form className="login-form" onSubmit={handleSubmit}>
+      {/* Filmvisarna-logga i toppen av rutan */}
+      <img
+        src="/filmvisarnafooterbilden.png"
+        alt="Filmvisarna logotyp"
+        className="login-logo-inside"
+      />
+
       <input
         type="email"
         placeholder="E-postadress"
@@ -31,6 +37,7 @@ function LoginForm({ onLogin }: LoginFormProps) {
         onChange={(e) => setEmail(e.target.value)}
         required
       />
+
       <input
         type="password"
         placeholder="Lösenord"
@@ -38,9 +45,11 @@ function LoginForm({ onLogin }: LoginFormProps) {
         onChange={(e) => setPassword(e.target.value)}
         required
       />
+
       <button type="submit" className="login-button">
         Logga in
       </button>
+
       <button type="button" className="cancel-button" onClick={handleCancel}>
         Avbryt
       </button>

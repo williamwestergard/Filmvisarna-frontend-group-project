@@ -45,3 +45,24 @@
 .login-button:hover {
   background-color: var(--red-primary);
 }
+
+/* Logotyp */
+.login-form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-logo {
+  width: clamp(120px, 22vw, 180px);
+  height: auto;
+  margin-bottom: 1.2rem;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.login-logo:hover {
+  transform: scale(1.03);
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+}
