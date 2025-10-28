@@ -3,6 +3,7 @@ import "./AgeLimitInfo.css";
 
 export default function AgeLimitInfo() {
   const [open, setOpen] = useState(false);
+  const btnRef = useRef<HTMLButtonElement | null>(null);
   const dialogRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -26,11 +27,18 @@ export default function AgeLimitInfo() {
     };
   }, [open]);
 
+  useEffect(() => {
+    if (!open && btnRef.current) btnRef.current.focus();
+  }, [open]);
+
   return (
     <section className="ageinfo-wrap" aria-label="Information om åldersgränser">
       <button
+        ref={btnRef}
         type="button"
         className="ageinfo-trigger"
+        aria-haspopup="dialog"
+        aria-expanded={open}
         onClick={() => setOpen(true)}
         title="Visa info om åldersgränser"
       >
@@ -42,10 +50,16 @@ export default function AgeLimitInfo() {
       </button>
 
       {open && (
-        <div className="ageinfo-overlay">
+        <div
+          className="ageinfo-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="ageinfo-title"
+          aria-describedby="ageinfo-desc"
+        >
           <div className="ageinfo-dialog" ref={dialogRef}>
             <header className="ageinfo-header">
-              <h3>Åldersgränser på Filmvisarna</h3>
+              <h3 id="ageinfo-title">Åldersgränser på Filmvisarna</h3>
               <button
                 type="button"
                 className="ageinfo-close"
@@ -57,8 +71,8 @@ export default function AgeLimitInfo() {
               </button>
             </header>
 
-            <div className="ageinfo-body">
-              <p>Information kommer här.</p>
+            <div className="ageinfo-body" id="ageinfo-desc">
+            
             </div>
 
             <footer className="ageinfo-footer">
