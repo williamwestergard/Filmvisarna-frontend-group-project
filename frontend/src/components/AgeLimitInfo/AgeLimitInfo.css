@@ -160,7 +160,7 @@
 
 @media (max-width: 600px) {
   .ageinfo-dialog {
-    width: 70vw;             /* gör rutan mindre */
+    width: 70vw;
     border-radius: 8px;
   }
 
