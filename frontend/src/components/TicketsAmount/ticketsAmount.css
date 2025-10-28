@@ -5,7 +5,7 @@
   justify-content: space-between;
   width: 85%;
   margin: 0 auto;
-  margin-bottom: 2vh;
+  margin-bottom: 3vh;
 }
 
 .tickets-amount-container p {
@@ -21,6 +21,8 @@
 }
 
 .tickets-amount-type-reduced-price {
+  position: relative;
+  top: 0.3vh;
   color: #989191;
 }
 

@@ -1,6 +1,7 @@
 // Fil: Navbar.tsx
 import React, { useState, useEffect } from 'react';
 import './Navbar.css';
+import {  Link } from "react-router-dom";
 import logo from './navbar-logo.png'; // Importera din logotyp
 
 type User = {
@@ -77,25 +78,26 @@ const Navbar: React.FC = () => {
 
   const desktopNavigation = (
     <nav className="navbar navbar-desktop">
-      <a href="/" className="navbar-logo-link">
+      <Link to="/" className="navbar-logo-link">
         <img src={logo} alt="Filmvisarna Logotyp" className="logo-image" />
-      </a>
+      </Link>
 
       <div className="nav-menu-container nav-menu-container-desktop">
         <ul className="nav-menu nav-menu-desktop">
           <li className="nav-item">
-            <a href="/upptack" className="nav-link">Veckans Film</a>
+            
+            <Link to="/upptack" className="nav-link">Veckans Film</Link>
           </li>
           <li className="nav-item">
-            <a href="/" className="nav-link">På bio nu</a>
+           <Link to="/" className="nav-link">På bio nu</Link>
           </li>
           <li
             className={`nav-item dropdown ${isDropdownOpen ? 'open' : ''}`}
             onMouseLeave={() => setIsDropdownOpen(false)}
           >
-            <a href="#" className="nav-link" onClick={toggleDropdown} onKeyDown={(e) => e.key === 'Enter' && toggleDropdown(e)}>
+            <Link to="#" className="nav-link" onClick={toggleDropdown} onKeyDown={(e) => e.key === 'Enter' && toggleDropdown(e)}>
               Mer <span className="dropdown-arrow">▼</span>
-            </a>
+            </Link>
             <ul className="dropdown-menu">
               <li><a href="/om-oss" className="dropdown-link">Om oss</a></li>
               <li><a href="/shop" className="dropdown-link">Vår Kiosk</a></li>

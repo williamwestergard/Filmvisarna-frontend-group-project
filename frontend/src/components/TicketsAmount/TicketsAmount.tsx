@@ -1,5 +1,5 @@
 import "./ticketsAmount.css";
-import { useBooking } from "../../context/BookingContext";
+import { useBooking } from "../../Context/BookingContext";
 
 export default function TicketsAmount() {
   const { counts, increment, decrement, childAllowed } = useBooking();
@@ -12,6 +12,7 @@ export default function TicketsAmount() {
       <section className="tickets-amount-container">
         <section className="tickets-amount-type">
           <p>Ordinarie</p>
+               <p className="tickets-amount-type-reduced-price">140 kr</p>
         </section>
 
         <section className="tickets-amount-add-amount-container">
@@ -35,7 +36,7 @@ export default function TicketsAmount() {
       <section className="tickets-amount-container">
         <section className="tickets-amount-type">
           <p>Pensionär</p>
-          <p className="tickets-amount-type-reduced-price">10% rabatt</p>
+          <p className="tickets-amount-type-reduced-price">120 kr</p>
         </section>
 
         <section className="tickets-amount-add-amount-container">
@@ -60,6 +61,7 @@ export default function TicketsAmount() {
         <section className="tickets-amount-container">
           <section className="tickets-amount-type">
             <p>Barn</p>
+             <p className="tickets-amount-type-reduced-price">80 kr</p>
           </section>
          {/* Children ticket control */}
           <section className="tickets-amount-add-amount-container">

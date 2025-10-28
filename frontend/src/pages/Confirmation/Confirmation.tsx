@@ -183,32 +183,28 @@ export default function Confirmation() {
           <h2>{movie.title}</h2>
           <p className="language">{movie.language}</p>
           <p><strong>{formattedDate}</strong></p>
-          <p>Time: {formattedTime}</p>
-          <p>Auditorium: {auditorium?.name ?? `Auditorium ${screening.auditoriumId}`}</p>
-          <p>Seats: {seatLabels}</p>
+          <p>Tid: {formattedTime}</p>
+          <p>Salong: {auditorium?.name ?? `Auditorium ${screening.auditoriumId}`}</p>
+          <p>Säten: {seatLabels}</p>
           <p className="sum">
-            Total: {totals?.totalPrice ? `${totals.totalPrice} kr` : "Not available"}
+            Totalt pris: {totals?.totalPrice ? `${totals.totalPrice} kr` : "Not available"}
           </p>
 
           <div className="button-group">
-            <button
-              className="book-btn"
-              onClick={() => {
-                alert("Thank you for your booking! 🎬");
-                localStorage.removeItem("filmvisarna-booking");
-                navigate("/");
-              }}
-            >
-              Done – Back to Home
+            <a href="/ticket">
+            <button 
+              className="book-btn">
+              Boka biljetterna
             </button>
+            </a>
           </div>
         </div>
 
-        <img
-          className="poster"
-          src={movie.posterUrl || "/poster-placeholder.jpg"}
-          alt={`Poster for ${movie.title}`}
-        />
+        <img 
+              className="booking-movie-card"
+              src={`http://localhost:4000/images/posters/${movie.posterUrl}`}
+              alt={movie.title}
+            />
       </section>
     </main>
   );
