@@ -4,8 +4,6 @@ function Register() {
 
   return (
     <>
-      <h1>Skapa konto </h1>
-
   <RegisterForm />
     </>
   )

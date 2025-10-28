@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // for cancel button to go back to home page
+import { useNavigate } from "react-router-dom";
 import "./RegisterForm.css";
 
 interface RegisterFormProps {
@@ -12,17 +12,15 @@ interface RegisterFormProps {
   }) => void;
 }
 
-
-
 function RegisterForm({ onRegister }: RegisterFormProps) {
   const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [lastName, setLastName]   = useState("");
+  const [phone, setPhone]         = useState("");
+  const [email, setEmail]         = useState("");
+  const [password, setPassword]   = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const navigate = useNavigate(); // ← hook for navigation
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,21 +36,72 @@ function RegisterForm({ onRegister }: RegisterFormProps) {
   };
 
   const handleCancel = () => {
-    navigate("/"); // ← goes back to home page
+    navigate("/");
   };
 
   return (
-    <form className="register-form" onSubmit={handleSubmit}>
-      <input type="text" placeholder="Förnamn" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
-      <input type="text" placeholder="Efternamn" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
-      <input type="tel" placeholder="Telefonnummer" value={phone} onChange={(e) => setPhone(e.target.value)} required />
-      <input type="email" placeholder="E-postadress" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      <input type="password" placeholder="Lösenord" value={password} onChange={(e) => setPassword(e.target.value)} required />
-      <input type="password" placeholder="Upprepa Lösenord" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+    <section className="register-wrap" aria-label="Registrering">
+      <div className="register-card">
+        <header className="register-header">
+          <img
+            src="/filmvisarnafooterbilden.png"
+            alt="Filmvisarna"
+            className="register-logo"
+          />
+          <h2 className="register-title">Skapa konto</h2>
+        </header>
 
-      <button type="submit" className="register-button">Skapa Konto</button>
-      <button type="button" className="cancel-button" onClick={handleCancel}>Avbryt</button>
-    </form>
+        <form className="register-form" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Förnamn"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Efternamn"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            required
+          />
+          <input
+            type="tel"
+            placeholder="Telefonnummer"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+          />
+          <input
+            type="email"
+            placeholder="E-postadress"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Lösenord"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Upprepa Lösenord"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+
+          <button type="submit" className="register-button">Skapa Konto</button>
+          <button type="button" className="cancel-button" onClick={handleCancel}>
+            Avbryt
+          </button>
+        </form>
+      </div>
+    </section>
   );
 }
 
