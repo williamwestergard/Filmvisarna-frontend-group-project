@@ -109,6 +109,12 @@ const Navbar: React.FC = () => {
           {user ? (
             <>
               <li className="nav-item nav-user">
+                <img
+                  className="nav-user-avatar"
+                  src={user.avatarUrl || "/default-user.png"}
+                  alt="Användarbild"
+                  referrerPolicy="no-referrer"
+                />
                 <span className="nav-user-name" style={{ color: "var(--text-light)", fontWeight: 500 }}>
                   {user.firstName} {user.lastName}
                 </span>
@@ -196,7 +202,13 @@ const Navbar: React.FC = () => {
             {user ? (
             <>
               {/* Display user profile information when logged in */}
-              <div className="nav-item" style={{ display: "flex", alignItems: "center", padding: "0.5rem 0.9rem" }}>
+              <div className="nav-item" style={{ display: "flex", alignItems: "center", gap: 10, padding: "0.5rem 0.9rem" }}>
+                <img
+                  className="nav-user-avatar"
+                  src={user.avatarUrl || "/default-user.png"}
+                  alt="Användarbild"
+                  referrerPolicy="no-referrer"
+                />
                 <span className="nav-user-name" style={{ color: "var(--text-light)", fontWeight: 600 }}>
                   {user.firstName} {user.lastName}
                 </span>
