@@ -127,7 +127,7 @@ export default function Confirmation() {
     loadBooking();
   }, [navigate]);
 
-  if (loading) return <p className="loading">Loading booking...</p>;
+  if (loading) return <p className="loading">Laddar Bokning...</p>;
 
   if (errorMsg) {
     return (
@@ -138,14 +138,14 @@ export default function Confirmation() {
           onClick={() => navigate("/")}
           style={{ marginTop: "2rem" }}
         >
-          Back to Home
+          Tillbaka till startsidan
         </button>
       </main>
     );
   }
 
   if (!booking || !movie || !screening) {
-    return <p style={{ color: "white", textAlign: "center" }}>Booking not found.</p>;
+    return <p style={{ color: "white", textAlign: "center" }}>Bokningen kunde inte hittas.</p>;
   }
 
   // Format date/time
@@ -181,11 +181,11 @@ export default function Confirmation() {
           <h2>{movie.title}</h2>
           <p className="language">{movie.language}</p>
           <p><strong>{formattedDate}</strong></p>
-          <p>Time: {formattedTime}</p>
-          <p>Auditorium: {auditorium?.name ?? `Auditorium ${screening.auditoriumId}`}</p>
-          <p>Seats: {seatLabels}</p>
+          <p>Tid: {formattedTime}</p>
+          <p>Salong: {auditorium?.name ?? `Auditorium ${screening.auditoriumId}`}</p>
+          <p>Säten: {seatLabels}</p>
           <p className="sum">
-            Total: {totals?.totalPrice ? `${totals.totalPrice} kr` : "Not available"}
+            Summa: {totals?.totalPrice ? `${totals.totalPrice} kr` : "Not available"}
           </p>
 
           <div className="button-group">

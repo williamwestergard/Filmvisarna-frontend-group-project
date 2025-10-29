@@ -102,13 +102,13 @@ export default function TicketPage() {
     loadTicket();
   }, [bookingId]);
 
-  if (loading) return <p className="loading">Loading ticket...</p>;
+  if (loading) return <p className="loading">Laddar Biljett...</p>;
   if (errorMsg) return <p style={{ color: "white", textAlign: "center" }}>{errorMsg}</p>;
 
   if (!booking || !movie || !screening) {
-    return <p style={{ color: "white", textAlign: "center" }}>Ticket not found.</p>;
+    return <p style={{ color: "white", textAlign: "center" }}>Biljett kunde inte hittas.</p>;
   }
-
+  // Format date/time
   const dateObj = new Date(screening.time);
   const formattedDate = dateObj.toLocaleDateString("sv-SE", {
     weekday: "long",
@@ -133,7 +133,7 @@ export default function TicketPage() {
     <section className="ticket-page">
       <div className="ticket">
         <header className="ticket-header">
-          <h1 className="ticket-title">Your tickets are booked!</h1>
+          <h1 className="ticket-title">Dina biljtter är bokade!</h1>
         </header>
 
         <div className="ticket-body">
@@ -141,28 +141,28 @@ export default function TicketPage() {
             <h2 className="ti-title">{movie.title}</h2>
             <dl className="ti-list">
               <div className="ti-row">
-                <dt>Date</dt>
+                <dt>Datum</dt>
                 <dd>{formattedDate}</dd>
               </div>
               <div className="ti-row">
-                <dt>Time</dt>
+                <dt>Tid</dt>
                 <dd>{formattedTime}</dd>
               </div>
               <div className="ti-row">
-                <dt>Auditorium</dt>
+                <dt>Salong</dt>
                 <dd>{auditorium?.name ?? "Unknown"}</dd>
               </div>
               <div className="ti-row">
-                <dt>Seats</dt>
+                <dt>Säten</dt>
                 <dd>{seatLabels}</dd>
               </div>
             </dl>
           </section>
 
           <aside className="ticket-note" aria-label="Important information">
-            <p className="note-title">Note:</p>
+            <p className="note-title">OBS!</p>
             <p className="note-text">
-              Show your booking number at the counter to confirm your tickets.
+              Visa ditt bokningsnummer vid kassan för att bekräfta dina biljetter.
             </p>
           </aside>
         </div>
@@ -170,7 +170,7 @@ export default function TicketPage() {
         <div className="ticket-divider" aria-hidden="true" />
 
         <footer className="ticket-footer">
-          <p className="ticket-footer-label">Booking number:</p>
+          <p className="ticket-footer-label">Bokningsnummer:</p>  
           <div className="ticket-number-slot">{booking.bookingNumber}</div>
 
           <button
@@ -178,7 +178,7 @@ export default function TicketPage() {
             style={{ marginTop: "1rem" }}
             onClick={() => navigate("/")}
           >
-            Back to Home
+            Tillbaka till startsidan
           </button>
         </footer>
       </div>
