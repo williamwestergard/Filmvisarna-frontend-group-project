@@ -86,7 +86,7 @@ const Navbar: React.FC = () => {
         <ul className="nav-menu nav-menu-desktop">
           <li className="nav-item">
             
-            <Link to="/upptack" className="nav-link">Veckans Film</Link>
+            <Link to="/upptack" className="nav-link">Veckans film</Link>
           </li>
           <li className="nav-item">
            <Link to="/" className="nav-link">På bio nu</Link>
