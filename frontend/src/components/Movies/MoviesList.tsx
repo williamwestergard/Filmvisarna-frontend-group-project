@@ -71,7 +71,7 @@ export default function MovieList({
         const slug = movie.title.toLowerCase().replace(/\s+/g, "-");
 
         return (
-          <Link key={movie.id} to={`/booking/${slug}`} className="movie-link">
+          <Link key={movie.id} to={`/booking/${slug}`} state={{ selectedDate }} className="movie-link">
             <article>
               <img
                 className="movie-card"
