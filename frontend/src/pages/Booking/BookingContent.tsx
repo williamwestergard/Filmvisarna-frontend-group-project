@@ -36,6 +36,7 @@ function BookingContent() {
   const [loadingBooking, setLoadingBooking] = useState(false);
 
   const location = useLocation();
+  const selectedDateFromHome = (location.state as any)?.selectedDate || "";
   const navigate = useNavigate();
 
   // Paketpris passed from "Boka nu" (if user came via WeeklyMovie)

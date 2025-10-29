@@ -16,14 +16,15 @@ type AvailableDatesProps = {
   onSelectScreening?: (screening: Screening) => void;
 };
 
-
 // Get week number (Monday–Sunday)
 function getWeekNumber(date: Date) {
   const tempDate = new Date(date);
   tempDate.setHours(0, 0, 0, 0);
   tempDate.setDate(tempDate.getDate() + 4 - (tempDate.getDay() || 7));
   const yearStart = new Date(tempDate.getFullYear(), 0, 1);
-  return Math.ceil(((tempDate.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+  return Math.ceil(
+    ((tempDate.getTime() - yearStart.getTime()) / 86400000 + 1) / 7
+  );
 }
 
 function getWeekOffset(allDates: string[], selectedDate: string) {
@@ -44,51 +45,14 @@ function AvailableDates({ movieId, onSelectScreening }: AvailableDatesProps) {
   const { setScreening } = useBooking();
   const [screenings, setScreenings] = useState<Screening[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>("");
-  const [selectedScreeningId, setSelectedScreeningId] = useState<number | null>(null);
+  const [selectedScreeningId, setSelectedScreeningId] = useState<number | null>(
+    null
+  );
   const [weekOffset, setWeekOffset] = useState(0);
 
-
-   // Fetch screenings 
+  // Fetch screenings
   useEffect(() => {
     if (!movieId) return;
-    fetch(`/api/screenings?movieId=${movieId}`)
-      .then((res) => res.json())
-      .then((data: Screening[]) => {
-        const movieScreenings = data.filter((s) => s.movieId === movieId);
-        setScreenings(movieScreenings);
-      })
-      .catch((err) => console.error(err));
-  }, [movieId]);
-
-
-useEffect(() => {
-  const savedData = localStorage.getItem("selectedScreening");
-  if (!savedData) return;
-
-  const { movieId: savedMovieId, screening, selectedDate: savedDate, weekOffset: savedWeekOffset, expiresAt } = JSON.parse(savedData);
-
-  if (savedMovieId === movieId && Date.now() < expiresAt) {
-    setSelectedDate(savedDate);
-    setSelectedScreeningId(screening?.id || null);
-    setScreening(screening || null);
-    setWeekOffset(savedWeekOffset || 0);
-  }
-}, [screenings, movieId, setScreening]);
-
-
- useEffect(() => {
-  return () => {
-    // Only clear if leaving the booking page
-    if (!location.pathname.startsWith("/booking")) {
-      localStorage.removeItem("selectedScreening");
-    }
-  };
-}, [location.pathname]);
-
-  useEffect(() => {
-    if (!movieId) return;
-
-    // Fetch screenings only for this movie
     fetch(`/api/screenings?movieId=${movieId}`)
       .then((res) => res.json())
       .then((data: Screening[]) => {
@@ -98,11 +62,40 @@ useEffect(() => {
       .catch((err) => console.error("Error fetching screenings:", err));
   }, [movieId]);
 
-  // Work only with the current movie's screenings
+  // LocalStorage restore logic
+  useEffect(() => {
+    const savedData = localStorage.getItem("selectedScreening");
+    if (!savedData) return;
+
+    const {
+      movieId: savedMovieId,
+      screening,
+      selectedDate: savedDate,
+      weekOffset: savedWeekOffset,
+      expiresAt,
+    } = JSON.parse(savedData);
+
+    if (savedMovieId === movieId && Date.now() < expiresAt) {
+      setSelectedDate(savedDate);
+      setSelectedScreeningId(screening?.id || null);
+      setScreening(screening || null);
+      setWeekOffset(savedWeekOffset || 0);
+    }
+  }, [screenings, movieId, setScreening]);
+
+  // Auto-remove data when leaving booking page
+  useEffect(() => {
+    return () => {
+      if (!location.pathname.startsWith("/booking")) {
+        localStorage.removeItem("selectedScreening");
+      }
+    };
+  }, [location.pathname]);
+
+  // Work only with current movie's screenings
   const uniqueDates = Array.from(
     new Set(screenings.map((s) => s.time.slice(0, 10)))
   ).sort();
-
 
   const firstScreeningDate = new Date(uniqueDates[0]);
   const lastScreeningDate = new Date(uniqueDates[uniqueDates.length - 1]);
@@ -126,42 +119,66 @@ useEffect(() => {
     (s) => s.time.slice(0, 10) === selectedDate
   );
 
-const handleSelectDate = (date: string) => {
-  if (screenings.some((s) => s.time.slice(0, 10) === date)) {
-    setSelectedDate(date);
-    setSelectedScreeningId(null);
+  // Auto-select the only screening if a day has just one
+  useEffect(() => {
+    if (!selectedDate) return;
+
+    const timesForDate = screenings.filter(
+      (s) => s.time.slice(0, 10) === selectedDate
+    );
+
+    if (timesForDate.length === 1) {
+      const onlyScreening = timesForDate[0];
+      setSelectedScreeningId(onlyScreening.id);
+      setScreening(onlyScreening);
+
+      const expiresAt = Date.now() + 10 * 60 * 1000;
+      localStorage.setItem(
+        "selectedScreening",
+        JSON.stringify({
+          movieId,
+          screening: onlyScreening,
+          selectedDate,
+          weekOffset,
+          expiresAt,
+        })
+      );
+    }
+  }, [selectedDate, screenings]);
+
+  const handleSelectDate = (date: string) => {
+    if (screenings.some((s) => s.time.slice(0, 10) === date)) {
+      setSelectedDate(date);
+      setSelectedScreeningId(null);
+
+      const expiresAt = Date.now() + 10 * 60 * 1000;
+      const data = {
+        movieId,
+        screening: null,
+        selectedDate: date,
+        weekOffset,
+        expiresAt,
+      };
+      localStorage.setItem("selectedScreening", JSON.stringify(data));
+    }
+  };
+
+  const handleSelectTime = (screening: Screening) => {
+    setSelectedScreeningId(screening.id);
+    setSelectedDate(screening.time.slice(0, 10));
+    onSelectScreening?.(screening);
+    setScreening(screening);
 
     const expiresAt = Date.now() + 10 * 60 * 1000;
-    const data = { movieId, screening: null, selectedDate: date, weekOffset, expiresAt };
+    const data = {
+      movieId,
+      screening,
+      selectedDate: screening.time.slice(0, 10),
+      weekOffset,
+      expiresAt,
+    };
     localStorage.setItem("selectedScreening", JSON.stringify(data));
-  }
-};
-
-const handleSelectTime = (screening: Screening) => {
-  setSelectedScreeningId(screening.id);
-  setSelectedDate(screening.time.slice(0, 10));
-  onSelectScreening?.(screening);
-  setScreening(screening);
-
-  const expiresAt = Date.now() + 10 * 60 * 1000;
-  const data = { movieId, screening, selectedDate: screening.time.slice(0, 10), weekOffset, expiresAt };
-  localStorage.setItem("selectedScreening", JSON.stringify(data));
-};
-
-  useEffect(() => {
-    if (screenings.length === 0) return;
-    const savedData = localStorage.getItem("selectedScreening");
-    if (!savedData) return;
-
-    const { movieId: savedMovieId, screening, selectedDate: savedDate, weekOffset: savedWeekOffset, expiresAt } = JSON.parse(savedData);
-
-    if (savedMovieId === movieId && Date.now() < expiresAt) {
-      setSelectedDate(savedDate);
-      setSelectedScreeningId(screening?.id || null);
-      setScreening(screening || null);
-      setWeekOffset(savedWeekOffset || 0);
-    }
-  }, [screenings, movieId, setScreening]);
+  };
 
   // Clear localStorage when leaving booking page
   useEffect(() => {
@@ -171,7 +188,6 @@ const handleSelectTime = (screening: Screening) => {
       }
     };
   }, [location.pathname]);
-
 
   return (
     <section className="available-dates">
@@ -183,29 +199,40 @@ const handleSelectTime = (screening: Screening) => {
             <h3>Välj dag</h3>
             {selectedDate && (
               <p className="current-month">
-                {new Date(selectedDate).toLocaleString("sv-SE", { month: "long" })}
+                {new Date(selectedDate).toLocaleString("sv-SE", {
+                  month: "long",
+                })}
               </p>
             )}
           </article>
 
           <article className="choose-week">
             <img
-              className={`choose-week-arrow-left ${weekOffset === 0 ? "disabled" : ""}`}
+              className={`choose-week-arrow-left ${
+                weekOffset === 0 ? "disabled" : ""
+              }`}
               src={ArrowLeft}
-              onClick={() => { if (weekOffset > 0) setWeekOffset(prev => prev - 1); }}
+              onClick={() => {
+                if (weekOffset > 0) setWeekOffset((prev) => prev - 1);
+              }}
             />
 
             <span className="current-week">
-              {datesForCurrentWeek.length > 0 ? `v.${getWeekNumber(new Date(datesForCurrentWeek[0]))}` : ""}
+              {datesForCurrentWeek.length > 0
+                ? `v.${getWeekNumber(new Date(datesForCurrentWeek[0]))}`
+                : ""}
             </span>
 
             <img
               className={`choose-week-arrow-right ${
                 (() => {
                   const nextStartIndex = (weekOffset + 1) * 7;
-                  const nextWeekDates = allDates.slice(nextStartIndex, nextStartIndex + 7);
-                  const hasNextWeekScreening = nextWeekDates.some(date =>
-                    screenings.some(s => s.time.slice(0, 10) === date)
+                  const nextWeekDates = allDates.slice(
+                    nextStartIndex,
+                    nextStartIndex + 7
+                  );
+                  const hasNextWeekScreening = nextWeekDates.some((date) =>
+                    screenings.some((s) => s.time.slice(0, 10) === date)
                   );
                   return hasNextWeekScreening ? "" : "disabled";
                 })()
@@ -213,11 +240,14 @@ const handleSelectTime = (screening: Screening) => {
               src={ArrowRight}
               onClick={() => {
                 const nextStartIndex = (weekOffset + 1) * 7;
-                const nextWeekDates = allDates.slice(nextStartIndex, nextStartIndex + 7);
-                const hasNextWeekScreening = nextWeekDates.some(date =>
-                  screenings.some(s => s.time.slice(0, 10) === date)
+                const nextWeekDates = allDates.slice(
+                  nextStartIndex,
+                  nextStartIndex + 7
                 );
-                if (hasNextWeekScreening) setWeekOffset(prev => prev + 1);
+                const hasNextWeekScreening = nextWeekDates.some((date) =>
+                  screenings.some((s) => s.time.slice(0, 10) === date)
+                );
+                if (hasNextWeekScreening) setWeekOffset((prev) => prev + 1);
               }}
             />
           </article>
@@ -225,16 +255,22 @@ const handleSelectTime = (screening: Screening) => {
 
         {/* Dates (Mån–Sön) */}
         <section className="dates-container">
-          {datesForCurrentWeek.map(date => {
-            const hasScreening = screenings.some(s => s.time.slice(0, 10) === date);
-            const day = new Date(date).toLocaleString("sv-SE", { weekday: "short" });
+          {datesForCurrentWeek.map((date) => {
+            const hasScreening = screenings.some(
+              (s) => s.time.slice(0, 10) === date
+            );
+            const day = new Date(date).toLocaleString("sv-SE", {
+              weekday: "short",
+            });
             const dayNumber = new Date(date).getDate();
             const isSelected = selectedDate === date;
 
             return (
               <article
                 key={date}
-                className={`date-card ${isSelected ? "selected" : ""} ${!hasScreening ? "no-screening" : ""}`}
+                className={`date-card ${isSelected ? "selected" : ""} ${
+                  !hasScreening ? "no-screening" : ""
+                }`}
                 onClick={() => handleSelectDate(date)}
               >
                 {hasScreening ? (
@@ -252,22 +288,36 @@ const handleSelectTime = (screening: Screening) => {
 
         {/* Time cards */}
         <section className="choose-day-content">
-          {selectedDate && screeningsForSelectedDate.map(screening => {
-            const time = new Date(screening.time).toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
-            const isSelected = selectedScreeningId === screening.id;
+          {selectedDate &&
+            screeningsForSelectedDate.map((screening) => {
+              const time = new Date(screening.time).toLocaleTimeString(
+                "sv-SE",
+                { hour: "2-digit", minute: "2-digit" }
+              );
+              const isSelected = selectedScreeningId === screening.id;
 
-            return (
-              <article
-                key={screening.id}
-                className={`choose-day-container ${isSelected ? "selected" : ""}`}
-                onClick={() => handleSelectTime(screening)}
-              >
-                <p className="choose-day-text">{new Date(screening.time).toLocaleDateString("sv-SE", { weekday: "short" })}</p>
-                <p className="choose-day-time">Kl {time}</p>
-              </article>
-            );
-          })}
-          {!selectedDate && <p className="choose-day-placeholder">Välj en dag för att se tider</p>}
+              return (
+                <article
+                  key={screening.id}
+                  className={`choose-day-container ${
+                    isSelected ? "selected" : ""
+                  }`}
+                  onClick={() => handleSelectTime(screening)}
+                >
+                  <p className="choose-day-text">
+                    {new Date(screening.time).toLocaleDateString("sv-SE", {
+                      weekday: "short",
+                    })}
+                  </p>
+                  <p className="choose-day-time">Kl {time}</p>
+                </article>
+              );
+            })}
+          {!selectedDate && (
+            <p className="choose-day-placeholder">
+              Välj en dag för att se tider
+            </p>
+          )}
         </section>
       </section>
     </section>
