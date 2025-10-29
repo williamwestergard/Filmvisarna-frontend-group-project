@@ -4,10 +4,17 @@ import './Navbar.css';
 import {  Link } from "react-router-dom";
 import logo from './navbar-logo.png'; // Importera din logotyp
 
+type User = {
+  firstName: string;
+  lastName: string;
+  avatarUrl?: string;
+};
+
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -40,6 +47,35 @@ const Navbar: React.FC = () => {
       document.body.classList.remove('no-scroll');
     };
   }, [isMenuOpen]);
+
+  useEffect(() => {
+    const raw = localStorage.getItem("authUser");
+    if (raw) {
+      try { setUser(JSON.parse(raw)); } catch { setUser(null); }
+    }
+    function onStorage(e: StorageEvent) {
+      if (e.key === "authUser") {
+        const v = localStorage.getItem("authUser");
+        try { setUser(v ? JSON.parse(v) : null); } catch { setUser(null); }
+      }
+      if (e.key === "authToken" && !localStorage.getItem("authToken")) {
+        setUser(null);
+      }
+    }
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("authUser");
+    localStorage.removeItem("authToken");
+    setUser(null);
+    // Stäng öppna paneler för tydlig feedback i UI
+    setIsAccountOpen(false);
+    setIsDropdownOpen(false);
+    setIsMenuOpen(false);
+  };
+
   const desktopNavigation = (
     <nav className="navbar navbar-desktop">
       <Link to="/" className="navbar-logo-link">
@@ -70,12 +106,27 @@ const Navbar: React.FC = () => {
         </ul>
 
         <ul className="nav-actions nav-actions-desktop">
-          <li className="nav-item">
-            <Link to="/login" className="nav-button">Logga in</Link>
-          </li>
-          <li className="nav-item">
-          <Link to="/register" className="nav-button">Skapa konto</Link>
-          </li>
+          {user ? (
+            <>
+              <li className="nav-item nav-user">
+                <span className="nav-user-name" style={{ color: "var(--text-light)", fontWeight: 500 }}>
+                  {user.firstName} {user.lastName}
+                </span>
+              </li>
+              <li className="nav-item">
+                <button className="nav-button" onClick={handleLogout}>Logga ut</button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li className="nav-item">
+                <a href="/login" className="nav-button">Logga in</a>
+              </li>
+              <li className="nav-item">
+                <a href="/register" className="nav-button">Skapa konto</a>
+              </li>
+            </>
+          )}
         </ul>
       </div>
     </nav>
@@ -140,19 +191,37 @@ const Navbar: React.FC = () => {
           >
             ‹ Tillbaka
           </button>
-          <a href="/login" className="nav-button" onClick={openAccountLink}>Logga in</a>
-          <a href="/register" className="nav-button" onClick={openAccountLink}>Skapa konto</a>
-        </div>
-      </div>
-    </nav>
-  );
 
-  return (
-    <header className="site-header">
-      {desktopNavigation}
-      {mobileNavigation}
-    </header>
-  );
-};
+            {/* Conditional rendering based on user authentication status */}
+            {user ? (
+            <>
+              {/* Display user profile information when logged in */}
+              <div className="nav-item" style={{ display: "flex", alignItems: "center", padding: "0.5rem 0.9rem" }}>
+                <span className="nav-user-name" style={{ color: "var(--text-light)", fontWeight: 600 }}>
+                  {user.firstName} {user.lastName}
+                </span>
+              </div>
+              {/* Logout button that both logs out and closes mobile menu */}
+              <button className="nav-button" onClick={() => { handleLogout(); closeMenu(); }}>Logga ut</button>
+            </>
+            ) : (
+            <>
+              {/* Login and register links for non-authenticated users */}
+              <a href="/login" className="nav-button" onClick={openAccountLink}>Logga in</a>
+              <a href="/register" className="nav-button" onClick={openAccountLink}>Skapa konto</a>
+            </>
+            )}
+          </div>
+          </div>
+        </nav>
+        );
 
-export default Navbar;
+        return (
+        <header className="site-header">
+          {desktopNavigation}
+          {mobileNavigation}
+        </header>
+        );
+      };
+
+      export default Navbar;

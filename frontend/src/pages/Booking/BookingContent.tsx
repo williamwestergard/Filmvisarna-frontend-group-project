@@ -27,9 +27,9 @@ type ApiSeat = {
   isBooked?: number;
 };
 
-
 function BookingContent() {
-  const { movie, setMovie, screening, totalTickets, selectedSeats, counts } = useBooking();
+  const { movie, setMovie, screening, totalTickets, selectedSeats, counts } =
+    useBooking();
 
   const [movieLoaded, setMovieLoaded] = useState(false);
   const [weeklyMovie, setWeeklyMovie] = useState<Movie | null>(null);
@@ -38,10 +38,8 @@ function BookingContent() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Paketpris passed from "Boka nu" (if user came via WeeklyMovie)
- const paketprisFromState = (location.state as any)?.paketpris;
+  const paketprisFromState = (location.state as any)?.paketpris;
 
-  // Load weekly movie for package info
   useEffect(() => {
     fetch("/api/movies/weekly")
       .then((res) => res.json())
@@ -50,7 +48,8 @@ function BookingContent() {
   }, []);
 
   const isWeekly = movie && weeklyMovie && movie.id === weeklyMovie.id;
-  const paketprisToShow = paketprisFromState || (isWeekly ? weeklyMovie?.paketpris : null);
+  const paketprisToShow =
+    paketprisFromState || (isWeekly ? weeklyMovie?.paketpris : null);
 
   const canProceed =
     !!movie &&
@@ -58,7 +57,6 @@ function BookingContent() {
     totalTickets > 0 &&
     selectedSeats.length === totalTickets;
 
-  // Assign ticket types (Adult / Senior / Child)
   function assignTicketTypesToSeats(realSeatIds: number[]) {
     const list: { seatId: number; ticketTypeId: number }[] = [];
     let leftAdult = counts.adult || 0;
@@ -82,46 +80,83 @@ function BookingContent() {
     return list;
   }
 
-  // Handle booking creation
+  // 🧠 Boknings-funktion med fix för seatId-sökning
   async function handleBooking() {
     if (!canProceed || !screening) return;
     setLoadingBooking(true);
 
     try {
-      console.log("🎬 Screening ID:", screening.id);
-      const seatsRes = await fetch(`/api/screenings/${screening.id}/seats`);
-      const seatsJson = await seatsRes.json();
+      console.log("🎬 DEBUG Screening Info:", screening);
+
+      const res = await fetch(`/api/screenings/${screening.id}/seats`);
+      const seatsJson = await res.json();
       const apiSeats: ApiSeat[] = seatsJson?.seats || [];
 
+      console.log("🔥 DEBUG API Seats Response:", apiSeats.slice(0, 10));
+
       if (apiSeats.length === 0) {
-        alert("No seats returned from API.");
+        alert("Inga säten hittades i API-svaret.");
         setLoadingBooking(false);
         return;
       }
 
+      const rowsMap: Record<string, ApiSeat[]> = {};
+      for (const seat of apiSeats) {
+        if (!rowsMap[seat.rowLabel]) rowsMap[seat.rowLabel] = [];
+        rowsMap[seat.rowLabel].push(seat);
+      }
+
+      Object.values(rowsMap).forEach((row) =>
+        row.sort((a, b) => a.seatNumber - b.seatNumber)
+      );
+
       const realSeatIds: number[] = [];
 
-     // Match frontend-selected seats with real seat IDs in DB
+      console.log("🎯 DEBUG Selected Seats:", selectedSeats);
+      console.log("🎯 DEBUG RowsMap keys:", Object.keys(rowsMap));
+
       for (const sel of selectedSeats) {
-        const sameRow = apiSeats.filter(
-          (s) => s.rowLabel === sel.row && s.auditoriumId === screening.auditoriumId
-        );
+        console.log("🔍 DEBUG Checking selected seat:", sel);
 
-        const sortedRow = sameRow.sort((a, b) => a.seatNumber - b.seatNumber);
-        const seatInRow = sortedRow[sel.number - 1];
-
-            if (!seatInRow) {
-          alert(`Could not find seat ID for ${sel.row}-${sel.number}`);
+        const rowSeats = rowsMap[sel.row];
+        if (!rowSeats) {
+          console.error(`❌ Kunde inte hitta rad ${sel.row}`);
+          alert(`Raden ${sel.row} hittades inte.`);
           setLoadingBooking(false);
           return;
         }
 
+        console.log("📏 DEBUG Row Seats:", rowSeats.map((s) => s.seatNumber));
+
+        // ✅ FIX: hitta säte via seatNumber (inte index)
+        const seatInRow = rowSeats.find(
+          (s) => s.seatNumber === sel.number
+        );
+
+        if (!seatInRow) {
+          console.error(
+            `❌ Kunde inte hitta seatId för ${sel.row}-${sel.number}`,
+            { rowSeats }
+          );
+          alert(`Kunde inte hitta platsen ${sel.row}-${sel.number}.`);
+          setLoadingBooking(false);
+          return;
+        }
+
+        console.log("✅ DEBUG Matched seat:", seatInRow);
         realSeatIds.push(seatInRow.seatId);
       }
 
+      console.log("✅ DEBUG Real seat IDs to book:", realSeatIds);
+
       const seatsPayload = assignTicketTypesToSeats(realSeatIds);
 
-      // Send booking to backend
+      console.log("📦 DEBUG Booking payload:", {
+        userId: 1,
+        screeningId: screening.id,
+        seats: seatsPayload,
+      });
+
       const response = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -134,17 +169,18 @@ function BookingContent() {
 
       const data = await response.json();
 
+      console.log("📬 DEBUG Booking API Response:", data);
+
       if (!data.ok) {
         console.error("Booking API error:", data);
-        alert("Booking failed. Please try again.");
+        alert("Bokningen misslyckades. Försök igen.");
         setLoadingBooking(false);
         return;
       }
 
-      // Support both singular and plural API responses
       const booking = data.booking || data.bookings?.[0];
       if (!booking) {
-        alert("Booking data missing. Please try again.");
+        alert("Bokningsdata saknas. Försök igen.");
         setLoadingBooking(false);
         return;
       }
@@ -152,13 +188,12 @@ function BookingContent() {
       localStorage.setItem("filmvisarna-booking", JSON.stringify(booking));
       navigate(`/confirmation/${booking.id}`);
     } catch (err) {
-      console.error("Error creating booking:", err);
-      alert("Something went wrong during booking.");
+      console.error("❌ FEL VID BOKNING:", err);
+      alert("Något gick fel vid bokningen.");
     } finally {
       setLoadingBooking(false);
     }
   }
-
 
   // --- Render ---
   return (
@@ -173,61 +208,78 @@ function BookingContent() {
           />
 
           {movie && <AvailableDates movieId={movie.id} />}
-
-          {/* Ticket counts */}
           <TicketsAmount />
           <Auditorium />
 
-          {/* Paketpris info */}
           {paketprisToShow && (
             <section className="paketpris-info">
               <h3>Weekly Movie Deal</h3>
-              <p>{paketprisToShow.liten.antal} small popcorn – {paketprisToShow.liten.pris} kr</p>
-              <p>{paketprisToShow.litenEn.antal} small popcorn – {paketprisToShow.litenEn.pris} kr</p>
+              <p>
+                {paketprisToShow.liten.antal} small popcorn –{" "}
+                {paketprisToShow.liten.pris} kr
+              </p>
+              <p>
+                {paketprisToShow.litenEn.antal} small popcorn –{" "}
+                {paketprisToShow.litenEn.pris} kr
+              </p>
               <p className="paketpris-note">(Offer valid at checkout)</p>
             </section>
           )}
 
-          {/* Button "slutför bokning" */}
           <section className="confirm-actions">
             <button
               className="confirm-btn"
               disabled={!canProceed}
               onClick={handleBooking}
-                
               style={{
-                backgroundColor: canProceed && !loadingBooking ? "#c41230" : "#716d7a",
-                pointerEvents: canProceed && !loadingBooking ? "auto" : "none",
-                cursor: canProceed && !loadingBooking ? "pointer" : "not-allowed",
-                   }}>
+                backgroundColor:
+                  canProceed && !loadingBooking ? "#c41230" : "#716d7a",
+                pointerEvents:
+                  canProceed && !loadingBooking ? "auto" : "none",
+                cursor:
+                  canProceed && !loadingBooking ? "pointer" : "not-allowed",
+              }}
+            >
               {loadingBooking ? "Bokar..." : "Gå vidare"}
-
-          
+              {!canProceed && (
+                <p
+                  className="confirm-btn-nonclickable-text"
+                  style={{ opacity: 0.7, textAlign: "center" }}
+                >
+                  Välj tid och antal platser för att fortsätta.
+                </p>
+              )}
             </button>
-
-          
           </section>
         </section>
       </section>
 
-      {/* Price summary on the right/top as before */}
       {movieLoaded && (
         <article className="booking-price-card-top">
-           <BookingPriceCard />
-          <div style={{ marginTop: "1rem", display: "flex", justifyContent: "flex-end" }}>
+          <BookingPriceCard />
+          <div
+            style={{
+              marginTop: "1rem",
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
             <button
               onClick={handleBooking}
               disabled={!canProceed || loadingBooking}
               style={{
                 padding: "0.8rem 1.2rem",
                 fontWeight: 600,
-                fontSize:"15px",
+                fontSize: "15px",
                 borderRadius: 5,
                 border: "none",
-                width:"100%",
-                cursor: canProceed && !loadingBooking ? "pointer" : "not-allowed",
-                pointerEvents: canProceed && !loadingBooking ? "auto" : "none",
-                backgroundColor: canProceed && !loadingBooking ? "#c41230" : "#716d7a",
+                width: "100%",
+                cursor:
+                  canProceed && !loadingBooking ? "pointer" : "not-allowed",
+                pointerEvents:
+                  canProceed && !loadingBooking ? "auto" : "none",
+                backgroundColor:
+                  canProceed && !loadingBooking ? "#c41230" : "#716d7a",
                 color: canProceed && !loadingBooking ? "#fff" : "#dbdbdb",
                 opacity: canProceed ? 1 : 0.9,
                 display: canProceed ? "block" : "none",
@@ -236,8 +288,6 @@ function BookingContent() {
               {loadingBooking ? "Bokar..." : "Gå vidare"}
             </button>
           </div>
-
-     
         </article>
       )}
     </main>

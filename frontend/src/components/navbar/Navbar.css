@@ -408,4 +408,101 @@ ul {
   .nav-menu-mobile .nav-item + .nav-item .nav-link {
     border-top: none;
   }
+
+  /* Center the logout button in the mobile account panel */
+  .mobile-account-panel {
+    align-items: center;
+  }
+  .mobile-account-panel .nav-button {
+    align-self: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .mobile-account-panel .nav-user-name {
+    text-align: center;
+    width: 100%;
+    display: block;
+    justify-content: center;
+  }
+}
+
+/* ---------- User info (auth) ---------- */
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.nav-user-name {
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.nav-button.logout {
+  background-color: #5B5A6B;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  outline: none;
+  box-shadow: none;
+  outline: none !important;
+}
+
+.nav-button.logout:focus,
+.nav-button.logout:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.nav-button.logout:hover {
+  background-color: #4b4a5b;
+}
+
+/* Neutralisera browser-defaults på knappar helt */
+.nav-button,
+.nav-button.logout {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+
+  background-clip: padding-box;
+  -webkit-tap-highlight-color: transparent;
+
+  border-radius: 20px;
+  background-color: #2a2a45;
+  color: var(--text-light);
+}
+
+.nav-button:hover,
+.nav-button.logout:hover {
+  background-color: #3b3b5e;
+}
+
+/* Centrera Logga ut-knappen */
+.nav-button.logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+/* Desktop:(nav-actions) rätt färg */
+.nav-actions .nav-button {
+  background-color: #5B5A6B;
+}
+.nav-actions .nav-button:hover {
+  background-color: #4B4A5B;
 }
