@@ -263,7 +263,7 @@ export default function AuditoriumOne() {
   })}
 </section>
 
-<section className="auditorium-two-seats-eighth-row">
+<section className="auditorium-one-seats-eighth-row">
   {rowsBottom[3].seats.map((n) => {
     const selected = isSelected("H", n);
     const occupied = isOccupied("H", n);

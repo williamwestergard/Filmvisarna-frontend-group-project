@@ -201,11 +201,6 @@ function BookingContent() {
                 cursor: canProceed && !loadingBooking ? "pointer" : "not-allowed",
                    }}>
               {loadingBooking ? "Bokar..." : "Gå vidare"}
-     {!canProceed && (
-            <p className="confirm-btn-nonclickable-text" style={{ opacity: 0.7, textAlign: "center" }}>
-             Välj tid och antal platser för att fortsätta.
-            </p>
-          )}
 
           
             </button>
