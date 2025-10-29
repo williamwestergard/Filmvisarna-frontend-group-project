@@ -93,14 +93,51 @@ export default function AuditoriumOne({ seats, bookedSeats }: AuditoriumProps) {
 
   const maxReached = totalTickets > 0 && selectedSeats.length >= totalTickets;
 
+  // --- Group seats by row ---
   const rowsMap = seats.reduce((acc, seat) => {
     if (!acc[seat.rowLabel]) acc[seat.rowLabel] = [];
     acc[seat.rowLabel].push(seat);
     return acc;
   }, {} as Record<string, Seat[]>);
 
+  // Sort seat numbers within each row
   Object.keys(rowsMap).forEach((r) =>
     rowsMap[r].sort((a, b) => a.seatNumber - b.seatNumber)
+  );
+
+  // Define top and bottom row groups
+  const rowsTop = ["A", "B", "C", "D"].map((label) => ({
+    label,
+    seats: rowsMap[label]?.map((s) => s.seatNumber) || [],
+  }));
+
+  const rowsBottom = ["E", "F", "G", "H"].map((label) => ({
+    label,
+    seats: rowsMap[label]?.map((s) => s.seatNumber) || [],
+  }));
+
+  // --- Render helper for row sections ---
+  const renderRow = (rowLabel: string, seatNumbers: number[]) => (
+    <section className={`auditorium-row row-${rowLabel}`}>
+      <div className="seat-placeholder" />
+      {seatNumbers.map((n) => {
+        const selected = isSelected(rowLabel, n);
+        const occupied = isOccupied(rowLabel, n);
+        const disabled = occupied || (maxReached && !selected);
+        return (
+          <SeatBox
+            key={`${rowLabel}${n}`}
+            row={rowLabel}
+            number={n}
+            selected={selected}
+            occupied={occupied}
+            disabled={disabled}
+            onClick={() => onToggle(rowLabel, n)}
+          />
+        );
+      })}
+      <div className="seat-placeholder" />
+    </section>
   );
 
   return (
@@ -110,182 +147,24 @@ export default function AuditoriumOne({ seats, bookedSeats }: AuditoriumProps) {
 
       <section className="auditorium-container">
         <article className="auditorium">
-          <img className="auditorium-screen" src={AuditoriumScreen} alt="Bioduk" />
+          <img
+            className="auditorium-screen"
+            src={AuditoriumScreen}
+            alt="Bioduk"
+          />
+
           <section className="auditorium-seats-container">
-            <section className="auditorium-one-seats-first-row">
-            <div className="seat-placeholder" />
-            <div className="seat-placeholder" />
+            {rowsTop.map((row, i) => (
+              <div key={i} className={`auditorium-top-row row-${row.label}`}>
+                {renderRow(row.label, row.seats)}
+              </div>
+            ))}
 
-
-              {rowsTop[0].seats.map((n) => {
-                const selected = isSelected("A", n);
-                const occupied = isOccupied("A", n);
-                const disabled = occupied || (maxReached && !selected);
-                return (
-                  <SeatBox
-                    key={`A${n}`}
-                    row="A"
-                    number={n}
-                    selected={selected}
-                    occupied={occupied}
-                    disabled={disabled}
-                    onClick={() => onToggle("A", n)}
-                  />
-                );
-              })}
-     
-            <div className="seat-placeholder" />
-           <div className="seat-placeholder" />
-            </section>
-
-            <section className="auditorium-one-seats-second-row">
-              <div className="seat-placeholder" />
-        
-
-              {rowsTop[1].seats.map((n) => {
-                const selected = isSelected("B", n);
-                const occupied = isOccupied("B", n);
-                const disabled = occupied || (maxReached && !selected);
-                return (
-                  <SeatBox
-                    key={`B${n}`}
-                    row="B"
-                    number={n}
-                    selected={selected}
-                    occupied={occupied}
-                    disabled={disabled}
-                    onClick={() => onToggle("B", n)}
-                  />
-                );
-              })}
-                    <div className="seat-placeholder" />
-            <div className="seat-placeholder" />
-
-            </section>
-
-       <section className="auditorium-one-seats-third-row">
-  <div className="seat-placeholder" />
-  {rowsTop[2].seats.map((n) => {
-    const selected = isSelected("C", n);
-    const occupied = isOccupied("C", n);
-    const disabled = occupied || (maxReached && !selected);
-    return (
-      <SeatBox
-        key={`C${n}`}
-        row="C"
-        number={n}
-        selected={selected}
-        occupied={occupied}
-        disabled={disabled}
-        onClick={() => onToggle("C", n)}
-      />
-    );
-  })}
-  <div className="seat-placeholder" />
-</section>
-
-<section className="auditorium-one-seats-fourth-row">
-  <div className="seat-placeholder" />
-  {rowsTop[3].seats.map((n) => {
-    const selected = isSelected("D", n);
-    const occupied = isOccupied("D", n);
-    const disabled = occupied || (maxReached && !selected);
-    return (
-      <SeatBox
-        key={`D${n}`}
-        row="D"
-        number={n}
-        selected={selected}
-        occupied={occupied}
-        disabled={disabled}
-        onClick={() => onToggle("D", n)}
-      />
-    );
-  })}
-  <div className="seat-placeholder" />
-</section>
-
- <section className="auditorium-one-seats-fifth-row">
-    <div className="seat-placeholder" />
-  {rowsBottom[0].seats.map((n) => {
-    const selected = isSelected("E", n);
-    const occupied = isOccupied("E", n);
-    const disabled = occupied || (maxReached && !selected);
-    return (
-      <SeatBox
-        key={`E${n}`}
-        row="E"
-        number={n}
-        selected={selected}
-        occupied={occupied}
-        disabled={disabled}
-        onClick={() => onToggle("E", n)}
-      />
-    );
-  })}
-  <div className="seat-placeholder" />
-</section>
-
-<section className="auditorium-one-seats-sixth-row">
-    <div className="seat-placeholder" />
-  {rowsBottom[1].seats.map((n) => {
-    const selected = isSelected("F", n);
-    const occupied = isOccupied("F", n);
-    const disabled = occupied || (maxReached && !selected);
-    return (
-      <SeatBox
-        key={`F${n}`}
-        row="F"
-        number={n}
-        selected={selected}
-        occupied={occupied}
-        disabled={disabled}
-        onClick={() => onToggle("F", n)}
-      />
-    );
-  })}
-    <div className="seat-placeholder" />
-</section>
-
-<section className="auditorium-one-seats-seventh-row">
-  {rowsBottom[2].seats.map((n) => {
-    const selected = isSelected("G", n);
-    const occupied = isOccupied("G", n);
-    const disabled = occupied || (maxReached && !selected);
-    return (
-      <SeatBox
-        key={`G${n}`}
-        row="G"
-        number={n}
-        selected={selected}
-        occupied={occupied}
-        disabled={disabled}
-        onClick={() => onToggle("G", n)}
-      />
-    );
-  })}
-</section>
-
-<section className="auditorium-one-seats-eighth-row">
-  {rowsBottom[3].seats.map((n) => {
-    const selected = isSelected("H", n);
-    const occupied = isOccupied("H", n);
-    const disabled = occupied || (maxReached && !selected);
-    return (
-      <SeatBox
-        key={`H${n}`}
-        row="H"
-        number={n}
-        selected={selected}
-        occupied={occupied}
-        disabled={disabled}
-        onClick={() => onToggle("H", n)}
-      />
-    );
-  })}
-</section>
-
-
+            {rowsBottom.map((row, i) => (
+              <div key={i} className={`auditorium-bottom-row row-${row.label}`}>
+                {renderRow(row.label, row.seats)}
+              </div>
+            ))}
           </section>
         </article>
       </section>
