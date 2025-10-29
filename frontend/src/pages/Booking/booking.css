@@ -391,53 +391,64 @@ iframe {
   font-style: italic;
   text-align: center;
 }
-/* "Slutför bokning" - button */
+/* Confirm- button */
 .confirm-actions {
-  margin: 20px auto 0;
+  width: 100%;
+  margin: 20px 0 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   text-align: left;
-  gap: 8px;
-  width: 100%;
 }
-
 .confirm-btn {
-  appearance: none;
-  border: none;
-  border-radius: 5px;
-  padding: 32px 50px;
-  font-size: 1.7rem;
-  font-weight: 600;
-  text-align: center;
   width: 100%;
-  letter-spacing: 0.2px;
-  cursor: pointer;
-  background: var(--red-primary, #c41230);
+  border: none;
+  border-radius: 8px;
+  padding: 28px 40px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.169);
-}
-
-.confirm-btn:disabled {
   background: #716d7a;
-  opacity: 90%;
-  color: #dbdbdb;
   cursor: not-allowed;
+  opacity: 0.9;
+  transition: background 0.3s ease, transform 0.1s ease;
 }
 
+/* Button when active */
+.confirm-btn.active {
+  background: var(--red-primary, #c41230);
+  cursor: pointer;
+  opacity: 1;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.confirm-btn.active:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+/* Text left/right */
+.confirm-total {
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+.confirm-next {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+/* Text (when disabled) */
 .confirm-btn-nonclickable-text {
-  margin: 0 auto;
-  margin-top: 1vh;
+  margin-top: 0.8rem;
   font-weight: 500;
-  font-size: clamp(15px, 0.9vw, 17px);
-}
-
-/* Small instruction when the button is disabled */
-.confirm-hint {
-  margin: 0;
-  font-size: 0.9rem;
-  opacity: 0.85;
-  color: #e9e9ee;
+  font-size: 1rem;
+  opacity: 0.8;
+  text-align: center;
 }
 
 @keyframes bounce {
