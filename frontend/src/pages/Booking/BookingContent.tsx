@@ -34,6 +34,8 @@ function BookingContent() {
   const [movieLoaded, setMovieLoaded] = useState(false);
   const [weeklyMovie, setWeeklyMovie] = useState<Movie | null>(null);
   const [loadingBooking, setLoadingBooking] = useState(false);
+  // Simple 10 minute timeout popup
+  const [timeoutOpen, setTimeoutOpen] = useState(false);
 
   const location = useLocation();
   const selectedDateFromHome = (location.state as any)?.selectedDate || "";
@@ -46,6 +48,13 @@ function BookingContent() {
       .then((res) => res.json())
       .then((data) => setWeeklyMovie(data))
       .catch((err) => console.error("Error fetching weekly movie:", err));
+  }, []);
+
+  // Start a simple 10-minute timer when the booking page mounts
+  useEffect(() => {
+    const id = window.setTimeout(() => setTimeoutOpen(true), 10 * 1000);
+    // For quick testing, change to: 10 * 1000
+    return () => window.clearTimeout(id);
   }, []);
 
   const isWeekly = movie && weeklyMovie && movie.id === weeklyMovie.id;
@@ -290,6 +299,57 @@ function BookingContent() {
             </button>
           </div>
         </article>
+      )}
+      {timeoutOpen && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 99999,
+            background: "rgba(0,0,0,0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Sessionen gick ut"
+        >
+          <div
+            style={{
+              width: "min(92vw, 420px)",
+              borderRadius: 14,
+              padding: "18px 16px",
+              background: "#1b1b2f",
+              color: "#fff",
+              boxShadow: "0 20px 40px rgba(0,0,0,0.45)",
+            }}
+          >
+            <h2 style={{ margin: "0 0 8px", fontSize: "1.25rem" }}>Sessionen gick ut</h2>
+            <p style={{ margin: "6px 0", lineHeight: 1.4 }}>
+              Du har väntat mer än 10 minuter. För att visa korrekta platser och priser
+              behöver sidan uppdateras.
+            </p>
+            <div style={{ marginTop: 12, display: "flex", justifyContent: "flex-end", gap: 8 }}>
+              <button
+                onClick={() => window.location.reload()}
+                style={{
+                  padding: "0.6rem 1rem",
+                  fontWeight: 600,
+                  fontSize: "14px",
+                  borderRadius: 8,
+                  border: "none",
+                  cursor: "pointer",
+                  backgroundColor: "#5B5A6B",
+                  color: "#fff",
+                  minWidth: 160
+                }}
+              >
+                Uppdatera sidan
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </main>
   );
