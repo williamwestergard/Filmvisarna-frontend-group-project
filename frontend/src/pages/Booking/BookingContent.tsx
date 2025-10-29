@@ -28,7 +28,7 @@ type ApiSeat = {
 };
 
 function BookingContent() {
-  const { movie, setMovie, screening, totalTickets, selectedSeats, counts } =
+  const { movie, setMovie, screening, totalTickets, selectedSeats, counts, totalAmount } =
     useBooking();
 
   const [movieLoaded, setMovieLoaded] = useState(false);
@@ -236,33 +236,36 @@ function BookingContent() {
             </section>
           )}
 
-          <section className="confirm-actions">
-            <button
-              className="confirm-btn"
-              disabled={!canProceed}
-              onClick={handleBooking}
-              style={{
-                backgroundColor:
-                  canProceed && !loadingBooking ? "#c41230" : "#716d7a",
-                pointerEvents:
-                  canProceed && !loadingBooking ? "auto" : "none",
-                cursor:
-                  canProceed && !loadingBooking ? "pointer" : "not-allowed",
-              }}
-            >
-              {loadingBooking ? "Bokar..." : "Gå vidare"}
-              {!canProceed && (
-                <p
-                  className="confirm-btn-nonclickable-text"
-                  style={{ opacity: 0.7, textAlign: "center" }}
-                >
-                  Välj tid och antal platser för att fortsätta.
-                </p>
-              )}
-            </button>
-          </section>
-        </section>
+      {/* Button show total amount and proceed */}
+      <section className="confirm-actions">
+        <button
+          className={`confirm-btn ${canProceed ? "active" : "disabled"}`}
+          disabled={!canProceed || loadingBooking}
+          onClick={handleBooking}
+        >
+          {canProceed && !loadingBooking ? (
+            <>
+              <span className="confirm-total">
+                Totalsumma:{" "}
+                {new Intl.NumberFormat("sv-SE").format(totalAmount)} kr
+              </span>
+              <span className="confirm-next">Gå vidare</span>
+            </>
+          ) : loadingBooking ? (
+            <span>Bokar...</span>
+          ) : (
+            <span>Gå vidare</span>
+          )}
+        </button>
+
+        {!canProceed && (
+          <p className="confirm-btn-nonclickable-text">
+            Välj dag, antal biljetter och platser för att fortsätta.
+          </p>
+        )}
       </section>
+              </section>
+            </section>
 
       {movieLoaded && (
         <article className="booking-price-card-top">
