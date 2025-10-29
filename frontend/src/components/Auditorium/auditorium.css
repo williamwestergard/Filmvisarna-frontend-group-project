@@ -40,7 +40,7 @@
 
 .auditorium-screen {
   width: 90%;
-  margin: 0 auto 10vh;
+  margin: 0 auto 11vh;
   margin-top: 5vh;
   pointer-events: none;
   z-index: 0;
@@ -121,7 +121,7 @@
 
 .auditorium-information-bottom-user-seat-container,
 .auditorium-information-bottom-occupied-seatcontainer {
-  margin-top: 5vh;
+  margin-top: 10vh;
   margin-bottom: 6vh;
   position: relative;
   left: 1vw;

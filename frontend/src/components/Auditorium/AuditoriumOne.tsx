@@ -168,6 +168,16 @@ export default function AuditoriumOne({ seats, bookedSeats }: AuditoriumProps) {
           </section>
         </article>
       </section>
+         <article className="auditorium-information-bottom">
+        <article className="auditorium-information-bottom-user-seat-container">
+          <article className="auditorium-information-bottom-user-seat"></article>
+          <p>Ditt val</p>
+        </article>
+        <article className="auditorium-information-bottom-occupied-seatcontainer">
+          <article className="auditorium-information-bottom-occupied-seat"></article>
+          <p>Upptagen</p>
+        </article>
+      </article>
     </section>
   );
 }
