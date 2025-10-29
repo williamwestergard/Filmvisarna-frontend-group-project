@@ -93,7 +93,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
   const [prices] = useState<TicketPrices>({
     adult: 140,
     senior: 120,
-    child: 90,
+    child: 80,
   });
 
   // Selected seats
