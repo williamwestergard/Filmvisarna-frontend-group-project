@@ -1,62 +1,128 @@
-/* Register form container */
-.register-form {
-  display: flex; /* layout inputs vertically */
-  flex-direction: column;
-  gap: 1rem; /* space between inputs */
-  background-color: #232231; /* same as home background */
-  padding: 2rem;
+.register-card {
+  width: 100%;
+  max-width: 460px;          
+  margin: 7vh auto;
+  padding: 2rem 1.5rem;
+  background: #1b1b2a;
+  color: #f9f9f9;
   border-radius: 12px;
-  max-width: 400px; /* keeps form from being too wide */
-  margin: 2rem auto; /* centers form horizontally */
+  box-shadow: 0 8px 26px rgba(0,0,0,.45);
+  border: 1px solid rgba(255,255,255,.08);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .9rem;
+  box-sizing: border-box;
+}
+
+/* Universal box sizing */
+.register-card *,
+.register-card *::before,
+.register-card *::after {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* Logo + header */
+.register-logo {
+  width: clamp(120px, 30vw, 150px);
+  height: auto;
+  opacity: .78;
+  margin-bottom: .3rem;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,.35));
+}
+
+.register-title {
+  margin: .3rem 0 1.2rem;
+  font-size: clamp(1.2rem, 2.2vw, 1.4rem);
+  font-weight: 800;
   text-align: center;
-  color: #f9f9f9; /* all text in the form is white */
-  font-family: Arial, sans-serif;
+  letter-spacing: .2px;
+}
+
+/* Field (label + input) */
+.register-field {
+  width: 100%;
+  display: grid;
+  gap: .45rem;
+  text-align: left;
+}
+
+.register-field label {
+  font-size: .95rem;
+  color: #e8e8ef;
+  opacity: .9;
 }
 
 /* Inputs */
-.register-form input {
-  padding: 0.75rem 1rem;
-  border: 1px solid #c4c4c4;
-  border-radius: 6px;
-  background-color: #1b1b2f;
-  color: #f9f9f9;
+.register-card input {
+  display: block;
+  width: 100%;               
+  padding: 0.6rem 1rem;
+  border-radius: 9px;
+  background: #e7e7ea;
+  color: #1b1b2a;
+  border: 1px solid rgba(0,0,0,.15);
   font-size: 1rem;
+  outline: none;
+  transition: box-shadow .15s ease, border-color .15s ease, background .15s ease;
 }
 
-.register-form input::placeholder {
-  color: #f9f9f9;
-  opacity: 0.7;
+.register-card input::placeholder { color: #75757d; }
+.register-card input:focus {
+  border-color: #c41230;
+  box-shadow: 0 0 0 3px rgba(196,18,48,.18);
+  background: #fff;
 }
 
-/* Register button */
-.register-button {
-  padding: 0.75rem;
-  font-size: 1rem;
-  font-weight: bold;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  background-color: var(--red-primary); /* same red as login button */
-  color: #ffffff;
-  width: 100%; /* full width */
-  border: none; /* remove border to match login button */
+/* Buttons */
+.register-actions {
+  width: 100%;
+  display: grid;
+  gap: .5rem;
+  margin-top: .4rem;
 }
 
-/* Cancel button */
-.cancel-button {
-  margin-top: 0.5rem; /* small space below Skapa Konto button */
-  padding: 0.75rem; /* same padding as register button */
-  font-size: 1rem; /* same font size */
-  font-weight: bold;
-  border-radius: 6px;
-  width: 100%; /* full width of form */
-  cursor: pointer;
-  background-color: #555555; /* gray background for cancel */
-  color: #ffffff;
+.btn {
+  width: 100%;
+  padding: .8rem 1rem;
+  font-size: .98rem;
+  font-weight: 800;
+  border-radius: 9px;
   border: none;
-  transition: background-color 0.3s;
+  cursor: pointer;
+  letter-spacing: .2px;
+  transition: transform .06s ease, filter .18s ease, background .18s ease;
 }
 
-.cancel-button:hover {
-  background-color: #444444; /* slightly darker on hover */
+.btn-primary {
+  background: var(--red-primary, #c41230);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(196,18,48,.28);
+}
+.btn-primary:hover { filter: brightness(1.06); }
+.btn-primary:active { transform: translateY(1px); }
+
+.btn-secondary {
+  background: #3b3b48;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,.22);
+}
+.btn-secondary:hover { background: #49495a; }
+.btn-secondary:active { transform: translateY(1px); }
+
+
+@media (max-width: 600px) {
+  .register-card {
+    max-width: 92%;
+    padding: 1.6rem 1.2rem;
+    border-radius: 10px;
+  }
+  .register-logo { width: clamp(110px, 38vw, 135px); }
+  .register-card input {
+    padding: .9rem 1rem;
+    font-size: 1rem;
+  }
 }

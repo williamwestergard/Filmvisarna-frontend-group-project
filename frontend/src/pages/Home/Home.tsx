@@ -4,6 +4,7 @@ import MoviesList from "../../components/Movies/MoviesList";
 import BgOverlay from "../../assets/images/home-bg.jpg";
 import { getCategories, getShowtimes } from "../../api/MoviesApi";
 import SearchBar from "../../components/SearchBar/SearchBar"; // 👈 import
+import AgeLimitInfo from "../../components/AgeLimitInfo/AgeLimitInfo";
 
 type Category = {
   id: number;
@@ -39,6 +40,11 @@ function Home() {
       .catch((err) => console.error("Error fetching showtimes:", err));
   }, []);
 
+    useEffect(() => {
+    const today = new Date().toISOString().split("T")[0]; // todays date is automatically selected
+    setSelectedDate(today);
+  }, []);
+
   return (
     <>
       <img
@@ -46,7 +52,9 @@ function Home() {
         src={BgOverlay}
         alt="Image of a man and woman watching a movie"
       />
-
+      
+      {/* AgeLimitInfo */}
+       <AgeLimitInfo />
       <main className="home-container">
         <h1 className="home-title">Aktuella filmer</h1>
 

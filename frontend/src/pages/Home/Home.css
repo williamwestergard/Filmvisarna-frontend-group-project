@@ -208,3 +208,19 @@ a {
     margin-bottom: 5vh;
   }
 }
+
+/* Phone sizes */
+@media only screen and (max-width: 1000px) {
+  /* Filter section */
+  .filter-section {
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+  }
+
+  .filter-dropdown {
+    height: 2.6rem;
+    padding: 0.5rem 1.6rem 0.5rem 1rem;
+  }
+}
