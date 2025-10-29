@@ -52,8 +52,7 @@ function BookingContent() {
 
   // Start a simple 10-minute timer when the booking page mounts
   useEffect(() => {
-    const id = window.setTimeout(() => setTimeoutOpen(true), 10 * 1000);
-    // For quick testing, change to: 10 * 1000
+    const id = window.setTimeout(() => setTimeoutOpen(true), 10 * 60 * 1000);
     return () => window.clearTimeout(id);
   }, []);
 
