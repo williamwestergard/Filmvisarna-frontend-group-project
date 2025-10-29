@@ -405,7 +405,7 @@ iframe {
   border: none;
   border-radius: 8px;
   padding: 28px 40px;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 700;
   display: flex;
   justify-content: space-between;
@@ -428,18 +428,17 @@ iframe {
 
 .confirm-btn.active:hover {
   filter: brightness(1.08);
-  transform: translateY(-1px);
 }
 
 /* Text left/right */
 .confirm-total {
-  font-weight: 800;
-  font-size: 1.2rem;
+  font-weight: 700;
+  font-size: 1.3rem;
 }
 
 .confirm-next {
-  font-weight: 700;
-  font-size: 1.2rem;
+  font-weight: 400;
+  font-size: 1.1rem;
 }
 
 /* Text (when disabled) */

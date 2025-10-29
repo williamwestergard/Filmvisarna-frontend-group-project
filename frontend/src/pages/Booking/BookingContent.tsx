@@ -237,7 +237,7 @@ function BookingContent() {
           {canProceed && !loadingBooking ? (
             <>
               <span className="confirm-total">
-                Total summa:{" "}
+                Totalsumma:{" "}
                 {new Intl.NumberFormat("sv-SE").format(totalAmount)} kr
               </span>
               <span className="confirm-next">Gå vidare</span>
