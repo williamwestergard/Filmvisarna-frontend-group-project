@@ -39,7 +39,6 @@ function AuthPopup() {
               }}
               onCancel={() => setShowLogin(true)} // Avbryt switches back to login
             />
-            {/* Removed the old toggle button "Tillbaka till Logga in" */}
           </>
         )}
       </article>

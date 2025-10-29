@@ -75,9 +75,9 @@
 
 @media (max-width: 400px) {
   .weekly-movie-card {
-    width: 94%;      /* slightly less fixed space */
+    width: 94%;      /* less fixed space */
     max-width: 290px; /* keeps proportions tighter */
-    padding: 16px;   /* trims inner padding to fit better */
+    padding: 16px;   
   }
 }
 

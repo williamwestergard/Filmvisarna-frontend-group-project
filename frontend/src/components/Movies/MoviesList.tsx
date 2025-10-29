@@ -52,7 +52,7 @@ export default function MovieList({
       ? movies
       : movies.filter((movie) => movie.category.includes(selectedCategory));
 
-  // 👇 Filtrera även på söktermen (titel eller kategori)
+  // Filtrera även på söktermen (titel eller kategori)
   const fullyFilteredMovies = filteredMovies.filter((movie) => {
     const lowerSearch = searchTerm.toLowerCase();
     return (

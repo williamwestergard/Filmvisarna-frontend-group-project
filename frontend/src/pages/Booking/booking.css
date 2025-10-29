@@ -492,7 +492,7 @@ iframe {
 /* Phone layout */
 @media only screen and (max-width: 600px) {
   .booking-page {
-    min-height: auto; /* let content define height */
+    min-height: auto;
     height: auto;
     padding: 0.7rem;
     display: flex;

@@ -199,7 +199,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
         setSelectedSeats(data.selectedSeats || []);
         setChildAllowed(!!data.childAllowed);
       } catch {
-        console.warn("⚠️ Failed to parse saved booking data"); // ignore errors
+        console.warn("Failed to parse saved booking data"); // ignore errors
       }
     }
   }, []);

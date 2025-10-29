@@ -23,10 +23,8 @@ const MyPages: React.FC = () => {
     <div className="my-pages">
       <section className="profile-container">
         <div className="profile-card">
-          {/* User info */}
           <div className="profile-top">
             <div className="profile-img-placeholder">
-              {/* 👇 React Font Awesome component */}
               <FontAwesomeIcon icon={faCircleUser} className="profile-icon" />
             </div>
             <div className="profile-info">

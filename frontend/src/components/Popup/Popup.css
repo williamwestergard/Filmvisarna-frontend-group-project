@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(13, 13, 26, 0.85); /* semi-transparent dark overlay */
+  background-color: rgba(13, 13, 26, 0.85); /* overlay */
   display: flex;
   justify-content: center;
   align-items: center;

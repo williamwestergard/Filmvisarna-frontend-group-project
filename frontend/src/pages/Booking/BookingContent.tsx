@@ -95,13 +95,13 @@ function BookingContent() {
     setLoadingBooking(true);
 
     try {
-      console.log("🎬 DEBUG Screening Info:", screening);
+      console.log("Screening Info:", screening);
 
       const res = await fetch(`/api/screenings/${screening.id}/seats`);
       const seatsJson = await res.json();
       const apiSeats: ApiSeat[] = seatsJson?.seats || [];
 
-      console.log("🔥 DEBUG API Seats Response:", apiSeats.slice(0, 10));
+      console.log("DEBUG API Seats Response:", apiSeats.slice(0, 10));
 
       if (apiSeats.length === 0) {
         alert("Inga säten hittades i API-svaret.");
@@ -121,30 +121,30 @@ function BookingContent() {
 
       const realSeatIds: number[] = [];
 
-      console.log("🎯 DEBUG Selected Seats:", selectedSeats);
-      console.log("🎯 DEBUG RowsMap keys:", Object.keys(rowsMap));
+      console.log("DEBUG Selected Seats:", selectedSeats);
+      console.log("DEBUG RowsMap keys:", Object.keys(rowsMap));
 
       for (const sel of selectedSeats) {
-        console.log("🔍 DEBUG Checking selected seat:", sel);
+        console.log("DEBUG Checking selected seat:", sel);
 
         const rowSeats = rowsMap[sel.row];
         if (!rowSeats) {
-          console.error(`❌ Kunde inte hitta rad ${sel.row}`);
+          console.error(`Kunde inte hitta rad ${sel.row}`);
           alert(`Raden ${sel.row} hittades inte.`);
           setLoadingBooking(false);
           return;
         }
 
-        console.log("📏 DEBUG Row Seats:", rowSeats.map((s) => s.seatNumber));
+        console.log(" Row Seats:", rowSeats.map((s) => s.seatNumber));
 
-        // ✅ FIX: hitta säte via seatNumber (inte index)
+        // hitta säte via seatNumber
         const seatInRow = rowSeats.find(
           (s) => s.seatNumber === sel.number
         );
 
         if (!seatInRow) {
           console.error(
-            `❌ Kunde inte hitta seatId för ${sel.row}-${sel.number}`,
+            `Kunde inte hitta seatId för ${sel.row}-${sel.number}`,
             { rowSeats }
           );
           alert(`Kunde inte hitta platsen ${sel.row}-${sel.number}.`);
@@ -152,15 +152,15 @@ function BookingContent() {
           return;
         }
 
-        console.log("✅ DEBUG Matched seat:", seatInRow);
+        console.log("DEBUG Matched seat:", seatInRow);
         realSeatIds.push(seatInRow.seatId);
       }
 
-      console.log("✅ DEBUG Real seat IDs to book:", realSeatIds);
+      console.log("DEBUG Real seat IDs to book:", realSeatIds);
 
       const seatsPayload = assignTicketTypesToSeats(realSeatIds);
 
-      console.log("📦 DEBUG Booking payload:", {
+      console.log("DEBUG Booking payload:", {
         userId: 1,
         screeningId: screening.id,
         seats: seatsPayload,
@@ -178,7 +178,7 @@ function BookingContent() {
 
       const data = await response.json();
 
-      console.log("📬 DEBUG Booking API Response:", data);
+      console.log("DEBUG Booking API Response:", data);
 
       if (!data.ok) {
         console.error("Booking API error:", data);
@@ -197,7 +197,7 @@ function BookingContent() {
       localStorage.setItem("filmvisarna-booking", JSON.stringify(booking));
       navigate(`/confirmation/${booking.id}`);
     } catch (err) {
-      console.error("❌ FEL VID BOKNING:", err);
+      console.error("FEL VID BOKNING:", err);
       alert("Något gick fel vid bokningen.");
     } finally {
       setLoadingBooking(false);
