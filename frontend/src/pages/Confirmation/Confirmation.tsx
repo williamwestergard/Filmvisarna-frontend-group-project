@@ -173,7 +173,7 @@ export default function Confirmation() {
   return (
     <main className="confirmation-page">
       <button className="back-btn-top" onClick={() => navigate(-1)}>
-        ← Go Back
+        ← Gå tillbaka
       </button>
 
       <section className="booking-card">
