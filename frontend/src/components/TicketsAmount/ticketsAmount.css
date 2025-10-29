@@ -45,3 +45,56 @@
   justify-content: center;
   align-items: center;
 }
+
+/* Phone sizes */
+@media only screen and (max-width: 800px) {
+  .tickets-amount-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 85%;
+    margin: 0 auto;
+    margin-bottom: 3vh;
+  }
+
+  .tickets-amount-content h2 {
+    font-size: 1.3rem;
+    position: relative;
+    left: 4vw;
+    margin-top: 3vh;
+    margin-bottom: 4vh;
+  }
+
+  .tickets-amount-container p {
+    margin: 0;
+    padding: 0;
+  }
+
+  .tickets-amount-add-amount-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3vw;
+  }
+
+  .tickets-amount-type-reduced-price {
+    position: relative;
+    top: 0.3vh;
+    color: #989191;
+  }
+
+  .tickets-amount-number {
+    font-weight: 700;
+    font-size: 1.4rem;
+  }
+
+  .ticket-amount-button {
+    background-color: #d9d9d9;
+    border-radius: 5px;
+    height: clamp(10px, 2vw, 12px);
+    width: clamp(10px, 2vw, 12px);
+    padding: 1.1vh;
+    font-size: 1.6rem;
+  }
+}

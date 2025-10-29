@@ -30,8 +30,15 @@ ul {
 
 @media screen and (max-width: 768px) {
   .navbar {
-    width: 85%; /* Smaller width on mobile devices */
-    max-width: 450px;
+    width: 100%; /* Smaller width on mobile devices */
+    max-width: 90%;
+    padding: 2px 15px;
+  }
+}
+@media screen and (max-width: 420px) {
+  .navbar {
+    width: 100%; /* Smaller width on mobile devices */
+    max-width: 100%;
     padding: 2px 15px;
   }
 }
@@ -40,7 +47,7 @@ ul {
 .navbar-mobile {
   display: flex;
   align-items: center;
-  min-height: clamp(30px, 4vw, 50px); /* Further reduced min-height values */
+  min-height: clamp(40px, 6vw, 60px); /* Further reduced min-height values */
 }
 
 .navbar-desktop {
@@ -73,7 +80,7 @@ ul {
   text-decoration: none;
   margin-right: clamp(1rem, 4vw, 3rem);
   margin-left: -60px;
-  transform: translateY(-5px); 
+  transform: translateY(-5px);
 }
 
 .logo-image {
@@ -231,11 +238,11 @@ ul {
     z-index: 1000;
     display: flex;
     justify-content: space-between;
-    width: 90%;
+    width: 95%;
     padding: 0;
     gap: 12px;
-    max-width: 450px;
-    max-height: 45px;
+    max-width: auto;
+    max-height: 52px;
   }
 
   .navbar-mobile .navbar-logo-link {
@@ -248,8 +255,10 @@ ul {
   }
 
   .navbar-mobile .logo-image {
-    margin-left: -20px;
-    height: clamp(70px, 15vw, 100px); /* Increased height values */
+    position: relative;
+    top: -3px;
+    margin-left: -25px;
+    height: clamp(80px, 15vw, 90px); /* Increased height values */
   }
 
   .navbar {
@@ -271,29 +280,28 @@ ul {
   .mobile-menu-panel {
     position: fixed;
     top: calc(8px + clamp(40px, 14vw, 55px));
-    right: 16px; 
+    right: 0; /* Stick to the viewport edge */
     z-index: 9999;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
     width: min(92vw, 200px);
-    margin-left: 0;
     padding: 14px 12px 12px;
     background-color: var(--menu-panel-bg, #1b1b2f);
-    border-radius: 14px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
-    transform: translateX(120%);
+    border-radius: 14px 0 0 14px; /* round only left edge */
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.45);
     opacity: 0;
     pointer-events: none;
-    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.3s ease;
     will-change: transform;
     gap: 12px;
     overflow: visible;
   }
 
   .mobile-menu-panel.active {
-    transform: translateX(0);
+    transform: translateX(0); /* Slide into view */
     opacity: 1;
     pointer-events: auto;
   }

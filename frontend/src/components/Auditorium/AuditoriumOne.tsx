@@ -112,28 +112,180 @@ export default function AuditoriumOne({ seats, bookedSeats }: AuditoriumProps) {
         <article className="auditorium">
           <img className="auditorium-screen" src={AuditoriumScreen} alt="Bioduk" />
           <section className="auditorium-seats-container">
-            {Object.entries(rowsMap).map(([rowLabel, rowSeats]) => (
-              <section key={rowLabel} className="auditorium-row">
-                {rowSeats.map((seat) => {
-                  const selected = isSelected(seat.rowLabel, seat.seatNumber);
-                  const occupied = isOccupied(seat.rowLabel, seat.seatNumber);
-                  const disabled = occupied || (maxReached && !selected);
-                  return (
-                    <SeatBox
-                      key={seat.seatId}
-                      row={seat.rowLabel}
-                      number={seat.seatNumber}
-                      selected={selected}
-                      occupied={occupied}
-                      disabled={disabled}
-                      onClick={() =>
-                        onToggle(seat.rowLabel, seat.seatNumber)
-                      }
-                    />
-                  );
-                })}
-              </section>
-            ))}
+            <section className="auditorium-one-seats-first-row">
+            <div className="seat-placeholder" />
+            <div className="seat-placeholder" />
+
+
+              {rowsTop[0].seats.map((n) => {
+                const selected = isSelected("A", n);
+                const occupied = isOccupied("A", n);
+                const disabled = occupied || (maxReached && !selected);
+                return (
+                  <SeatBox
+                    key={`A${n}`}
+                    row="A"
+                    number={n}
+                    selected={selected}
+                    occupied={occupied}
+                    disabled={disabled}
+                    onClick={() => onToggle("A", n)}
+                  />
+                );
+              })}
+     
+            <div className="seat-placeholder" />
+           <div className="seat-placeholder" />
+            </section>
+
+            <section className="auditorium-one-seats-second-row">
+              <div className="seat-placeholder" />
+        
+
+              {rowsTop[1].seats.map((n) => {
+                const selected = isSelected("B", n);
+                const occupied = isOccupied("B", n);
+                const disabled = occupied || (maxReached && !selected);
+                return (
+                  <SeatBox
+                    key={`B${n}`}
+                    row="B"
+                    number={n}
+                    selected={selected}
+                    occupied={occupied}
+                    disabled={disabled}
+                    onClick={() => onToggle("B", n)}
+                  />
+                );
+              })}
+                    <div className="seat-placeholder" />
+            <div className="seat-placeholder" />
+
+            </section>
+
+       <section className="auditorium-one-seats-third-row">
+  <div className="seat-placeholder" />
+  {rowsTop[2].seats.map((n) => {
+    const selected = isSelected("C", n);
+    const occupied = isOccupied("C", n);
+    const disabled = occupied || (maxReached && !selected);
+    return (
+      <SeatBox
+        key={`C${n}`}
+        row="C"
+        number={n}
+        selected={selected}
+        occupied={occupied}
+        disabled={disabled}
+        onClick={() => onToggle("C", n)}
+      />
+    );
+  })}
+  <div className="seat-placeholder" />
+</section>
+
+<section className="auditorium-one-seats-fourth-row">
+  <div className="seat-placeholder" />
+  {rowsTop[3].seats.map((n) => {
+    const selected = isSelected("D", n);
+    const occupied = isOccupied("D", n);
+    const disabled = occupied || (maxReached && !selected);
+    return (
+      <SeatBox
+        key={`D${n}`}
+        row="D"
+        number={n}
+        selected={selected}
+        occupied={occupied}
+        disabled={disabled}
+        onClick={() => onToggle("D", n)}
+      />
+    );
+  })}
+  <div className="seat-placeholder" />
+</section>
+
+ <section className="auditorium-one-seats-fifth-row">
+    <div className="seat-placeholder" />
+  {rowsBottom[0].seats.map((n) => {
+    const selected = isSelected("E", n);
+    const occupied = isOccupied("E", n);
+    const disabled = occupied || (maxReached && !selected);
+    return (
+      <SeatBox
+        key={`E${n}`}
+        row="E"
+        number={n}
+        selected={selected}
+        occupied={occupied}
+        disabled={disabled}
+        onClick={() => onToggle("E", n)}
+      />
+    );
+  })}
+  <div className="seat-placeholder" />
+</section>
+
+<section className="auditorium-one-seats-sixth-row">
+    <div className="seat-placeholder" />
+  {rowsBottom[1].seats.map((n) => {
+    const selected = isSelected("F", n);
+    const occupied = isOccupied("F", n);
+    const disabled = occupied || (maxReached && !selected);
+    return (
+      <SeatBox
+        key={`F${n}`}
+        row="F"
+        number={n}
+        selected={selected}
+        occupied={occupied}
+        disabled={disabled}
+        onClick={() => onToggle("F", n)}
+      />
+    );
+  })}
+    <div className="seat-placeholder" />
+</section>
+
+<section className="auditorium-one-seats-seventh-row">
+  {rowsBottom[2].seats.map((n) => {
+    const selected = isSelected("G", n);
+    const occupied = isOccupied("G", n);
+    const disabled = occupied || (maxReached && !selected);
+    return (
+      <SeatBox
+        key={`G${n}`}
+        row="G"
+        number={n}
+        selected={selected}
+        occupied={occupied}
+        disabled={disabled}
+        onClick={() => onToggle("G", n)}
+      />
+    );
+  })}
+</section>
+
+<section className="auditorium-one-seats-eighth-row">
+  {rowsBottom[3].seats.map((n) => {
+    const selected = isSelected("H", n);
+    const occupied = isOccupied("H", n);
+    const disabled = occupied || (maxReached && !selected);
+    return (
+      <SeatBox
+        key={`H${n}`}
+        row="H"
+        number={n}
+        selected={selected}
+        occupied={occupied}
+        disabled={disabled}
+        onClick={() => onToggle("H", n)}
+      />
+    );
+  })}
+</section>
+
+
           </section>
         </article>
       </section>

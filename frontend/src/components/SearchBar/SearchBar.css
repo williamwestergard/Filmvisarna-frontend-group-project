@@ -33,3 +33,42 @@
   border: 1px solid #cc0028;
   background-color: #24243d;
 }
+
+/* Phone sizes */
+@media only screen and (max-width: 1000px) {
+  .searchbar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .searchbar-label {
+    color: #f9f9f9;
+    font-weight: 500;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .searchbar-input {
+    width: 95%;
+    padding: 0.7rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    background-color: #1b1b2f;
+    color: #f9f9f9;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.3s, background-color 0.3s;
+    text-align: left;
+  }
+
+  .searchbar-input::placeholder {
+    color: #a6a5a5;
+  }
+
+  .searchbar-input:focus {
+    border: 1px solid #cc0028;
+    background-color: #24243d;
+  }
+}

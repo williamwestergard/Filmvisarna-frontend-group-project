@@ -1,5 +1,5 @@
 .auditorium-container {
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   border-radius: 5px;
   display: flex;
@@ -32,7 +32,6 @@
   flex-direction: column;
   justify-content: center;
   height: auto;
-  padding: 5vh;
   border-radius: 5px;
   margin: 0 auto;
   position: relative;
@@ -40,8 +39,9 @@
 }
 
 .auditorium-screen {
-  width: 100%;
+  width: 90%;
   margin: 0 auto 10vh;
+  margin-top: 5vh;
   pointer-events: none;
   z-index: 0;
 }
@@ -54,7 +54,7 @@
   justify-content: center;
   gap: 2vh;
   margin: 0 auto;
-  width: fit-content;
+  width: 100%;
   z-index: 1;
 }
 
@@ -122,7 +122,7 @@
 .auditorium-information-bottom-user-seat-container,
 .auditorium-information-bottom-occupied-seatcontainer {
   margin-top: 5vh;
-  margin-bottom: 4vh;
+  margin-bottom: 6vh;
   position: relative;
   left: 1vw;
   display: flex;
@@ -150,4 +150,505 @@
 .auditorium-information-bottom-occupied-seat {
   background-color: #353535;
   border: 1px solid rgba(255, 255, 255, 0.418);
+}
+
+/* Phone sizes */
+@media only screen and (max-width: 600px) {
+  .auditorium-container {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: relative;
+    top: 2vh;
+  }
+
+  .auditorium-content h2 {
+    font-size: 1.3rem;
+    position: relative;
+    left: 4vw;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+  }
+  .auditorium-content p {
+    position: relative;
+    left: 4vw;
+  }
+
+  .auditorium-text {
+    color: #999999;
+    font-size: clamp(0.8rem, 0.8vw, 0.9rem);
+    text-transform: uppercase;
+    margin: 0;
+    margin-top: 2vh;
+    padding: 0;
+    position: relative;
+    top: 1.5vh;
+  }
+
+  .auditorium-placeholder-text {
+    color: #999999;
+    font-size: clamp(0.9rem, 0.8vw, 1rem);
+    margin: 0;
+    padding: 0;
+    position: relative;
+    top: -1vh;
+    margin-bottom: 1vh;
+  }
+
+  .auditorium {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: auto;
+    padding: 0vh;
+    border-radius: 5px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 0;
+  }
+
+  .auditorium-screen {
+    width: 85%;
+    margin: 0 auto 5.5vh;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .auditorium-seats-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    z-index: 1;
+  }
+
+  [class^="auditorium-one-seats-"],
+  [class^="auditorium-two-seats-"] {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    margin-bottom: 0.1vh;
+    gap: clamp(2px, 0.8vw, 2px);
+  }
+
+  [class^="auditorium-one-seats-seventh-row"] {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    margin-top: clamp(2px, 0.8vw, 2px);
+    margin-bottom: clamp(4px, 1em, 9px);
+  }
+  [class^="auditorium-two-seats-fifth-row"] {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    margin-top: 1px;
+    margin-bottom: clamp(4px, 1em, 6px);
+  }
+
+  .auditorium-seat {
+    height: clamp(19px, 5.3vw, 22px);
+    max-width: clamp(19px, 5.3vw, 22px);
+    background-color: rgb(200, 199, 199);
+    border-radius: 3px;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+  }
+
+  .seat-placeholder {
+    aspect-ratio: 1 / 1;
+    max-width: 22px;
+    visibility: hidden;
+  }
+
+  .auditorium-information-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    gap: 9vw;
+  }
+
+  .auditorium-information-bottom-user-seat-container,
+  .auditorium-information-bottom-occupied-seatcontainer {
+    margin-top: 7vh;
+    margin-bottom: 4vh;
+    position: relative;
+    left: 1vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .auditorium-information-bottom-user-seat-container p,
+  .auditorium-information-bottom-occupied-seatcontainer p {
+    position: relative;
+    left: 2vw;
+  }
+
+  .auditorium-information-bottom-user-seat,
+  .auditorium-information-bottom-occupied-seat {
+    height: clamp(22px, 2.6vw, 30px);
+    width: clamp(22px, 2.6vw, 30px);
+    background-color: rgb(200, 199, 199);
+    border-radius: 5px;
+  }
+
+  .auditorium-information-bottom-user-seat {
+    background-color: #c41230;
+  }
+  .auditorium-information-bottom-occupied-seat {
+    background-color: #353535;
+    border: 1px solid rgba(255, 255, 255, 0.418);
+  }
+}
+
+@media only screen and (max-width: 410px) {
+  [class^="auditorium-one-seats-"],
+  [class^="auditorium-two-seats-"] {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    margin-bottom: 0.1vh;
+    gap: 1px;
+  }
+
+  [class^="auditorium-one-seats-seventh-row"] {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    gap: 3px;
+    margin-top: clamp(5px, 0.8vw, 10px);
+    margin-bottom: clamp(4px, 1em, 9px);
+  }
+  [class^="auditorium-one-seats-eighth-row"] {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    gap: 3px;
+  }
+
+  [class^="auditorium-two-seats-fifth-row"] {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    gap: 1px;
+    margin-top: 1px;
+    margin-bottom: clamp(2px, 1em, 4px);
+  }
+
+  [class^="auditorium-two-seats-sixth-row"] {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    gap: 2px;
+  }
+}
+
+@media only screen and (max-width: 377px) {
+  [class^="auditorium-one-seats-"],
+  [class^="auditorium-two-seats-"] {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    margin-bottom: 0.1vh;
+    gap: 1px;
+  }
+
+  [class^="auditorium-one-seats-seventh-row"] {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    gap: 4px;
+    margin-top: clamp(5px, 0.8vw, 10px);
+    margin-bottom: clamp(4px, 1em, 9px);
+  }
+  [class^="auditorium-one-seats-eighth-row"] {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    gap: 4px;
+  }
+
+  [class^="auditorium-two-seats-fifth-row"] {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    gap: 1px;
+    margin-top: 1px;
+    margin-bottom: clamp(2px, 1em, 4px);
+  }
+
+  [class^="auditorium-two-seats-sixth-row"] {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    gap: 4px;
+  }
+}
+
+/* Ipad sizes */
+@media only screen and (min-width: 801px) and (max-width: 880px) {
+  .auditorium-seats-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    z-index: 1;
+  }
+
+  [class^="auditorium-one-seats-"],
+  [class^="auditorium-two-seats-"] {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    margin-bottom: 0.8vh;
+    gap: clamp(2px, 0.8vw, px);
+  }
+
+  [class^="auditorium-one-seats-seventh-row"] {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    margin-top: clamp(2px, 0.8vw, 2px);
+    margin-bottom: clamp(4px, 1em, 9px);
+  }
+  [class^="auditorium-two-seats-fifth-row"] {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    margin-top: 1px;
+    margin-bottom: clamp(4px, 1em, 9px);
+  }
+
+  .auditorium-seat {
+    height: clamp(21px, 5.3vw, 26px);
+    max-width: clamp(21px, 5.3vw, 26px);
+    background-color: rgb(200, 199, 199);
+    border-radius: 3px;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+  }
+
+  .seat-placeholder {
+    aspect-ratio: 1 / 1;
+    max-width: 26px;
+    visibility: hidden;
+  }
+
+  .auditorium-information-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    gap: 5vw;
+  }
+
+  .auditorium-information-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    gap: 4vw;
+  }
+  .auditorium-information-bottom-user-seat-container,
+  .auditorium-information-bottom-occupied-seatcontainer {
+    margin-top: 5vh;
+    margin-bottom: 6vh;
+    position: relative;
+    left: 1vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .auditorium-information-bottom-user-seat-container p,
+  .auditorium-information-bottom-occupied-seatcontainer p {
+    position: relative;
+    left: 1vw;
+  }
+
+  .auditorium-information-bottom-user-seat,
+  .auditorium-information-bottom-occupied-seat {
+    height: clamp(28px, 2.6vw, 33px);
+    width: clamp(28px, 2.6vw, 33px);
+    border-radius: 5px;
+  }
+}
+
+/* Smaller Ipad sizes */
+@media only screen and (min-width: 1200px) and (max-width: 1650px) {
+  .auditorium-seats-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    z-index: 1;
+  }
+
+  [class^="auditorium-one-seats-"],
+  [class^="auditorium-two-seats-"] {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    margin-bottom: 0.8vh;
+    gap: clamp(2px, 0.8vw, 4px);
+  }
+
+  [class^="auditorium-one-seats-seventh-row"] {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    margin-top: clamp(2px, 0.8vw, 2px);
+    margin-bottom: clamp(4px, 0.7vw, 13px);
+  }
+  [class^="auditorium-two-seats-fifth-row"] {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    margin-top: 1px;
+    margin-bottom: clamp(4px, 1em, 9px);
+  }
+
+  .auditorium-seat {
+    height: clamp(27px, 3.3vw, 32px);
+    max-width: clamp(27px, 3.3vw, 32px);
+    background-color: rgb(200, 199, 199);
+    border-radius: 3px;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+  }
+
+  .seat-placeholder {
+    aspect-ratio: 1 / 1;
+    max-width: 32px;
+    visibility: hidden;
+  }
+
+  .auditorium-information-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    gap: 4vw;
+  }
+  .auditorium-information-bottom-user-seat-container,
+  .auditorium-information-bottom-occupied-seatcontainer {
+    margin-top: 5vh;
+    margin-bottom: 6vh;
+    position: relative;
+    left: 1vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .auditorium-information-bottom-user-seat-container p,
+  .auditorium-information-bottom-occupied-seatcontainer p {
+    position: relative;
+    left: 0.9vw;
+  }
+
+  .auditorium-information-bottom-user-seat,
+  .auditorium-information-bottom-occupied-seat {
+    height: clamp(28px, 2.6vw, 33px);
+    width: clamp(28px, 2.6vw, 33px);
+    border-radius: 5px;
+  }
+}
+
+@media only screen and (min-width: 881px) and (max-width: 1199px) {
+  .auditorium-information-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    gap: 6vw;
+  }
+  .auditorium-information-bottom-user-seat-container,
+  .auditorium-information-bottom-occupied-seatcontainer {
+    margin-top: 5vh;
+    margin-bottom: 6vh;
+    position: relative;
+    left: 1vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .auditorium-information-bottom-user-seat-container p,
+  .auditorium-information-bottom-occupied-seatcontainer p {
+    position: relative;
+    left: 1vw;
+  }
+
+  .auditorium-information-bottom-user-seat,
+  .auditorium-information-bottom-occupied-seat {
+    height: clamp(28px, 2.6vw, 33px);
+    width: clamp(28px, 2.6vw, 33px);
+    border-radius: 5px;
+  }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 799px) {
+  .auditorium-information-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    gap: 6vw;
+  }
+  .auditorium-information-bottom-user-seat-container,
+  .auditorium-information-bottom-occupied-seatcontainer {
+    margin-top: 5vh;
+    margin-bottom: 6vh;
+    position: relative;
+    left: 1vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .auditorium-information-bottom-user-seat-container p,
+  .auditorium-information-bottom-occupied-seatcontainer p {
+    position: relative;
+    left: 1.1vw;
+  }
+
+  .auditorium-information-bottom-user-seat,
+  .auditorium-information-bottom-occupied-seat {
+    height: clamp(28px, 2.6vw, 33px);
+    width: clamp(28px, 2.6vw, 33px);
+    border-radius: 5px;
+  }
 }
