@@ -35,8 +35,8 @@ interface Auditorium {
 }
 
 interface Seat {
-  id: number;
-  rowLetter: string;
+  seatId: number;
+  rowLabel: string;
   seatNumber: number;
 }
 
@@ -60,33 +60,28 @@ export default function TicketPage() {
           return;
         }
 
-        // Fetch booking data
         const bookingRes = await fetch(`/api/bookings/${bookingId}`);
         if (!bookingRes.ok) throw new Error("Failed to fetch booking");
         const bookingJson = await bookingRes.json();
         const currentBooking = bookingJson.booking || bookingJson;
         setBooking(currentBooking);
 
-        // Fetch screening data
         const screeningRes = await fetch(`/api/screenings/${currentBooking.screeningId}`);
         if (!screeningRes.ok) throw new Error("Failed to fetch screening");
         const screeningJson = await screeningRes.json();
         setScreening(screeningJson);
 
-        // Fetch movie data
         const movieRes = await fetch(`/api/movies/${screeningJson.movieId}`);
         if (!movieRes.ok) throw new Error("Failed to fetch movie");
         const movieJson = await movieRes.json();
         setMovie(movieJson);
 
-        // Fetch auditorium data
         const audRes = await fetch(`/api/auditoriums/${screeningJson.auditoriumId}`);
         if (!audRes.ok) throw new Error("Failed to fetch auditorium");
         const audJson = await audRes.json();
         setAuditorium(audJson);
 
-        // Fetch seats for this auditorium
-        const seatsRes = await fetch(`/api/seats/auditorium/${screeningJson.auditoriumId}`);
+        const seatsRes = await fetch(`/api/screenings/${screeningJson.id}/seats`);
         if (seatsRes.ok) {
           const seatsJson = await seatsRes.json();
           setSeats(seatsJson.seats || seatsJson);
@@ -104,11 +99,10 @@ export default function TicketPage() {
 
   if (loading) return <p className="loading">Laddar Biljett...</p>;
   if (errorMsg) return <p style={{ color: "white", textAlign: "center" }}>{errorMsg}</p>;
-
   if (!booking || !movie || !screening) {
     return <p style={{ color: "white", textAlign: "center" }}>Biljett kunde inte hittas.</p>;
   }
-  // Format date/time
+
   const dateObj = new Date(screening.time);
   const formattedDate = dateObj.toLocaleDateString("sv-SE", {
     weekday: "long",
@@ -124,16 +118,16 @@ export default function TicketPage() {
   const seatLabels =
     booking.seats
       ?.map((b) => {
-        const found = seats.find((s) => s.id === b.seatId);
-        return found ? `Row ${found.rowLetter} – Seat ${found.seatNumber}` : `#${b.seatId}`;
+        const found = seats.find((s) => s.seatId === b.seatId);
+        return found ? `${found.rowLabel}-${found.seatNumber}` : `#${b.seatId}`;
       })
-      .join(", ") || "N/A";
+      .join(", ") || "Not available";
 
   return (
     <section className="ticket-page">
       <div className="ticket">
         <header className="ticket-header">
-          <h1 className="ticket-title">Dina biljtter är bokade!</h1>
+          <h1 className="ticket-title">Dina biljetter är bokade!</h1>
         </header>
 
         <div className="ticket-body">
@@ -170,7 +164,7 @@ export default function TicketPage() {
         <div className="ticket-divider" aria-hidden="true" />
 
         <footer className="ticket-footer">
-          <p className="ticket-footer-label">Bokningsnummer:</p>  
+          <p className="ticket-footer-label">Bokningsnummer:</p>
           <div className="ticket-number-slot">{booking.bookingNumber}</div>
 
           <button

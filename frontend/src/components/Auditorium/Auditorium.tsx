@@ -45,7 +45,7 @@ const res = await fetch(`/api/screenings/${screening.id}/seats`);
     }
 
     fetchSeats();
-    intervalId = setInterval(fetchSeats, 30000);
+    intervalId = setInterval(fetchSeats, 60000);
     return () => clearInterval(intervalId);
   }, [screening?.id]);
 
