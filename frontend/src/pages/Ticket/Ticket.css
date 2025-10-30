@@ -4,7 +4,7 @@
   place-items: center;
   padding: 60px 16px 80px;
 }
-/* ticket */
+
 .ticket {
   position: relative;
   width: 100%;
@@ -20,7 +20,7 @@
   --notch: 40px; /* notch size */
 }
 
-/* header */
+
 .ticket-header {
   background: repeating-linear-gradient(
     135deg,
@@ -43,7 +43,7 @@
   text-shadow: 0 2px 3px rgba(0,0,0,.4);
 }
 
-/* ticket-body info/left + obs/right */
+
 .ticket-body {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -53,7 +53,6 @@
   align-items: start;
 }
 
-/* booking info - left */
 .ticket-info-panel {
   color: #ffffff;
   text-align: left;
@@ -86,10 +85,10 @@
   gap: 10px;
 }
 
-/* rows + label */
+
 .ti-row {
   display: grid;
-  grid-template-columns: 150px 1fr; /* label | value */
+  grid-template-columns: 150px 1fr; 
   gap: 10px;
   align-items: start;
   padding-bottom: 8px;
@@ -121,7 +120,7 @@
   opacity: 0.92;
 }
 
-/* OBS - booking */
+/* booking */
 .ticket-note {
   border: 1px solid rgba(175, 12, 12, 0.14);
   border-radius: 10px;
@@ -149,7 +148,7 @@
   text-align: left;
 }
 
-/* perffored line */
+
 .ticket-divider {
   position: relative;
   height: 24px;
@@ -162,7 +161,7 @@
   opacity: .8;
 }
 
-/* notch placed right/left */
+
 .ticket-divider::before,
 .ticket-divider::after {
   content: "";
@@ -179,7 +178,7 @@
 .ticket-divider::before { left: calc(-1 * var(--notch)); }
 .ticket-divider::after  { right: calc(-1 * var(--notch)); }
 
-/* footer + ticket number */
+
 .ticket-footer {
   padding: 12px 24px 28px;
   display: grid;
@@ -210,6 +209,42 @@
   text-shadow: 0 1px 0 rgba(0,0,0,.4);
 }
 
+.cancel-btn {
+  background-color: #d62828; 
+  color: white;
+  border: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.cancel-btn:hover {
+  background-color: #e63946; /* hover effect */
+  transform: translateY(-2px);
+}
+
+.cancel-btn:active {
+  transform: translateY(0);
+}
+
+.cancel-btn.disabled {
+  background-color: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+}
+
+.cancel-note {
+  color: #ffb347;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
 
 
 @media (max-width: 900px) {

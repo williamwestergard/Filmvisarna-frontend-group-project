@@ -123,6 +123,11 @@ export default function TicketPage() {
       })
       .join(", ") || "Not available";
 
+      const now = new Date();
+const screeningTime = new Date(screening.time);
+const oneHourBefore = new Date(screeningTime.getTime() - 60 * 60 * 1000);
+const canCancel = now < oneHourBefore;
+
   return (
     <section className="ticket-page">
       <div className="ticket">
@@ -174,6 +179,38 @@ export default function TicketPage() {
           >
             Tillbaka till startsidan
           </button>
+          <button
+  className={`cancel-btn ${!canCancel ? "disabled" : ""}`}
+  disabled={!canCancel}
+  onClick={async () => {
+    if (!canCancel) return;
+
+    const confirmDelete = window.confirm("Är du säker på att du vill avbeställa?");
+    if (!confirmDelete) return;
+
+    try {
+      const res = await fetch(`/api/bookings/${booking.id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Kunde inte avbeställa bokningen.");
+
+      alert("Din bokning har avbeställts.");
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+      alert("Något gick fel vid avbeställningen.");
+    }
+  }}
+>
+  Avbeställ
+</button>
+
+{!canCancel && (
+  <p className="cancel-note">
+    Du kan inte avbeställa mindre än en timme innan filmen startar.
+  </p>
+)}
         </footer>
       </div>
     </section>
