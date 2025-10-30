@@ -116,7 +116,10 @@ const Navbar: React.FC = () => {
                   referrerPolicy="no-referrer"
                 />
                 <span className="nav-user-name" style={{ color: "var(--text-light)", fontWeight: 500 }}>
-                  {user.firstName} {user.lastName}
+                <Link to="/mina-sidor" className="nav-username-link">
+             {user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1).toLowerCase()}{" "}
+             {user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1).toLowerCase()}
+             </Link>
                 </span>
               </li>
               <li className="nav-item">

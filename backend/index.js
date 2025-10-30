@@ -11,6 +11,7 @@ const createScreeningsRouter = require("./routes/screeningsRoutes");
 const createTicketTypesRouter = require("./routes/ticketTypesRoutes");
 const createBookingsRouter = require("./routes/bookingsRoutes");
 const createUsersRouter = require("./routes/usersRoutes");
+const createLoginsRouter = require("./routes/loginsRoutes");
 const createBookingTotalsRouter = require("./routes/bookingTotalsRoutes");
 const createShowtimesRouter = require("./routes/showtimesRoutes");
 
@@ -72,6 +73,9 @@ app.use("/api/bookings", createBookingsRouter(pool));
 
 // Mount user types routes
 app.use("/api/users", createUsersRouter(pool));
+
+// Mount login types routes
+app.use("/api/login", createLoginsRouter(pool));
 
 // Mount booking totals routes
 app.use("/api/booking-totals", createBookingTotalsRouter(pool));

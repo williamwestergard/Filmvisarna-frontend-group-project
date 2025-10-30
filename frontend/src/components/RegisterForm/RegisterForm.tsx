@@ -1,18 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./RegisterForm.css";
+import {RegisterFormApi} from "../../api/RegisterFormApi"
 
-interface RegisterFormProps {
-  onRegister?: (data: {
-    firstName: string;
-    lastName: string;
-    phone: string;
-    email: string;
-    password: string;
-  }) => void;
-}
 
-export default function RegisterForm({ onRegister }: RegisterFormProps) {
+export default function RegisterForm() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
@@ -22,14 +14,48 @@ export default function RegisterForm({ onRegister }: RegisterFormProps) {
 
   const navigate = useNavigate();
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      alert("Lösenorden matchar inte!");
-      return;
-    }
-    onRegister?.({ firstName, lastName, phone, email, password });
+  
+async function handleSubmit(e: React.FormEvent) {
+  e.preventDefault();
+
+  if (password !== confirmPassword) {
+    alert("Lösenorden matchar inte.");
+    return;
   }
+
+
+    // Password requires at least one letter and one number, and at least 6 characters
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+
+  if (!passwordRegex.test(password)) {
+    alert("Lösenordet måste vara minst 6 tecken långt och innehålla minst en bokstav och en siffra.");
+    return;
+  }
+
+try {
+  const result = await RegisterFormApi({
+    firstName,
+    lastName,
+    phone,
+    email,
+    password,
+  });
+
+  if (result.ok) {
+    // Save the new user to localStorage
+    localStorage.setItem("authUser", JSON.stringify(result.user));
+
+    // Trigger Navbar to update immediately
+    window.dispatchEvent(new StorageEvent("storage", { key: "authUser" }));
+
+    // Navigate back to homepage
+    navigate("/");
+  }
+} catch (err: any) {
+  alert(err.message || "Ett fel uppstod.");
+  console.error(err);
+}
+}
 
   function handleCancel() {
     navigate("/");
