@@ -147,7 +147,7 @@ export default function TicketPage() {
                 <dd>{auditorium?.name ?? "Unknown"}</dd>
               </div>
               <div className="ti-row">
-                <dt>Säten</dt>
+                <dt>Platser</dt>
                 <dd>{seatLabels}</dd>
               </div>
             </dl>

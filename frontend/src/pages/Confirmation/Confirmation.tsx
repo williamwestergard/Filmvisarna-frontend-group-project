@@ -117,12 +117,12 @@ export default function Confirmation() {
           console.log("Fetched totals:", totalsJson);
         }
 
-  // Fetch seats
-const seatsRes = await fetch(`/api/screenings/${screeningJson.id}/seats`);
-if (seatsRes.ok) {
-  const seatsJson = await seatsRes.json();
-  setSeats(seatsJson.seats || seatsJson);
-  console.log("Fetched seats from API:", seatsJson);
+           // Fetch seats
+            const seatsRes = await fetch(`/api/screenings/${screeningJson.id}/seats`);
+            if (seatsRes.ok) {
+           const seatsJson = await seatsRes.json();
+          setSeats(seatsJson.seats || seatsJson);
+            console.log("Fetched seats from API:", seatsJson);
 }
 
       } catch (err) {
@@ -197,7 +197,7 @@ const seatLabels =
           <p><strong>{formattedDate}</strong></p>
           <p>Tid: {formattedTime}</p>
           <p>Salong: {auditorium?.name ?? `Auditorium ${screening.auditoriumId}`}</p>
-          <p>Säten: {seatLabels}</p>
+          <p>Platser {seatLabels}</p>
           <p className="sum">
             Summa: {totals?.totalPrice ? `${totals.totalPrice} kr` : "Not available"}
           </p>
