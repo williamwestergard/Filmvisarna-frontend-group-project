@@ -119,7 +119,7 @@ function createMoviesRouter(pool) {
 
       // Paketpris logic
       cachedWeeklyMovie.paketpris = {
-        liten: { antal: 2, pris: 60 },
+        liten: { antal: 2, pris: 55 },
         litenEn: { antal: 1, pris: 30 }
       };
     }
