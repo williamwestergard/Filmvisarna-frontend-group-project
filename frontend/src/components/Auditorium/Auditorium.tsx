@@ -18,6 +18,9 @@ export default function Auditorium() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // UI-state for seat picker panel
+  const [pickerOpen, setPickerOpen] = useState(false);
+
   useEffect(() => {
     if (!screening?.id) return;
     let intervalId: ReturnType<typeof setInterval>;
@@ -26,7 +29,7 @@ export default function Auditorium() {
       setLoading(true);
       try {
         if (!screening) throw new Error("Ingen visning vald ännu.");
-const res = await fetch(`/api/screenings/${screening.id}/seats`);
+        const res = await fetch(`/api/screenings/${screening.id}/seats`);
         if (!res.ok) throw new Error("Failed to load seats");
         const data = await res.json();
         if (!data.ok) throw new Error("Invalid response");
@@ -79,7 +82,40 @@ const res = await fetch(`/api/screenings/${screening.id}/seats`);
       ? "Halvan"
       : undefined);
 
-  if (name === "Halvan")
-    return <AuditoriumTwo seats={seats} bookedSeats={bookedSeats} />;
-  return <AuditoriumOne seats={seats} bookedSeats={bookedSeats} />;
+  return (
+    <section className="auditorium-content">
+      {/* Icon-botton */}
+      <div className="seat-picker">
+        <button
+          type="button"
+          className="seat-picker-toggle"
+          aria-expanded={pickerOpen}
+          aria-controls="seat-picker-panel"
+          onClick={() => setPickerOpen((v) => !v)}
+          title="Platsväljaren"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M7 3h10a2 2 0 0 1 2 2v10h-2V6H7V3zm10 18H7a2 2 0 0 1-2-2V9h2v10h10v2zm-9-6h8v2H8v-2zm0-4h8v2H8V11z"
+              fill="currentColor"
+            />
+          </svg>
+          <span>Platsväljaren</span>
+        </button>
+
+        {/* */}
+        {pickerOpen && (
+          <div id="seat-picker-panel" className="seat-picker-panel">
+            <p></p>
+          </div>
+        )}
+      </div>
+
+      {name === "Halvan" ? (
+        <AuditoriumTwo seats={seats} bookedSeats={bookedSeats} />
+      ) : (
+        <AuditoriumOne seats={seats} bookedSeats={bookedSeats} />
+      )}
+    </section>
+  );
 }
