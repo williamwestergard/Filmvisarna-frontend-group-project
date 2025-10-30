@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AuditoriumOne from "./AuditoriumOne";
 import AuditoriumTwo from "./AuditoriumTwo";
 import { useBooking } from "../../Context/BookingContext";
@@ -12,14 +12,15 @@ interface ApiSeat {
 }
 
 export default function Auditorium() {
-  const { screening } = useBooking();
+  const { screening, selectedSeats, toggleSeat, totalTickets } = useBooking();
   const [seats, setSeats] = useState<ApiSeat[]>([]);
   const [bookedSeats, setBookedSeats] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // UI-state for seat picker panel
+  // UI-state
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [chosenSeatKey, setChosenSeatKey] = useState<string>("");
 
   useEffect(() => {
     if (!screening?.id) return;
@@ -51,6 +52,63 @@ export default function Auditorium() {
     intervalId = setInterval(fetchSeats, 30000);
     return () => clearInterval(intervalId);
   }, [screening?.id]);
+
+  // Select-list with available seats
+  const selectableSeats = useMemo(() => {
+    const selectedIds = new Set(selectedSeats.map((s) => s.seatId));
+    return seats
+      .filter((s) => s.isBooked !== 1 && !selectedIds.has(s.seatId))
+      .sort((a, b) =>
+        a.rowLabel === b.rowLabel
+          ? a.seatNumber - b.seatNumber
+          : a.rowLabel.localeCompare(b.rowLabel)
+      );
+  }, [seats, selectedSeats]);
+
+  function auditoriumNameForToggle() {
+    return (
+      screening?.auditoriumName ??
+      (screening?.auditoriumId === 1
+        ? "Helan"
+        : screening?.auditoriumId === 2
+        ? "Halvan"
+        : "Salong")
+    );
+  }
+
+  // Choose seat from select-list
+  function handlePickSeat() {
+    if (!chosenSeatKey) return;
+    const [row, numberStr] = chosenSeatKey.split("|");
+    const number = Number(numberStr);
+
+    const seat = seats.find((s) => s.rowLabel === row && s.seatNumber === number);
+    if (!seat) {
+      alert("Kunde inte hitta platsen, försök igen.");
+      return;
+    }
+    if (bookedSeats.includes(seat.seatId)) {
+      alert("Platsen blev just bokad. Välj en annan.");
+      return;
+    }
+    if (totalTickets <= 0) {
+      alert("Välj antal biljetter först.");
+      return;
+    }
+    if (selectedSeats.length >= totalTickets) {
+      alert("Du har redan valt maximalt antal platser.");
+      return;
+    }
+
+    toggleSeat({
+      seatId: seat.seatId,
+      row: seat.rowLabel,
+      number: seat.seatNumber,
+      auditorium: auditoriumNameForToggle(),
+    });
+
+    setChosenSeatKey("");
+  }
 
   if (!screening?.id)
     return (
@@ -84,7 +142,6 @@ export default function Auditorium() {
 
   return (
     <section className="auditorium-content">
-      {/* Icon-botton */}
       <div className="seat-picker">
         <button
           type="button"
@@ -103,10 +160,50 @@ export default function Auditorium() {
           <span>Platsväljaren</span>
         </button>
 
-        {/* */}
         {pickerOpen && (
-          <div id="seat-picker-panel" className="seat-picker-panel">
-            <p></p>
+          <div id="seat-picker-panel" className="seat-picker-panel" role="dialog" aria-modal="false">
+            <label className="seat-picker-label" htmlFor="seat-picker-select">
+              Välj ledig plats
+            </label>
+            <select
+              id="seat-picker-select"
+              className="seat-picker-select"
+              value={chosenSeatKey}
+              onChange={(e) => setChosenSeatKey(e.target.value)}
+            >
+              <option value="">— Välj —</option>
+              {selectableSeats.map((s) => (
+                <option key={s.seatId} value={`${s.rowLabel}|${s.seatNumber}`}>
+                  Rad {s.rowLabel} – Plats {s.seatNumber}
+                </option>
+              ))}
+            </select>
+
+            <div className="seat-picker-actions">
+              <button
+                type="button"
+                className="seat-picker-add"
+                onClick={handlePickSeat}
+                disabled={
+                  !chosenSeatKey ||
+                  totalTickets <= 0 ||
+                  selectedSeats.length >= totalTickets
+                }
+              >
+                Välj plats
+              </button>
+              <button
+                type="button"
+                className="seat-picker-close"
+                onClick={() => setPickerOpen(false)}
+              >
+                Stäng
+              </button>
+            </div>
+
+            <p className="seat-picker-hint">
+              Du kan också klicka direkt på stolarna i kartan.
+            </p>
           </div>
         )}
       </div>
