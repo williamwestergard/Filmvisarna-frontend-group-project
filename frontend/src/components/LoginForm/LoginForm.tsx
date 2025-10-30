@@ -7,9 +7,11 @@ export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+    const [error, setError] = useState<string>("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+      setError(""); 
 
     try {
       const result = await LoginFormApi({
@@ -27,11 +29,11 @@ export default function LoginForm() {
 
         // Navigate back to homepage
         navigate("/");
-      } else {
-        alert("Fel e-postadress eller lösenord.");
-      }
+      } 
+
     } catch (err: any) {
-      alert(err.message || "Ett fel uppstod vid inloggning.");
+
+      setError(err.message || "Ett fel uppstod vid inloggning.");
       console.error(err);
     }
   }
@@ -51,6 +53,7 @@ export default function LoginForm() {
 
       {/* Header */}
       <h2 className="login-title">Logga in</h2>
+       <p className="login-error-message"> {error} </p>
 
       {/* Email field */}
       <div className="login-field">

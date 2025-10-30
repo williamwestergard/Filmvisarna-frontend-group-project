@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './Navbar.css';
 import {  Link } from "react-router-dom";
 import logo from './navbar-logo.png'; // Importera din logotyp
+import UserProfilePic from "./navbar-user-profile-picture.png"
 
 type User = {
   firstName: string;
@@ -108,10 +109,11 @@ const Navbar: React.FC = () => {
         <ul className="nav-actions nav-actions-desktop">
           {user ? (
             <>
+            
               <li className="nav-item nav-user">
                 <img
                   className="nav-user-avatar"
-                  src={user.avatarUrl || "/default-user.png"}
+                  src={UserProfilePic}
                   alt="Användarbild"
                   referrerPolicy="no-referrer"
                 />
@@ -208,7 +210,7 @@ const Navbar: React.FC = () => {
               <div className="nav-item" style={{ display: "flex", alignItems: "center", gap: 10, padding: "0.5rem 0.9rem" }}>
                 <img
                   className="nav-user-avatar"
-                  src={user.avatarUrl || "/default-user.png"}
+                   src={UserProfilePic}
                   alt="Användarbild"
                   referrerPolicy="no-referrer"
                 />

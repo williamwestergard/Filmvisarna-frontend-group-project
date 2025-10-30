@@ -32,25 +32,27 @@ function createUsersRouter(pool) {
       if (!emailRegex.test(email)) {
         return res
           .status(400)
-          .json({ ok: false, message: "Invalid email format" });
+          .json({ ok: false, message: "Ogiltigt email format." });
       }
       if (!nameRegex.test(firstName)) {
-        return res
-          .status(400)
-          .json({ ok: false, message: "First name must contain only letters" });
+        return res.status(400).json({
+          ok: false,
+          message: "Förnamn får endast innehålla bokstäver.",
+        });
       }
 
       if (!nameRegex.test(lastName)) {
-        return res
-          .status(400)
-          .json({ ok: false, message: "Last name must contain only letters" });
+        return res.status(400).json({
+          ok: false,
+          message: "Efternamn får endast innehålla bokstäver.",
+        });
       }
 
       if (!phoneRegex.test(phoneNumber)) {
         return res.status(400).json({
           ok: false,
           message:
-            "Phone number must contain only numbers and valid symbols (+ - space ())",
+            "Telefonnummer får endast innehålla siffror och giltiga symboler.",
         });
       }
 

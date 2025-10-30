@@ -11,15 +11,17 @@ export default function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState<string>("");
 
   const navigate = useNavigate();
 
   
 async function handleSubmit(e: React.FormEvent) {
   e.preventDefault();
+  setError(""); 
 
   if (password !== confirmPassword) {
-    alert("Lösenorden matchar inte.");
+    setError("Lösenorden matchar inte.");
     return;
   }
 
@@ -28,7 +30,9 @@ async function handleSubmit(e: React.FormEvent) {
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
 
   if (!passwordRegex.test(password)) {
-    alert("Lösenordet måste vara minst 6 tecken långt och innehålla minst en bokstav och en siffra.");
+     setError(
+        "Lösenordet måste vara minst 6 tecken långt och innehålla minst en bokstav och en siffra."
+      );
     return;
   }
 
@@ -52,7 +56,7 @@ try {
     navigate("/");
   }
 } catch (err: any) {
-  alert(err.message || "Ett fel uppstod.");
+  setError(err.message || "Ett fel uppstod vid registrering.");
   console.error(err);
 }
 }
@@ -70,6 +74,8 @@ try {
         alt="Filmvisarna"
       />
       <h2 className="register-title">Skapa konto</h2>
+
+    <p className="register-error-message"> {error} </p>
 
       {/* Fält */}
       <div className="register-field">
