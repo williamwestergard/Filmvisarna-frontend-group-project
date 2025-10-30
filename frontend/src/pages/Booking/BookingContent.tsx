@@ -127,7 +127,7 @@ function BookingContent() {
           return;
         }
 
-        console.log("📏 DEBUG Row Seats:", rowSeats.map((s) => s.seatNumber));
+        console.log(" DEBUG Row Seats:", rowSeats.map((s) => s.seatNumber));
 
       
         const seatInRow = rowSeats.find(
