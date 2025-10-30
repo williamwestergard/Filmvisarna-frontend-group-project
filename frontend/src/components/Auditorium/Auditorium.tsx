@@ -199,41 +199,28 @@ export default function Auditorium() {
             <label className="seat-picker-label" htmlFor="seat-picker-select">
               Välj ledig plats
             </label>
-            <select
-              id="seat-picker-select"
-              className="seat-picker-select"
-              value={chosenSeatKey}
-              onChange={(e) => setChosenSeatKey(e.target.value)}
-            >
-              <option value="">— Välj —</option>
-              {selectableSeats.map((s) => (
-                <option key={s.seatId} value={`${s.rowLabel}|${s.seatNumber}`}>
-                  Rad {s.rowLabel} – Plats {s.seatNumber}
-                </option>
-              ))}
-            </select>
-             {/* Action -buttons for the select flow */}
             <div className="seat-picker-actions">
-              <button
-                type="button"
-                className="seat-picker-add"
-                onClick={handlePickSeat}
-                disabled={
-                  !chosenSeatKey ||
-                  totalTickets <= 0 ||
-                  selectedSeats.length >= totalTickets
-                }
-              >
-                Välj plats
-              </button>
-              <button
-                type="button"
-                className="seat-picker-close"
-                onClick={() => setPickerOpen(false)}
-              >
-                Stäng
-              </button>
-            </div>
+  <button
+    type="button"
+    className="seat-picker-add"
+    onClick={() => {
+      if (selectedSeats.length >= totalTickets && totalTickets > 0) {
+        setPickerOpen(false); // stänger panelen när alla platser valts
+      }
+    }}
+    disabled={totalTickets <= 0 || selectedSeats.length < totalTickets}
+  >
+    Välj plats
+  </button>
+
+  <button
+    type="button"
+    className="seat-picker-close"
+    onClick={() => setPickerOpen(false)}
+  >
+    Stäng
+  </button>
+</div>
 
             
             {/* rows list with row counters and seat "chips"
