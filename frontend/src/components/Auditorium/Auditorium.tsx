@@ -20,7 +20,6 @@ export default function Auditorium() {
 
   // UI-state
   const [pickerOpen, setPickerOpen] = useState(false);
-  const [chosenSeatKey, setChosenSeatKey] = useState<string>("");
 
   useEffect(() => {
     if (!screening?.id) return;
@@ -53,20 +52,8 @@ export default function Auditorium() {
     return () => clearInterval(intervalId);
   }, [screening?.id]);
 
-  // Selectable seats for dropdown
-  const selectableSeats = useMemo(() => {
-    const selectedIds = new Set(selectedSeats.map((s) => s.seatId));
-    return seats
-      .filter((s) => s.isBooked !== 1 && !selectedIds.has(s.seatId))
-      .sort((a, b) =>
-        a.rowLabel === b.rowLabel
-          ? a.seatNumber - b.seatNumber
-          : a.rowLabel.localeCompare(b.rowLabel)
-      );
-  }, [seats, selectedSeats]);
 
-  // Order seats by row and number for list view
-  // Build a Map keyed by rowLabel
+  // Group seats by row for the structured list
   const rows = useMemo(() => {
     const byRow = new Map<string, ApiSeat[]>();
     for (const s of seats) {
@@ -84,7 +71,7 @@ export default function Auditorium() {
       seats: byRow.get(label)!,
     }));
   }, [seats]);
-  // Helpers for toggling seats
+
   function auditoriumNameForToggle() {
     return (
       screening?.auditoriumName ??
@@ -95,14 +82,7 @@ export default function Auditorium() {
         : "Salong")
     );
   }
-  // Handle pick from dropdown 
-  function handlePickSeat() {
-    if (!chosenSeatKey) return;
-    const [row, numberStr] = chosenSeatKey.split("|");
-    const number = Number(numberStr);
-    quickToggleSeat(row, number);
-    setChosenSeatKey("");
-  }
+  
  // Quick toggle seat by row and number
   function quickToggleSeat(row: string, number: number) {
     const seat = seats.find((s) => s.rowLabel === row && s.seatNumber === number);
@@ -110,12 +90,11 @@ export default function Auditorium() {
       alert("Kunde inte hitta platsen, försök igen.");
       return;
     }
-    // Check if booked or selected
     const isBooked = bookedSeats.includes(seat.seatId);
     const isSelected = selectedSeats.some((s) => s.seatId === seat.seatId);
-
     if (isBooked) return;
 
+    // Deselect if already selected
     if (isSelected) {
       toggleSeat({
         seatId: seat.seatId,
@@ -125,7 +104,7 @@ export default function Auditorium() {
       });
       return;
     }
-
+    // Enforce ticket cap
     if (totalTickets <= 0) {
       alert("Välj antal biljetter först.");
       return;
