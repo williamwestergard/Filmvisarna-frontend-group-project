@@ -1,22 +1,44 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginForm.css";
+import { LoginFormApi } from "../../api/LoginFormApi";
 
-interface LoginFormProps {
-  onLogin?: (email: string, password: string) => void;
-}
-
-function LoginForm({ onLogin }: LoginFormProps) {
+export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    onLogin?.(email, password);
-  };
 
-  const handleCancel = () => navigate("/");
+    try {
+      const result = await LoginFormApi({
+        email,
+        password,
+      });
+
+      if (result.ok) {
+        // Save user to localStorage
+        localStorage.setItem("authUser", JSON.stringify(result.user));
+          localStorage.setItem("authToken", result.token);
+
+        // Inform Navbar (which listens for "storage" events)
+        window.dispatchEvent(new StorageEvent("storage", { key: "authUser" }));
+
+        // Navigate back to homepage
+        navigate("/");
+      } else {
+        alert("Fel e-postadress eller lösenord.");
+      }
+    } catch (err: any) {
+      alert(err.message || "Ett fel uppstod vid inloggning.");
+      console.error(err);
+    }
+  }
+
+  function handleCancel() {
+    navigate("/");
+  }
 
   return (
     <form className="login-form" onSubmit={handleSubmit} aria-label="Logga in">
@@ -30,7 +52,7 @@ function LoginForm({ onLogin }: LoginFormProps) {
       {/* Header */}
       <h2 className="login-title">Logga in</h2>
 
-      {/* Email - field */}
+      {/* Email field */}
       <div className="login-field">
         <label htmlFor="login-email">E-postadress</label>
         <input
@@ -44,7 +66,7 @@ function LoginForm({ onLogin }: LoginFormProps) {
         />
       </div>
 
-      {/* Password- field */}
+      {/* Password field */}
       <div className="login-field">
         <label htmlFor="login-password">Lösenord</label>
         <input
@@ -60,7 +82,9 @@ function LoginForm({ onLogin }: LoginFormProps) {
 
       {/* Buttons */}
       <div className="login-actions">
-        <button type="submit" className="login-button">Logga in</button>
+        <button type="submit" className="login-button">
+          Logga in
+        </button>
         <button type="button" className="cancel-button" onClick={handleCancel}>
           Avbryt
         </button>
@@ -68,5 +92,3 @@ function LoginForm({ onLogin }: LoginFormProps) {
     </form>
   );
 }
-
-export default LoginForm;

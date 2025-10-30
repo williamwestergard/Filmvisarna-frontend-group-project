@@ -13,6 +13,7 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Discover from "./pages/Discover/Discover";
 import MyPages from "./pages/MyPages/MyPages";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -38,7 +39,16 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/booking/:movieTitle" element={<BookingPage />} />
-          <Route path="/mina-sidor" element={<MyPages />} />
+
+          <Route 
+              path="/mina-sidor" 
+              element={
+                <ProtectedRoute>
+                  <MyPages />
+                </ProtectedRoute>
+              } 
+            />
+
           <Route path="/upptack" element={<Discover />} />
         </Routes>
       </main>
