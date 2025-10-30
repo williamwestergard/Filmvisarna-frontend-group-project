@@ -35,8 +35,8 @@ interface Auditorium {
 }
 
 interface Seat {
-  id: number;
-  rowLetter: string;
+  seatId: number;
+  rowLabel: string;
   seatNumber: number;
 }
 
@@ -78,44 +78,53 @@ export default function Confirmation() {
           return;
         }
 
+        console.log("Loading booking with ID:", bookingId);
+
         // Fetch booking info
         const bookingRes = await fetch(`/api/bookings/${bookingId}`);
         if (!bookingRes.ok) throw new Error("Failed to fetch booking");
         const bookingJson = await bookingRes.json();
         const fetchedBooking = bookingJson.booking || bookingJson;
         setBooking(fetchedBooking);
+        console.log("Fetched booking:", fetchedBooking);
 
         // Fetch screening info
         const screeningRes = await fetch(`/api/screenings/${fetchedBooking.screeningId}`);
         if (!screeningRes.ok) throw new Error("Failed to fetch screening");
         const screeningJson = await screeningRes.json();
         setScreening(screeningJson);
+        console.log("Fetched screening:", screeningJson);
 
         // Fetch movie info
         const movieRes = await fetch(`/api/movies/${screeningJson.movieId}`);
         if (!movieRes.ok) throw new Error("Failed to fetch movie");
         const movieJson = await movieRes.json();
         setMovie(movieJson);
+        console.log("Fetched movie:", movieJson);
 
         // Fetch auditorium info
         const audRes = await fetch(`/api/auditoriums/${screeningJson.auditoriumId}`);
         if (!audRes.ok) throw new Error("Failed to fetch auditorium");
         const audJson = await audRes.json();
         setAuditorium(audJson);
+        console.log("Fetched auditorium:", audJson);
 
         // Fetch total price
         const totalsRes = await fetch(`/api/booking-totals/${bookingId}`);
         if (totalsRes.ok) {
           const totalsJson = await totalsRes.json();
           setTotals(totalsJson);
+          console.log("Fetched totals:", totalsJson);
         }
 
-        // Fetch seats
-        const seatsRes = await fetch(`/api/seats/auditorium/${screeningJson.auditoriumId}`);
-        if (seatsRes.ok) {
-          const seatsJson = await seatsRes.json();
-          setSeats(seatsJson.seats || seatsJson);
-        }
+  // Fetch seats
+const seatsRes = await fetch(`/api/screenings/${screeningJson.id}/seats`);
+if (seatsRes.ok) {
+  const seatsJson = await seatsRes.json();
+  setSeats(seatsJson.seats || seatsJson);
+  console.log("Fetched seats from API:", seatsJson);
+}
+
       } catch (err) {
         console.error("Error loading booking:", err);
         setErrorMsg("Could not load booking information.");
@@ -148,6 +157,9 @@ export default function Confirmation() {
     return <p style={{ color: "white", textAlign: "center" }}>Bokningen kunde inte hittas.</p>;
   }
 
+  console.log("Booking seats data:", booking.seats);
+  console.log("All available seats data:", seats);
+
   // Format date/time
   const dateObj = new Date(screening.time);
   const formattedDate = dateObj.toLocaleDateString("sv-SE", {
@@ -161,14 +173,16 @@ export default function Confirmation() {
     minute: "2-digit",
   });
 
-  // Seat labels
-  const seatLabels =
-    booking.seats
-      ?.map((b) => {
-        const found = seats.find((s) => s.id === b.seatId);
-        return found ? `${found.rowLetter}${found.seatNumber}` : `#${b.seatId}`;
-      })
-      .join(", ") || "Not available";
+// Seat labels
+const seatLabels =
+  booking.seats
+    ?.map((b) => {
+      const found = seats.find((s) => s.seatId === b.seatId);
+      console.log("Matching seat:", { bookingSeat: b, found });
+      return found ? `${found.rowLabel}-${found.seatNumber}` : `#${b.seatId}`;
+    })
+    .join(", ") || "Not available";
+
 
   return (
     <main className="confirmation-page">
