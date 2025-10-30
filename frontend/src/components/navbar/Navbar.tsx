@@ -186,7 +186,7 @@ const Navbar: React.FC = () => {
             <a href="/om-oss" className="nav-link" onClick={closeMenu}>Om oss</a>
           </li>
           <li className="nav-item">
-            <a href="/shop" className="nav-link" onClick={closeMenu}>Vår Kiosk</a>
+            <a href="/shop" className="nav-link" onClick={closeMenu}>Vår kiosk</a>
           </li>
         </ul>
         <div className={isAccountOpen ? 'mobile-account-panel open' : 'mobile-account-panel'}>
