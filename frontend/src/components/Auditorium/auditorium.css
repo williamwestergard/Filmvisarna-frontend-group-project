@@ -667,7 +667,7 @@
   position: absolute;
   top: 12px;
   right: 12px;
-  z-index: 5; /* Above the auditorium layout but below modals */
+  z-index: 5;
 }
 
 /* Toggle button - icon + toggler */
@@ -677,7 +677,7 @@
   gap: 8px;
   padding: 10px 14px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 400;
   border-radius: 10px;
   border: 1px solid rgba(255,255,255,0.14);
   background: #232232;
@@ -727,12 +727,9 @@
   color: #fff;
   font-weight: 800;
   cursor: pointer;
-  transition: filter .15s ease, transform .1s ease, box-shadow .15s ease;
 }
 .seat-picker-add:not(:disabled):hover {
-  filter: brightness(1.06);
   transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(196,18,48,.28);
 }
 .seat-picker-add:disabled {
   background: #716d7a;
