@@ -1,8 +1,7 @@
-// Fil: Navbar.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from "react";
 import './Navbar.css';
-import {  Link } from "react-router-dom";
-import logo from './navbar-logo.png'; // Importera din logotyp
+import {useNavigate,  Link } from "react-router-dom";
+import logo from './navbar-logo.png'; 
 import UserProfilePic from "./navbar-user-profile-picture.png"
 
 type User = {
@@ -14,8 +13,10 @@ type User = {
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isLogOutOpen, setisLogOutOpen] = useState(false);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -31,6 +32,31 @@ const Navbar: React.FC = () => {
     setIsDropdownOpen(false);
     setIsAccountOpen(false);
   };
+
+  // Gör så att "är du säker" sektionen om användaren vill logga ut stängs om man klickar utanför sektionen.
+  const logoutDropdownRef = useRef<HTMLDivElement | null>(null);
+
+useEffect(() => {
+  function handleClickOutside(event: MouseEvent) {
+    if (
+      logoutDropdownRef.current &&
+      !logoutDropdownRef.current.contains(event.target as Node)
+    ) {
+      setisLogOutOpen(false);
+    }
+  }
+
+  if (isLogOutOpen) {
+    document.addEventListener("mousedown", handleClickOutside);
+  } else {
+    document.removeEventListener("mousedown", handleClickOutside);
+  }
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [isLogOutOpen]);
+
 
   // Effekt för att förhindra scrolling av body när mobilmenyn är öppen
   useEffect(() => {
@@ -75,6 +101,8 @@ const Navbar: React.FC = () => {
     setIsAccountOpen(false);
     setIsDropdownOpen(false);
     setIsMenuOpen(false);
+    setisLogOutOpen(false);
+    navigate("/");
   };
 
   const desktopNavigation = (
@@ -125,7 +153,40 @@ const Navbar: React.FC = () => {
                 </span>
               </li>
               <li className="nav-item">
-                <button className="nav-button" onClick={handleLogout}>Logga ut</button>
+               <li className="nav-item nav-logout">
+  <div className="logout-container" style={{ position: "relative" }}>
+
+    <button
+      className="nav-button"
+      onClick={() => setisLogOutOpen((prev) => !prev)}
+    >
+      Logga ut
+    </button>
+
+    {isLogOutOpen && (
+      <div
+        className="navbar-logout-dropdown"
+          ref={logoutDropdownRef}>
+        <p style={{ color: "#fff", marginBottom: "10px" }}>
+          Är du säker?
+        </p>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <button
+            className="navbar-logout-confirm-button"
+            onClick={handleLogout}>
+            Ja
+          </button>
+          <button
+            className="navbar-logout-cancel-button"
+            onClick={() => setisLogOutOpen(false)} >
+            Avbryt
+          </button>
+        </div>
+      </div>
+    )}
+  </div>
+</li>
+
               </li>
             </>
           ) : (

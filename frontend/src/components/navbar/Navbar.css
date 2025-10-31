@@ -197,6 +197,42 @@ ul {
   background-color: #2a2a45;
 }
 
+.navbar-logout-dropdown {
+  position: absolute;
+  top: 100%;
+  left: -2vw;
+  z-index: 1100;
+  min-width: 150px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #1b1b2f;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+.navbar-logout-confirm-button,
+.navbar-logout-cancel-button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: white;
+  padding: 0.7vh 1vw;
+  margin: 0.5vw;
+  width: 0 auto;
+}
+
+.navbar-logout-confirm-button {
+  background-color: #c41230;
+  border-radius: 3px;
+}
+
+.navbar-logout-cancel-button {
+  border: 1px solid rgba(255, 255, 255, 0.46);
+  border-radius: 3px;
+}
+.navbar-logout-confirm-button:hover,
+.navbar-logout-cancel-button:hover {
+  filter: brightness(80%);
+}
+
 /* ---------- Hamburgare & animation ---------- */
 .menu-icon {
   display: none;

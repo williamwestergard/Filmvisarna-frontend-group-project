@@ -26,12 +26,12 @@ async function handleSubmit(e: React.FormEvent) {
   }
 
 
-    // Password requires at least one letter and one number, and at least 6 characters
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+    // Password requires at least one letter and one number, and at least 8 characters
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
   if (!passwordRegex.test(password)) {
      setError(
-        "Lösenordet måste vara minst 6 tecken långt och innehålla minst en bokstav och en siffra."
+        "Lösenordet måste vara minst 8 tecken långt och innehålla minst en bokstav och en siffra."
       );
     return;
   }

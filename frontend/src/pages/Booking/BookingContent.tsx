@@ -94,6 +94,9 @@ function BookingContent() {
     if (!canProceed || !screening) return;
     setLoadingBooking(true);
 
+    const authUser = JSON.parse(localStorage.getItem("authUser") || "null");
+    const userId = authUser?.id || null;
+
     try {
       console.log(" DEBUG Screening Info:", screening);
 
@@ -160,21 +163,22 @@ function BookingContent() {
 
       const seatsPayload = assignTicketTypesToSeats(realSeatIds);
 
-      console.log(" DEBUG Booking payload:", {
-        userId: 1,
-        screeningId: screening.id,
-        seats: seatsPayload,
-      });
+const payload: any = {
+  screeningId: screening.id,
+  seats: seatsPayload,
+};
 
-      const response = await fetch("/api/bookings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: 1,
-          screeningId: screening.id,
-          seats: seatsPayload,
-        }),
-      });
+if (userId) {
+  payload.userId = userId; 
+} else {
+  payload.guest = true; 
+}
+
+const response = await fetch("/api/bookings", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(payload),
+});
 
       const data = await response.json();
 
