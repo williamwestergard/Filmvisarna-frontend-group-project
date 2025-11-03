@@ -147,12 +147,15 @@ export function BookingProvider({ children }: { children: ReactNode }) {
 
   const clearSeats = () => setSelectedSeats([]);
 
+
+
   // Trim selected seats if user decreases ticket count
   useEffect(() => {
     if (selectedSeats.length > totalTickets) {
       setSelectedSeats((prev) => prev.slice(0, totalTickets));
     }
   }, [totalTickets, selectedSeats.length]);
+
 
   // Determine if child tickets should be shown based on ageLimit
   // Swedish age rule simplified:
@@ -172,37 +175,68 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     }
   }, [movie?.id, movie?.ageLimit]);
 
-  // Save all booking data to localStorage
-  useEffect(() => {
-    const data = {
-      movie,
-      screening,
-      tickets,
-      counts,
-      prices,
-      selectedSeats,
-      childAllowed,
-    };
-    localStorage.setItem("filmvisarna-booking", JSON.stringify(data));
-  }, [movie, screening, tickets, counts, prices, selectedSeats, childAllowed]);
+// Load saved booking data per movie 
+useEffect(() => {
+  if (!movie?.id) return; // wait until we know the movie
+  const key = `filmvisarna-booking-${movie.id}`;
+  const saved = localStorage.getItem(key);
 
-  // Load booking data from localStorage on startup
-  useEffect(() => {
-    const saved = localStorage.getItem("filmvisarna-booking");
-    if (saved) {
-      try {
-        const data = JSON.parse(saved);
-        setMovie(data.movie || null);
-        setScreening(data.screening || null);
-        setTickets(data.tickets || 0);
-        setCounts(data.counts || { adult: 0, senior: 0, child: 0 });
-        setSelectedSeats(data.selectedSeats || []);
-        setChildAllowed(!!data.childAllowed);
-      } catch {
-        console.warn("⚠️ Failed to parse saved booking data"); // ignore errors
-      }
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+      if (data.counts) setCounts(data.counts);
+      if (data.selectedSeats) setSelectedSeats(data.selectedSeats);
+      if (typeof data.childAllowed === "boolean") setChildAllowed(data.childAllowed);
+      if (data.screening) setScreening(data.screening);
+    } catch (err) {
+      console.warn("Could not parse saved booking data", err);
     }
-  }, []);
+  }
+}, [movie?.id]);
+
+
+// Handle childAllowed logic AFTER loading data
+useEffect(() => {
+  if (movie && typeof movie.ageLimit === "number") {
+    const allowChildren = movie.ageLimit <= 7;
+    setChildAllowed(allowChildren);
+
+    // Only reset child tickets if child tickets are NOT allowed
+    if (!allowChildren) {
+      setCounts((prev) => ({ ...prev, child: 0 }));
+    }
+  } else {
+    setChildAllowed(false);
+    setCounts((prev) => ({ ...prev, child: 0 }));
+  }
+}, [movie?.id, movie?.ageLimit]);
+
+
+// Save to localStorage when data changes
+useEffect(() => {
+  if (!movie?.id) return;
+
+  const key = `filmvisarna-booking-${movie.id}`;
+  const data = {
+    movie,
+    screening,
+    counts,
+    selectedSeats,
+    childAllowed,
+  };
+
+  localStorage.setItem(key, JSON.stringify(data));
+}, [movie?.id, screening, counts, selectedSeats, childAllowed]);
+
+useEffect(() => {
+  return () => {
+    if (movie?.id) {
+      localStorage.removeItem(`filmvisarna-booking-${movie.id}`);
+    }
+  };
+}, [movie?.id]);
+
+
 
   return (
     <BookingContext.Provider
