@@ -51,16 +51,17 @@ export default function TicketPage() {
   const [seats, setSeats] = useState<Seat[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+   const { bookingUrl } = useParams<{ bookingUrl: string }>();
 
   useEffect(() => {
     async function loadTicket() {
       try {
-        if (!bookingId) {
+        if (!bookingUrl) {
           setErrorMsg("No booking ID provided.");
           return;
         }
 
-        const bookingRes = await fetch(`/api/bookings/${bookingId}`);
+        const bookingRes = await fetch(`/api/bookings/url/${bookingUrl}`);
         if (!bookingRes.ok) throw new Error("Failed to fetch booking");
         const bookingJson = await bookingRes.json();
         const currentBooking = bookingJson.booking || bookingJson;
@@ -95,7 +96,7 @@ export default function TicketPage() {
     }
 
     loadTicket();
-  }, [bookingId]);
+  }, [bookingUrl]);
 
   if (loading) return <p className="loading">Laddar Biljett...</p>;
   if (errorMsg) return <p style={{ color: "white", textAlign: "center" }}>{errorMsg}</p>;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {useParams, useNavigate } from "react-router-dom";
 import "./Confirmation.css";
 
 interface BookingSeat {
@@ -54,6 +54,16 @@ export default function Confirmation() {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { bookingUrl } = useParams<{ bookingUrl: string }>();
+
+useEffect(() => {
+  if (!bookingUrl) return;
+
+  fetch(`/api/bookings/url/${bookingUrl}`)
+    .then(res => res.json())
+    .then(data => setBooking(data.booking))
+    .catch(err => console.error(err));
+}, [bookingUrl]);
 
   useEffect(() => {
     async function loadBooking() {
@@ -205,7 +215,7 @@ const seatLabels =
           <div className="button-group">
             <button
               className="book-btn"
-              onClick={() => navigate(`/ticket/${booking.id}`)}
+              onClick={() => navigate(`/ticket/${bookingUrl}`)}
             >
               Visa biljetterna
             </button>
