@@ -4,11 +4,11 @@ const express = require("express");
 function createScreeningsRouter(pool) {
   const router = express.Router();
 
-  // GET /api/screenings// alla visningar
+  // GET /api/screenings// alla visningar inom 14 dagar
   router.get("/", async (_req, res) => {
     try {
       const [rows] = await pool.query(
-        "SELECT id, time, movieId, auditoriumId FROM screenings ORDER BY time"
+        "SELECT id, time, movieId, auditoriumId FROM screenings WHERE time BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 14 DAY) ORDER BY time"
       );
       res.json(rows);
     } catch (e) {
