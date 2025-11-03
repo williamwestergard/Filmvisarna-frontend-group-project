@@ -34,7 +34,6 @@ function BookingContent() {
   const [movieLoaded, setMovieLoaded] = useState(false);
   const [weeklyMovie, setWeeklyMovie] = useState<Movie | null>(null);
   const [loadingBooking, setLoadingBooking] = useState(false);
-  // Simple 10 minute timeout popup
   const [timeoutOpen, setTimeoutOpen] = useState(false);
 
   const location = useLocation();
@@ -50,7 +49,7 @@ function BookingContent() {
       .catch((err) => console.error("Error fetching weekly movie:", err));
   }, []);
 
-  // Start a simple 10-minute timer when the booking page mounts
+  // 10 minuters timeout
   useEffect(() => {
     const id = window.setTimeout(() => setTimeoutOpen(true), 10 * 60 * 1000);
     return () => window.clearTimeout(id);
@@ -89,7 +88,6 @@ function BookingContent() {
     return list;
   }
 
-  
   async function handleBooking() {
     if (!canProceed || !screening) return;
     setLoadingBooking(true);
@@ -98,13 +96,20 @@ function BookingContent() {
     const userId = authUser?.id || null;
 
     try {
+      // 🔹 Hämta inloggad användare från localStorage
+      const authUser = JSON.parse(localStorage.getItem("authUser") || "{}");
+
+      if (!authUser?.id) {
+        alert("Du måste vara inloggad för att boka.");
+        setLoadingBooking(false);
+        return;
+      }
+
       console.log(" DEBUG Screening Info:", screening);
 
       const res = await fetch(`/api/screenings/${screening.id}/seats`);
       const seatsJson = await res.json();
       const apiSeats: ApiSeat[] = seatsJson?.seats || [];
-
-      console.log(" DEBUG API Seats Response:", apiSeats.slice(0, 10));
 
       if (apiSeats.length === 0) {
         alert("Inga säten hittades i API-svaret.");
@@ -124,68 +129,48 @@ function BookingContent() {
 
       const realSeatIds: number[] = [];
 
-      console.log(" DEBUG Selected Seats:", selectedSeats);
-      console.log(" DEBUG RowsMap keys:", Object.keys(rowsMap));
-
       for (const sel of selectedSeats) {
-        console.log(" DEBUG Checking selected seat:", sel);
-
         const rowSeats = rowsMap[sel.row];
         if (!rowSeats) {
-          console.error(` Kunde inte hitta rad ${sel.row}`);
           alert(`Raden ${sel.row} hittades inte.`);
           setLoadingBooking(false);
           return;
         }
 
-        console.log(" DEBUG Row Seats:", rowSeats.map((s) => s.seatNumber));
-
-      
         const seatInRow = rowSeats.find(
           (s) => s.seatNumber === sel.number
         );
 
         if (!seatInRow) {
-          console.error(
-            ` Kunde inte hitta seatId för ${sel.row}-${sel.number}`,
-            { rowSeats }
-          );
           alert(`Kunde inte hitta platsen ${sel.row}-${sel.number}.`);
           setLoadingBooking(false);
           return;
         }
 
-        console.log(" DEBUG Matched seat:", seatInRow);
         realSeatIds.push(seatInRow.seatId);
       }
 
-      console.log(" DEBUG Real seat IDs to book:", realSeatIds);
-
       const seatsPayload = assignTicketTypesToSeats(realSeatIds);
 
-const payload: any = {
-  screeningId: screening.id,
-  seats: seatsPayload,
-};
+      console.log(" DEBUG Booking payload:", {
+        userId: 1,
+        screeningId: screening.id,
+        seats: seatsPayload,
+      });
 
-if (userId) {
-  payload.userId = userId; 
-} else {
-  payload.guest = true; 
-}
-
-const response = await fetch("/api/bookings", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(payload),
-});
+      const response = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: 1,
+          screeningId: screening.id,
+          seats: seatsPayload,
+        }),
+      });
 
       const data = await response.json();
 
-      console.log(" DEBUG Booking API Response:", data);
-
       if (!data.ok) {
-        console.error("Booking API error:", data);
         alert("Bokningen misslyckades. Försök igen.");
         setLoadingBooking(false);
         return;
@@ -208,7 +193,6 @@ const response = await fetch("/api/bookings", {
     }
   }
 
-  // --- Render ---
   return (
     <main className={`booking-page-content ${movieLoaded ? "loaded" : ""}`}>
       <section className="booking-page-left-side">
@@ -239,47 +223,40 @@ const response = await fetch("/api/bookings", {
             </section>
           )}
 
-      {/* Button show total amount and proceed */}
-      <section className="confirm-actions">
-        <button
-          className={`confirm-btn ${canProceed ? "active" : "disabled"}`}
-          disabled={!canProceed || loadingBooking}
-          onClick={handleBooking}
-        >
-          {canProceed && !loadingBooking ? (
-            <>
-              <span className="confirm-total">
-                Totalsumma:{" "}
-                {new Intl.NumberFormat("sv-SE").format(totalAmount)} kr
-              </span>
-              <span className="confirm-next">Gå vidare</span>
-            </>
-          ) : loadingBooking ? (
-            <span>Bokar...</span>
-          ) : (
-            <span>Gå vidare</span>
-          )}
-        </button>
+          <section className="confirm-actions">
+            <button
+              className={`confirm-btn ${canProceed ? "active" : "disabled"}`}
+              disabled={!canProceed || loadingBooking}
+              onClick={handleBooking}
+            >
+              {canProceed && !loadingBooking ? (
+                <>
+                  <span className="confirm-total">
+                    Totalsumma:{" "}
+                    {new Intl.NumberFormat("sv-SE").format(totalAmount)} kr
+                  </span>
+                  <span className="confirm-next">Gå vidare</span>
+                </>
+              ) : loadingBooking ? (
+                <span>Bokar...</span>
+              ) : (
+                <span>Gå vidare</span>
+              )}
+            </button>
 
-        {!canProceed && (
-          <p className="confirm-btn-nonclickable-text">
-            Välj dag, antal biljetter och platser för att fortsätta.
-          </p>
-        )}
+            {!canProceed && (
+              <p className="confirm-btn-nonclickable-text">
+                Välj dag, antal biljetter och platser för att fortsätta.
+              </p>
+            )}
+          </section>
+        </section>
       </section>
-              </section>
-            </section>
 
       {movieLoaded && (
         <article className="booking-price-card-top">
           <BookingPriceCard />
-          <div
-            style={{
-              marginTop: "1rem",
-              display: "flex",
-              justifyContent: "flex-end",
-            }}
-          >
+          <div style={{ marginTop: "1rem", display: "flex", justifyContent: "flex-end" }}>
             <button
               onClick={handleBooking}
               disabled={!canProceed || loadingBooking}
@@ -290,15 +267,11 @@ const response = await fetch("/api/bookings", {
                 borderRadius: 5,
                 border: "none",
                 width: "100%",
-                cursor:
-                  canProceed && !loadingBooking ? "pointer" : "not-allowed",
-                pointerEvents:
-                  canProceed && !loadingBooking ? "auto" : "none",
-                backgroundColor:
-                  canProceed && !loadingBooking ? "#c41230" : "#716d7a",
+                cursor: canProceed && !loadingBooking ? "pointer" : "not-allowed",
+                pointerEvents: canProceed && !loadingBooking ? "auto" : "none",
+                backgroundColor: canProceed && !loadingBooking ? "#c41230" : "#716d7a",
                 color: canProceed && !loadingBooking ? "#fff" : "#dbdbdb",
                 opacity: canProceed ? 1 : 0.9,
-                display: canProceed ? "block" : "none",
               }}
             >
               {loadingBooking ? "Bokar..." : "Gå vidare"}
@@ -306,6 +279,7 @@ const response = await fetch("/api/bookings", {
           </div>
         </article>
       )}
+
       {timeoutOpen && (
         <div
           style={{
@@ -317,9 +291,6 @@ const response = await fetch("/api/bookings", {
             alignItems: "center",
             justifyContent: "center",
           }}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Sessionen gick ut"
         >
           <div
             style={{
@@ -331,12 +302,9 @@ const response = await fetch("/api/bookings", {
               boxShadow: "0 20px 40px rgba(0,0,0,0.45)",
             }}
           >
-            <h2 style={{ margin: "0 0 8px", fontSize: "1.25rem" }}>Sessionen gick ut</h2>
-            <p style={{ margin: "6px 0", lineHeight: 1.4 }}>
-              Du har väntat mer än 10 minuter. För att visa korrekta platser och priser
-              behöver sidan uppdateras.
-            </p>
-            <div style={{ marginTop: 12, display: "flex", justifyContent: "flex-end", gap: 8 }}>
+            <h2 style={{ marginBottom: 8 }}>Sessionen gick ut</h2>
+            <p>Du har väntat mer än 10 minuter. Ladda om sidan för att fortsätta.</p>
+            <div style={{ marginTop: 12, display: "flex", justifyContent: "flex-end" }}>
               <button
                 onClick={() => window.location.reload()}
                 style={{
@@ -348,7 +316,7 @@ const response = await fetch("/api/bookings", {
                   cursor: "pointer",
                   backgroundColor: "#5B5A6B",
                   color: "#fff",
-                  minWidth: 160
+                  minWidth: 160,
                 }}
               >
                 Uppdatera sidan
