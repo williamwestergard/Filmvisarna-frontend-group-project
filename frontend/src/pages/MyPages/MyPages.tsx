@@ -25,23 +25,23 @@ const MyPages: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    //  1. Hämta användaren från localStorage (som sattes vid inloggning)
+    // 1. Retrieve the user from localStorage (set during login)
     const storedUser = localStorage.getItem("authUser");
 
     if (!storedUser) {
-      console.warn("Ingen användare hittades i localStorage");
+      console.warn("No user found in localStorage");
       setLoading(false);
       return;
     }
 
     const parsedUser = JSON.parse(storedUser);
     if (!parsedUser?.id) {
-      console.warn("Inloggad användare saknar ID");
+      console.warn("Logged-in user has no ID");
       setLoading(false);
       return;
     }
 
-    //  2. Hämta användardata och bokningshistorik från backend
+    // 2. Fetch user data and booking history from the backend
     fetch(`/api/users/${parsedUser.id}`)
       .then((res) => res.json())
       .then((data) => {
@@ -49,23 +49,23 @@ const MyPages: React.FC = () => {
           setUser(data.user);
           setBookings(data.bookings);
         } else {
-          console.error("Fel vid hämtning av användardata:", data.message);
+          console.error("Error fetching user data:", data.message);
         }
       })
-      .catch((err) => console.error("Nätverksfel:", err))
+      .catch((err) => console.error("Network error:", err))
       .finally(() => setLoading(false));
   }, []);
 
-  // 🔹 3. Visuella tillstånd
+  // 3. Loading and visual states
   if (loading) return <p>Laddar användardata...</p>;
-  if (!user) return <p>Ingen användare inloggad.</p>;
+  if (!user) return <p>Ingen användare är inloggad.</p>;
 
-  //  4. Visa profil och bokningar
+  // 4. Display user profile and booking history
   return (
     <div className="my-pages">
       <section className="profile-container">
         <div className="profile-card">
-          {/* Profil */}
+          {/* Profile section */}
           <div className="profile-top">
             <div className="profile-img-placeholder">
               <FontAwesomeIcon icon={faCircleUser} className="profile-icon" />
@@ -77,26 +77,26 @@ const MyPages: React.FC = () => {
             </div>
           </div>
 
-          {/* Bokningshistorik */}
+          {/* Booking history */}
           <div className="profile-section">
-            <h3>Mina bokningar</h3>
+            <h3>Mina Bokningar</h3>
             {bookings.length > 0 ? (
               <ul>
                 {bookings.map((b) => (
                   <li key={b.bookingId}>
-                     <strong>{b.movieTitle}</strong> <br />
-                     {new Date(b.screeningTime).toLocaleString()} <br />
-                     Salong: {b.auditoriumName} <br />
-                     Status: {b.status}
+                    <strong>{b.movieTitle}</strong> <br />
+                    {new Date(b.screeningTime).toLocaleString()} <br />
+                    Auditorium: {b.auditoriumName} <br />
+                    Status: {b.status}
                   </li>
                 ))}
               </ul>
             ) : (
-              <p>Du har inga bokningar ännu.</p>
+              <p>Du har inga bokningar än.</p>
             )}
           </div>
 
-          {/* Logga ut */}
+          {/* Logout button */}
           <button
             className="logout-btn"
             onClick={() => {
@@ -105,7 +105,7 @@ const MyPages: React.FC = () => {
               window.location.href = "/login";
             }}
           >
-            Logga ut
+            Log out
           </button>
         </div>
       </section>

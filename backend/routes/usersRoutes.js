@@ -3,7 +3,7 @@ const express = require("express");
 function createUsersRouter(pool) {
   const router = express.Router();
 
-  // GET /api/users - hämta alla användare
+  // GET /api/users - fetch all users
   router.get("/", async (req, res) => {
     try {
       const [rows] = await pool.query("SELECT * FROM users");
@@ -14,12 +14,12 @@ function createUsersRouter(pool) {
     }
   });
 
-  //  GET /api/users/:id - hämta en användare + bokningshistorik
+  // GET /api/users/:id - fetch a single user and their booking history
   router.get("/:id", async (req, res) => {
     const { id } = req.params;
 
     try {
-      // Hämta användarens info
+      // Fetch user information
       const [users] = await pool.query(
         "SELECT id, firstName, lastName, email, phoneNumber FROM users WHERE id = ?",
         [id]
@@ -29,7 +29,7 @@ function createUsersRouter(pool) {
         return res.status(404).json({ ok: false, message: "User not found" });
       }
 
-      // Hämta användarens bokningar
+      // Fetch user bookings
       const [bookings] = await pool.query(
         `
         SELECT 
@@ -55,12 +55,12 @@ function createUsersRouter(pool) {
         bookings,
       });
     } catch (e) {
-      console.error("Fel vid hämtning av användare:", e);
+      console.error("Error fetching user:", e);
       res.status(500).json({ ok: false, message: e.message });
     }
   });
 
-  // POST /api/users - skapa ny användare
+  // POST /api/users - create a new user
   router.post("/", async (req, res) => {
     try {
       const email = req.body.email?.replace(/\s+/g, "") || null;
@@ -118,7 +118,7 @@ function createUsersRouter(pool) {
     }
   });
 
-  // DELETE /api/users - radera alla användare
+  // DELETE /api/users - delete all users
   router.delete("/", async (req, res) => {
     try {
       const [result] = await pool.query("DELETE FROM users");
@@ -132,7 +132,7 @@ function createUsersRouter(pool) {
     }
   });
 
-  // DELETE /api/users/:id - radera en specifik användare
+  // DELETE /api/users/:id - delete a specific user
   router.delete("/:id", async (req, res) => {
     try {
       const { id } = req.params;

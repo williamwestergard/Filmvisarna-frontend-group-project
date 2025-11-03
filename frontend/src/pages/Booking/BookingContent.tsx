@@ -1,3 +1,4 @@
+// BookingContent.tsx
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useBooking } from "../../Context/BookingContext";
@@ -49,7 +50,7 @@ function BookingContent() {
       .catch((err) => console.error("Error fetching weekly movie:", err));
   }, []);
 
-  // 10 minuters timeout
+  // 10-minute timeout
   useEffect(() => {
     const id = window.setTimeout(() => setTimeoutOpen(true), 10 * 60 * 1000);
     return () => window.clearTimeout(id);
@@ -65,6 +66,7 @@ function BookingContent() {
     totalTickets > 0 &&
     selectedSeats.length === totalTickets;
 
+  // Assign correct ticket types to the selected seats
   function assignTicketTypesToSeats(realSeatIds: number[]) {
     const list: { seatId: number; ticketTypeId: number }[] = [];
     let leftAdult = counts.adult || 0;
@@ -88,6 +90,7 @@ function BookingContent() {
     return list;
   }
 
+  // Handle the booking process
   async function handleBooking() {
     if (!canProceed || !screening) return;
     setLoadingBooking(true);
@@ -96,23 +99,23 @@ function BookingContent() {
     const userId = authUser?.id || null;
 
     try {
-      // Hämta inloggad användare från localStorage
+      // Retrieve the logged-in user from localStorage
       const authUser = JSON.parse(localStorage.getItem("authUser") || "{}");
 
       if (!authUser?.id) {
-        alert("Du måste vara inloggad för att boka.");
+        alert("You must be logged in to book.");
         setLoadingBooking(false);
         return;
       }
 
-      console.log(" DEBUG Screening Info:", screening);
+      console.log("DEBUG Screening Info:", screening);
 
       const res = await fetch(`/api/screenings/${screening.id}/seats`);
       const seatsJson = await res.json();
       const apiSeats: ApiSeat[] = seatsJson?.seats || [];
 
       if (apiSeats.length === 0) {
-        alert("Inga säten hittades i API-svaret.");
+        alert("No seats found in API response.");
         setLoadingBooking(false);
         return;
       }
@@ -132,7 +135,7 @@ function BookingContent() {
       for (const sel of selectedSeats) {
         const rowSeats = rowsMap[sel.row];
         if (!rowSeats) {
-          alert(`Raden ${sel.row} hittades inte.`);
+          alert(`Row ${sel.row} not found.`);
           setLoadingBooking(false);
           return;
         }
@@ -142,7 +145,7 @@ function BookingContent() {
         );
 
         if (!seatInRow) {
-          alert(`Kunde inte hitta platsen ${sel.row}-${sel.number}.`);
+          alert(`Could not find seat ${sel.row}-${sel.number}.`);
           setLoadingBooking(false);
           return;
         }
@@ -152,7 +155,7 @@ function BookingContent() {
 
       const seatsPayload = assignTicketTypesToSeats(realSeatIds);
 
-      console.log(" DEBUG Booking payload:", {
+      console.log("DEBUG Booking payload:", {
         userId: 1,
         screeningId: screening.id,
         seats: seatsPayload,
@@ -171,14 +174,14 @@ function BookingContent() {
       const data = await response.json();
 
       if (!data.ok) {
-        alert("Bokningen misslyckades. Försök igen.");
+        alert("Booking failed. Please try again.");
         setLoadingBooking(false);
         return;
       }
 
       const booking = data.booking || data.bookings?.[0];
       if (!booking) {
-        alert("Bokningsdata saknas. Försök igen.");
+        alert("Booking data missing. Please try again.");
         setLoadingBooking(false);
         return;
       }
@@ -186,8 +189,8 @@ function BookingContent() {
       localStorage.setItem("filmvisarna-booking", JSON.stringify(booking));
       navigate(`/confirmation/${booking.id}`);
     } catch (err) {
-      console.error(" FEL VID BOKNING:", err);
-      alert("Något gick fel vid bokningen.");
+      console.error("ERROR DURING BOOKING:", err);
+      alert("An error occurred while processing your booking.");
     } finally {
       setLoadingBooking(false);
     }
@@ -210,16 +213,16 @@ function BookingContent() {
 
           {paketprisToShow && (
             <section className="paketpris-info">
-              <h3>Veckans film - Paketpris</h3>
+              <h3>Weekly Movie - Package Price</h3>
               <p>
-                {paketprisToShow.liten.antal} liten popcorn –{" "}
+                {paketprisToShow.liten.antal} Liten Popcorn –{" "}
                 {paketprisToShow.liten.pris} kr
               </p>
               <p>
-                {paketprisToShow.litenEn.antal} liten popcorn –{" "}
+                {paketprisToShow.litenEn.antal} Liten Popcorn –{" "}
                 {paketprisToShow.litenEn.pris} kr
               </p>
-              <p className="paketpris-note">(Erbjudandet gäller vid betalning i kassan)</p>
+              <p className="paketpris-note">(Erbjudanten tillgängligt vid betalning vid kassan)</p>
             </section>
           )}
 
@@ -232,21 +235,21 @@ function BookingContent() {
               {canProceed && !loadingBooking ? (
                 <>
                   <span className="confirm-total">
-                    Totalsumma:{" "}
+                    Total:{" "}
                     {new Intl.NumberFormat("sv-SE").format(totalAmount)} kr
                   </span>
-                  <span className="confirm-next">Gå vidare</span>
+                  <span className="confirm-next">Fortsätt</span>
                 </>
               ) : loadingBooking ? (
                 <span>Bokar...</span>
               ) : (
-                <span>Gå vidare</span>
+                <span>fortsätt</span>
               )}
             </button>
 
             {!canProceed && (
               <p className="confirm-btn-nonclickable-text">
-                Välj dag, antal biljetter och platser för att fortsätta.
+                Välj datum, hur många biljetter och platser för att fortsätta.
               </p>
             )}
           </section>
@@ -274,7 +277,7 @@ function BookingContent() {
                 opacity: canProceed ? 1 : 0.9,
               }}
             >
-              {loadingBooking ? "Bokar..." : "Gå vidare"}
+              {loadingBooking ? "Booking..." : "Continue"}
             </button>
           </div>
         </article>
@@ -302,8 +305,8 @@ function BookingContent() {
               boxShadow: "0 20px 40px rgba(0,0,0,0.45)",
             }}
           >
-            <h2 style={{ marginBottom: 8 }}>Sessionen gick ut</h2>
-            <p>Du har väntat mer än 10 minuter. Ladda om sidan för att fortsätta.</p>
+            <h2 style={{ marginBottom: 8 }}>Sessionen har löpt</h2>
+            <p>Du har väntat mer 10 minuter. Ladda om sidan för att fortsätta.</p>
             <div style={{ marginTop: 12, display: "flex", justifyContent: "flex-end" }}>
               <button
                 onClick={() => window.location.reload()}
@@ -319,7 +322,7 @@ function BookingContent() {
                   minWidth: 160,
                 }}
               >
-                Uppdatera sidan
+                Ladda om sidan
               </button>
             </div>
           </div>
