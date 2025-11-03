@@ -669,29 +669,43 @@
   right: 12px;
   z-index: 5;
 }
-
-/* Toggle button - icon + toggler */
+/* Button */
 .seat-picker-toggle {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 10px 14px;
   font-size: 1rem;
-  font-weight: 400;
+  font-weight: 500;
   border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.14);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   background: #232232;
   color: #f1f4ff;
   cursor: pointer;
-  transition: background .2s ease, border-color .2s ease, transform .12s ease, box-shadow .15s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.12s ease, box-shadow 0.15s ease;
 }
+/* Icon */
 .seat-picker-toggle:hover,
 .seat-picker-toggle:focus-visible {
   background: #2b2b3a;
-  border-color: rgba(255,255,255,0.24);
+  border-color: rgba(255, 255, 255, 0.24);
   outline: none;
   transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(0,0,0,.35);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+/* Icon */
+.seat-picker-toggle svg {
+  width: 28px;
+  height: 28px;
+  color: #c41230;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
+}
+/* Icon */
+.seat-picker-toggle:hover svg,
+.seat-picker-toggle:focus-visible svg {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
 }
 
 /* Popup panel */

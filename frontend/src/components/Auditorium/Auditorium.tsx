@@ -164,16 +164,19 @@ export default function Auditorium() {
               onClick={() => setPickerOpen((v) => !v)}
               title="Platsväljaren"
             >
-            {/*Icon - seat picker */}
-              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                  d="M7 3h10a2 2 0 0 1 2 2v10h-2V6H7V3zm10 18H7a2 2 0 0 1-2-2V9h2v10h10v2zm-9-6h8v2H8v-2zm0-4h8v2H8V11z"
-                  fill="currentColor"
-                />
-              </svg>
-              <span>Platsväljaren</span>
+            {/* Icon - seat picker */}
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16a6.471 6.471 0 004.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM10 14a4 4 0 110-8 4 4 0 010 8z" />
+            </svg>
+            <span>Hitta plats</span>
             </button>
-
+            
             {/* Seat picker panel */}
             {pickerOpen && (
               <div
