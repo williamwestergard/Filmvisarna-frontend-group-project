@@ -26,7 +26,7 @@ function createUsersRouter(pool) {
       );
 
       if (users.length === 0) {
-        return res.status(404).json({ ok: false, message: "User not found" });
+        return res.status(404).json({ ok: false, message: "Användare hittades inte" });
       }
 
       // Fetch user bookings
@@ -76,23 +76,23 @@ function createUsersRouter(pool) {
       if (!emailRegex.test(email)) {
         return res
           .status(400)
-          .json({ ok: false, message: "Invalid email format" });
+          .json({ ok: false, message: "Inkorekt email struktur" });
       }
       if (!nameRegex.test(firstName)) {
         return res
           .status(400)
-          .json({ ok: false, message: "First name must contain only letters" });
+          .json({ ok: false, message: "Förnamnet kan bara innehålla bokstäver" });
       }
       if (!nameRegex.test(lastName)) {
         return res
           .status(400)
-          .json({ ok: false, message: "Last name must contain only letters" });
+          .json({ ok: false, message: "Efternamnet kan bara innehålla bokstäver" });
       }
       if (!phoneRegex.test(phoneNumber)) {
         return res.status(400).json({
           ok: false,
           message:
-            "Phone number must contain only numbers and valid symbols (+ - space ())",
+            "Telefonnummer måste bara innehålla siffror och godkända symboler ( + - space ())",
         });
       }
 
@@ -139,10 +139,10 @@ function createUsersRouter(pool) {
       const [result] = await pool.query("DELETE FROM users WHERE id = ?", [id]);
 
       if (result.affectedRows === 0) {
-        return res.status(404).json({ ok: false, message: "User not found" });
+        return res.status(404).json({ ok: false, message: "Användare hittades inte" });
       }
 
-      res.json({ ok: true, message: `User ${id} deleted successfully` });
+      res.json({ ok: true, message: `User ${id} användare togs bort korrekt` });
     } catch (e) {
       console.error(e);
       res.status(500).json({ ok: false, message: e.message });
