@@ -37,7 +37,7 @@ function getWeekOffset(allDates: string[], selectedDate: string) {
 function getMonday(date: Date) {
   const d = new Date(date);
   const day = d.getDay();
-  const diff = d.getDate() - (day === 0 ? 6 : day - 1); // Shift to Monday
+  const diff = d.getDate() - (day === 0 ? 6 : day - 1); // Shift to Monday from first day
   return new Date(d.setDate(diff));
 }
 
