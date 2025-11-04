@@ -208,6 +208,37 @@ const response = await fetch("/api/bookings", {
     }
   }
 
+
+   // Sticky relationship between the booking card and navbar
+useEffect(() => {
+  const navbar = document.querySelector(".site-header") as HTMLElement;
+  const root = document.documentElement;
+
+  function updateOffset() {
+    if (!navbar) return;
+
+    const navbarVisible = !navbar.classList.contains("hidden");
+
+
+                        
+
+   root.style.setProperty("--navbar-offset", navbarVisible ? `${navbar.offsetHeight}px` : "1vh");
+
+  }
+
+  updateOffset();
+
+  window.addEventListener("scroll", updateOffset, { passive: true });
+  window.addEventListener("resize", updateOffset);
+
+  return () => {
+    window.removeEventListener("scroll", updateOffset);
+    window.removeEventListener("resize", updateOffset);
+  };
+}, []);
+
+
+
   // --- Render ---
   return (
     <main className={`booking-page-content ${movieLoaded ? "loaded" : ""}`}>

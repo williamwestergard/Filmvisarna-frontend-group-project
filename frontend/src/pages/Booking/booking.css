@@ -271,7 +271,8 @@ iframe {
 
 .booking-price-card-top {
   position: sticky;
-  top: 1vh;
+  top: var(--navbar-offset, 1vh);
+  transition: top 0.3s ease;
   margin-left: 3vw;
 }
 
