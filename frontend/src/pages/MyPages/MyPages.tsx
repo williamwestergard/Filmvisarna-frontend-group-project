@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import "./MyPages.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
@@ -11,12 +12,19 @@ interface User {
 }
 
 const MyPages: React.FC = () => {
-  const user: User = {
+  const [user, setUser] = useState<User>({
     name: "",
     email: "",
     phone: "",
     history: [],
     tickets: [],
+  });
+
+  const handleCancelTicket = (ticketToCancel: string) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      tickets: prevUser.tickets.filter((ticket) => ticket !== ticketToCancel),
+    }));
   };
 
   return (
@@ -56,7 +64,10 @@ const MyPages: React.FC = () => {
             {user.tickets.length > 0 ? (
               <ul>
                 {user.tickets.map((ticket, index) => (
-                  <li key={index}>{ticket}</li>
+                  <li key={index}>
+                    {ticket}{" "}
+                    <button onClick={() => handleCancelTicket(ticket)}>Avboka</button>
+                  </li>
                 ))}
               </ul>
             ) : (
