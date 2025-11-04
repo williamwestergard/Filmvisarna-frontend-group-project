@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import "./App.css";
 import { Routes, Route, useLocation } from "react-router-dom";
-import Navbar from "./components/Navbar/Navbar";
+import Navbar from "./components/navbar/Navbar";
 import Home from "./pages/Home/Home";
 import About from "./pages/AboutUs/AboutUs";
 import BookingPage from "./pages/Booking/Booking";
@@ -15,14 +15,18 @@ import Discover from "./pages/Discover/Discover";
 import MyPages from "./pages/MyPages/MyPages";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
+// Scrolls to top when route changes
 function ScrollToTop() {
   const { pathname } = useLocation();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+
   return null;
 }
 
+// Main application entry point
 function App() {
   return (
     <>
@@ -30,26 +34,31 @@ function App() {
       <main>
         <ScrollToTop />
         <Routes>
+          {/* Public pages */}
           <Route path="/" element={<Home />} />
           <Route path="/om-oss" element={<About />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/upptack" element={<Discover />} />
+
+          {/* Booking and confirmation routes */}
           <Route path="/booking" element={<BookingPage />} />
-          <Route path="/confirmation/:bookingUrl" element={<ConfirmationPage />} />
-          <Route path="/ticket/:bookingUrl" element={<TicketPage />} />
+          <Route path="/booking/:movieTitle" element={<BookingPage />} />
+          <Route path="/confirmation/:bookingId" element={<ConfirmationPage />} />
+          <Route path="/ticket/:bookingId" element={<TicketPage />} />
+
+          {/* Authentication routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/booking/:movieTitle" element={<BookingPage />} />
 
-          <Route 
-              path="/mina-sidor" 
-              element={
-                <ProtectedRoute>
-                  <MyPages />
-                </ProtectedRoute>
-              } 
-            />
-
-          <Route path="/upptack" element={<Discover />} />
+          {/* Protected user page (requires login) */}
+          <Route
+            path="/mina-sidor"
+            element={
+              <ProtectedRoute>
+                <MyPages />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
       <Footer />
