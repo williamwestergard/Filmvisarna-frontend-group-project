@@ -12,7 +12,14 @@ interface ApiSeat {
 }
 
 export default function Auditorium() {
-  const { screening, selectedSeats, toggleSeat, totalTickets } = useBooking();
+  const {
+    screening,
+    selectedSeats,
+    toggleSeat,
+    totalTickets,
+    setAvailableSeatsCount, // placeholder for available seats updater
+  } = useBooking();
+
   const [seats, setSeats] = useState<ApiSeat[]>([]);
   const [bookedSeats, setBookedSeats] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
@@ -39,6 +46,10 @@ export default function Auditorium() {
           .filter((seat: ApiSeat) => seat.isBooked === 1)
           .map((seat: ApiSeat) => seat.seatId);
         setBookedSeats(booked);
+
+        // update available seats count for this screening
+        const available = data.seats.length - booked.length;
+        setAvailableSeatsCount(available);
       } catch (err) {
         console.error("Error fetching seats:", err);
         setError("Kunde inte hämta bokade platser.");
@@ -50,8 +61,7 @@ export default function Auditorium() {
     fetchSeats();
     intervalId = setInterval(fetchSeats, 60000);
     return () => clearInterval(intervalId);
-  }, [screening?.id]);
-
+  }, [screening?.id, setAvailableSeatsCount]);
 
   // Group seats by row for the structured list
   const rows = useMemo(() => {
@@ -82,8 +92,8 @@ export default function Auditorium() {
         : "Salong")
     );
   }
-  
- // Quick toggle seat by row and number
+
+  // Quick toggle seat by row and number
   function quickToggleSeat(row: string, number: number) {
     const seat = seats.find((s) => s.rowLabel === row && s.seatNumber === number);
     if (!seat) {
@@ -152,135 +162,133 @@ export default function Auditorium() {
       ? "Halvan"
       : undefined);
 
-      {/* Main auditorium content with seat picker and map */}
-      return (
-        <section className="auditorium-content">
-          <div className="seat-picker">
-            <button
-              type="button"
-              className="seat-picker-toggle"
-              aria-expanded={pickerOpen}
-              aria-controls="seat-picker-panel"
-              onClick={() => setPickerOpen((v) => !v)}
-              title="Platsväljaren"
-            >
-            {/*Icon - seat picker */}
-                      <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16a6.471 6.471 0 004.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM10 14a4 4 0 110-8 4 4 0 010 8z" />
-            </svg>
-            <span>Hitta plats</span>
-            </button>
+  return (
+    <section className="auditorium-content">
+      <div className="seat-picker">
+        <button
+          type="button"
+          className="seat-picker-toggle"
+          aria-expanded={pickerOpen}
+          aria-controls="seat-picker-panel"
+          onClick={() => setPickerOpen((v) => !v)}
+          title="Platsväljaren"
+        >
+          {/*Icon - seat picker */}
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16a6.471 6.471 0 004.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM10 14a4 4 0 110-8 4 4 0 010 8z" />
+          </svg>
+          <span>Hitta plats</span>
+        </button>
 
-            
-
-            {/* Seat picker panel */}
-            {pickerOpen && (
-              <div
-                id="seat-picker-panel"
-                className="seat-picker-panel"
-                role="dialog"
-                aria-modal="false"
+        {/* Seat picker panel */}
+        {pickerOpen && (
+          <div
+            id="seat-picker-panel"
+            className="seat-picker-panel"
+            role="dialog"
+            aria-modal="false"
+          >
+            <div className="seat-picker-actions">
+              <button
+                type="button"
+                className="seat-picker-add"
+                onClick={() => {
+                  if (selectedSeats.length >= totalTickets && totalTickets > 0) {
+                    setPickerOpen(false); // close when all seats chosen
+                  }
+                }}
+                disabled={totalTickets <= 0 || selectedSeats.length < totalTickets}
               >
-                <div className="seat-picker-actions">
-                  <button
-                    type="button"
-                    className="seat-picker-add"
-                    onClick={() => {
-                      if (selectedSeats.length >= totalTickets && totalTickets > 0) {
-                        setPickerOpen(false); // close when all seats chosen
-                      }
-                    }}
-                    disabled={totalTickets <= 0 || selectedSeats.length < totalTickets}
-                  >
-                    Välj platser
-                  </button>
-    
-                  <button
-                    type="button"
-                    className="seat-picker-close"
-                    onClick={() => setPickerOpen(false)}
-                  >
-                    Stäng
-                  </button>
-                </div>
-                    {/* Structured list of seats by row */}
-                <div className="seat-picker-rows"> 
-                  {rows.map(({ label, seats: rowSeats }) => {
-                    const rowBooked = rowSeats.filter((s) => bookedSeats.includes(s.seatId)).length;
-                    const rowSelected = rowSeats.filter((s) =>
-                      selectedSeats.some((sel) => sel.seatId === s.seatId)
-                    ).length;
-                    const rowFree = rowSeats.length - rowBooked - rowSelected;
-                    {/* Render each row with its seats */}
-                    return (
-                      <section key={label} className="seat-row">
-                        <header className="seat-row-header">
-                          <h4 className="seat-row-title">Rad {label}</h4>
-                          <div className="seat-row-badges">
-                            <span className="badge badge-free">Lediga: {rowFree}</span>
-                            <span className="badge badge-selected">Valda: {rowSelected}</span>
-                            <span className="badge badge-booked">Upptagna: {rowBooked}</span>
-                          </div>
-                        </header>
-                        {/* Seats in the row */}
-                        <ul className="seat-row-list" role="list">
-                          {rowSeats.map((s) => {
-                            const isBooked = bookedSeats.includes(s.seatId);
-                            const isSelected = selectedSeats.some((sel) => sel.seatId === s.seatId);
-                            const disabled =
-                              isBooked ||
-                              (!isSelected && (totalTickets <= 0 || selectedSeats.length >= totalTickets));
-                            const labelText = `Plats ${s.seatNumber}`;
-                            const statusText = isBooked
-                              ? "Upptagen"
-                              : isSelected
-                              ? "Vald"
-                              : "Ledig";
-    
-                            return (
-                              <li key={s.seatId} className="seat-row-item">
-                                <button
-                                  type="button"
-                                  className={[
-                                    "seat-chip",
-                                    isBooked ? "is-booked" : isSelected ? "is-selected" : "is-free",
-                                  ].join(" ")}
-                                  aria-pressed={isSelected}
-                                  aria-label={`Rad ${label} ${labelText} – ${statusText}`}
-                                  disabled={isBooked || disabled}
-                                  onClick={() => quickToggleSeat(s.rowLabel, s.seatNumber)}
-                                  title={`Rad ${label} – ${labelText} (${statusText})`}
-                                >
-                                  {s.seatNumber}
-                                </button>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </section>
-                    );
-                  })}
-                </div>
-    
-    
-                <p className="seat-picker-hint">
-                  Klicka på en ledig plats här ovan eller direkt i platskartan.
-                </p>
-              </div>
-            )}
+                Välj platser
+              </button>
+
+              <button
+                type="button"
+                className="seat-picker-close"
+                onClick={() => setPickerOpen(false)}
+              >
+                Stäng
+              </button>
+            </div>
+
+            {/* Structured list of seats by row */}
+            <div className="seat-picker-rows">
+              {rows.map(({ label, seats: rowSeats }) => {
+                const rowBooked = rowSeats.filter((s) => bookedSeats.includes(s.seatId)).length;
+                const rowSelected = rowSeats.filter((s) =>
+                  selectedSeats.some((sel) => sel.seatId === s.seatId)
+                ).length;
+                const rowFree = rowSeats.length - rowBooked - rowSelected;
+
+                return (
+                  <section key={label} className="seat-row">
+                    <header className="seat-row-header">
+                      <h4 className="seat-row-title">Rad {label}</h4>
+                      <div className="seat-row-badges">
+                        <span className="badge badge-free">Lediga: {rowFree}</span>
+                        <span className="badge badge-selected">Valda: {rowSelected}</span>
+                        <span className="badge badge-booked">Upptagna: {rowBooked}</span>
+                      </div>
+                    </header>
+
+                    {/* Seats in the row */}
+                    <ul className="seat-row-list" role="list">
+                      {rowSeats.map((s) => {
+                        const isBooked = bookedSeats.includes(s.seatId);
+                        const isSelected = selectedSeats.some((sel) => sel.seatId === s.seatId);
+                        const disabled =
+                          isBooked ||
+                          (!isSelected && (totalTickets <= 0 || selectedSeats.length >= totalTickets));
+                        const labelText = `Plats ${s.seatNumber}`;
+                        const statusText = isBooked
+                          ? "Upptagen"
+                          : isSelected
+                          ? "Vald"
+                          : "Ledig";
+
+                        return (
+                          <li key={s.seatId} className="seat-row-item">
+                            <button
+                              type="button"
+                              className={[
+                                "seat-chip",
+                                isBooked ? "is-booked" : isSelected ? "is-selected" : "is-free",
+                              ].join(" ")}
+                              aria-pressed={isSelected}
+                              aria-label={`Rad ${label} ${labelText} – ${statusText}`}
+                              disabled={isBooked || disabled}
+                              onClick={() => quickToggleSeat(s.rowLabel, s.seatNumber)}
+                              title={`Rad ${label} – ${labelText} (${statusText})`}
+                            >
+                              {s.seatNumber}
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </section>
+                );
+              })}
+            </div>
+
+            <p className="seat-picker-hint">
+              Klicka på en ledig plats här ovan eller direkt i platskartan.
+            </p>
           </div>
-    
-          {name === "Halvan" ? (
-            <AuditoriumTwo seats={seats} bookedSeats={bookedSeats} />
-          ) : (
-            <AuditoriumOne seats={seats} bookedSeats={bookedSeats} />
-          )}
-        </section>
-      );
-    }
+        )}
+      </div>
+
+      {name === "Halvan" ? (
+        <AuditoriumTwo seats={seats} bookedSeats={bookedSeats} />
+      ) : (
+        <AuditoriumOne seats={seats} bookedSeats={bookedSeats} />
+      )}
+    </section>
+  );
+}
