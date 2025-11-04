@@ -34,8 +34,8 @@ function App() {
           <Route path="/om-oss" element={<About />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/booking" element={<BookingPage />} />
-          <Route path="/confirmation/:bookingId" element={<ConfirmationPage />} />
-          <Route path="/ticket/:bookingId" element={<TicketPage />} />
+          <Route path="/confirmation/:bookingUrl" element={<ConfirmationPage />} />
+          <Route path="/ticket/:bookingUrl" element={<TicketPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/booking/:movieTitle" element={<BookingPage />} />

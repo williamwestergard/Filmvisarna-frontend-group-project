@@ -199,7 +199,7 @@ const response = await fetch("/api/bookings", {
       }
 
       localStorage.setItem("filmvisarna-booking", JSON.stringify(booking));
-      navigate(`/confirmation/${booking.id}`);
+      navigate(`/confirmation/${booking.bookingUrl}`);
     } catch (err) {
       console.error(" FEL VID BOKNING:", err);
       alert("Något gick fel vid bokningen.");

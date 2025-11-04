@@ -115,12 +115,31 @@ function createBookingsRouter(pool) {
 
       await connection.beginTransaction();
 
-      const bookingNumber = crypto.randomBytes(6).toString("hex").toUpperCase();
+      function generateBookingNumber() {
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const numbers = "0123456789";
+
+        let result = "";
+        // Add 3 random letters
+        for (let i = 0; i < 3; i++) {
+          result += letters.charAt(Math.floor(Math.random() * letters.length));
+        }
+
+        // Add 3 random digits
+        for (let i = 0; i < 3; i++) {
+          result += numbers.charAt(Math.floor(Math.random() * numbers.length));
+        }
+
+        return result;
+      }
+
+      const bookingNumber = generateBookingNumber();
+      const bookingUrl = crypto.randomBytes(6).toString("hex").toUpperCase();
 
       const [bookingResult] = await connection.query(
-        `INSERT INTO bookings (bookingNumber, screeningId, userId, status)
-         VALUES (?, ?, ?, 'active')`,
-        [bookingNumber, screeningId, userId || null]
+        `INSERT INTO bookings (bookingNumber, bookingUrl, screeningId, userId, status)
+   VALUES (?, ?, ?, ?, 'active')`,
+        [bookingNumber, bookingUrl, screeningId, userId || null]
       );
 
       const bookingId = bookingResult.insertId;
@@ -138,6 +157,7 @@ function createBookingsRouter(pool) {
         ok: true,
         booking: {
           id: bookingId,
+          bookingUrl,
           bookingNumber,
           screeningId,
           userId,
@@ -152,6 +172,23 @@ function createBookingsRouter(pool) {
     } finally {
       connection.release();
     }
+  });
+
+  router.get("/url/:bookingUrl", async (req, res) => {
+    const { bookingUrl } = req.params;
+    const [rows] = await pool.query(
+      `SELECT * FROM bookings WHERE bookingUrl = ?`,
+      [bookingUrl]
+    );
+    if (!rows.length)
+      return res.status(404).json({ ok: false, message: "Booking not found" });
+
+    const [seatRows] = await pool.query(
+      `SELECT seatId, ticketTypeId FROM bookingSeats WHERE bookingId = ?`,
+      [rows[0].id]
+    );
+
+    res.json({ ok: true, booking: { ...rows[0], seats: seatRows } });
   });
 
   // Get all booking totals

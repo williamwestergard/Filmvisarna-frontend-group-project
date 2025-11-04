@@ -4,6 +4,9 @@ import { useBooking } from "../../Context/BookingContext";
 export default function TicketsAmount() {
   const { counts, increment, decrement, childAllowed } = useBooking();
 
+
+
+  
   return (
     <section className="tickets-amount-content">
       <h2>Välj antal biljetter</h2>

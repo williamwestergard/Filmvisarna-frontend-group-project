@@ -152,7 +152,7 @@ useEffect(() => {
              </Link>
                 </span>
               </li>
-              <li className="nav-item">
+          
                <li className="nav-item nav-logout">
   <div className="logout-container" style={{ position: "relative" }}>
 
@@ -187,7 +187,7 @@ useEffect(() => {
   </div>
 </li>
 
-              </li>
+            
             </>
           ) : (
             <>
@@ -215,9 +215,9 @@ useEffect(() => {
 
   const mobileNavigation = (
     <nav className="navbar navbar-mobile">
-      <a href="/" className="navbar-logo-link">
+      <Link to="/" className="navbar-logo-link">
         <img src={logo} alt="Filmvisarna Logotyp" className="logo-image" />
-      </a>
+      </Link>
 
       <button
         type="button"
@@ -243,16 +243,16 @@ useEffect(() => {
 
         <ul className="nav-menu nav-menu-mobile">
           <li className="nav-item">
-            <a href="/upptack" className="nav-link" onClick={closeMenu}>Veckans Film</a>
+            <Link to="/upptack" className="nav-link" onClick={closeMenu}>Veckans Film</Link>
           </li>
           <li className="nav-item">
-            <a href="/" className="nav-link" onClick={closeMenu}>På bio nu</a>
+            <Link to="/" className="nav-link" onClick={closeMenu}>På bio nu</Link>
           </li>
           <li className="nav-item">
-            <a href="/om-oss" className="nav-link" onClick={closeMenu}>Om oss</a>
+            <Link to="/om-oss" className="nav-link" onClick={closeMenu}>Om oss</Link>
           </li>
           <li className="nav-item">
-            <a href="/shop" className="nav-link" onClick={closeMenu}>Vår kiosk</a>
+            <Link to="/shop" className="nav-link" onClick={closeMenu}>Vår kiosk</Link>
           </li>
         </ul>
         <div className={isAccountOpen ? 'mobile-account-panel open' : 'mobile-account-panel'}>
