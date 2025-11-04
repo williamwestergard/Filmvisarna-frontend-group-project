@@ -1,20 +1,18 @@
- import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./MyPages.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 
-
-
-// User booking type (used to show booking history)
+// --- Types ---
 interface Booking {
   bookingId: number;
   movieTitle: string;
   screeningTime: string;
   status: string;
   auditoriumName: string;
+  seen?: boolean; // added flag for past screenings
 }
 
-// User profile type (includes contact info)
 interface User {
   id: number;
   firstName: string;
@@ -23,20 +21,14 @@ interface User {
   phoneNumber?: string;
 }
 
-
-
-
 const MyPages: React.FC = () => {
-  // Store user and their booking history
   const [user, setUser] = useState<User | null>(null);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
 
-
-  // Fetch user data and booking history from backend
-
+  // --- Fetch user and booking data from backend ---
   useEffect(() => {
-    // Retrieve stored user from localStorage (set after login)
+    // Retrieve the user from localStorage (set during login)
     const storedUser = localStorage.getItem("authUser");
 
     if (!storedUser) {
@@ -52,13 +44,21 @@ const MyPages: React.FC = () => {
       return;
     }
 
-    // Fetch profile + booking history from backend
+    // Fetch user info + booking history from backend
     fetch(`/api/users/${parsedUser.id}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.ok) {
+          const now = new Date();
+
+          // Mark each booking as seen or upcoming
+          const enrichedBookings = data.bookings.map((b: Booking) => {
+            const screeningDate = new Date(b.screeningTime);
+            return { ...b, seen: screeningDate < now };
+          });
+
           setUser(data.user);
-          setBookings(data.bookings);
+          setBookings(enrichedBookings);
         } else {
           console.error("Error fetching user data:", data.message);
         }
@@ -67,26 +67,28 @@ const MyPages: React.FC = () => {
       .finally(() => setLoading(false));
   }, []);
 
- 
-
-  const handleCancelTicket = (ticketToCancel: string) => {
-    console.log("Cancel ticket clicked:", ticketToCancel);
-
-  };
-
-
-  // Loading and error states
-
+  // --- Handle loading and missing user states ---
   if (loading) return <p>Laddar användardata...</p>;
   if (!user) return <p>Ingen användare är inloggad.</p>;
 
+  // --- Utility function for "X dagar sedan" ---
+  const daysAgo = (dateString: string) => {
+    const diff = Date.now() - new Date(dateString).getTime();
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    return days === 0 ? "idag" : `${days} dagar sedan`;
+  };
 
-  // Component layout
+  // --- Separate upcoming and seen bookings ---
+  const upcomingBookings = bookings.filter((b) => !b.seen);
+  const seenBookings = bookings.filter((b) => b.seen);
 
+  // --- UI ---
   return (
     <div className="my-pages">
       <section className="profile-container">
         <div className="profile-card">
+
+          {/* --- Profile Header --- */}
           <div className="profile-top">
             <div className="profile-img-placeholder">
               <FontAwesomeIcon icon={faCircleUser} className="profile-icon" />
@@ -98,35 +100,50 @@ const MyPages: React.FC = () => {
             </div>
           </div>
 
-         
+          {/* --- Upcoming bookings section --- */}
           <div className="profile-section">
-            <h3>Mina Bokningar</h3>
-            {bookings.length > 0 ? (
+            <h3>Kommande bokningar</h3>
+            {upcomingBookings.length > 0 ? (
               <ul>
-                {bookings.map((b) => (
+                {upcomingBookings.map((b) => (
                   <li key={b.bookingId}>
                     <strong>{b.movieTitle}</strong> <br />
-                    {new Date(b.screeningTime).toLocaleString()} <br />
+                    {new Date(b.screeningTime).toLocaleString("sv-SE")} <br />
                     Salong: {b.auditoriumName} <br />
-                    Status: {b.status}{" "}
-                    {}
-                    <button
-                      onClick={() =>
-                        handleCancelTicket(b.bookingId.toString())
-                      }
-                      className="cancel-ticket-btn"
-                    >
-                      Avboka
-                    </button>
+                    Status: {b.status}
                   </li>
                 ))}
               </ul>
             ) : (
-              <p>Du har inga bokningar än.</p>
+              <p>Du har inga kommande bokningar.</p>
             )}
           </div>
 
-          
+          {/* --- Watched movies section --- */}
+          <div className="profile-section">
+            <h3>Filmer du redan har sett</h3>
+            {seenBookings.length > 0 ? (
+              <ul>
+                {seenBookings.map((b) => (
+                  <li key={b.bookingId}>
+                    <strong>{b.movieTitle}</strong> <br />
+                    Såg den:{" "}
+                    {new Date(b.screeningTime).toLocaleDateString("sv-SE", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}{" "}
+                    ({daysAgo(b.screeningTime)})
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>Du har inte sett några filmer ännu.</p>
+            )}
+          </div>
+
+          {/* --- Logout button --- */}
           <button
             className="logout-btn"
             onClick={() => {
