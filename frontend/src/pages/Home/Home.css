@@ -90,6 +90,40 @@ a {
   animation-timing-function: ease-in-out;
 }
 
+/* Calendar */
+.filter-dropdown[type="date"] {
+  position: relative;
+  cursor: pointer;
+  padding-right: 2.5rem; 
+}
+
+
+.filter-dropdown[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.filter-dropdown[type="date"]::after {
+  content: "📅";
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 1.1rem;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+
+.filter-dropdown[type="date"]:hover::after {
+  opacity: 1;
+}
+
 /* Tablet: 3 movies per row */
 @media screen and (min-width: 768px) {
   .movie-grid {

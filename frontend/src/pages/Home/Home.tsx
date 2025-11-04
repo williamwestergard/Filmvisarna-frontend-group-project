@@ -34,11 +34,13 @@ function Home() {
       .catch((err) => console.error("Error fetching categories:", err));
   }, []);
 
-  useEffect(() => {
-    getShowtimes()
-      .then((data) => setShowtimes(data))
-      .catch((err) => console.error("Error fetching showtimes:", err));
-  }, []);
+useEffect(() => {
+  if (!selectedDate) return;
+
+  getShowtimes(selectedDate)
+    .then((data) => setShowtimes(data))
+    .catch((err) => console.error("Error fetching showtimes:", err));
+}, [selectedDate]);
 
     useEffect(() => {
     const today = new Date().toISOString().split("T")[0]; // todays date is automatically selected
@@ -58,7 +60,7 @@ function Home() {
       <main className="home-container">
         <h1 className="home-title">Aktuella filmer</h1>
 
-        {/* 🔍 SearchBar */}
+        {/* SearchBar */}
         <SearchBar onSearch={(value) => setSearchTerm(value)} />
 
         {/* Filter section */}

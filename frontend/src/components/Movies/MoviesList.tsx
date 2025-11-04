@@ -20,7 +20,7 @@ type MovieListProps = {
   selectedCategory: string;
   selectedDate: string;
   showtimes: Showtime[];
-  searchTerm: string; // 👈 ny prop
+  searchTerm: string; 
 };
 
 export default function MovieList({
@@ -30,6 +30,7 @@ export default function MovieList({
   searchTerm,
 }: MovieListProps) {
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [showAllMovies, setShowAllMovies] = useState(false);
 
   useEffect(() => {
     getMovies()
@@ -48,24 +49,38 @@ export default function MovieList({
 
   // Filtrering efter kategori
   const filteredMovies =
-    selectedCategory === "all"
-      ? movies
-      : movies.filter((movie) => movie.category.includes(selectedCategory));
+  selectedCategory === "all"
+    ? movies
+    : movies.filter((movie) => movie.category.includes(selectedCategory));
 
-  // 👇 Filtrera även på söktermen (titel eller kategori)
-  const fullyFilteredMovies = filteredMovies.filter((movie) => {
-    const lowerSearch = searchTerm.toLowerCase();
-    return (
-      movie.title.toLowerCase().includes(lowerSearch) ||
-      movie.category.some((cat) => cat.toLowerCase().includes(lowerSearch))
+// Filtrera på söktermen (titel eller kategori)
+const searchFilteredMovies = filteredMovies.filter((movie) => {
+  const lowerSearch = searchTerm.toLowerCase();
+  return (
+    movie.title.toLowerCase().includes(lowerSearch) ||
+    movie.category.some((cat) => cat.toLowerCase().includes(lowerSearch))
+  );
+});
+
+// Filtrera filmer som har en visning för valt datum
+const fullyFilteredMovies = showAllMovies
+  ? searchFilteredMovies
+  : searchFilteredMovies.filter((movie) =>
+      showtimes.some((show) => show.movieId === movie.id)
     );
-  });
-
-  // Undvik varningar om oanvända variabler
-  void selectedDate;
-  void showtimes;
 
   return (
+    <>
+    <div className="show-all-container">
+    <button
+      className={`show-all-button ${showAllMovies ? "active" : ""}`}
+      onClick={() => setShowAllMovies((prev) => !prev)}
+    >
+    {showAllMovies
+      ? "Visa bara filmer med visning i dag"
+      : "Visa alla filmer"}
+    </button>
+    </div>
     <section className="movie-grid">
       {fullyFilteredMovies.map((movie) => {
         const slug = movie.title.toLowerCase().replace(/\s+/g, "-");
@@ -86,5 +101,6 @@ export default function MovieList({
         );
       })}
     </section>
+    </>
   );
 }
