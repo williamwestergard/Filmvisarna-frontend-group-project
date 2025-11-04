@@ -263,6 +263,7 @@ export default function Auditorium() {
                   })}
                 </div>
     
+    
                 <p className="seat-picker-hint">
                   Klicka på en ledig plats här ovan eller direkt i platskartan.
                 </p>
