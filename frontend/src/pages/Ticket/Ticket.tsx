@@ -186,7 +186,7 @@ const canCancel = now < oneHourBefore;
   onClick={async () => {
     if (!canCancel) return;
 
-    const confirmDelete = window.confirm("Är du säker på att du vill avbeställa?");
+    const confirmDelete = window.confirm("Är du säker på att du vill avboka?");
     if (!confirmDelete) return;
 
     try {
@@ -194,13 +194,13 @@ const canCancel = now < oneHourBefore;
         method: "DELETE",
       });
 
-      if (!res.ok) throw new Error("Kunde inte avbeställa bokningen.");
+      if (!res.ok) throw new Error("Kunde inte avboka bokningen.");
 
-      alert("Din bokning har avbeställts.");
+      alert("Din bokning har avbokats.");
       navigate("/");
     } catch (err) {
       console.error(err);
-      alert("Något gick fel vid avbeställningen.");
+      alert("Något gick fel vid avbokningen.");
     }
   }}
 >
@@ -209,7 +209,7 @@ const canCancel = now < oneHourBefore;
 
 {!canCancel && (
   <p className="cancel-note">
-    Du kan inte avbeställa mindre än en timme innan filmen startar.
+    Du kan inte avboka mindre än en timme innan filmen startar.
   </p>
 )}
         </footer>
