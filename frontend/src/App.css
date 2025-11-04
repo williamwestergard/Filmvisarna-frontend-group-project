@@ -41,7 +41,7 @@ main {
 }
 
 .show-all-button {
-  background-color: #c71e1e; 
+  background-color: #c41230; 
   color: white;
   border: none;
   padding: 0.7rem 1.4rem;
@@ -54,11 +54,13 @@ main {
 
 .show-all-button:hover {
   background-color: #e02a2a; 
-  transform: scale(1.03);
 }
 
 .show-all-button.active {
-  background-color: #c71e1e; 
-  box-shadow: 0 0 15px rgba(255, 75, 75, 0.6); 
-  transform: scale(1.05);
+  background-color: #c41230; 
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25); 
+}
+.show-all-button.active:hover {
+  background-color: #e02a2a; 
 }
