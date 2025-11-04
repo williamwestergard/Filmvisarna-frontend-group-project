@@ -60,7 +60,7 @@ useEffect(() => {
       <main className="home-container">
         <h1 className="home-title">Aktuella filmer</h1>
 
-        {/* 🔍 SearchBar */}
+        {/* SearchBar */}
         <SearchBar onSearch={(value) => setSearchTerm(value)} />
 
         {/* Filter section */}
