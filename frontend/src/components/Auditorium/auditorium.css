@@ -670,28 +670,46 @@
   z-index: 5;
 }
 
-/* Toggle button - icon + toggler */
+/* Button */
 .seat-picker-toggle {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 10px 14px;
   font-size: 1rem;
-  font-weight: 400;
+  font-weight: 500;
   border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.14);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   background: #232232;
   color: #f1f4ff;
   cursor: pointer;
-  transition: background .2s ease, border-color .2s ease, transform .12s ease, box-shadow .15s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.12s ease,
+    box-shadow 0.15s ease;
 }
+
+/* Icon */
 .seat-picker-toggle:hover,
 .seat-picker-toggle:focus-visible {
   background: #2b2b3a;
-  border-color: rgba(255,255,255,0.24);
+  border-color: rgba(255, 255, 255, 0.24);
   outline: none;
   transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(0,0,0,.35);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* Icon */
+.seat-picker-toggle svg {
+  width: 28px;
+  height: 28px;
+  color: #c41230;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
+}
+/* Icon */
+.seat-picker-toggle:hover svg,
+.seat-picker-toggle:focus-visible svg {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
 }
 
 /* Popup panel */
@@ -706,8 +724,8 @@
   padding: 16px 14px 18px;
   border-radius: 12px;
   background: #1e1d2a;
-  border: 1px solid rgba(255,255,255,0.12);
-  box-shadow: 0 16px 36px rgba(0,0,0,0.55);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
   display: grid;
   gap: 10px;
   z-index: 1000;
@@ -738,17 +756,18 @@
 }
 .seat-picker-close {
   padding: 12px 14px;
-  border: 1px solid rgba(255,255,255,0.18);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 10px;
   background: #2a2938;
   color: #e9e9ee;
   font-weight: 700;
   cursor: pointer;
-  transition: background .15s ease, border-color .15s ease, transform .1s ease;
+  transition: background 0.15s ease, border-color 0.15s ease,
+    transform 0.1s ease;
 }
 .seat-picker-close:hover {
   background: #34334a;
-  border-color: rgba(255,255,255,0.26);
+  border-color: rgba(255, 255, 255, 0.26);
   transform: translateY(-1px);
 }
 
@@ -764,14 +783,16 @@
 .seat-picker-rows {
   display: grid;
   gap: 10px;
-  border-top: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding-top: 8px;
   max-height: 60vh;
   overflow: auto;
   scrollbar-width: thin;
   scrollbar-color: #49485b transparent;
 }
-.seat-picker-rows::-webkit-scrollbar { width: 8px; }
+.seat-picker-rows::-webkit-scrollbar {
+  width: 8px;
+}
 .seat-picker-rows::-webkit-scrollbar-thumb {
   background: #49485b;
   border-radius: 8px;
@@ -782,7 +803,7 @@
   display: grid;
   gap: 6px;
   background: #1a1924;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 10px;
   padding: 10px;
 }
@@ -794,7 +815,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 6px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   padding-bottom: 4px;
 }
 .seat-row-title {
@@ -831,7 +852,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 58px;        
+  height: 58px;
   min-width: 60px;
   padding: 0 10px;
   border-radius: 16px;
@@ -839,19 +860,19 @@
   font-weight: 800;
   font-size: 1.1rem;
   cursor: pointer;
-  transition: transform .1s ease, box-shadow .15s ease, background .15s ease;
+  transition: transform 0.1s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
 
 /* Aviable seats */
 .seat-chip.is-free {
   background: #eae8e7;
   color: #1b1b2a;
-  border-color: rgba(0,0,0,0.18);
+  border-color: rgba(0, 0, 0, 0.18);
 }
 .seat-chip.is-free:hover {
   background: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 3px 12px rgba(0,0,0,0.22);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.22);
 }
 
 /* Selected seats */
@@ -868,7 +889,7 @@
 .seat-chip.is-booked {
   background: #353535;
   color: #cfcfcf;
-  border-color: rgba(255,255,255,0.35);
+  border-color: rgba(255, 255, 255, 0.35);
   cursor: not-allowed;
   text-decoration: line-through;
   text-decoration-thickness: 2px;
