@@ -28,17 +28,20 @@ export async function getCategories() {
   }));
 }
 
-export async function getShowtimes() {
-  const res = await fetch("/api/showtimes");
+export async function getShowtimes(date?: string) {
+  // Build the API URL dynamically based on the date
+  const url = date ? `/api/screenings?date=${date}` : "/api/screenings";
+
+  const res = await fetch(url);
   if (!res.ok) throw new Error("Failed to fetch showtimes");
 
   const data = await res.json();
 
   return data.map((showtime: any) => ({
-    screeningId: showtime.screeningId,
+    screeningId: showtime.id,
     movieId: showtime.movieId,
-    date: showtime.date,
-    time: showtime.time,
+    date: showtime.time.split("T")[0], // extract YYYY-MM-DD
+    time: showtime.time.split("T")[1]?.slice(0, 5), // extract HH:mm
   }));
 }
 export async function getMoviesInformation() {

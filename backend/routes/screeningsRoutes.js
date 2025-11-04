@@ -4,12 +4,31 @@ const express = require("express");
 function createScreeningsRouter(pool) {
   const router = express.Router();
 
-  // GET /api/screenings// alla visningar inom 14 dagar
-  router.get("/", async (_req, res) => {
+  // GET /api/screenings – alla visningar inom 14 dagar
+  // Supports ?movieId= and/or ?date=
+  router.get("/", async (req, res) => {
     try {
-      const [rows] = await pool.query(
-        "SELECT id, time, movieId, auditoriumId FROM screenings WHERE time BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 14 DAY) ORDER BY time"
-      );
+      const { movieId, date } = req.query;
+      const params = [];
+      let query = `
+        SELECT id, time, movieId, auditoriumId
+        FROM screenings
+        WHERE time BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 14 DAY)
+      `;
+
+      if (movieId) {
+        query += " AND movieId = ?";
+        params.push(movieId);
+      }
+
+      if (date) {
+        query += " AND DATE(time) = ?";
+        params.push(date);
+      }
+
+      query += " ORDER BY time";
+
+      const [rows] = await pool.query(query, params);
       res.json(rows);
     } catch (e) {
       console.error("GET /screenings error:", e);
@@ -17,7 +36,7 @@ function createScreeningsRouter(pool) {
     }
   });
 
-  // GET /api/screenings/:id / en visning
+  // GET /api/screenings/:id – en visning
   router.get("/:id", async (req, res) => {
     try {
       const { id } = req.params;
@@ -37,8 +56,7 @@ function createScreeningsRouter(pool) {
     }
   });
 
-  // POST /api/screenings → skapa visning
-  // Body: { "time": "2025-10-10T18:00:00", "movieId": 1, "auditoriumId": 2 }
+  // POST /api/screenings – skapa visning
   router.post("/", async (req, res) => {
     try {
       const { time, movieId, auditoriumId } = req.body;
@@ -66,7 +84,7 @@ function createScreeningsRouter(pool) {
     }
   });
 
-  // DELETE /api/screenings → ta bort alla (test/hjälp)
+  // DELETE /api/screenings – ta bort alla (test/hjälp)
   router.delete("/", async (_req, res) => {
     try {
       const [result] = await pool.query("DELETE FROM screenings");
@@ -77,11 +95,10 @@ function createScreeningsRouter(pool) {
     }
   });
 
-  // GET /api/screenings/:id/seats // alla stolar i salongen + bokningsstatus
-  // Stöd för ?onlyFree=1 för att bara visa lediga platser
+  // GET /api/screenings/:id/seats – alla stolar + bokningsstatus
   router.get("/:id/seats", async (req, res) => {
     try {
-      const { id } = req.params; // screeningId
+      const { id } = req.params;
       const onlyFree = req.query.onlyFree == "1";
 
       const [rows] = await pool.query(
@@ -121,7 +138,7 @@ function createScreeningsRouter(pool) {
     }
   });
 
-  // GET /api/screenings/:id/seats/available // endast lediga stolar
+  // GET /api/screenings/:id/seats/available – endast lediga platser
   router.get("/:id/seats/available", async (req, res) => {
     try {
       const { id } = req.params;
