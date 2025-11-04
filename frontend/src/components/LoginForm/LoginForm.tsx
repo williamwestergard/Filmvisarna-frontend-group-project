@@ -3,59 +3,71 @@ import { useNavigate } from "react-router-dom";
 import "./LoginForm.css";
 import { LoginFormApi } from "../../api/LoginFormApi";
 
+
+
 export default function LoginForm() {
+  // Controlled form fields for user credentials
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // Navigation hook for redirecting after login
   const navigate = useNavigate();
-    const [error, setError] = useState<string>("");
+
+  // Error message for user feedback
+  const [error, setError] = useState<string>("");
+
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-      setError(""); 
+    setError("");
 
     try {
+      // Send login request to backend API
       const result = await LoginFormApi({
         email,
         password,
       });
 
       if (result.ok) {
-        // Save user to localStorage
+        // Save user info and token locally for session persistence
         localStorage.setItem("authUser", JSON.stringify(result.user));
-          localStorage.setItem("authToken", result.token);
+        localStorage.setItem("authToken", result.token);
 
-        // Inform Navbar (which listens for "storage" events)
+        // Notify other components (e.g., Navbar) of login
         window.dispatchEvent(new StorageEvent("storage", { key: "authUser" }));
 
-        // Navigate back to homepage
+        // Redirect user to homepage after login
         navigate("/");
-      } 
-
+      } else {
+        // Handle unsuccessful login (wrong credentials)
+        setError("Felaktig e-post eller lösenord.");
+      }
     } catch (err: any) {
-
+      console.error("Login error:", err);
       setError(err.message || "Ett fel uppstod vid inloggning.");
-      console.error(err);
     }
   }
+
 
   function handleCancel() {
     navigate("/");
   }
 
+
   return (
     <form className="login-form" onSubmit={handleSubmit} aria-label="Logga in">
-      {/* Logo */}
+    
       <img
         className="login-logo-inside"
         src="/filmvisarnafooterbilden.png"
         alt="Filmvisarna"
       />
 
-      {/* Header */}
+   
       <h2 className="login-title">Logga in</h2>
-       <p className="login-error-message"> {error} </p>
+      {error && <p className="login-error-message">{error}</p>}
 
-      {/* Email field */}
+    
       <div className="login-field">
         <label htmlFor="login-email">E-postadress</label>
         <input
@@ -69,7 +81,7 @@ export default function LoginForm() {
         />
       </div>
 
-      {/* Password field */}
+    
       <div className="login-field">
         <label htmlFor="login-password">Lösenord</label>
         <input
@@ -83,7 +95,9 @@ export default function LoginForm() {
         />
       </div>
 
-      {/* Buttons */}
+
+    
+  
       <div className="login-actions">
         <button type="submit" className="login-button">
           Logga in
