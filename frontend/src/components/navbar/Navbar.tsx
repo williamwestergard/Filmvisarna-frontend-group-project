@@ -204,7 +204,7 @@ useEffect(() => {
             </Link>
             <ul className="dropdown-menu">
               <li><a href="/om-oss" className="dropdown-link">Om oss</a></li>
-              <li><a href="/shop" className="dropdown-link">Vår Kiosk</a></li>
+              <li><a href="/shop" className="dropdown-link">Vår kiosk</a></li>
             </ul>
           </li>
         </ul>
