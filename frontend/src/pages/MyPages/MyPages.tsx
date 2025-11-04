@@ -107,7 +107,7 @@ const MyPages: React.FC = () => {
                   <li key={b.bookingId}>
                     <strong>{b.movieTitle}</strong> <br />
                     {new Date(b.screeningTime).toLocaleString()} <br />
-                    Auditorium: {b.auditoriumName} <br />
+                    Salong: {b.auditoriumName} <br />
                     Status: {b.status}{" "}
                     {}
                     <button
