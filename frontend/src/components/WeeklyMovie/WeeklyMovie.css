@@ -1,6 +1,6 @@
 .weekly-movie-card {
-  width: 90%;             
-  max-width: 320px;        
+  width: 90%;
+  max-width: 320px;
   padding: 20px;
   margin: 20px auto;
   background-color: #f4e1d2;
@@ -75,20 +75,23 @@
 
 @media (max-width: 400px) {
   .weekly-movie-card {
-    width: 94%;      /* slightly less fixed space */
-    max-width: 290px; /* keeps proportions tighter */
-    padding: 16px;   /* trims inner padding to fit better */
+    width: 94%;      
+    max-width: 290px; 
+    padding: 16px;   
   }
 }
 
 @media (min-width: 768px) {
   .weekly-movie-card {
-    width: 450px; 
+    width: 70%;        
+    max-width: 800px;  
+    padding: 40px;     
   }
 }
 
 @media (min-width: 1200px) {
   .weekly-movie-card {
-    max-width: 500px;
+    width: 60%;
+    max-width: 1000px; 
   }
 }
