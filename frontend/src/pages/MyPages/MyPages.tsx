@@ -6,7 +6,7 @@ import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 interface User {
   name: string;
   email: string;
-  phone?: string; // optional
+  phone?: string;
   history: string[];
   tickets: string[];
 }
