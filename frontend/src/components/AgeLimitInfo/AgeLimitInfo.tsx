@@ -87,6 +87,7 @@ export default function AgeLimitInfo() {
                 </li>
               </ul>
               <p className="ageinfo-note">
+              
                 Tips: På filmsidan visar vi åldersgränsen bredvid genrerna. När
                 du väljer biljetter kan <em>barnbiljett</em> endast väljas för
                 barntillåtna visningar.
@@ -95,7 +96,7 @@ export default function AgeLimitInfo() {
 
             <footer className="ageinfo-footer">
               <button type="button" className="ageinfo-ok" onClick={() => setOpen(false)}>
-                Stäng
+                Uppfattat
               </button>
             </footer>
           </div>

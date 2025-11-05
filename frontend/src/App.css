@@ -41,7 +41,7 @@ main {
 }
 
 .show-all-button {
-  background-color: #c41230; 
+  background-color: #c71e1e;
   color: white;
   border: none;
   padding: 0.7rem 1.4rem;
@@ -50,15 +50,19 @@ main {
   font-size: 1rem;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  position: relative;
+  top: -0.5vh;
+  margin-bottom: 2vh;
 }
 
 .show-all-button:hover {
-  background-color: #e02a2a; 
+  background-color: #e02a2a;
+  transform: scale(1.03);
 }
 
 .show-all-button.active {
-  background-color: #c71e1e; 
-  box-shadow: 0 0 15px rgba(255, 75, 75, 0.6); 
+  background-color: #c71e1e;
+  box-shadow: 0 0 15px rgba(255, 75, 75, 0.6);
   transform: scale(1.05);
 }
 

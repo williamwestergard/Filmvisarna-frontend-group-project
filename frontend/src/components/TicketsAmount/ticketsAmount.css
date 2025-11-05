@@ -47,19 +47,21 @@
 }
 
 /* Error-message */
-   .tickets-error-message {
-    color: #ff4a4a;
-    font-weight: 600;
-    text-align: center;
-    margin: 6px auto 12px;
-    padding: 8px 12px;
-    max-width: 90%;
-    border: 1px solid rgba(255, 74, 74, 0.3);
-    border-radius: 8px;
-    background: rgba(255, 74, 74, 0.08);
-    transition: opacity 0.3s ease;
-    animation: fadeInError 0.3s ease;
-  }
+.tickets-error-message {
+  color: #ff4a4a;
+  font-weight: 600;
+  text-align: center;
+  margin: 6px auto 12px;
+  margin-top: 5vh;
+  margin-bottom: 2vh;
+  padding: 8px 12px;
+  max-width: 90%;
+  border: 1px solid rgba(255, 74, 74, 0.3);
+  border-radius: 5px;
+  background: rgba(255, 74, 74, 0.08);
+  transition: opacity 0.3s ease;
+  animation: fadeInError 0.3s ease;
+}
 
 /* Phone sizes */
 @media only screen and (max-width: 800px) {
@@ -112,6 +114,7 @@
     padding: 1.1vh;
     font-size: 1.6rem;
   }
+
   .tickets-error-message {
     font-size: 0.8rem;
     padding: 6px 10px;

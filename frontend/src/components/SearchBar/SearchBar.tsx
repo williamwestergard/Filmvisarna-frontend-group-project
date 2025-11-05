@@ -16,7 +16,6 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
 
   return (
     <div className="searchbar-container">
-      <p className="searchbar-label">Sök film</p>
       <input
         type="text"
         placeholder="Sök film eller genre..."
