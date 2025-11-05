@@ -3,7 +3,7 @@ import "./Home.css";
 import MoviesList from "../../components/Movies/MoviesList";
 import BgOverlay from "../../assets/images/home-bg.jpg";
 import { getCategories, getShowtimes } from "../../api/MoviesApi";
-import SearchBar from "../../components/SearchBar/SearchBar"; // 👈 import
+import SearchBar from "../../components/SearchBar/SearchBar";
 import AgeLimitInfo from "../../components/AgeLimitInfo/AgeLimitInfo";
 
 type Category = {
@@ -55,12 +55,12 @@ useEffect(() => {
         alt="Image of a man and woman watching a movie"
       />
       
-      {/* AgeLimitInfo */}
-       <AgeLimitInfo />
+
       <main className="home-container">
+              <AgeLimitInfo />
         <h1 className="home-title">Aktuella filmer</h1>
 
-        {/* SearchBar */}
+
         <SearchBar onSearch={(value) => setSearchTerm(value)} />
 
         {/* Filter section */}

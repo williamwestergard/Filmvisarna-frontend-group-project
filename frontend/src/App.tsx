@@ -43,8 +43,8 @@ function App() {
           {/* Booking and confirmation routes */}
           <Route path="/booking" element={<BookingPage />} />
           <Route path="/booking/:movieTitle" element={<BookingPage />} />
-          <Route path="/confirmation/:bookingId" element={<ConfirmationPage />} />
-          <Route path="/ticket/:bookingId" element={<TicketPage />} />
+          <Route path="/confirmation/:bookingUrl" element={<ConfirmationPage />} />
+          <Route path="/ticket/:bookingUrl" element={<TicketPage />} />
 
           {/* Authentication routes */}
           <Route path="/login" element={<Login />} />

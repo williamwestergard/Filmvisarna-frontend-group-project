@@ -41,7 +41,7 @@ main {
 }
 
 .show-all-button {
-  background-color: #c71e1e; 
+  background-color: #c41230; 
   color: white;
   border: none;
   padding: 0.7rem 1.4rem;
@@ -54,7 +54,6 @@ main {
 
 .show-all-button:hover {
   background-color: #e02a2a; 
-  transform: scale(1.03);
 }
 
 .show-all-button.active {

@@ -1,8 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import './Navbar.css';
-import {useNavigate,  Link } from "react-router-dom";
+import {useNavigate,  Link, useLocation } from "react-router-dom";
 import logo from './navbar-logo.png'; 
 import UserProfilePic from "./navbar-user-profile-picture.png"
+
+
+
 
 type User = {
   firstName: string;
@@ -17,6 +20,24 @@ const Navbar: React.FC = () => {
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
+
+    // Removes navbar animation on page change
+    useEffect(() => {
+      const navbar = document.querySelector(".site-header") as HTMLElement;
+      if (!navbar) return;
+
+      navbar.classList.add("no-transition");
+      navbar.classList.remove("navbar-hidden");
+      navbar.style.transform = "translateY(0)";
+      void navbar.offsetHeight;
+      navbar.style.transform = "";
+      requestAnimationFrame(() => {
+        navbar.classList.remove("no-transition");
+      });
+    }, [location.pathname]);
+
+
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -105,6 +126,60 @@ useEffect(() => {
     navigate("/");
   };
 
+
+useEffect(() => {
+  const navbar = document.querySelector('.site-header') as HTMLElement;
+  if (!navbar) return;
+
+  let lastScrollY = window.scrollY;
+  let ticking = false;
+  let scrollUpDistance = 0;
+  const scrollUpThreshold = 140; // px
+
+  const updateNavbar = () => {
+    const currentScrollY = window.scrollY;
+    const scrollingDown = currentScrollY > lastScrollY;
+
+    if (scrollingDown) {
+      scrollUpDistance = 0;
+
+      if (currentScrollY > 50) {
+        navbar.classList.add('navbar-hidden');
+      }
+    } else {
+      scrollUpDistance += lastScrollY - currentScrollY;
+
+      if (scrollUpDistance > scrollUpThreshold) {
+        navbar.classList.remove('navbar-hidden');
+        scrollUpDistance = 0; 
+      }
+    }
+
+    if (currentScrollY <= 0) {
+      navbar.classList.remove('navbar-hidden');
+      scrollUpDistance = 0;
+    }
+
+    lastScrollY = currentScrollY;
+    ticking = false;
+  };
+
+  const onScroll = () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateNavbar);
+      ticking = true;
+    }
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  return () => window.removeEventListener('scroll', onScroll);
+}, []);
+
+
+
+
+
+
   const desktopNavigation = (
     <nav className="navbar navbar-desktop">
       <Link to="/" className="navbar-logo-link">
@@ -129,7 +204,7 @@ useEffect(() => {
             </Link>
             <ul className="dropdown-menu">
               <li><a href="/om-oss" className="dropdown-link">Om oss</a></li>
-              <li><a href="/shop" className="dropdown-link">Vår Kiosk</a></li>
+              <li><a href="/shop" className="dropdown-link">Vår kiosk</a></li>
             </ul>
           </li>
         </ul>
@@ -296,8 +371,10 @@ useEffect(() => {
 
         return (
         <header className="site-header">
+            <div className="site-header-inner">
           {desktopNavigation}
           {mobileNavigation}
+          </div>
         </header>
         );
       };
