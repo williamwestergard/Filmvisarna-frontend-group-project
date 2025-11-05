@@ -1,114 +1,247 @@
+/* page container */
 .my-pages {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; /* start from top */
-  padding: 4rem 1rem;
   color: #fff;
+  padding: 32px 16px;
+}
+.my-pages > * {
+  max-width: 1040px;
+  margin-inline: auto;
 }
 
-/* Center and size the profile box */
-.profile-container {
-  width: 100%;
-  max-width: 420px;
+/* generic card */
+.my-pages .card,
+.my-pages .box,
+.my-pages section,
+.my-pages article,
+.my-pages .profile-card,
+.my-pages .booking-card {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 14px;
+  padding: 16px 18px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.35);
 }
 
-/* The box  */
-.profile-card {
-  background-color: rgba(255, 255, 255, 0.08); 
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  padding: 1.8rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); 
-  backdrop-filter: blur(8px); 
-}
-
-/* Profile header */
-.profile-top {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-/* Profile icon placeholder */
+/* profile area */
+.profile-container { width: 100%; }
+.profile-card { display: grid; gap: 12px; }
+.profile-top { display: flex; align-items: center; gap: 12px; }
 .profile-img-placeholder {
-  width: 80px; 
-  height: 80px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
+  width: 72px; height: 72px; border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  display: grid; place-items: center; overflow: hidden;
+}
+.profile-icon { width: 120%; height: 120%; opacity: .95; }
+.profile-info h2 { margin: 0; font-size: 1.15rem; font-weight: 700; }
+.profile-info p  { margin: 0; color: #cfcfcf; }
+
+/* headings */
+.section-title { margin: 6px 0 10px; font-weight: 700; font-size: 1.05rem; }
+
+/* bookings list (UL without class) */
+.my-pages .profile-card ul {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* each booking card */
+.my-pages .profile-card ul > li {
+  background: rgba(255,255,255,0.09);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 14px;
+  padding: 14px 16px;
+  backdrop-filter: blur(8px);
+  /* neutral soft shadow */
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+/* booking header */
+.my-pages .profile-card ul > li > header,
+.my-pages .profile-card ul > li .booking-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.my-pages .profile-card ul > li h4,
+.my-pages .profile-card ul > li .booking-title {
+  margin: 0;
+  color: #fff;
+  font-weight: 750;
+  font-size: 1.02rem;
+}
+
+/* booking meta */
+.my-pages .profile-card ul > li .details,
+.my-pages .profile-card ul > li .booking-meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  font-size: .95rem;
+  color: #d9d9d9;
+  margin-bottom: 8px;
+}
+.my-pages .profile-card ul > li .details strong,
+.my-pages .profile-card ul > li .booking-meta strong { color: #fff; }
+
+/* seats */
+.my-pages .profile-card ul > li .seats,
+.my-pages .profile-card ul > li .seat-list {
+  display: inline-flex; gap: 6px; flex-wrap: wrap;
+}
+.my-pages .profile-card ul > li .seat,
+.my-pages .profile-card ul > li .seat-chip {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: .8rem;
+  color: #fff;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.22);
+}
+
+/* actions row */
+.my-pages .profile-card ul > li .actions,
+.my-pages .profile-card ul > li .booking-actions {
   display: flex;
   align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 6px;
 }
+.my-pages .profile-card ul > li .booking-hint { color: #bdbdbd; font-size: .9rem; }
 
-/* React Font Awesome icon */
-.profile-icon {
-  width: 120%;    
-  height: 120%;     
+/* cancel button (bridge to TSX) */
+.cancel-ticket-btn {
+  min-height: 40px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.45);
+  background: rgba(255,255,255,0.08);
   color: #fff;
-  opacity: 0.95;
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+  font-weight: 700;
+  letter-spacing: .2px;
+  cursor: pointer;
+  transition: background .25s ease, border-color .25s ease, transform .15s ease, box-shadow .25s ease;
+  box-shadow: 0 4px 14px rgba(0,0,0,.25);
+}
+.cancel-ticket-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.60);
+}
+.cancel-ticket-btn:active { transform: translateY(0); }
+.cancel-ticket-btn[disabled],
+.cancel-ticket-btn[aria-disabled="true"] { opacity: .55; cursor: not-allowed; }
+
+/* focus styles */
+.cancel-ticket-btn:focus-visible,
+.profile-card a:focus-visible,
+.profile-card button:focus-visible {
+  outline: 2px solid rgba(0,120,255,0.9);
+  outline-offset: 2px;
+  border-radius: 10px;
 }
 
-/* Text information beside the icon */
-.profile-info h2 {
-  font-size: 1.2rem;
-  font-weight: 600;
+/* badges */
+.status,
+[data-status] {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: .78rem;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.10);
+}
+[data-status="active"]  { box-shadow: inset 0 0 0 999px rgba(46,204,113,0.18); }
+[data-status="soon"]    { box-shadow: inset 0 0 0 999px rgba(241,196,15,0.18); }
+[data-status="locked"],
+[data-status="expired"] { box-shadow: inset 0 0 0 999px rgba(231,76,60,0.18); }
+
+/* tooltip */
+.has-tooltip { position: relative; display: inline-flex; align-items: center; }
+.tooltip,
+[data-tooltip]::after {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  max-width: 260px;
+  padding: 8px 10px;
+  font-size: .82rem;
+  line-height: 1.25;
+  color: #fff;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 8px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  content: attr(data-tooltip);
+  transition: opacity .18s ease, transform .18s ease;
+  z-index: 20;
+}
+.has-tooltip:hover .tooltip,
+.has-tooltip:focus-within .tooltip,
+[data-tooltip]:hover::after,
+[data-tooltip]:focus::after {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.profile-info p {
-  font-size: 0.95rem;
-  color: #ccc;
-}
-
-/* Sections inside the card */
-.profile-section {
-  margin-bottom: 1rem;
-}
-
-.profile-section h3 {
-  font-weight: 600;
-  margin-bottom: 0.3rem;
-}
-
-.profile-section p {
-  font-size: 0.9rem;
-  color: #aaa;
-}
-
-/* Log out button */
+/* logout button (theme match) */
 .logout-btn {
   width: 100%;
-  padding: 0.6rem;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 6px;
-  background: transparent;
+  min-height: 40px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.40);
+  background: rgba(255,255,255,0.03);
   color: #fff;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-  margin-top: 1rem;
+  transition: background .25s ease, border-color .25s ease, transform .15s ease;
+}
+.logout-btn:hover { transform: translateY(-1px); background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.55); }
+.logout-btn:active { transform: translateY(0); }
+
+/* mobile ≥ 640px (minor spacing/typography) */
+@media (min-width: 640px) {
+  .section-title { font-size: 1.08rem; }
+  .my-pages .profile-card ul { gap: 16px; }
 }
 
-.logout-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: scale(1.02);
+/* tablet/desktop ≥ 900px (2-col bookings) */
+@media (min-width: 900px) {
+  .my-pages > * { max-width: 1100px; }
+  .my-pages .profile-card ul {
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .my-pages .profile-card ul > li { padding: 16px 18px; }
+  .profile-info h2 { font-size: 1.22rem; }
 }
 
-/* tweaks for mobile */
-@media (max-width: 480px) {
-  .profile-img-placeholder {
-    width: 80px;
-    height: 80px;
-  }
+/* large desktop ≥ 1200px (wider + gaps) */
+@media (min-width: 1200px) {
+  .my-pages > * { max-width: 1180px; }
+  .my-pages .profile-card ul { gap: 22px; }
+}
 
-  .profile-img-placeholder i {
-    font-size: 55px;
-  }
-
-  .profile-card {
-    padding: 1.2rem;
-  }
+/* reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .cancel-ticket-btn,
+  .logout-btn,
+  .tooltip,
+  [data-tooltip]::after { transition: none; }
 }
