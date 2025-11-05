@@ -20,7 +20,7 @@
   border-radius: 14px;
   padding: 16px 18px;
   backdrop-filter: blur(8px);
-  box-shadow: 0 8px 22px rgba(0,0,0,0.35);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.35), 0 0 15px rgba(255, 255, 255, 0.15);
 }
 
 /* profile area */
@@ -32,10 +32,24 @@
   background: rgba(255,255,255,0.12);
   border: 1px solid rgba(255,255,255,0.25);
   display: grid; place-items: center; overflow: hidden;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+  transition: transform 1.0s ease-in-out, box-shadow 0.3s ease;
+}
+.profile-img-placeholder:hover {
+  transform: rotate(360deg);
+}
+.profile-img-placeholder:active {
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
 }
 .profile-icon { width: 120%; height: 120%; opacity: .95; }
 .profile-info h2 { margin: 0; font-size: 1.15rem; font-weight: 700; }
 .profile-info p  { margin: 0; color: #cfcfcf; }
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-img-placeholder {
+    transition: none;
+  }
+}
 
 @media (min-width: 900px) {
   .profile-info {
