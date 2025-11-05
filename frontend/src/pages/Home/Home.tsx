@@ -26,7 +26,7 @@ function Home() {
   const today = new Date();
   return today.toISOString().split("T")[0]; // Format: YYYY-MM-DD
 });
-  const [searchTerm, setSearchTerm] = useState(""); 
+  const [searchTerm, setSearchTerm] = useState(""); //nytt state
 
   useEffect(() => {
     getCategories()
