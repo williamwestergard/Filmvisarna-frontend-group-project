@@ -3,14 +3,15 @@ import "./MyPages.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 
-// --- Types ---
 interface Booking {
   bookingId: number;
   movieTitle: string;
   screeningTime: string;
   status: string;
   auditoriumName: string;
-  seen?: boolean; // added flag for past screenings
+  seen?: boolean;
+  history: string[];
+  tickets: string[];
 }
 
 interface User {
@@ -19,6 +20,8 @@ interface User {
   lastName: string;
   email: string;
   phoneNumber?: string;
+  history: string[];
+  tickets: string[];
 }
 
 const MyPages: React.FC = () => {
@@ -26,11 +29,25 @@ const MyPages: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // --- Fetch user and booking data from backend ---
-  useEffect(() => {
-    // Retrieve the user from localStorage (set during login)
-    const storedUser = localStorage.getItem("authUser");
+  const handleCancelBooking = (bookingId: number) => {
+    if (!window.confirm("Vill du verkligen avboka denna film?")) return;
 
+    // Optional: Call backend API to cancel the booking
+    fetch(`/api/bookings/${bookingId}`, { method: "DELETE" })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok) {
+          // Remove the canceled booking from state
+          setBookings((prev) => prev.filter((b) => b.bookingId !== bookingId));
+        } else {
+          alert("Kunde inte avboka bokningen.");
+        }
+      })
+      .catch(() => alert("Ett nätverksfel uppstod."));
+  };
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("authUser");
     if (!storedUser) {
       console.warn("No user found in localStorage");
       setLoading(false);
@@ -44,14 +61,11 @@ const MyPages: React.FC = () => {
       return;
     }
 
-    // Fetch user info + booking history from backend
     fetch(`/api/users/${parsedUser.id}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.ok) {
           const now = new Date();
-
-          // Mark each booking as seen or upcoming
           const enrichedBookings = data.bookings.map((b: Booking) => {
             const screeningDate = new Date(b.screeningTime);
             return { ...b, seen: screeningDate < now };
@@ -67,28 +81,22 @@ const MyPages: React.FC = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  // --- Handle loading and missing user states ---
   if (loading) return <p>Laddar användardata...</p>;
   if (!user) return <p>Ingen användare är inloggad.</p>;
 
-  // --- Utility function for "X dagar sedan" ---
   const daysAgo = (dateString: string) => {
     const diff = Date.now() - new Date(dateString).getTime();
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     return days === 0 ? "idag" : `${days} dagar sedan`;
   };
 
-  // --- Separate upcoming and seen bookings ---
   const upcomingBookings = bookings.filter((b) => !b.seen);
   const seenBookings = bookings.filter((b) => b.seen);
 
-  // --- UI ---
   return (
     <div className="my-pages">
       <section className="profile-container">
         <div className="profile-card">
-
-          {/* --- Profile Header --- */}
           <div className="profile-top">
             <div className="profile-img-placeholder">
               <FontAwesomeIcon icon={faCircleUser} className="profile-icon" />
@@ -100,7 +108,6 @@ const MyPages: React.FC = () => {
             </div>
           </div>
 
-          {/* --- Upcoming bookings section --- */}
           <div className="profile-section">
             <h3>Kommande bokningar</h3>
             {upcomingBookings.length > 0 ? (
@@ -110,7 +117,10 @@ const MyPages: React.FC = () => {
                     <strong>{b.movieTitle}</strong> <br />
                     {new Date(b.screeningTime).toLocaleString("sv-SE")} <br />
                     Salong: {b.auditoriumName} <br />
-                    Status: {b.status}
+                    Status: {b.status} <br />
+                    <button onClick={() => handleCancelBooking(b.bookingId)}>
+                      Avboka
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -119,7 +129,6 @@ const MyPages: React.FC = () => {
             )}
           </div>
 
-          {/* --- Watched movies section --- */}
           <div className="profile-section">
             <h3>Filmer du redan har sett</h3>
             {seenBookings.length > 0 ? (
@@ -143,7 +152,6 @@ const MyPages: React.FC = () => {
             )}
           </div>
 
-          {/* --- Logout button --- */}
           <button
             className="logout-btn"
             onClick={() => {
