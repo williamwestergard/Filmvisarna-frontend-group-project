@@ -7,6 +7,8 @@ import AvailableDates from "../../components/AvailableDates/AvailableDates";
 import TicketsAmount from "../../components/TicketsAmount/TicketsAmount";
 import Auditorium from "../../components/Auditorium/Auditorium";
 import "./booking.css";
+import SimpleBookingTimeoutModal from "../../components/BookingTimeout/SimpleBookingTimeoutModal";
+import ScrollDownArrow from "../../assets/images/booking/scroll-down-arrow.png"
 
 type Paketpris = {
   liten: { antal: number; pris: number };
@@ -40,6 +42,7 @@ function BookingContent() {
   const location = useLocation();
   const selectedDateFromHome = (location.state as any)?.selectedDate || "";
   const navigate = useNavigate();
+  const [showScrollInfo, setShowScrollInfo] = useState(true);
 
   const paketprisFromState = (location.state as any)?.paketpris;
 
@@ -239,6 +242,19 @@ useEffect(() => {
 
 
 
+useEffect(() => {
+  function handleScroll() {
+    const scrollY = window.scrollY;
+    // Fade out when user scrolls more than 100px (adjust as needed)
+    setShowScrollInfo(scrollY < 100);
+  }
+
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
+
+
+
   // --- Render ---
   return (
     <main className={`booking-page-content ${movieLoaded ? "loaded" : ""}`}>
@@ -276,6 +292,18 @@ useEffect(() => {
           className={`confirm-btn ${canProceed ? "active" : "disabled"}`}
           disabled={!canProceed || loadingBooking}
           onClick={handleBooking}
+                style={{
+        
+                cursor:
+                  canProceed && !loadingBooking ? "pointer" : "not-allowed",
+                pointerEvents:
+                  canProceed && !loadingBooking ? "auto" : "none",
+                backgroundColor:
+                  canProceed && !loadingBooking ? "#c41230" : "#716d7a",
+                color: canProceed && !loadingBooking ? "#fff" : "#dbdbdb",
+                opacity: canProceed ? 1 : 0.9,
+              }}
+          
         >
           {canProceed && !loadingBooking ? (
             <>
@@ -338,56 +366,20 @@ useEffect(() => {
         </article>
       )}
       {timeoutOpen && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 99999,
-            background: "rgba(0,0,0,0.5)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Sessionen gick ut"
-        >
-          <div
-            style={{
-              width: "min(92vw, 420px)",
-              borderRadius: 14,
-              padding: "18px 16px",
-              background: "#1b1b2f",
-              color: "#fff",
-              boxShadow: "0 20px 40px rgba(0,0,0,0.45)",
-            }}
-          >
-            <h2 style={{ margin: "0 0 8px", fontSize: "1.25rem" }}>Sessionen gick ut</h2>
-            <p style={{ margin: "6px 0", lineHeight: 1.4 }}>
-              Du har väntat mer än 10 minuter. För att visa korrekta platser och priser
-              behöver sidan uppdateras.
-            </p>
-            <div style={{ marginTop: 12, display: "flex", justifyContent: "flex-end", gap: 8 }}>
-              <button
-                onClick={() => window.location.reload()}
-                style={{
-                  padding: "0.6rem 1rem",
-                  fontWeight: 600,
-                  fontSize: "14px",
-                  borderRadius: 8,
-                  border: "none",
-                  cursor: "pointer",
-                  backgroundColor: "#5B5A6B",
-                  color: "#fff",
-                  minWidth: 160
-                }}
-              >
-                Uppdatera sidan
-              </button>
-            </div>
-          </div>
-        </div>
+    
+            <SimpleBookingTimeoutModal
+      open={timeoutOpen}
+      onReload={() => window.location.reload()}
+    />
+        
       )}
+
+<section
+  className={`booking-scroll-down-info ${showScrollInfo ? "visible" : "hidden"}`}
+>
+  <p>Skrolla ner för att boka film.</p>
+  <img src={ScrollDownArrow} alt="Pil som pekar nedåt" />
+</section>
     </main>
   );
 }

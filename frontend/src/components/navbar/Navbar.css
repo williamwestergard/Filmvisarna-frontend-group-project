@@ -558,8 +558,8 @@ ul {
 
 /* Desktop:(nav-actions) rätt färg */
 .nav-actions .nav-button {
-  background-color: #3d2227;
+  background-color: #412126;
 }
 .nav-actions .nav-button:hover {
-  background-color: rgb(66, 23, 30);
+  filter: brightness(95%);
 }

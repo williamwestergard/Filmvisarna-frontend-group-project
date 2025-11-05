@@ -1,0 +1,67 @@
+.booking-timeout-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(8, 7, 13, 0.885);
+  backdrop-filter: blur(4px);
+}
+
+.booking-timeout-content {
+  position: relative;
+  z-index: 1;
+  width: clamp(300px, 50vw, 400px);
+  padding: 50px 20px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.111);
+  background: #232232db;
+  color: var(--text-light, #f9f9f9);
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+}
+.booking-timeout-h2 {
+  font-size: clamp(1.6rem, 2vw, 1.9rem);
+}
+
+.booking-timeout-underline {
+  position: relative;
+  top: 0vh;
+  background-color: rgba(255, 255, 255, 0.466);
+  height: 1px;
+  width: 25%;
+  margin: 0 auto;
+  margin-bottom: 4svh;
+}
+
+.booking-timeout-p {
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  font-weight: 400;
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 7vh;
+  line-height: 1.7;
+  color: rgb(204, 203, 203);
+}
+
+.booking-timeout-button {
+  appearance: none;
+  border: none;
+  position: relative;
+
+  border-radius: 5px;
+  padding: 13px 18px;
+  background: var(--red-primary, #c41230);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  box-shadow: 0 0px 3px rgba(0, 0, 0, 0.144);
+  transition: transform 0.06s ease, filter 0.15s ease;
+}
+.booking-timeout-button:hover {
+  filter: brightness(87%);
+}

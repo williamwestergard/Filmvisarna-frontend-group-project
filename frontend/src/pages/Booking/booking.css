@@ -334,10 +334,16 @@ iframe {
 .auditorium-content {
   border: 1px solid #80808030;
   background-color: #232232;
-  padding: 1vw;
+  padding: 1.5vh 2vw;
   border-radius: 5px;
   position: relative;
   margin-bottom: 4vh;
+}
+
+.auditorium-one-content,
+.auditorium-two-content {
+  padding: 1.5vh 0vw;
+  margin-bottom: 3vh;
 }
 
 /*                      Popcorn-paketpris styling                             */
@@ -435,6 +441,7 @@ iframe {
 .confirm-total {
   font-weight: 700;
   font-size: 1.3rem;
+  letter-spacing: 0.4px;
 }
 
 .confirm-next {
@@ -444,10 +451,11 @@ iframe {
 
 /* Text (when disabled) */
 .confirm-btn-nonclickable-text {
-  margin-top: 0.8rem;
+  margin-top: 3rem;
   font-weight: 500;
   font-size: 1rem;
-  opacity: 0.8;
+  opacity: 0.7;
+  font-style: italic;
   text-align: center;
 }
 
@@ -488,6 +496,43 @@ iframe {
   text-align: center;
   animation: bounce 0.4s ease forwards;
   margin-top: 0.5rem;
+}
+
+.booking-scroll-down-info {
+  position: fixed;
+  bottom: 5vh;
+  right: clamp(280px, 22vw, 450px);
+  opacity: 1;
+  transition: opacity 0.4s ease, transform 0.6s ease;
+  animation: scroll-down-animation 1.7s infinite ease-in-out;
+  pointer-events: none;
+}
+.booking-scroll-down-info img {
+  width: 4vh;
+  height: auto;
+  margin-top: 0.5vh;
+}
+
+.booking-scroll-down-info.hidden {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.booking-scroll-down-info.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes scroll-down-animation {
+  0% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.06;
+  }
+  100% {
+    scale: 1;
+  }
 }
 
 /* Phone layout */
@@ -706,5 +751,12 @@ iframe {
 
   .movie-lang-sub {
     top: -2vh;
+  }
+}
+
+/*Ipad screen sizes*/
+@media only screen and (max-width: 1200px) {
+  .booking-scroll-down-info {
+    display: none;
   }
 }

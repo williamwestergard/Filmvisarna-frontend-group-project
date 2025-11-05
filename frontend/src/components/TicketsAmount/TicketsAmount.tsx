@@ -35,8 +35,7 @@ export default function TicketsAmount() {
     <section className="tickets-amount-content">
       <h2>Välj antal biljetter</h2>
 
-       {/* Errormessage) */}
-       {errorMessage && <p className="tickets-error-message">{errorMessage}</p>}
+     
 
       {/* ordinary */}
       <section className="tickets-amount-container">
@@ -111,6 +110,8 @@ export default function TicketsAmount() {
           </section>
         </section>
       )}
+        {/* Errormessage) */}
+       {errorMessage && <p className="tickets-error-message">{errorMessage}</p>}
     </section>
   );
 }

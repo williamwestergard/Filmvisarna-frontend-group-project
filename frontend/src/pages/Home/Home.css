@@ -39,7 +39,7 @@ a {
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
 }
 
 .filter-dropdown {
@@ -94,9 +94,8 @@ a {
 .filter-dropdown[type="date"] {
   position: relative;
   cursor: pointer;
-  padding-right: 2.5rem; 
+  padding-right: 2.5rem;
 }
-
 
 .filter-dropdown[type="date"]::-webkit-calendar-picker-indicator {
   position: absolute;
@@ -118,7 +117,6 @@ a {
   opacity: 0.9;
   transition: opacity 0.2s ease;
 }
-
 
 .filter-dropdown[type="date"]:hover::after {
   opacity: 1;
