@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import "./Home.css";
 import MoviesList from "../../components/Movies/MoviesList";
-import BgOverlay from "../../assets/images/home-bg.jpg";
 import { getCategories, getShowtimes } from "../../api/MoviesApi";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import AgeLimitInfo from "../../components/AgeLimitInfo/AgeLimitInfo";
+import WeeklyMoviePromoImage from "../../assets/images/home/weekly-movie-promo-image.jpg"
 
 type Category = {
   id: number;
@@ -49,11 +49,16 @@ useEffect(() => {
 
   return (
     <>
-      <img
-        className="bg-overlay"
-        src={BgOverlay}
-        alt="Image of a man and woman watching a movie"
-      />
+<section className="weekly-movie-promo-content">
+  <section className="weekly-movie-promo-text-container">
+  <h1>Är du redo för <br/> <span className="weekly-movie-promo-highlight">Veckans film?</span>
+  </h1>
+  <p>Varje vecka väljer vi en film som du får rabatt på snacks på.</p>
+  <a className="weekly-movie-promo-button" href="/upptack">Läs mer</a>
+  </section>
+    <img  className="weekly-movie-promo-image" src={WeeklyMoviePromoImage} />
+</section>
+
       
 
       <main className="home-container">

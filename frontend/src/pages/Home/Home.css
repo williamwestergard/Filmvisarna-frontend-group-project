@@ -1,16 +1,3 @@
-.bg-overlay {
-  background-image: url("../assets/images/home-bg.png");
-  background-repeat: no-repeat;
-  background-size: contain;
-  position: absolute;
-  width: 100%;
-  height: auto;
-  top: -23vh;
-  z-index: -1;
-  opacity: 0.45;
-  filter: blur(5px);
-}
-
 a {
   text-decoration: none;
 }
@@ -173,6 +160,198 @@ a {
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+.weekly-movie-promo-content {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  height: clamp(45vh, 30vw, 62vh);
+  text-align: left;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.weekly-movie-promo-text-container {
+  position: relative;
+  top: -1vh;
+}
+
+.weekly-movie-promo-content h1 {
+  position: relative;
+  font-size: clamp(2.1rem, 3vw, 3.5rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 1;
+  padding: 0;
+  margin: 0;
+  margin-bottom: clamp(2vh, 1.9vw, 4vh);
+  right: 7px;
+}
+
+.weekly-movie-promo-content p {
+  font-size: clamp(0.95rem, 1vw, 1.1rem);
+  width: 100%;
+}
+
+.weekly-movie-promo-highlight {
+  color: #ffd360;
+}
+
+.weekly-movie-promo-button {
+  color: white;
+  background-color: #c41230;
+  padding: 1.7vh 2.3vw;
+  border-radius: 5px;
+  display: inline-block;
+  width: auto;
+  margin-top: clamp(2vh, 1.9vw, 4.5vh);
+  font-size: clamp(0.9rem, 1vw, 1.05rem);
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  transition: 0.2s;
+}
+.weekly-movie-promo-button:hover {
+  filter: brightness(90%);
+  transition: 0.2s;
+}
+
+.weekly-movie-promo-image {
+  position: absolute;
+  top: -2vh;
+  left: 0;
+  width: 100%;
+  height: auto;
+  z-index: -1;
+}
+/* Smaller screen layout */
+@media only screen and (max-width: 1300px) {
+  .weekly-movie-promo-content {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    height: clamp(35vh, 26vw, 45vh);
+    text-align: left;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .weekly-movie-promo-text-container {
+    position: relative;
+    top: -3vh;
+  }
+
+  .weekly-movie-promo-content h1 {
+    position: relative;
+    font-size: clamp(1.6rem, 3vw, 2.5rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 0.9;
+    padding: 0;
+    margin: 0;
+    margin-bottom: clamp(1vh, 1vw, 2vh);
+    right: 7px;
+  }
+
+  .weekly-movie-promo-content p {
+    font-size: clamp(0.9rem, 1vw, 1rem);
+    width: 75%;
+    line-height: 1.5;
+  }
+
+  .weekly-movie-promo-highlight {
+    color: #ffd360;
+  }
+
+  .weekly-movie-promo-button {
+    color: white;
+    background-color: #c41230;
+    padding: 1.2vh 2vw;
+    border-radius: 5px;
+    display: inline-block;
+    width: auto;
+    margin-top: clamp(0.3vh, 0.4vw, 2.5vh);
+    font-size: clamp(0.9rem, 1vw, 1.05rem);
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    transition: 0.2s;
+  }
+  .weekly-movie-promo-image {
+    position: absolute;
+    top: -2vh;
+    left: 0;
+    width: 100%;
+    height: auto;
+    z-index: -1;
+  }
+}
+/* Phone screen layout */
+@media only screen and (max-width: 1000px) {
+  .weekly-movie-promo-content {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    height: clamp(30vh, 25vw, 40vh);
+    text-align: left;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .weekly-movie-promo-text-container {
+    position: relative;
+    top: -3vh;
+  }
+
+  .weekly-movie-promo-content h1 {
+    position: relative;
+    font-size: clamp(1.3rem, 3vw, 2.1rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1;
+    padding: 0;
+    margin: 0;
+    margin-bottom: clamp(1vh, 1vw, 2vh);
+    right: 7px;
+  }
+
+  .weekly-movie-promo-content p {
+    font-size: clamp(0.8rem, 1vw, 0.9rem);
+    width: 75%;
+    line-height: 1.3;
+  }
+
+  .weekly-movie-promo-highlight {
+    color: #ffd360;
+  }
+
+  .weekly-movie-promo-button {
+    color: white;
+    background-color: #c41230;
+    padding: 1vh 2vw;
+    border-radius: 5px;
+    display: inline-block;
+    width: auto;
+    margin-top: clamp(0.3vh, 0.4vw, 1.5vh);
+    font-size: clamp(0.8rem, 1vw, 0.9rem);
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    transition: 0.2s;
+  }
+  .weekly-movie-promo-image {
+    position: absolute;
+    top: 0vh;
+    left: 0;
+    width: 100%;
+    height: auto;
+    z-index: -1;
+  }
+}
+
+/* Hides weekly movie promo */
+@media only screen and (max-width: 865px) {
+  .weekly-movie-promo-content {
+    display: none;
   }
 }
 
