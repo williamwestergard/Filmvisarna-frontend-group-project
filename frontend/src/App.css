@@ -53,7 +53,7 @@ main {
 }
 
 .show-all-button:hover {
-  background-color: #e02a2a; 
+  background-color: #7c1919; 
 }
 
 .show-all-button.active {
@@ -62,5 +62,5 @@ main {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25); 
 }
 .show-all-button.active:hover {
-  background-color: #e02a2a; 
+  background-color: #7c1919;
 }
