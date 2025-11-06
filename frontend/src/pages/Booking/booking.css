@@ -499,18 +499,27 @@ iframe {
 }
 
 .booking-scroll-down-info {
+  cursor: pointer;
   position: fixed;
-  bottom: 5vh;
+  bottom: 3vh;
+  font-size: clamp(1rem, 1vw, 1.1rem);
   right: clamp(280px, 22vw, 450px);
   opacity: 1;
   transition: opacity 0.4s ease, transform 0.6s ease;
+  filter: drop-shadow(0px 0px 7px rgba(0, 0, 0, 0.599));
   animation: scroll-down-animation 1.7s infinite ease-in-out;
-  pointer-events: none;
 }
+.booking-scroll-down-info p {
+  background-color: #c41230;
+  padding: 2vh;
+  border-radius: 5px;
+}
+
 .booking-scroll-down-info img {
-  width: 4vh;
+  width: 3.3vh;
   height: auto;
-  margin-top: 0.5vh;
+  position: relative;
+  top: -0.6vh;
 }
 
 .booking-scroll-down-info.hidden {
@@ -521,6 +530,13 @@ iframe {
 .booking-scroll-down-info.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Fade-out */
+.booking-scroll-down-info.hidden {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
 }
 
 @keyframes scroll-down-animation {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useBooking } from "../../Context/BookingContext";
 import BookingPriceCard from "../../components/BookingPriceCard/BookingPriceCard";
@@ -38,6 +38,7 @@ function BookingContent() {
   const [loadingBooking, setLoadingBooking] = useState(false);
   // Simple 10 minute timeout popup
   const [timeoutOpen, setTimeoutOpen] = useState(false);
+  const availableDatesRef = useRef<HTMLDivElement | null>(null);
 
   const location = useLocation();
   const selectedDateFromHome = (location.state as any)?.selectedDate || "";
@@ -255,6 +256,7 @@ useEffect(() => {
 
 
 
+
   // --- Render ---
   return (
     <main className={`booking-page-content ${movieLoaded ? "loaded" : ""}`}>
@@ -266,11 +268,11 @@ useEffect(() => {
               setMovieLoaded(true);
             }}
           />
-
+  <div ref={availableDatesRef}>
           {movie && <AvailableDates movieId={movie.id} />}
           <TicketsAmount />
           <Auditorium />
-
+</div>
           {paketprisToShow && (
             <section className="paketpris-info">
               <h3>Veckans film - Paketpris</h3>
@@ -376,6 +378,9 @@ useEffect(() => {
 
 <section
   className={`booking-scroll-down-info ${showScrollInfo ? "visible" : "hidden"}`}
+    onClick={() => {
+    availableDatesRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }}
 >
   <p>Skrolla ner för att boka film.</p>
   <img src={ScrollDownArrow} alt="Pil som pekar nedåt" />
