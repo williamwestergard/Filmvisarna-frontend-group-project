@@ -204,7 +204,7 @@ const canCancel = now < oneHourBefore;
     }
   }}
 >
-  Avbeställ
+  Avboka biljett
 </button>
 
 {!canCancel && (
