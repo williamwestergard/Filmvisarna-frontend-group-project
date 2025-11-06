@@ -157,7 +157,20 @@ function createBookingsRouter(pool) {
   const movieTitle = req.body.movieTitle;
   const auditoriumName = req.body.auditoriumName;
   const screeningTime = req.body.screeningTime;
-  const seatsList = req.body.seats.map((s) => `${s.row}${s.number}`).join(", ");
+
+  // --- NEW: Get readable seat names from DB ---
+  const seatIds = req.body.seats.map((s) => s.seatId);
+  let seatsList = "Inga platser valda";
+
+  if (seatIds.length > 0) {
+    const [seatDetails] = await pool.query(
+      `SELECT rowLetter, seatNumber FROM seats WHERE id IN (?)`,
+      [seatIds]
+    );
+    seatsList = seatDetails
+      .map((s) => `${s.rowLetter}${s.seatNumber}`)
+      .join(", ");
+  }
 
   const htmlBody = `
     <div style="font-family: Arial, sans-serif; background: #f7f7f7; padding: 30px;">
@@ -189,6 +202,8 @@ function createBookingsRouter(pool) {
 } catch (err) {
   console.error("Kunde inte skicka bokningsmail:", err);
 }
+
+ 
 
     res.status(201).json({
       ok: true,
