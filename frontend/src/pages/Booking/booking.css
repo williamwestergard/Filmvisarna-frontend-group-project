@@ -536,8 +536,8 @@ iframe {
 }
 
 .booking-guest-email-container {
-  margin-top: 7vh;
-  margin-bottom: 7vh;
+  margin-top: 6vh;
+  margin-bottom: 6vh;
 }
 
 .booking-guest-email-field {
@@ -548,7 +548,7 @@ iframe {
   font-size: clamp(1rem, 2vw, 1.1rem);
   background: none;
   border: none;
-  background: #1c1a29;
+  background: #1b1927;
   color: #a6a5a5;
   border: 1px solid #99999960;
   border-radius: 5px;
