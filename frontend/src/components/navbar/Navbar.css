@@ -448,12 +448,12 @@ ul {
     border-radius: 16px;
     font-size: 1.05rem;
     font-weight: 600;
-    background-color: #cc1e00;
+    background-color: #490d1c;
     color: var(--text-light);
   }
 
   .mobile-account-panel .nav-button:hover {
-    background-color: #a41900;
+    background-color: #661a2d;
   }
 
   .nav-link-back {
@@ -526,7 +526,7 @@ ul {
 }
 
 .nav-button.logout:hover {
-  background-color: #4b4a5b;
+  background-color: #661a2d;
 }
 
 /* Neutralisera browser-defaults på knappar helt */
@@ -558,7 +558,7 @@ ul {
 
 /* Desktop:(nav-actions) rätt färg */
 .nav-actions .nav-button {
-  background-color: #412126;
+  background-color: #490d1c;
 }
 .nav-actions .nav-button:hover {
   filter: brightness(95%);

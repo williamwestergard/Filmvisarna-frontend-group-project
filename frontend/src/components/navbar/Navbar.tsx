@@ -205,6 +205,9 @@ useEffect(() => {
             <ul className="dropdown-menu">
               <li><a href="/om-oss" className="dropdown-link">Om oss</a></li>
               <li><a href="/shop" className="dropdown-link">Vår kiosk</a></li>
+              {user && (
+                <li><a href="/mina-sidor" className="dropdown-link">Mina bokningar</a></li>
+              )}
             </ul>
           </li>
         </ul>
@@ -329,6 +332,11 @@ useEffect(() => {
           <li className="nav-item">
             <Link to="/shop" className="nav-link" onClick={closeMenu}>Vår kiosk</Link>
           </li>
+          {user && (
+            <li className="nav-item">
+              <Link to="/mina-sidor" className="nav-link" onClick={closeMenu}>Mina bokningar</Link>
+            </li>
+          )}
         </ul>
         <div className={isAccountOpen ? 'mobile-account-panel open' : 'mobile-account-panel'}>
           <button
@@ -350,9 +358,9 @@ useEffect(() => {
                   alt="Användarbild"
                   referrerPolicy="no-referrer"
                 />
-                <span className="nav-user-name" style={{ color: "var(--text-light)", fontWeight: 600 }}>
+                <Link to="/mina-sidor" className="nav-user-name" style={{ color: "var(--text-light)", fontWeight: 600 }}>
                   {user.firstName} {user.lastName}
-                </span>
+                </Link>
               </div>
               {/* Logout button that both logs out and closes mobile menu */}
               <button className="nav-button" onClick={() => { handleLogout(); closeMenu(); }}>Logga ut</button>
