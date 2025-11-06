@@ -104,130 +104,150 @@ function createBookingsRouter(pool) {
 
   // Create a new booking
   router.post("/", async (req, res) => {
-  const connection = await pool.getConnection();
-  try {
-    const { userId, screeningId, seats = [], email, movieTitle, auditoriumName, screeningTime } = req.body;
+    const connection = await pool.getConnection();
+    try {
+      const {
+        userId,
+        screeningId,
+        seats = [],
+        email,
+        movieTitle,
+        auditoriumName,
+        screeningTime,
+      } = req.body;
 
-    if (!screeningId) {
-      return res
-        .status(400)
-        .json({ ok: false, message: "screeningId is required" });
-    }
-
-    await connection.beginTransaction();
-
-    function generateBookingNumber() {
-      const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-      const numbers = "0123456789";
-      let result = "";
-
-      for (let i = 0; i < 3; i++) {
-        result += letters.charAt(Math.floor(Math.random() * letters.length));
-      }
-      for (let i = 0; i < 3; i++) {
-        result += numbers.charAt(Math.floor(Math.random() * numbers.length));
+      if (!screeningId) {
+        return res
+          .status(400)
+          .json({ ok: false, message: "screeningId is required" });
       }
 
-      return result;
-    }
+      await connection.beginTransaction();
 
-    const bookingNumber = generateBookingNumber();
-    const bookingUrl = crypto.randomBytes(6).toString("hex").toUpperCase();
+      function generateBookingNumber() {
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const numbers = "0123456789";
+        let result = "";
 
-    const [bookingResult] = await connection.query(
-      `INSERT INTO bookings (bookingNumber, bookingUrl, screeningId, userId, status)
+        for (let i = 0; i < 3; i++) {
+          result += letters.charAt(Math.floor(Math.random() * letters.length));
+        }
+        for (let i = 0; i < 3; i++) {
+          result += numbers.charAt(Math.floor(Math.random() * numbers.length));
+        }
+
+        return result;
+      }
+
+      const bookingNumber = generateBookingNumber();
+      const bookingUrl = crypto.randomBytes(6).toString("hex").toUpperCase();
+
+      const [bookingResult] = await connection.query(
+        `INSERT INTO bookings (bookingNumber, bookingUrl, screeningId, userId, status)
        VALUES (?, ?, ?, ?, 'active')`,
-      [bookingNumber, bookingUrl, screeningId, userId || null]
-    );
+        [bookingNumber, bookingUrl, screeningId, userId || null]
+      );
 
-    const bookingId = bookingResult.insertId;
-    if (seats.length > 0)
-      await insertSeats(connection, bookingId, screeningId, seats);
+      const bookingId = bookingResult.insertId;
+      if (seats.length > 0)
+        await insertSeats(connection, bookingId, screeningId, seats);
 
-    const [seatRows] = await connection.query(
-      `SELECT seatId, ticketTypeId FROM bookingSeats WHERE bookingId = ?`,
-      [bookingId]
-    );
+      const [seatRows] = await connection.query(
+        `SELECT seatId, ticketTypeId FROM bookingSeats WHERE bookingId = ?`,
+        [bookingId]
+      );
 
-    await connection.commit();
+      await connection.commit();
 
-    // Send email after successful booking
-  try {
-  const userEmail = req.body.email;
-  const movieTitle = req.body.movieTitle;
-  const auditoriumName = req.body.auditoriumName;
-  const screeningTime = req.body.screeningTime;
+      // Send email after successful booking
+      try {
+        const userEmail = req.body.email;
+        const movieTitle = req.body.movieTitle;
+        const auditoriumName = req.body.auditoriumName;
+        const screeningTime = req.body.screeningTime;
 
-  // --- NEW: Get readable seat names from DB ---
-  const seatIds = req.body.seats.map((s) => s.seatId);
-  let seatsList = "Inga platser valda";
+        // --- NEW: Get readable seat names from DB ---
+        const seatIds = req.body.seats.map((s) => s.seatId);
+        let seatsList = "Inga platser valda";
 
-  if (seatIds.length > 0) {
-    const [seatDetails] = await pool.query(
-      `SELECT rowLetter, seatNumber FROM seats WHERE id IN (?)`,
-      [seatIds]
-    );
-    seatsList = seatDetails
-      .map((s) => `${s.rowLetter}${s.seatNumber}`)
-      .join(", ");
-  }
+        if (seatIds.length > 0) {
+          const [seatDetails] = await pool.query(
+            `SELECT rowLetter, seatNumber FROM seats WHERE id IN (?)`,
+            [seatIds]
+          );
+          seatsList = seatDetails
+            .map((s) => `${s.rowLetter}${s.seatNumber}`)
+            .join(", ");
+        }
 
-  const htmlBody = `
-    <div style="font-family: Arial, sans-serif; background: #f7f7f7; padding: 30px;">
-      <div style="max-width:600px;margin:auto;background:#fff;padding:25px;border-radius:10px;">
+        const htmlBody = `
+    <div style="font-family: Arial, sans-serif; background: #e6e6e6ff; padding: 30px; color:black;">
+      <div style="max-width:600px;margin:auto;background: #ffffffff;padding:25px;border-radius:5px;margin-top:40px;">
         <h1 style="background:#c41230;color:#fff;padding:15px;text-align:center;">Filmvisarna</h1>
         <h2>Tack för din bokning!</h2>
         <p>Här är detaljerna för din bokning:</p>
         <ul>
           <li><strong>Film:</strong> ${movieTitle}</li>
           <li><strong>Salong:</strong> ${auditoriumName}</li>
-          <li><strong>Datum:</strong> ${new Date(screeningTime).toLocaleDateString("sv-SE")}</li>
-          <li><strong>Tid:</strong> ${new Date(screeningTime).toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" })}</li>
+          <li><strong>Datum:</strong> ${new Date(
+            screeningTime
+          ).toLocaleDateString("sv-SE")}</li>
+          <li><strong>Tid:</strong> ${new Date(
+            screeningTime
+          ).toLocaleTimeString("sv-SE", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}</li>
           <li><strong>Platser:</strong> ${seatsList}</li>
-        </ul>
-        <p>Vi ses på bion! 🍿</p>
-        <p style="font-size:12px;color:#555;">Filmvisarna AB | Småstad, Sverige</p>
+     </ul>
+          <div style="color:black;padding:20px 0px;margin:0 auto;text-align:center;">
+          <h3 style="text-transform:uppercase;margin:0;padding:0;position:relative;top:20px;">Bokningsnummer: </h3>
+          <h1 style="text-transform:uppercase;color:#C41230;font-weight:800;letter-spacing:4px;font-size:4rem;margin:0;padding:0;"> ${bookingNumber}</h1>
+          <p style="font-style:italic;"> Visa upp bokningsnumret till kassören. </p>
+       </div>
+        <p style="margin-bottom:10px;">Vi ses på bion! 🍿</p>
+        <a style="font-weight:600;margin-bottom:40px;" href="http://localhost:5173/ticket/${bookingUrl}"> Avboka biljetter </a>
+
+       <div style="text-align:center;background:#090416;padding:50px;margin-top:40px;">
+      <img src="https://res.cloudinary.com/dbvcotnqt/image/upload/v1762426970/filmvisarna-email-logo.png" alt="Filmvisarna" style="max-width:110px; height:auto; display:block; margin:0 auto 10px;">
+      <p style="font-size:12px;color:white; margin:0; margin-top:15px;">Filmvisarna AB | Småstad, Sverige</p>
+    </div>
       </div>
     </div>
   `;
 
-  await sendEmail({
-    to: userEmail,
-    subject: "Din bokning hos Filmvisarna",
-    text: `Film: ${movieTitle}\nTid: ${screeningTime}\nSalong: ${auditoriumName}\nPlatser: ${seatsList}`,
-    html: htmlBody,
+        await sendEmail({
+          to: userEmail,
+          subject: "Din bokning hos Filmvisarna",
+          text: `Film: ${movieTitle}\nTid: ${screeningTime}\nSalong: ${auditoriumName}\nPlatser: ${seatsList}`,
+          html: htmlBody,
+        });
+
+        console.log(`Bekräftelsemail skickat till ${userEmail}`);
+      } catch (err) {
+        console.error("Kunde inte skicka bokningsmail:", err);
+      }
+
+      res.status(201).json({
+        ok: true,
+        booking: {
+          id: bookingId,
+          bookingUrl,
+          bookingNumber,
+          screeningId,
+          userId,
+          status: "active",
+          seats: seatRows,
+        },
+      });
+    } catch (e) {
+      await connection.rollback();
+      console.error("Booking creation failed:", e);
+      res.status(500).json({ ok: false, message: e.message });
+    } finally {
+      connection.release();
+    }
   });
-
-  console.log(`Bekräftelsemail skickat till ${userEmail}`);
-} catch (err) {
-  console.error("Kunde inte skicka bokningsmail:", err);
-}
-
- 
-
-    res.status(201).json({
-      ok: true,
-      booking: {
-        id: bookingId,
-        bookingUrl,
-        bookingNumber,
-        screeningId,
-        userId,
-        status: "active",
-        seats: seatRows,
-      },
-    });
-  } catch (e) {
-    await connection.rollback();
-    console.error("Booking creation failed:", e);
-    res.status(500).json({ ok: false, message: e.message });
-  } finally {
-    connection.release();
-  }
-});
-
-
-
 
   router.get("/url/:bookingUrl", async (req, res) => {
     const { bookingUrl } = req.params;
