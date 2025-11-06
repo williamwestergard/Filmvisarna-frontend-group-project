@@ -166,10 +166,29 @@ function BookingContent() {
 
       const seatsPayload = assignTicketTypesToSeats(realSeatIds);
 
+const storedUser = localStorage.getItem("authUser");
+const userEmail = storedUser ? JSON.parse(storedUser).email : null;
+
+function getAuditoriumName(id: number) {
+  if (id === 1) return "Helan";
+  if (id === 2) return "Halvan";
+  return "Okänd salong";
+}
+
 const payload: any = {
   screeningId: screening.id,
   seats: seatsPayload,
+  email: userEmail, // Send user's email
+  movieTitle: movie?.title, // Movie name
+  auditoriumName: getAuditoriumName(screening?.auditoriumId), // Auditorium
+  screeningTime: screening?.time, // Correct column name from DB
 };
+
+if (userId) {
+  payload.userId = userId;
+} else {
+  payload.guest = true;
+}
 
 if (userId) {
   payload.userId = userId; 
