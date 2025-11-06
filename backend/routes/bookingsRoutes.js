@@ -1,5 +1,6 @@
 const express = require("express");
 const crypto = require("crypto");
+const sendEmail = require("../mail/sendEmail.cjs");
 
 function createBookingsRouter(pool) {
   const router = express.Router();
@@ -103,76 +104,115 @@ function createBookingsRouter(pool) {
 
   // Create a new booking
   router.post("/", async (req, res) => {
-    const connection = await pool.getConnection();
-    try {
-      const { userId, screeningId, seats = [] } = req.body;
+  const connection = await pool.getConnection();
+  try {
+    const { userId, screeningId, seats = [], email, movieTitle, auditoriumName, screeningTime } = req.body;
 
-      if (!screeningId) {
-        return res
-          .status(400)
-          .json({ ok: false, message: "screeningId is required" });
-      }
-
-      await connection.beginTransaction();
-
-      function generateBookingNumber() {
-        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const numbers = "0123456789";
-
-        let result = "";
-        // Add 3 random letters
-        for (let i = 0; i < 3; i++) {
-          result += letters.charAt(Math.floor(Math.random() * letters.length));
-        }
-
-        // Add 3 random digits
-        for (let i = 0; i < 3; i++) {
-          result += numbers.charAt(Math.floor(Math.random() * numbers.length));
-        }
-
-        return result;
-      }
-
-      const bookingNumber = generateBookingNumber();
-      const bookingUrl = crypto.randomBytes(6).toString("hex").toUpperCase();
-
-      const [bookingResult] = await connection.query(
-        `INSERT INTO bookings (bookingNumber, bookingUrl, screeningId, userId, status)
-   VALUES (?, ?, ?, ?, 'active')`,
-        [bookingNumber, bookingUrl, screeningId, userId || null]
-      );
-
-      const bookingId = bookingResult.insertId;
-      if (seats.length > 0)
-        await insertSeats(connection, bookingId, screeningId, seats);
-
-      const [seatRows] = await connection.query(
-        `SELECT seatId, ticketTypeId FROM bookingSeats WHERE bookingId = ?`,
-        [bookingId]
-      );
-
-      await connection.commit();
-
-      res.status(201).json({
-        ok: true,
-        booking: {
-          id: bookingId,
-          bookingUrl,
-          bookingNumber,
-          screeningId,
-          userId,
-          status: "active",
-          seats: seatRows,
-        },
-      });
-    } catch (e) {
-      await connection.rollback();
-      console.error("Booking creation failed:", e);
-      res.status(500).json({ ok: false, message: e.message });
-    } finally {
-      connection.release();
+    if (!screeningId) {
+      return res
+        .status(400)
+        .json({ ok: false, message: "screeningId is required" });
     }
+
+    await connection.beginTransaction();
+
+    function generateBookingNumber() {
+      const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      const numbers = "0123456789";
+      let result = "";
+
+      for (let i = 0; i < 3; i++) {
+        result += letters.charAt(Math.floor(Math.random() * letters.length));
+      }
+      for (let i = 0; i < 3; i++) {
+        result += numbers.charAt(Math.floor(Math.random() * numbers.length));
+      }
+
+      return result;
+    }
+
+    const bookingNumber = generateBookingNumber();
+    const bookingUrl = crypto.randomBytes(6).toString("hex").toUpperCase();
+
+    const [bookingResult] = await connection.query(
+      `INSERT INTO bookings (bookingNumber, bookingUrl, screeningId, userId, status)
+       VALUES (?, ?, ?, ?, 'active')`,
+      [bookingNumber, bookingUrl, screeningId, userId || null]
+    );
+
+    const bookingId = bookingResult.insertId;
+    if (seats.length > 0)
+      await insertSeats(connection, bookingId, screeningId, seats);
+
+    const [seatRows] = await connection.query(
+      `SELECT seatId, ticketTypeId FROM bookingSeats WHERE bookingId = ?`,
+      [bookingId]
+    );
+
+    await connection.commit();
+
+    // Send email after successful booking
+  try {
+  const userEmail = req.body.email;
+  const movieTitle = req.body.movieTitle;
+  const auditoriumName = req.body.auditoriumName;
+  const screeningTime = req.body.screeningTime;
+  const seatsList = req.body.seats.map((s) => `${s.row}${s.number}`).join(", ");
+
+  const htmlBody = `
+    <div style="font-family: Arial, sans-serif; background: #f7f7f7; padding: 30px;">
+      <div style="max-width:600px;margin:auto;background:#fff;padding:25px;border-radius:10px;">
+        <h1 style="background:#c41230;color:#fff;padding:15px;text-align:center;">Filmvisarna</h1>
+        <h2>Tack för din bokning!</h2>
+        <p>Här är detaljerna för din bokning:</p>
+        <ul>
+          <li><strong>Film:</strong> ${movieTitle}</li>
+          <li><strong>Salong:</strong> ${auditoriumName}</li>
+          <li><strong>Datum:</strong> ${new Date(screeningTime).toLocaleDateString("sv-SE")}</li>
+          <li><strong>Tid:</strong> ${new Date(screeningTime).toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" })}</li>
+          <li><strong>Platser:</strong> ${seatsList}</li>
+        </ul>
+        <p>Vi ses på bion! 🍿</p>
+        <p style="font-size:12px;color:#555;">Filmvisarna AB | Småstad, Sverige</p>
+      </div>
+    </div>
+  `;
+
+  await sendEmail({
+    to: userEmail,
+    subject: "Din bokning hos Filmvisarna",
+    text: `Film: ${movieTitle}\nTid: ${screeningTime}\nSalong: ${auditoriumName}\nPlatser: ${seatsList}`,
+    html: htmlBody,
   });
+
+  console.log(`Bekräftelsemail skickat till ${userEmail}`);
+} catch (err) {
+  console.error("Kunde inte skicka bokningsmail:", err);
+}
+
+    res.status(201).json({
+      ok: true,
+      booking: {
+        id: bookingId,
+        bookingUrl,
+        bookingNumber,
+        screeningId,
+        userId,
+        status: "active",
+        seats: seatRows,
+      },
+    });
+  } catch (e) {
+    await connection.rollback();
+    console.error("Booking creation failed:", e);
+    res.status(500).json({ ok: false, message: e.message });
+  } finally {
+    connection.release();
+  }
+});
+
+
+
 
   router.get("/url/:bookingUrl", async (req, res) => {
     const { bookingUrl } = req.params;
