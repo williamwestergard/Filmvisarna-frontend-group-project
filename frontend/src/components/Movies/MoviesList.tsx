@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getMovies } from "../../api/moviesApi";
 import { Link } from "react-router-dom";
+import "../../pages/Home/Home.css";
 
 type Movie = {
   id: number;
@@ -63,25 +64,30 @@ const searchFilteredMovies = filteredMovies.filter((movie) => {
 });
 
 // Filtrera filmer som har en visning för valt datum
-const fullyFilteredMovies = showAllMovies
-  ? searchFilteredMovies
-  : searchFilteredMovies.filter((movie) =>
-      showtimes.some((show) => show.movieId === movie.id)
-    );
+const fullyFilteredMovies =
+  !selectedDate || showAllMovies
+    ? searchFilteredMovies // show all movies before date is chosen
+    : searchFilteredMovies.filter((movie) =>
+        showtimes.some((show) => show.movieId === movie.id)
+      );
 
   return (
     <>
-    <div className="show-all-container">
+    {selectedDate && (
+  <div className="show-all-container">
     <button
       className={`show-all-button ${showAllMovies ? "active" : ""}`}
       onClick={() => setShowAllMovies((prev) => !prev)}
     >
-    {showAllMovies
-      ? "Visa bara filmer med visning i dag"
-      : "Visa alla filmer"}
+      {showAllMovies
+        ? "Visa bara filmer med visning i dag"
+        : "Visa alla filmer"}
     </button>
-    </div>
-    <section className="movie-grid">
+  </div>
+)}
+    <section
+  className={`movie-grid ${!showAllMovies ? "centered-mode" : ""}`}
+>
       {fullyFilteredMovies.map((movie) => {
         const slug = movie.title.toLowerCase().replace(/\s+/g, "-");
 

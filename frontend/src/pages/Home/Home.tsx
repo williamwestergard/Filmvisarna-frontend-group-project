@@ -22,10 +22,7 @@ function Home() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [showtimes, setShowtimes] = useState<Showtime[]>([]);
-  const [selectedDate, setSelectedDate] = useState(() => {
-  const today = new Date();
-  return today.toISOString().split("T")[0]; // Format: YYYY-MM-DD
-});
+  const [selectedDate, setSelectedDate] = useState("");
   const [searchTerm, setSearchTerm] = useState(""); //nytt state
 
   useEffect(() => {
@@ -35,17 +32,17 @@ function Home() {
   }, []);
 
 useEffect(() => {
-  if (!selectedDate) return;
+  if (!selectedDate) {
+    setShowtimes([]); // clear or reset showtimes if no date selected
+    return;
+  }
 
   getShowtimes(selectedDate)
     .then((data) => setShowtimes(data))
     .catch((err) => console.error("Error fetching showtimes:", err));
 }, [selectedDate]);
 
-    useEffect(() => {
-    const today = new Date().toISOString().split("T")[0]; // todays date is automatically selected
-    setSelectedDate(today);
-  }, []);
+  
 
   return (
     <>
@@ -91,6 +88,9 @@ useEffect(() => {
             ))}
           </select>
         </section>
+        {/* {!selectedDate && (
+          <p className="date-hint">Välj ett datum för att se dagens visningar</p> // HINT 
+        )} */}
 
         {/* Movies list */}
         <MoviesList
