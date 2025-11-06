@@ -6,7 +6,7 @@ const seatsList = "A3, A4, A5";
 const htmlBody = `
   <div style="font-family: Arial, sans-serif; background: #f7f7f7; padding: 30px;">
     <div style="max-width:600px;margin:auto;background:#fff;padding:25px;border-radius:10px;">
-      <h1 style="background:#c41230;color:#fff;padding:15px;text-align:center;">🎬 Filmvisarna</h1>
+      <h1 style="background:#c41230;color:#fff;padding:15px;text-align:center;">Filmvisarna</h1>
       <h2>Tack för din bokning!</h2>
       <p>Här är detaljerna för din bokning:</p>
       <ul>
@@ -17,7 +17,7 @@ const htmlBody = `
         <li><strong>Platser:</strong> ${seatsList}</li>
       </ul>
       <p>Vi ses på bion! 🍿</p>
-      <p style="font-size:12px;color:#555;">Filmvisarna AB | Gävle, Sverige</p>
+      <p style="font-size:12px;color:#555;">Filmvisarna AB | Småstad Sverige</p>
     </div>
   </div>
 `;
