@@ -137,3 +137,26 @@
   line-height: 1.5;
   width: 80%;
 }
+
+@media (max-width: 600px) {
+  .register-card {
+    max-width: 70%; 
+    padding: 1.9rem 1.9rem; 
+    border-radius: 10px;
+    gap: 0.7rem; 
+  }
+
+  .register-logo {
+    width: clamp(115px, 38vw, 140px);
+  }
+
+  .register-card input {
+    padding: 0.7rem 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  .btn {
+    padding: 0.8rem;
+    font-size: 0.95rem;
+  }
+}
