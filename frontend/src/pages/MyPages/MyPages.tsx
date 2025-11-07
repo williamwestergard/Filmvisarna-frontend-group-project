@@ -118,7 +118,10 @@ const MyPages: React.FC = () => {
                     {new Date(b.screeningTime).toLocaleString("sv-SE")} <br />
                     Salong: {b.auditoriumName} <br />
                     Status: {b.status} <br />
-                    <button onClick={() => handleCancelBooking(b.bookingId)}>
+                    <button
+                      className="cancel-ticket-btn"
+                      onClick={() => handleCancelBooking(b.bookingId)}
+                    >
                       Avboka
                     </button>
                   </li>
