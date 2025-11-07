@@ -112,6 +112,12 @@ useEffect(() => {
           showtimes={showtimes}
           searchTerm={searchTerm} 
         />
+
+        {selectedDate && showtimes.length === 0 && (
+          <p className="no-screenings-message">
+            Inga visningar finns för valt datum.
+          </p>
+        )}
       </main>
     </>
   );
