@@ -3,15 +3,18 @@ import "./MyPages.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 
+interface Seat {
+  row: string;
+  number: number;
+}
+
 interface Booking {
   bookingId: number;
   movieTitle: string;
   screeningTime: string;
-  status: string;
   auditoriumName: string;
+  seats: Seat[];
   seen?: boolean;
-  history: string[];
-  tickets: string[];
 }
 
 interface User {
@@ -20,8 +23,6 @@ interface User {
   lastName: string;
   email: string;
   phoneNumber?: string;
-  history: string[];
-  tickets: string[];
 }
 
 const MyPages: React.FC = () => {
@@ -32,12 +33,10 @@ const MyPages: React.FC = () => {
   const handleCancelBooking = (bookingId: number) => {
     if (!window.confirm("Vill du verkligen avboka denna film?")) return;
 
-    // Optional: Call backend API to cancel the booking
     fetch(`/api/bookings/${bookingId}`, { method: "DELETE" })
       .then((res) => res.json())
       .then((data) => {
         if (data.ok) {
-          // Remove the canceled booking from state
           setBookings((prev) => prev.filter((b) => b.bookingId !== bookingId));
         } else {
           alert("Kunde inte avboka bokningen.");
@@ -49,14 +48,12 @@ const MyPages: React.FC = () => {
   useEffect(() => {
     const storedUser = localStorage.getItem("authUser");
     if (!storedUser) {
-      console.warn("No user found in localStorage");
       setLoading(false);
       return;
     }
 
     const parsedUser = JSON.parse(storedUser);
     if (!parsedUser?.id) {
-      console.warn("Logged-in user has no ID");
       setLoading(false);
       return;
     }
@@ -73,11 +70,9 @@ const MyPages: React.FC = () => {
 
           setUser(data.user);
           setBookings(enrichedBookings);
-        } else {
-          console.error("Error fetching user data:", data.message);
         }
       })
-      .catch((err) => console.error("Network error:", err))
+      .catch((err) => console.error("Error fetching user data:", err))
       .finally(() => setLoading(false));
   }, []);
 
@@ -108,8 +103,9 @@ const MyPages: React.FC = () => {
             </div>
           </div>
 
+          {/* Upcoming bookings*/}
           <div className="profile-section">
-            <h3>Kommande bokningar</h3>
+            <h3> Kommande bokningar</h3>
             {upcomingBookings.length > 0 ? (
               <ul>
                 {upcomingBookings.map((b) => (
@@ -117,11 +113,12 @@ const MyPages: React.FC = () => {
                     <strong>{b.movieTitle}</strong> <br />
                     {new Date(b.screeningTime).toLocaleString("sv-SE")} <br />
                     Salong: {b.auditoriumName} <br />
-                    Status: {b.status} <br />
-                    <button
-                      className="cancel-ticket-btn"
-                      onClick={() => handleCancelBooking(b.bookingId)}
-                    >
+                    Platser:{" "}
+                    {b.seats && b.seats.length > 0
+                      ? b.seats.map((s) => `${s.row}${s.number}`).join(", ")
+                      : "Ej registrerade"}{" "}
+                    <br />
+                    <button onClick={() => handleCancelBooking(b.bookingId)}>
                       Avboka
                     </button>
                   </li>
@@ -132,8 +129,9 @@ const MyPages: React.FC = () => {
             )}
           </div>
 
+          {/* Movies you've already seen */}
           <div className="profile-section">
-            <h3>Filmer du redan har sett</h3>
+            <h3> Filmer du redan har sett</h3>
             {seenBookings.length > 0 ? (
               <ul>
                 {seenBookings.map((b) => (
@@ -146,7 +144,11 @@ const MyPages: React.FC = () => {
                       month: "long",
                       day: "numeric",
                     })}{" "}
-                    ({daysAgo(b.screeningTime)})
+                    ({daysAgo(b.screeningTime)}) <br />
+                    Platser:{" "}
+                    {b.seats && b.seats.length > 0
+                      ? b.seats.map((s) => `${s.row}${s.number}`).join(", ")
+                      : "Ej registrerade"}
                   </li>
                 ))}
               </ul>
@@ -155,6 +157,7 @@ const MyPages: React.FC = () => {
             )}
           </div>
 
+          {/* Logout-button */}
           <button
             className="logout-btn"
             onClick={() => {
