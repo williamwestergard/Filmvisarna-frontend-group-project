@@ -26,6 +26,13 @@ function Home() {
   const [searchTerm, setSearchTerm] = useState(""); //nytt state
 
   useEffect(() => {
+  const savedDate = sessionStorage.getItem("selectedDate");
+  if (savedDate) {
+    setSelectedDate(savedDate);
+  }
+}, []);
+
+  useEffect(() => {
     getCategories()
       .then((data) => setCategories(data))
       .catch((err) => console.error("Error fetching categories:", err));
@@ -62,31 +69,37 @@ useEffect(() => {
 
         {/* Filter section */}
         <section className="filter-section">
-          <input
-            type="date"
-            lang="sv-SE"
-            className="filter-dropdown"
-            value={selectedDate}
-            onChange={(event) => setSelectedDate(event.target.value)}
-             min={new Date().toISOString().split("T")[0]} // today
-            max={(() => {
+         <input
+          type="date"
+          lang="sv-SE"
+          className="filter-dropdown"
+          value={selectedDate || ""}
+          placeholder="Välj datum"
+          onChange={(event) => {
+            const newDate = event.target.value;
+            setSelectedDate(newDate);
+            sessionStorage.setItem("selectedDate", newDate);
+          }}
+          min={new Date().toISOString().split("T")[0]}
+          max={(() => {
             const date = new Date();
-            date.setDate(date.getDate() + 14); // +14 days
+            date.setDate(date.getDate() + 14);
             return date.toISOString().split("T")[0];
-            })()} // 2 weeks ahead
-          />
+          })()}
+        />
+
           <select
-            className="filter-dropdown"
-            value={selectedCategory}
-            onChange={(event) => setSelectedCategory(event.target.value)}
-          >
-            <option value="all">Alla kategorier</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.title}>
-          {category.title}
-              </option>
-            ))}
-          </select>
+          className="filter-dropdown"
+          value={selectedCategory}
+          onChange={(event) => setSelectedCategory(event.target.value)}
+        >
+          <option value="all">Alla kategorier</option>
+          {categories.map((category) => (
+          <option key={category.id} value={category.title}>
+            {category.title}
+          </option>
+          ))}
+        </select>
         </section>
         {/* {!selectedDate && (
           <p className="date-hint">Välj ett datum för att se dagens visningar</p> // HINT 
