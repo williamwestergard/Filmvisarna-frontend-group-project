@@ -1,21 +1,46 @@
 import { useEffect, useRef, useState } from "react";
 import "./AgeLimitInfo.css";
 
-export default function AgeLimitInfo() {
+type AgeLimitInfoProps = {
+  /** Lets the parent control when the popup is open */
+  externalOpen?: boolean;
+  /** Runs when the popup should close (escape, outside click, or close button) */
+  onRequestClose?: () => void;
+  /** Hides the built-in button, if the parent will trigger it instead */
+  hideTrigger?: boolean;
+};
+
+export default function AgeLimitInfo({
+  externalOpen,
+  onRequestClose,
+  hideTrigger,
+}: AgeLimitInfoProps) {
   const [open, setOpen] = useState(false);
   const btnRef = useRef<HTMLButtonElement | null>(null);
   const dialogRef = useRef<HTMLDivElement | null>(null);
 
+  // Figure out if the popup is opened by this component or by the parent
+  const isControlled = !!hideTrigger;
+  const isOpen = isControlled ? !!externalOpen : open;
+
+  function close() {
+    if (isControlled) {
+      onRequestClose?.();
+    } else {
+      setOpen(false);
+    }
+  }
+
   useEffect(() => {
-    if (!open) return;
+    if (!isOpen) return;
 
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") close();
     }
 
     function onClickOutside(e: MouseEvent) {
       if (dialogRef.current && !dialogRef.current.contains(e.target as Node)) {
-        setOpen(false);
+        close();
       }
     }
 
@@ -25,31 +50,34 @@ export default function AgeLimitInfo() {
       document.removeEventListener("keydown", onKey);
       document.removeEventListener("mousedown", onClickOutside);
     };
-  }, [open]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   useEffect(() => {
-    if (!open && btnRef.current) btnRef.current.focus();
-  }, [open]);
+    if (!isOpen && btnRef.current && !isControlled) btnRef.current.focus();
+  }, [isOpen, isControlled]);
 
   return (
     <section className="ageinfo-wrap" aria-label="Information om åldersgränser">
-      <button
-        ref={btnRef}
-        type="button"
-        className="ageinfo-trigger"
-        aria-haspopup="dialog"
-        aria-expanded={open}
-        onClick={() => setOpen(true)}
-        title="Visa info om åldersgränser"
-      >
-        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.15" />
-          <path d="M12 8.25a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5zm-1.25 2.25h2v7h-2v-7z" fill="currentColor" />
-        </svg>
-        <span>Åldersgränser</span>
-      </button>
+      {!hideTrigger && ( // Only show button if not hidden
+        <button
+          ref={btnRef}
+          type="button"
+          className="ageinfo-trigger"
+          aria-haspopup="dialog"
+          aria-expanded={isOpen}
+          onClick={() => setOpen(true)}
+          title="Visa info om åldersgränser"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.15" />
+            <path d="M12 8.25a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5zm-1.25 2.25h2v7h-2v-7z" fill="currentColor" />
+          </svg>
+          <span>Åldersgränser</span>
+        </button>
+      )}
 
-      {open && (
+      {isOpen && (
         <div
           className="ageinfo-overlay"
           role="dialog"
@@ -63,7 +91,7 @@ export default function AgeLimitInfo() {
               <button
                 type="button"
                 className="ageinfo-close"
-                onClick={() => setOpen(false)}
+                onClick={close}
                 aria-label="Stäng"
                 title="Stäng"
               >
@@ -87,7 +115,6 @@ export default function AgeLimitInfo() {
                 </li>
               </ul>
               <p className="ageinfo-note">
-              
                 Tips: På filmsidan visar vi åldersgränsen bredvid genrerna. När
                 du väljer biljetter kan <em>barnbiljett</em> endast väljas för
                 barntillåtna visningar.
@@ -95,7 +122,7 @@ export default function AgeLimitInfo() {
             </div>
 
             <footer className="ageinfo-footer">
-              <button type="button" className="ageinfo-ok" onClick={() => setOpen(false)}>
+              <button type="button" className="ageinfo-ok" onClick={close}>
                 Stäng
               </button>
             </footer>
