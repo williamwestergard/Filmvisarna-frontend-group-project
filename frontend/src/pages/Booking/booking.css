@@ -183,6 +183,24 @@
   padding: 0.2vw 0.8vw;
 }
 
+.agepill-button {
+  color: #999999;
+  border: 1px solid #999999;
+  border-radius: 5px;
+  padding: 0.2vw 0.8vw;
+  background: transparent;
+  font-size: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.agepill-button:hover,
+.agepill-button:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  outline: none;
+}
+
 .booking-movie-poster {
   width: auto;
   position: relative;
