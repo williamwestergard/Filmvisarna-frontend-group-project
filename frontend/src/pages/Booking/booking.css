@@ -535,6 +535,33 @@ iframe {
   }
 }
 
+.booking-guest-email-container {
+  margin-top: 6vh;
+  margin-bottom: 6vh;
+}
+
+.booking-guest-email-field {
+  margin-top: 2vh;
+  display: block;
+  width: 95%;
+  padding: 2vh 1vw;
+  font-size: clamp(1rem, 2vw, 1.1rem);
+  background: none;
+  border: none;
+  background: #1b1927;
+  color: #a6a5a5;
+  border: 1px solid #99999960;
+  border-radius: 5px;
+  margin-top: "5px";
+}
+
+.booking-guest-email-field-error {
+  color: rgb(247, 64, 85);
+  margin-top: 2vh;
+  font-style: italic;
+  font-size: clamp(0.9rem, 0.9vw, 1rem);
+}
+
 /* Phone layout */
 @media only screen and (max-width: 600px) {
   .booking-page {

@@ -45,6 +45,7 @@ function BookingContent() {
   const [showScrollInfo, setShowScrollInfo] = useState(true);
 
   const paketprisFromState = (location.state as any)?.paketpris;
+  
 
   useEffect(() => {
     fetch("/api/movies/weekly")
@@ -63,11 +64,21 @@ function BookingContent() {
   const paketprisToShow =
     paketprisFromState || (isWeekly ? weeklyMovie?.paketpris : null);
 
+
+      const [guestEmail, setGuestEmail] = useState("");
+      const [guestEmailError, setGuestEmailError] = useState(""); 
+
+  const storedUser = localStorage.getItem("authUser");
+  const authUser = storedUser ? JSON.parse(storedUser) : null;
+  const userId = authUser?.id || null;
+
+
   const canProceed =
     !!movie &&
     !!screening &&
     totalTickets > 0 &&
-    selectedSeats.length === totalTickets;
+      selectedSeats.length === totalTickets &&
+    (userId || guestEmail); 
 
   function assignTicketTypesToSeats(realSeatIds: number[]) {
     const list: { seatId: number; ticketTypeId: number }[] = [];
@@ -92,13 +103,31 @@ function BookingContent() {
     return list;
   }
 
+
+  function isValidEmail(email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
   
   async function handleBooking() {
     if (!canProceed || !screening) return;
-    setLoadingBooking(true);
 
-    const authUser = JSON.parse(localStorage.getItem("authUser") || "null");
-    const userId = authUser?.id || null;
+
+    // Guest email validation
+if (!userId) {
+  if (!guestEmail) {
+    setGuestEmailError("Vänligen ange din e-postadress för att boka.");
+    return;
+  }
+  if (!isValidEmail(guestEmail)) {
+    setGuestEmailError("Vänligen ange en giltig e-postadress.");
+    return;
+  }
+}
+// Clear error if validation passes
+setGuestEmailError("");
+
+    setLoadingBooking(true);
+    
 
     try {
       console.log(" DEBUG Screening Info:", screening);
@@ -178,7 +207,7 @@ function getAuditoriumName(id: number) {
 const payload: any = {
   screeningId: screening.id,
   seats: seatsPayload,
-  email: userEmail, // Send user's email
+  email: userId ? authUser.email : guestEmail,// Send user's email
   movieTitle: movie?.title, // Movie name
   auditoriumName: getAuditoriumName(screening?.auditoriumId), // Auditorium
   screeningTime: screening?.time, // Correct column name from DB
@@ -304,6 +333,27 @@ useEffect(() => {
               <p className="paketpris-note">(Erbjudandet gäller vid betalning i kassan)</p>
             </section>
           )}
+
+          {!userId && (
+  <div className="booking-guest-email-container">
+    <label htmlFor="guestEmail">E-postadress (obligatoriskt för bokning)</label>
+    <input
+      className="booking-guest-email-field"
+      id="guestEmail"
+      type="email"
+      value={guestEmail}
+      onChange={(e) => setGuestEmail(e.target.value)}
+      required
+      placeholder="exempel@email.com"
+      style={{ borderColor: guestEmailError ? "rgb(247, 64, 85)" : "#99999960" }}
+    />
+    {guestEmailError && (
+      <p className="booking-guest-email-field-error">
+        {guestEmailError}
+      </p>
+    )}
+  </div>
+)}
 
       {/* Button show total amount and proceed */}
       <section className="confirm-actions">
