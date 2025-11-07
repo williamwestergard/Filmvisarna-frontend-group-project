@@ -149,6 +149,7 @@
 
 /* cancel button (bridge to TSX) */
 .cancel-ticket-btn {
+  margin-top: 8px;
   min-height: 32px;
   padding: 6px 14px;
   border-radius: 15px;
@@ -164,7 +165,8 @@
 .cancel-ticket-btn:hover {
   transform: translateY(-1px);
   background: rgba(255,255,255,0.15);
-  border-color: rgba(255,255,255,0.60);
+  border-color: rgba(255,0,0,0.60);
+  box-shadow: 0 4px 14px rgba(255,0,0,.35);
 }
 .cancel-ticket-btn:active { transform: translateY(0); }
 .cancel-ticket-btn[disabled],
