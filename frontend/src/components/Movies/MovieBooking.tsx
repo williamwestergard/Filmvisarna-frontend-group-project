@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getMovies, getMoviesInformation } from "../../api/moviesApi";
 import { useBooking } from "../../Context/BookingContext";
+import AgeLimitInfo from "../AgeLimitInfo/AgeLimitInfo";
 
 type Movie = {
   id: number;
@@ -145,6 +146,7 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
                   {genre}
                 </p>
               ))}
+              <AgeLimitInfo />
             </section>
           </section>
 
