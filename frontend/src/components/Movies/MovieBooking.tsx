@@ -58,6 +58,7 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isTrailerExpanded, setIsTrailerExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [ageOpen, setAgeOpen] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -69,7 +70,7 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
               t.posterUrl && t.posterUrl.trim() === movie.posterUrl.trim()
           );
 
-          return {
+        return {
             ...movie,
             trailerUrl: infoMatch?.trailerUrl || "",
             backdropUrl: infoMatch?.backdropUrl || movie.backdropUrl,
@@ -136,9 +137,17 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
             <section className="movie-runtime-genre-container">
               <p className="movie-runtime">{formatRuntime(movie.runtimeMin)}</p>
 
-              {/* Age limit */}
+              {/* Age limit pill */}
               {formatAgeLabel(movie.ageLimit) && (
-                <p className="movie-booking-genre">{formatAgeLabel(movie.ageLimit)}</p>
+                <button
+                  type="button"
+                  className="agepill-button"
+                  onClick={() => setAgeOpen(true)}
+                  aria-haspopup="dialog"
+                  title="Visa info om åldersgränser"
+                >
+                  {formatAgeLabel(movie.ageLimit)}
+                </button>
               )}
 
               {movie.category.map((genre, index) => (
@@ -146,7 +155,14 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
                   {genre}
                 </p>
               ))}
-              <AgeLimitInfo />
+
+              {/* Shows the popup here (parent can control it) */}
+              <AgeLimitInfo
+                hideTrigger
+                externalOpen={ageOpen}
+                onRequestClose={() => setAgeOpen(false)}
+              />
+               <AgeLimitInfo />
             </section>
           </section>
 
