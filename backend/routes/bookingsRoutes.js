@@ -181,37 +181,39 @@ function createBookingsRouter(pool) {
         }
 
         const htmlBody = `
-    <div style="font-family: Arial, sans-serif; background: #e6e6e6ff; padding: 30px; color:black;">
-      <div style="max-width:600px;margin:auto;background: #ffffffff;padding:25px;border-radius:5px;margin-top:40px;">
-        <h1 style="background:#c41230;color:#fff;padding:15px;text-align:center;">Filmvisarna</h1>
-        <h2>Tack för din bokning!</h2>
-        <p>Här är detaljerna för din bokning:</p>
-        <ul>
-          <li><strong>Film:</strong> ${movieTitle}</li>
-          <li><strong>Salong:</strong> ${auditoriumName}</li>
-          <li><strong>Datum:</strong> ${new Date(
-            screeningTime
-          ).toLocaleDateString("sv-SE")}</li>
-          <li><strong>Tid:</strong> ${new Date(
-            screeningTime
-          ).toLocaleTimeString("sv-SE", {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}</li>
-          <li><strong>Platser:</strong> ${seatsList}</li>
-     </ul>
-          <div style="color:black;padding:20px 0px;margin:0 auto;text-align:center;">
+    <div style="font-family: Arial, sans-serif; background: #F5F5F5; color:black;padding:25px;">
+      <div style="max-width:480px;margin:0 auto; background: #FFFFFF;padding:0px 65px;border-radius:5px;margin-top:50px;">
+        <h1 style="padding:20px;text-align:center;border-bottom:1px solid #8d8d8dff;"> <br/>  Tack för din bokning!</h1>
+        <p style="margin-top:30px;">Här är detaljerna för din bokning:</p>
+          <strong>Film:</strong> ${movieTitle} <br/>
+         <strong>Salong:</strong> ${auditoriumName}<br/>
+         <strong>Datum:</strong> ${new Date(screeningTime).toLocaleDateString(
+           "sv-SE"
+         )}<br/>
+          <strong>Tid:</strong> ${new Date(screeningTime).toLocaleTimeString(
+            "sv-SE",
+            {
+              hour: "2-digit",
+              minute: "2-digit",
+            }
+          )}<br/>
+         <strong>Platser:</strong> ${seatsList}<br/>
+     <br/><br/>
+          <div style="color:black;margin:0 auto;text-align:center;">
           <h3 style="text-transform:uppercase;margin:0;padding:0;position:relative;top:20px;">Bokningsnummer: </h3>
           <h1 style="text-transform:uppercase;color:#C41230;font-weight:800;letter-spacing:4px;font-size:4rem;margin:0;padding:0;"> ${bookingNumber}</h1>
           <p style="font-style:italic;"> Visa upp bokningsnumret till kassören. </p>
        </div>
+       <br/>
+       <div style="text-align:center;">
         <p style="margin-bottom:10px;">Vi ses på bion! 🍿</p>
-        <a style="font-weight:600;margin-bottom:40px;" href="http://localhost:5173/ticket/${bookingUrl}"> Avboka biljetter </a>
-
-       <div style="text-align:center;background:#090416;padding:50px;margin-top:40px;">
+        <a style="font-weight:600;margin-bottom:80px;text-align:center;" href="http://localhost:5173/ticket/${bookingUrl}"> Avboka biljetter </a> <br/><br/><br/><br/>
+        </div>
+    </div>
+       <div style="text-align:center;background:#C41230;margin:0 auto;margin-bottom:50px; max-width:480px;padding:50px 65px;border-radius:0 0 5px 5px;">
       <img src="https://res.cloudinary.com/dbvcotnqt/image/upload/v1762426970/filmvisarna-email-logo.png" alt="Filmvisarna" style="max-width:110px; height:auto; display:block; margin:0 auto 10px;">
       <p style="font-size:12px;color:white; margin:0; margin-top:15px;">Filmvisarna AB | Småstad, Sverige</p>
-    </div>
+
       </div>
     </div>
   `;
