@@ -52,6 +52,7 @@ function createMoviesRouter(pool) {
       m.id AS movie_id,
       m.title AS film,
       m.posterUrl,
+      m.trailerUrl,
       GROUP_CONCAT(c.title ORDER BY c.title SEPARATOR ', ') AS kategorier
       FROM movies m
       LEFT JOIN movieCategories mc ON mc.movieId = m.id
@@ -98,7 +99,7 @@ function createMoviesRouter(pool) {
     }
   });
 
-  // VECKANS FILM 
+  // VECKANS FILM
   let cachedWeeklyMovie = null; // store the movie object
   let lastPicked = null; // store the timestamp of last pick
 
@@ -108,23 +109,28 @@ function createMoviesRouter(pool) {
     try {
       const now = new Date();
 
-    // Pick a new weekly movie if none cached or more than a week has passed
-    if (!cachedWeeklyMovie || !lastPicked || now - lastPicked > ONE_WEEK) {
-      const [rows] = await pool.query("SELECT * FROM movies ORDER BY RAND() LIMIT 1");
+      // Pick a new weekly movie if none cached or more than a week has passed
+      if (!cachedWeeklyMovie || !lastPicked || now - lastPicked > ONE_WEEK) {
+        const [rows] = await pool.query(
+          "SELECT * FROM movies ORDER BY RAND() LIMIT 1"
+        );
 
-      if (rows.length === 0) return res.status(404).json({ ok: false, message: "No movies found" });
+        if (rows.length === 0)
+          return res
+            .status(404)
+            .json({ ok: false, message: "No movies found" });
 
-      cachedWeeklyMovie = rows[0];
-      lastPicked = now;
+        cachedWeeklyMovie = rows[0];
+        lastPicked = now;
 
-      // Paketpris logic
-      cachedWeeklyMovie.paketpris = {
-        liten: { antal: 2, pris: 55 },
-        litenEn: { antal: 1, pris: 30 }
-      };
-    }
+        // Paketpris logic
+        cachedWeeklyMovie.paketpris = {
+          liten: { antal: 2, pris: 55 },
+          litenEn: { antal: 1, pris: 30 },
+        };
+      }
 
-    res.json(cachedWeeklyMovie);
+      res.json(cachedWeeklyMovie);
     } catch (err) {
       console.error("FEL VID HÄMNTNING AV VECKANS FILM:", err);
       res.status(500).json({ ok: false, message: err.message });
@@ -132,13 +138,17 @@ function createMoviesRouter(pool) {
   });
 
   //get one specific movie by ID
-  router.get("/:id", async (req, res) => { 
+  router.get("/:id", async (req, res) => {
     try {
       const { id } = req.params;
-      const [rows] = await pool.query("SELECT * FROM movies WHERE id = ?", [id]);
+      const [rows] = await pool.query("SELECT * FROM movies WHERE id = ?", [
+        id,
+      ]);
 
       if (rows.length === 0) {
-        return res.status(404).json({ ok: false, message: "Filmen hittades inte" });
+        return res
+          .status(404)
+          .json({ ok: false, message: "Filmen hittades inte" });
       }
 
       const film = rows[0];

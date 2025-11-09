@@ -181,9 +181,14 @@ function createBookingsRouter(pool) {
         }
 
         const htmlBody = `
-    <div style="font-family: Arial, sans-serif; background: #F5F5F5; color:black;padding:25px;">
-      <div style="max-width:480px;margin:0 auto; background: #FFFFFF;padding:0px 65px;border-radius:5px;margin-top:50px;">
-        <h1 style="padding:20px;text-align:center;border-bottom:1px solid #8d8d8dff;"> <br/>  Tack för din bokning!</h1>
+    <div style="font-family: Arial, sans-serif; background: #e9e9e9ff; color:black;padding:1vh 1vh;">
+      <div style="max-width:460px;margin:0 auto; background: #FFFFFF;padding:0px 30px;border-radius:5px 5px 0 0;margin-top:.1vh;box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.28);">
+      <br/>  <br/> 
+      <div style="margin-top:.1vh;padding:2px;text-align:center;border-bottom:1px solid #8d8d8dff;"> 
+       <img src="https://res.cloudinary.com/dbvcotnqt/image/upload/v1762520999/filmvisarna-email-checkmark_j8p8dz.png" alt="Checkmark" style="width:42px; height:auto; display:block; margin:0 auto;">
+        <h1 style="line-height:1.5;font-size:3vh;"> Tack för din bokning!</h1>
+        </div>
+        <div style="line-height:1.8;font-size:.9rem;"> 
         <p style="margin-top:30px;">Här är detaljerna för din bokning:</p>
           <strong>Film:</strong> ${movieTitle} <br/>
          <strong>Salong:</strong> ${auditoriumName}<br/>
@@ -197,21 +202,25 @@ function createBookingsRouter(pool) {
               minute: "2-digit",
             }
           )}<br/>
-         <strong>Platser:</strong> ${seatsList}<br/>
+         <strong>Platser:</strong> ${seatsList}
+         </div>
      <br/><br/>
-          <div style="color:black;margin:0 auto;text-align:center;">
-          <h3 style="text-transform:uppercase;margin:0;padding:0;position:relative;top:20px;">Bokningsnummer: </h3>
-          <h1 style="text-transform:uppercase;color:#C41230;font-weight:800;letter-spacing:4px;font-size:4rem;margin:0;padding:0;"> ${bookingNumber}</h1>
-          <p style="font-style:italic;"> Visa upp bokningsnumret till kassören. </p>
+          <div style="background-color:#F3F3F3;color:black;margin:0 auto;text-align:center;width:85%;padding:1.6vh .7vh;border:1px solid #9f9f9fc2;border-radius:5px;margin-top:5px;">
+          <h3 style="text-transform:uppercase;margin:0;padding:0;position:relative;top:25px;font-size:1.55vh;letter-spacing:.8px;margin:0px;">Bokningsnummer: </h3>
+          <h1 style="font-size:5.5vh;text-transform:uppercase;color:#DB1133;font-weight:900;letter-spacing:5px;margin:0;padding:0;"> ${bookingNumber}</h1>
+          <p style="font-style:italic;position:relative;top:5px;margin:3px;font-size:1.38vh"> Visa upp bokningsnumret till kassören. </p>
        </div>
        <br/>
-       <div style="text-align:center;">
-        <p style="margin-bottom:10px;">Vi ses på bion! 🍿</p>
-        <a style="font-weight:600;margin-bottom:80px;text-align:center;" href="http://localhost:5173/ticket/${bookingUrl}"> Avboka biljetter </a> <br/><br/><br/><br/>
+       <br/>
+       <div style="text-align:center;font-size:1rem;">
+        <p style="margin:0 auto;margin-top:7px;margin-bottom:10px;margin-left:15px">Vi ses på bion! 🍿</p>
+        <br/>
+        <a style="font-weight:500;margin:0 auto; margin-bottom:80px;margin-left:-12px;" href="http://localhost:5173/ticket/${bookingUrl}">Avboka biljetter </a> <br/><br/><br/><br/>
         </div>
+          <br/>
     </div>
-       <div style="text-align:center;background:#C41230;margin:0 auto;margin-bottom:50px; max-width:480px;padding:50px 65px;border-radius:0 0 5px 5px;">
-      <img src="https://res.cloudinary.com/dbvcotnqt/image/upload/v1762426970/filmvisarna-email-logo.png" alt="Filmvisarna" style="max-width:110px; height:auto; display:block; margin:0 auto 10px;">
+       <div style="text-align:center;background:#C41230;margin:0 auto;margin-bottom:1vh; max-width:460px;padding:29px 30px;border-radius:0 0 5px 5px;">
+      <img src="https://res.cloudinary.com/dbvcotnqt/image/upload/v1762426970/filmvisarna-email-logo.png" alt="Filmvisarna" style="width:100px; height:auto; display:block; margin:0 auto 10px;">
       <p style="font-size:12px;color:white; margin:0; margin-top:15px;">Filmvisarna AB | Småstad, Sverige</p>
 
       </div>

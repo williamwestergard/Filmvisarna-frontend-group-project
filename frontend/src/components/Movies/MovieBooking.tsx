@@ -104,7 +104,7 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
     <>
       <img
         className="booking-movie-backdrop"
-        src={`http://localhost:4000/images/backdrops/${movie.backdropUrl}`}
+        src={`/images/backdrops/${movie.backdropUrl}`}
         alt={movie.title}
       />
       <main key={movie.id} className="booking-page">
@@ -151,7 +151,7 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
           <article className="booking-movie-poster">
             <img
               className="booking-movie-card"
-              src={`http://localhost:4000/images/posters/${movie.posterUrl}`}
+              src={`/images/posters/${movie.posterUrl}`}
               alt={movie.title}
             />
           </article>
