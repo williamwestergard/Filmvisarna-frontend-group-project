@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar";
@@ -14,6 +14,7 @@ import Register from "./pages/Register/Register";
 import Discover from "./pages/Discover/Discover";
 import MyPages from "./pages/MyPages/MyPages";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import LoginModal from "./components/LoginModal/LoginModal";
 
 // Scrolls to top when route changes
 function ScrollToTop() {
@@ -28,9 +29,11 @@ function ScrollToTop() {
 
 // Main application entry point
 function App() {
+  const [loginOpen, setLoginOpen] = useState(false);
+
   return (
     <>
-      <Navbar />
+      <Navbar onOpenLogin={() => setLoginOpen(true)} /> {/* pass opener */}
       <main>
         <ScrollToTop />
         <Routes>
@@ -46,7 +49,7 @@ function App() {
           <Route path="/confirmation/:bookingUrl" element={<ConfirmationPage />} />
           <Route path="/ticket/:bookingUrl" element={<TicketPage />} />
 
-          {/* Authentication routes */}
+          {/* Authentication routes (keep working if someone navigates here directly) */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
@@ -61,6 +64,13 @@ function App() {
           />
         </Routes>
       </main>
+
+      {/* LOGIN MODAL */}
+      <LoginModal
+        open={loginOpen}
+        onRequestClose={() => setLoginOpen(false)}
+      />
+
       <Footer />
     </>
   );
