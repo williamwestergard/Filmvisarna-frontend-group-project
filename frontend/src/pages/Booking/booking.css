@@ -376,7 +376,7 @@ iframe {
   max-width: 300px;
   margin: 1.5rem 0;
   background: #23223250;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   letter-spacing: 0.3px;
   position: relative;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
@@ -416,7 +416,6 @@ iframe {
   transform: translateY(-1px);
   transition: 0.2s ease;
 }
-
 
 /* Confirm- button */
 .confirm-actions {
@@ -779,7 +778,7 @@ iframe {
 }
 
 /*Ipad screen sizes*/
-@media only screen and (min-width: 801px) and (max-width: 1200px) {
+@media only screen and (min-width: 801px) and (max-width: 1400px) {
   .booking-page {
     padding: 0vw 2vw;
     gap: 4vh;
@@ -802,7 +801,7 @@ iframe {
 }
 
 /*Ipad screen sizes*/
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1400px) {
   .booking-scroll-down-info {
     display: none;
   }

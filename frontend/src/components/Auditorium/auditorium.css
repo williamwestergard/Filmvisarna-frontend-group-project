@@ -311,6 +311,7 @@
   }
 }
 
+/** Smaller phones  **/
 @media only screen and (max-width: 410px) {
   [class^="auditorium-one-seats-"],
   [class^="auditorium-two-seats-"] {
@@ -358,6 +359,7 @@
   }
 }
 
+/** Smallest phones  **/
 @media only screen and (max-width: 377px) {
   [class^="auditorium-one-seats-"],
   [class^="auditorium-two-seats-"] {
@@ -501,7 +503,7 @@
 }
 
 /* Smaller Ipad sizes */
-@media only screen and (min-width: 1200px) and (max-width: 1650px) {
+@media only screen and (min-width: 1400px) and (max-width: 1650px) {
   .auditorium-seats-container {
     display: flex;
     flex-direction: column;

@@ -5,10 +5,25 @@
   position: absolute;
   width: 100%;
   height: auto;
-  top: -23vh;
+  top: clamp(-23vh, -10vw, 0vh);
   z-index: -1;
   opacity: 0.45;
   filter: blur(5px);
+}
+@media screen and (max-width: 1595px) {
+  .bg-overlay {
+    top: clamp(-20vh, -7vw, 0vh);
+  }
+}
+@media screen and (max-width: 1310px) {
+  .bg-overlay {
+    top: clamp(-10vh, -4vw, 0vh);
+  }
+}
+@media screen and (max-width: 1160px) {
+  .bg-overlay {
+    top: -2vh;
+  }
 }
 
 a {
