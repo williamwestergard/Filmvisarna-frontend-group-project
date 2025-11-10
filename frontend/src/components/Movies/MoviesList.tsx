@@ -96,7 +96,7 @@ const fullyFilteredMovies =
             <article>
               <img
                 className="movie-card"
-                src={`http://localhost:4000/images/posters/${movie.posterUrl}`}
+                src={`/images/posters/${movie.posterUrl}`}
                 alt={movie.title}
                 width={200}
               />

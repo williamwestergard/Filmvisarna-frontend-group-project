@@ -99,7 +99,7 @@ ul {
   gap: clamp(0.5rem, 2vw, 1rem);
   text-decoration: none;
   margin-right: clamp(1rem, 4vw, 3rem);
-  margin-left: 10px;
+  margin-left: 7px;
   top: 1px;
   transform: translateY(-5px);
 }
@@ -311,14 +311,15 @@ ul {
 
   .navbar-mobile {
     position: relative;
+    right: -5px;
     z-index: 1000;
     display: flex;
     justify-content: space-between;
-    width: 95%;
+    width: 85%;
     padding: 0;
     gap: 12px;
     max-width: auto;
-    max-height: 52px;
+    max-height: 57px;
   }
 
   .navbar-mobile .navbar-logo-link {
