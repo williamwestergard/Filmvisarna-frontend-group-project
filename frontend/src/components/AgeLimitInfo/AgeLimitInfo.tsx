@@ -123,7 +123,7 @@ export default function AgeLimitInfo({
 
             <footer className="ageinfo-footer">
               <button type="button" className="ageinfo-ok" onClick={close}>
-                Stäng
+                Ok 
               </button>
             </footer>
           </div>
