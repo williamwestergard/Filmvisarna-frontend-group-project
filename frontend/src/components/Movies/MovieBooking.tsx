@@ -180,7 +180,8 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
             <div
               className={`trailer-frame-container ${isTrailerExpanded ? "expanded" : ""}`}
             >
-              {!isTrailerExpanded && <p className="trailer-text">Se trailer</p>}
+              {!isTrailerExpanded && <p className="trailer-text"   onClick={() => setIsTrailerExpanded(true)}
+    style={{ cursor: "pointer" }}>Se trailer</p>}
 
               {!isTrailerExpanded ? (
                 <div

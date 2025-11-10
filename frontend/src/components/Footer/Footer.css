@@ -68,7 +68,21 @@
   font-size: small;
   line-height: 1;
   letter-spacing: 0.89px;
-  color: #c1c1c1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #bbbbbb;
+}
+
+.footer-contact a {
+  z-index: 1;
+  display: inline-block;
+  margin-bottom: 1.5vh;
+  font-style: normal;
+  font-size: small;
+  line-height: 1;
+  letter-spacing: 1px;
+  color: #bbbbbb;
 }
 
 .footer-contact a:hover {

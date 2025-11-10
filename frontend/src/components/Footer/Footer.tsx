@@ -10,10 +10,10 @@ export default function Footer() {
       </section>
 
      <address className="footer-contact">
-  <h3 className="footer-title">FILMVISARNA AB</h3>
-  <p>Småstadsgatan 12</p>
-  <p>Småstad</p>
-  <p>Tel: 076 123 312 3</p>
+  <h3 className="footer-title">FILMVISARNA</h3>
+  <a href="/om-oss">Om oss</a>
+  <a href="/shop">Vår kiosk</a>
+  <a href="/upptack">Veckans film</a>
 </address>
 
     </footer>
