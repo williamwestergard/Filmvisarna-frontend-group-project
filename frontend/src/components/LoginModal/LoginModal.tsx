@@ -6,15 +6,16 @@ type LoginModalProps = {
   open: boolean;
   onRequestClose?: () => void;
 };
+
 // Modal dialog for user login
 export default function LoginModal({ open, onRequestClose }: LoginModalProps) {
   const dialogRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!open) return;
-   
+
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onRequestClose?.(); 
+      if (e.key === "Escape") onRequestClose?.();
     }
     function onClickOutside(e: MouseEvent) {
       if (dialogRef.current && !dialogRef.current.contains(e.target as Node)) {
@@ -50,10 +51,10 @@ export default function LoginModal({ open, onRequestClose }: LoginModalProps) {
             ✕
           </button>
         </header>
-    
+
         <div className="loginmodal-body">
           {/* LoginForm */}
-          <LoginForm />
+          <LoginForm onClose={onRequestClose} />
         </div>
       </div>
     </div>

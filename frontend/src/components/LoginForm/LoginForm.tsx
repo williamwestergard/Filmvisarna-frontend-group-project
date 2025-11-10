@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 import "./LoginForm.css";
 import { LoginFormApi } from "../../api/LoginFormApi";
 
+type LoginFormProps = {
+  onClose?: () => void; // optional: close modal when provided
+};
 
-
-export default function LoginForm() {
+export default function LoginForm({ onClose }: LoginFormProps) {
   // Controlled form fields for user credentials
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +17,6 @@ export default function LoginForm() {
 
   // Error message for user feedback
   const [error, setError] = useState<string>("");
-
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -36,7 +37,8 @@ export default function LoginForm() {
         // Notify other components (e.g., Navbar) of login
         window.dispatchEvent(new StorageEvent("storage", { key: "authUser" }));
 
-        // Redirect user to homepage after login
+        // Close modal (if shown) and redirect user to homepage after login
+        onClose?.();
         navigate("/");
       } else {
         // Handle unsuccessful login (wrong credentials)
@@ -48,26 +50,26 @@ export default function LoginForm() {
     }
   }
 
-
   function handleCancel() {
-    navigate("/");
+    // If used inside a modal, close it; otherwise keep old behavior
+    if (onClose) {
+      onClose();
+    } else {
+      navigate("/");
+    }
   }
-
 
   return (
     <form className="login-form" onSubmit={handleSubmit} aria-label="Logga in">
-    
       <img
         className="login-logo-inside"
         src="/filmvisarnafooterbilden.png"
         alt="Filmvisarna"
       />
 
-   
       <h2 className="login-title">Logga in</h2>
       {error && <p className="login-error-message">{error}</p>}
 
-    
       <div className="login-field">
         <label htmlFor="login-email">E-postadress</label>
         <input
@@ -81,7 +83,6 @@ export default function LoginForm() {
         />
       </div>
 
-    
       <div className="login-field">
         <label htmlFor="login-password">Lösenord</label>
         <input
@@ -95,9 +96,6 @@ export default function LoginForm() {
         />
       </div>
 
-
-    
-  
       <div className="login-actions">
         <button type="submit" className="login-button">
           Logga in
