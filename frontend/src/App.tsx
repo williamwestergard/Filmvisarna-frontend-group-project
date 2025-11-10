@@ -9,7 +9,6 @@ import ConfirmationPage from "./pages/Confirmation/Confirmation";
 import Shop from "./pages/Shop/Shop";
 import TicketPage from "./pages/Ticket/Ticket";
 import Footer from "./components/Footer/Footer";
-import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Discover from "./pages/Discover/Discover";
 import MyPages from "./pages/MyPages/MyPages";
@@ -49,8 +48,7 @@ function App() {
           <Route path="/confirmation/:bookingUrl" element={<ConfirmationPage />} />
           <Route path="/ticket/:bookingUrl" element={<TicketPage />} />
 
-          {/* Authentication routes (keep working if someone navigates here directly) */}
-          <Route path="/login" element={<Login />} />
+          {/* Authentication routes (keep working if navigates here directly) */}
           <Route path="/register" element={<Register />} />
 
           {/* Protected user page (requires login) */}
