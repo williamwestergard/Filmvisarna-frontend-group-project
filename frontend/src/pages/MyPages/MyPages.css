@@ -1,10 +1,10 @@
 /* page container */
 .my-pages {
   color: #fff;
-  padding: 32px 16px;
+  padding: 20px 12px;
 }
 .my-pages > * {
-  max-width: 1040px;
+  max-width: 1080px;
   margin-inline: auto;
 }
 
@@ -15,12 +15,12 @@
 .my-pages article,
 .my-pages .profile-card,
 .my-pages .booking-card {
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.18);
-  border-radius: 14px;
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
   padding: 16px 18px;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 8px 22px rgba(0,0,0,0.35), 0 0 15px rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.30);
 }
 
 /* profile area */
@@ -36,7 +36,7 @@
   transition: transform 1.0s ease-in-out, box-shadow 0.3s ease;
 }
 .profile-img-placeholder:hover {
-  transform: rotate(360deg);
+  transform: none;
 }
 .profile-img-placeholder:active {
   box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
@@ -45,36 +45,20 @@
 .profile-info h2 { margin: 0; font-size: 1.15rem; font-weight: 700; }
 .profile-info p  { margin: 0; color: #cfcfcf; }
 
-@media (prefers-reduced-motion: reduce) {
-  .profile-img-placeholder {
-    transition: none;
-  }
-}
+.my-pages .profile-card,
+.my-pages .profile-card * { text-align: left; }
 
-@media (min-width: 900px) {
-  .profile-info {
-    text-align: center;
-    width: 100%;
-  }
-  .profile-info h2,
-  .profile-info p {
-    justify-content: center;
-    text-align: center;
-  }
-  .profile-top {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-/* headings */
-.section-title { margin: 6px 0 10px; font-weight: 700; font-size: 1.05rem; }
+/* allow shrinking & prevent overflow pushing the grid */
+.my-pages .profile-card ul > li { min-width: 0; }
+.my-pages .profile-card ul > li .booking-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.my-pages .profile-card ul > li .booking-meta, 
+.my-pages .profile-card ul > li .details { word-break: break-word; overflow-wrap: anywhere; }
 
 /* bookings list (UL without class) */
 .my-pages .profile-card ul {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 14px;
+  gap: 10px;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -82,13 +66,13 @@
 
 /* each booking card */
 .my-pages .profile-card ul > li {
-  background: rgba(255,255,255,0.09);
-  border: 1px solid rgba(255,255,255,0.22);
-  border-radius: 14px;
-  padding: 14px 16px;
-  backdrop-filter: blur(8px);
-  /* neutral soft shadow */
-  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  padding: 16px 12px 18px; /* normal flow (no extra bottom space for sticky bar) */
+  position: relative;
+  backdrop-filter: blur(2px);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
 }
 
 /* booking header */
@@ -103,9 +87,12 @@
 .my-pages .profile-card ul > li h4,
 .my-pages .profile-card ul > li .booking-title {
   margin: 0;
-  color: #fff;
-  font-weight: 750;
-  font-size: 1.02rem;
+  color: #f5f7ff;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.25;
 }
 
 /* booking meta */
@@ -113,43 +100,79 @@
 .my-pages .profile-card ul > li .booking-meta {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 6px;
-  font-size: .95rem;
+  gap: 8px;
+  font-size: .9rem;
   color: #d9d9d9;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
-.my-pages .profile-card ul > li .details strong,
-.my-pages .profile-card ul > li .booking-meta strong { color: #fff; }
+/* Each row inside meta becomes a 2‑column key/value pair */
+.my-pages .profile-card ul > li .booking-meta > *,
+.my-pages .profile-card ul > li .details > * {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 10px;
+  align-items: baseline;
+}
+/* Label style (we assume labels are wrapped in <strong>) */
+.my-pages .profile-card ul > li .booking-meta strong,
+.my-pages .profile-card ul > li .details strong {
+  color: #aeb4c6;
+  font-weight: 700;
+  text-transform: none;
+  font-size: .75rem;
+  letter-spacing: 0;
+}
+/* Value style */
+.my-pages .profile-card ul > li .booking-meta > * :where(span, em, i, small, time, a, p),
+.my-pages .profile-card ul > li .details > * :where(span, em, i, small, time, a, p) {
+  color: #f5f7ff;
+  font-weight: 600;
+  line-height: 1.35;
+}
+/* Row separators for scannability */
+.my-pages .profile-card ul > li .booking-meta > * + *,
+.my-pages .profile-card ul > li .details > * + * {
+  padding-top: 8px;
+  border-top: 1px dashed rgba(255,255,255,0.12);
+}
 
 /* seats */
 .my-pages .profile-card ul > li .seats,
 .my-pages .profile-card ul > li .seat-list {
   display: inline-flex; gap: 6px; flex-wrap: wrap;
 }
+.my-pages .profile-card ul > li .seat-list {
+  margin-bottom: 12px; /* consistent space above buttons */
+}
 .my-pages .profile-card ul > li .seat,
 .my-pages .profile-card ul > li .seat-chip {
-  padding: 3px 10px;
+  padding: 2px 8px;
   border-radius: 999px;
-  font-size: .8rem;
+  font-size: .74rem;
   color: #fff;
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.20);
+  box-shadow: none;
 }
 
 /* actions row */
 .my-pages .profile-card ul > li .actions,
 .my-pages .profile-card ul > li .booking-actions {
+  position: static;    /* not sticky, not absolute */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  margin-top: 6px;
+  padding: 0;
+  margin-top: 20px;    /* consistent spacing below seats */
+  background: transparent;
+  backdrop-filter: none;
+  border-radius: 0;
 }
 .my-pages .profile-card ul > li .booking-hint { color: #bdbdbd; font-size: .9rem; }
 
 /* cancel button (bridge to TSX) */
 .cancel-ticket-btn {
-  margin-top: 8px;
+  margin-top: -4px;
   min-height: 32px;
   padding: 6px 14px;
   border-radius: 15px;
@@ -162,15 +185,44 @@
   transition: background .25s ease, border-color .25s ease, transform .15s ease, box-shadow .25s ease;
   box-shadow: 0 4px 14px rgba(0,0,0,.25);
 }
+.view-ticket-btn {
+  margin-top: -4px;
+  min-height: 32px;
+  padding: 6px 14px;
+  border-radius: 15px;
+  border: 1px solid rgba(255,255,255,0.45);
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: .2px;
+  cursor: pointer;
+  transition: background .25s ease, border-color .25s ease, transform .15s ease, box-shadow .25s ease;
+  box-shadow: 0 4px 14px rgba(0,0,0,.25);
+}
+.booking-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px; /* space between Visa biljett and Avboka */
+}
 .cancel-ticket-btn:hover {
   transform: translateY(-1px);
-  background: rgba(255,255,255,0.15);
-  border-color: rgba(255,0,0,0.60);
-  box-shadow: 0 4px 14px rgba(255,0,0,.35);
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.55);
+  box-shadow: 0 6px 16px rgba(0,0,0,.30);
+}
+.view-ticket-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.55);
+  box-shadow: 0 6px 16px rgba(0,0,0,.30);
 }
 .cancel-ticket-btn:active { transform: translateY(0); }
+.view-ticket-btn:active { transform: translateY(0); }
 .cancel-ticket-btn[disabled],
 .cancel-ticket-btn[aria-disabled="true"] { opacity: .55; cursor: not-allowed; }
+.view-ticket-btn[disabled],
+.view-ticket-btn[aria-disabled="true"] { opacity: .55; cursor: not-allowed; }
 
 /* focus styles */
 .cancel-ticket-btn:focus-visible,
@@ -251,6 +303,10 @@
 @media (min-width: 640px) {
   .section-title { font-size: 1.08rem; }
   .my-pages .profile-card ul { gap: 16px; }
+  .my-pages .profile-card ul > li .booking-meta > *,
+  .my-pages .profile-card ul > li .details > * {
+    grid-template-columns: 140px 1fr;
+  }
 }
 
 /* tablet/desktop ≥ 900px (2-col bookings) */
@@ -260,14 +316,36 @@
     grid-template-columns: 1fr 1fr;
     gap: 18px;
   }
-  .my-pages .profile-card ul > li { padding: 16px 18px; }
+  .my-pages .profile-card ul > li { padding: 10px 10px; border-radius: 4px; }
   .profile-info h2 { font-size: 1.22rem; }
+  .my-pages .profile-card ul > li .booking-meta > *,
+  .my-pages .profile-card ul > li .details > * {
+    grid-template-columns: 160px 1fr;
+  }
 }
 
-/* large desktop ≥ 1200px (wider + gaps) */
-@media (min-width: 1200px) {
+/* desktop ≥ 1024px (keep two columns until 1200px) */
+@media (min-width: 1024px) {
   .my-pages > * { max-width: 1180px; }
-  .my-pages .profile-card ul { gap: 22px; }
+  /* Keep two columns on medium desktop widths */
+  .my-pages .profile-card ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .my-pages .profile-card ul > li { padding: 10px; }
+}
+
+/* large desktop ≥ 1200px (wider + three columns) */
+@media (min-width: 1200px) {
+  .my-pages > * { max-width: 1200px; }
+  .my-pages .profile-card ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .my-pages .profile-card ul > li .booking-meta > *,
+  .my-pages .profile-card ul > li .details > * {
+    grid-template-columns: 180px 1fr;
+  }
+  .my-pages .profile-card ul > li .booking-title { font-size: .95rem; }
+  .my-pages .profile-card ul > li .booking-meta { font-size: .85rem; }
+  .my-pages .profile-card ul > li { padding: 10px; border-radius: 4px; }
 }
 
 /* reduced motion */
@@ -276,4 +354,79 @@
   .logout-btn,
   .tooltip,
   [data-tooltip]::after { transition: none; }
+}
+/* --- No-overlap safeguards for narrow viewports --- */
+@media (max-width: 520px) {
+  /* Titles can wrap instead of forcing horizontal scroll */
+  .my-pages .profile-card ul > li .booking-title { white-space: normal; }
+
+  /* Seat chips wrap and create extra breathing room */
+  .my-pages .profile-card ul > li .seat-list { margin-bottom: 12px; }
+
+  /* Let the actions live in normal flow so nothing sits on top of text */
+  .my-pages .profile-card ul > li .booking-actions {
+    position: static;
+    background: transparent;
+    backdrop-filter: none;
+    padding: 0;
+    margin-top: 20px;
+  }
+
+  /* Buttons align neatly and can wrap if needed */
+  .booking-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .view-ticket-btn,
+  .cancel-ticket-btn {
+    flex: 1 1 48%;
+    min-width: 140px;
+  }
+}
+
+@media (max-width: 360px) {
+  /* On ultra-narrow screens, stack buttons vertically to avoid any overlap */
+  .booking-buttons { gap: 8px; }
+  .view-ticket-btn,
+  .cancel-ticket-btn {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+}
+/* --- MyPages: Top‑right stats (booked / watched) --- */
+.my-pages .profile-card { position: relative; }
+.stats-top-right {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  left: 12px;                 /* pin to both sides so it can't overflow */
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;  /* contents align to the right within safe width */
+  gap: 8px;
+  flex-wrap: wrap;            /* wrap instead of overflow */
+  width: calc(100% - 24px);   /* explicit width inside padding */
+  box-sizing: border-box;     /* include padding in width calc */
+  z-index: 2;
+}
+.stat-pill {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.30);
+  white-space: nowrap;            /* prevent labels from breaking awkwardly */
+}
+.stat-number { font-weight: 800; font-size: .95rem; color: #fff; line-height: 1; }
+.stat-label  { font-weight: 700; font-size: .72rem; color: #cfd3e1; letter-spacing: .02em; text-transform: uppercase; }
+
+/* Prevent overlap on small screens: place below header */
+@media (max-width: 1200px) {
+  .stats-top-right { position: static; margin: 6px 0 0 auto; width: 100%; max-width: 100%; left: auto; right: auto; }
 }
