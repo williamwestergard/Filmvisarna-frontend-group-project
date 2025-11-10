@@ -21,7 +21,7 @@
   position: relative;
 }
 .day-and-month-container h3 {
-  font-size: clamp(1.1rem, 1.5vw, 1.2rem);
+  font-size: clamp(1.1rem, 1.5svw, 1.2rem);
   font-weight: 600;
 }
 
@@ -34,7 +34,7 @@
 .choose-week {
   padding: 0.7vh 0.2vw;
   border-radius: 5px;
-  font-size: clamp(0.8rem, 1vw, 1rem);
+  font-size: clamp(0.8rem, 1svw, 1rem);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -44,11 +44,11 @@
 
 .choose-week-arrow-left,
 .choose-week-arrow-right {
-  width: clamp(10px, 0.8vw, 13px);
+  width: clamp(10px, 0.8svw, 13px);
   align-self: center;
   cursor: pointer;
   padding: 0.6vh 0.4vw;
-  font-size: clamp(0.7rem, 1vw, 0.9rem);
+  font-size: clamp(0.7rem, 1svw, 0.9rem);
   background-color: #2c2a3b;
   border-radius: 5px;
 }
@@ -75,7 +75,7 @@
   background-color: #4a4a5f;
   border: 1px solid #070714;
   padding: 0.5vh 2vh;
-  width: clamp(20px, 1.6vw, 30px);
+  width: clamp(20px, 1.6svw, 30px);
   border-radius: 5px;
 }
 
@@ -85,12 +85,12 @@
   padding: 0;
 }
 .date-card-date {
-  font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+  font-size: clamp(1.1rem, 1.5svw, 1.3rem);
   font-weight: 600;
 }
 
 .date-card-day {
-  font-size: clamp(0.7rem, 0.8vw, 0.8rem);
+  font-size: clamp(0.7rem, 0.8svw, 0.8rem);
   font-weight: 200;
   color: rgb(200, 199, 199);
 }
@@ -117,12 +117,12 @@
 }
 
 .choose-day-text {
-  font-size: clamp(0.7rem, 0.8vw, 0.8rem);
+  font-size: clamp(0.7rem, 0.8svw, 0.8rem);
   color: rgb(200, 199, 199);
 }
 
 .choose-day-time {
-  font-size: clamp(1rem, 1vw, 1¨1rem);
+  font-size: clamp(1rem, 1svw, 1¨1rem);
   font-weight: 700;
 }
 
@@ -160,7 +160,7 @@
 }
 
 .date-card-cross {
-  font-size: clamp(1rem, 1vw, 1.2rem);
+  font-size: clamp(1rem, 1svw, 1.2rem);
   color: #888888;
   margin: 0;
   user-select: none;
@@ -192,7 +192,7 @@
     gap: 5vw;
   }
   .day-and-month-container h3 {
-    font-size: clamp(1.1rem, 1.5vw, 1.2rem);
+    font-size: clamp(1.1rem, 1.5svw, 1.2rem);
     font-weight: 600;
   }
 
@@ -203,15 +203,15 @@
   .choose-week {
     padding: 0.7vh 0.2vw;
     border-radius: 5px;
-    font-size: clamp(0.8rem, 1vw, 1rem);
+    font-size: clamp(0.8rem, 1svw, 1rem);
     gap: 4vw;
   }
 
   .choose-week-arrow-left,
   .choose-week-arrow-right {
-    width: clamp(12px, 0.8vw, 15px);
+    width: clamp(12px, 0.8svw, 15px);
     padding: 0.6vh 0.4vw;
-    font-size: clamp(0.7rem, 1vw, 0.9rem);
+    font-size: clamp(0.7rem, 1svw, 0.9rem);
     background-color: #2c2a3b;
     border-radius: 5px;
   }
@@ -231,7 +231,7 @@
     background-color: #4a4a5f;
     border: 1px solid #070714;
     padding: 0.5vh 1.2vh;
-    width: clamp(12px, 2vw, 15px);
+    width: clamp(12px, 2svw, 15px);
   }
 
   .date-card {
@@ -243,7 +243,7 @@
     background-color: #4a4a5f;
     border: 1px solid #070714;
     padding: 0.55vh 4.2vw;
-    width: clamp(20px, 8vw, 35px);
+    width: clamp(20px, 8svw, 35px);
     border-radius: 5px;
     box-sizing: border-box;
   }
@@ -254,7 +254,7 @@
     padding: 0;
   }
   .date-card-date {
-    font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+    font-size: clamp(1.1rem, 1.5svw, 1.3rem);
     font-weight: 600;
   }
 
@@ -284,12 +284,12 @@
   }
 
   .choose-day-text {
-    font-size: clamp(0.7rem, 0.8vw, 0.8rem);
+    font-size: clamp(0.7rem, 0.8svw, 0.8rem);
     color: rgb(200, 199, 199);
   }
 
   .choose-day-time {
-    font-size: clamp(1rem, 1vw, 1rem);
+    font-size: clamp(1rem, 1svw, 1rem);
     font-weight: 700;
   }
 
@@ -327,7 +327,7 @@
   }
 
   .date-card-cross {
-    font-size: clamp(0.8rem, 1vw, 0.9rem);
+    font-size: clamp(0.8rem, 1svw, 0.9rem);
     color: #888888;
     margin: 0;
     user-select: none;
