@@ -319,20 +319,20 @@ useEffect(() => {
           <TicketsAmount />
           <Auditorium />
 
-          {paketprisToShow && (
-            <section className="paketpris-info">
-              <h3>Veckans film - Paketpris</h3>
-              <p>
-                {paketprisToShow.liten.antal} liten popcorn –{" "}
-                {paketprisToShow.liten.pris} kr
-              </p>
-              <p>
-                {paketprisToShow.litenEn.antal} liten popcorn –{" "}
-                {paketprisToShow.litenEn.pris} kr
-              </p>
-              <p className="paketpris-note">(Erbjudandet gäller vid betalning i kassan)</p>
-            </section>
-          )}
+      {paketprisToShow && (
+          <section className="paketpris">
+            <strong>Veckans film:</strong>
+            <p>
+              {paketprisToShow.liten.antal} liten popcorn –{" "}
+              {paketprisToShow.liten.pris} kr
+            </p>
+            <p>
+              {paketprisToShow.litenEn.antal} liten popcorn –{" "}
+              {paketprisToShow.litenEn.pris} kr
+            </p>
+            <p className="paketpris-note">(Gäller endast vid betalning i kassan)</p>
+          </section>
+        )}
 
           {!userId && (
   <div className="booking-guest-email-container">

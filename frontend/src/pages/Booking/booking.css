@@ -365,57 +365,59 @@ iframe {
 }
 
 /*                      Popcorn-paketpris styling                             */
-.paketpris-info {
-  background-color: #1c1b24;
-  border: 1px solid #2a2835;
-  font-family: "Aguafina Script", cursive;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-top: 1.5rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  color: #f2f2f2;
-  max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  background: linear-gradient(180deg, #1c1b24 0%, #1a1922 100%);
-}
-
-.paketpris-info:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
-}
-
-.paketpris-info h3 {
-  font-size: 1.2rem;
-  font-family: "Aguafina Script", cursive;
-  color: #cc0028;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid #2f2c3d;
-  padding-bottom: 0.5rem;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #ff4c6d;
-  text-shadow: 0 0 8px rgba(255, 76, 109, 0.5); /* glow effect */
-  animation: shimmer 2s ease-in-out infinite;
-}
-
-.paketpris-info p {
-  margin: 0.5rem 0;
+.paketpris {
+  border: 2px solid #493438;
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  text-align: left;
+  color: #f5f5f5;
   font-size: 0.95rem;
-  color: #d1cfd7;
-  text-align: center;
+  line-height: 1.6;
+  max-width: 300px;
+  margin: 1.5rem 0;
+  background: #23223250;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.3px;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.paketpris-info .paketpris-note {
-  display: block;
-  margin-top: 0.8rem;
+/* small label */
+.paketpris::before {
+  content: "Erbjudande";
+  position: absolute;
+  top: -14px;
+  left: 12px;
+  background: #c41230;
+  color: #fff;
   font-size: 0.8rem;
-  color: #8f8d9b;
-  font-style: italic;
-  text-align: center;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+.paketpris strong {
+  color: #ffb3b3;
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.paketpris-note {
+  font-size: 0.8rem;
+  color: #bbb;
+  font-style: italic;
+  margin-top: 0.4rem;
+}
+.paketpris:hover {
+  background: #2a2a3d80;
+  transform: translateY(-1px);
+  transition: 0.2s ease;
+}
+
+
 /* Confirm- button */
 .confirm-actions {
   width: 100%;
