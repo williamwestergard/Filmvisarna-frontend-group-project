@@ -107,7 +107,7 @@ a {
 }
 
 .filter-dropdown[type="date"]::after {
-  content: "📅";
+  content: "";
   position: absolute;
   right: 0.5rem;
   top: 50%;
