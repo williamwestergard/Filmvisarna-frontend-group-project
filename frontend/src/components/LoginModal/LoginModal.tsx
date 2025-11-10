@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import "./LoginModal.css";
 import LoginForm from "../LoginForm/LoginForm";
 
 type LoginModalProps = {
@@ -50,3 +51,11 @@ export default function LoginModal({ open, onRequestClose }: LoginModalProps) {
           </button>
         </header>
     
+        <div className="loginmodal-body">
+          {/* LoginForm */}
+          <LoginForm />
+        </div>
+      </div>
+    </div>
+  );
+}
