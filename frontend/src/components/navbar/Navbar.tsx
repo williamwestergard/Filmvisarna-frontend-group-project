@@ -12,9 +12,10 @@ type User = {
 
 type NavbarProps = {
   onOpenLogin?: () => void; // open for login modal
+  onOpenRegister?: () => void; // open for register modal
 };
 
-const Navbar: React.FC<NavbarProps> = ({ onOpenLogin }) => {
+const Navbar: React.FC<NavbarProps> = ({ onOpenLogin, onOpenRegister }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLogOutOpen, setisLogOutOpen] = useState(false);
@@ -268,7 +269,10 @@ useEffect(() => {
                 </button>
               </li>
               <li className="nav-item">
-                <a href="/register" className="nav-button">Skapa konto</a>
+                {/* Register button triggers register modal opener */} {/* <-- CHANGED */}
+                <button type="button" className="nav-button" onClick={onOpenRegister}>
+                  Skapa konto
+                </button>
               </li>
             </>
           )}
@@ -364,7 +368,7 @@ useEffect(() => {
             <>
               {/* Login and register links for non-authenticated users */}
               <button className="nav-button" onClick={() => { onOpenLogin?.(); openAccountLink(); }}>Logga in</button>
-              <a href="/register" className="nav-button" onClick={openAccountLink}>Skapa konto</a>
+              <button className="nav-button" onClick={() => { onOpenRegister?.(); openAccountLink(); }}>Skapa konto</button> {/* <-- CHANGED */}
             </>
             )}
           </div>

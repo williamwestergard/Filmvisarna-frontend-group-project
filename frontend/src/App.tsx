@@ -14,6 +14,7 @@ import Discover from "./pages/Discover/Discover";
 import MyPages from "./pages/MyPages/MyPages";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import LoginModal from "./components/LoginModal/LoginModal";
+import RegisterModal from "./components/RegisterModal/RegisterModal";
 
 // Scrolls to top when route changes
 function ScrollToTop() {
@@ -29,10 +30,14 @@ function ScrollToTop() {
 // Main application entry point
 function App() {
   const [loginOpen, setLoginOpen] = useState(false);
+  const [registerOpen, setRegisterOpen] = useState(false);
 
   return (
     <>
-      <Navbar onOpenLogin={() => setLoginOpen(true)} /> {/* pass opener */}
+      <Navbar
+        onOpenLogin={() => setLoginOpen(true)}
+        onOpenRegister={() => setRegisterOpen(true)}
+      />
       <main>
         <ScrollToTop />
         <Routes>
@@ -67,6 +72,11 @@ function App() {
       <LoginModal
         open={loginOpen}
         onRequestClose={() => setLoginOpen(false)}
+      />
+      {/* REGISTER MODAL */}
+      <RegisterModal
+        open={registerOpen}
+        onRequestClose={() => setRegisterOpen(false)}
       />
 
       <Footer />
