@@ -37,6 +37,7 @@ router.get("/:id", async (req, res) => {
       SELECT 
         b.id AS bookingId,
         b.bookingNumber,
+        b.bookingUrl,
         b.status,
         m.title AS movieTitle,
         s.time AS screeningTime,
@@ -62,6 +63,7 @@ router.get("/:id", async (req, res) => {
         grouped[row.bookingId] = {
           bookingId: row.bookingId,
           bookingNumber: row.bookingNumber,
+          bookingUrl: row.bookingUrl,
           status: row.status,
           movieTitle: row.movieTitle,
           screeningTime: row.screeningTime,
