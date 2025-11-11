@@ -4,16 +4,17 @@ import {useNavigate,  Link, useLocation } from "react-router-dom";
 import logo from './navbar-logo.png'; 
 import UserProfilePic from "./navbar-user-profile-picture.png"
 
-
-
-
 type User = {
   firstName: string;
   lastName: string;
   avatarUrl?: string;
 };
 
-const Navbar: React.FC = () => {
+type NavbarProps = {
+  onOpenLogin?: () => void; // open for login modal
+};
+
+const Navbar: React.FC<NavbarProps> = ({ onOpenLogin }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLogOutOpen, setisLogOutOpen] = useState(false);
@@ -36,8 +37,6 @@ const Navbar: React.FC = () => {
         navbar.classList.remove("no-transition");
       });
     }, [location.pathname]);
-
-
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -77,7 +76,6 @@ useEffect(() => {
     document.removeEventListener("mousedown", handleClickOutside);
   };
 }, [isLogOutOpen]);
-
 
   // Effekt för att förhindra scrolling av body när mobilmenyn är öppen
   useEffect(() => {
@@ -126,7 +124,6 @@ useEffect(() => {
     navigate("/");
   };
 
-
 useEffect(() => {
   const navbar = document.querySelector('.site-header') as HTMLElement;
   if (!navbar) return;
@@ -174,11 +171,6 @@ useEffect(() => {
   window.addEventListener('scroll', onScroll, { passive: true });
   return () => window.removeEventListener('scroll', onScroll);
 }, []);
-
-
-
-
-
 
   const desktopNavigation = (
     <nav className="navbar navbar-desktop">
@@ -270,7 +262,10 @@ useEffect(() => {
           ) : (
             <>
               <li className="nav-item">
-                <a href="/login" className="nav-button">Logga in</a>
+               {/*Login button triggers login modal opener*/} 
+                <button type="button" className="nav-button" onClick={onOpenLogin}>
+                  Logga in
+                </button>
               </li>
               <li className="nav-item">
                 <a href="/register" className="nav-button">Skapa konto</a>
@@ -368,7 +363,7 @@ useEffect(() => {
             ) : (
             <>
               {/* Login and register links for non-authenticated users */}
-              <a href="/login" className="nav-button" onClick={openAccountLink}>Logga in</a>
+              <button className="nav-button" onClick={() => { onOpenLogin?.(); openAccountLink(); }}>Logga in</button>
               <a href="/register" className="nav-button" onClick={openAccountLink}>Skapa konto</a>
             </>
             )}
