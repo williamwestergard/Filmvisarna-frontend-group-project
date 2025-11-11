@@ -12,10 +12,10 @@ type User = {
 
 type NavbarProps = {
   onOpenLogin?: () => void; // open for login modal
-  onOpenRegister?: () => void; // open for register modal  <-- ADDED
+  onOpenRegister?: () => void; // open for register modal
 };
 
-const Navbar: React.FC<NavbarProps> = ({ onOpenLogin, onOpenRegister }) => { // <-- UPDATED
+const Navbar: React.FC<NavbarProps> = ({ onOpenLogin, onOpenRegister }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLogOutOpen, setisLogOutOpen] = useState(false);
