@@ -179,7 +179,7 @@
 /* actions row */
 .my-pages .profile-card ul > li .actions,
 .my-pages .profile-card ul > li .booking-actions {
-  position: static;    /* not sticky, not absolute */
+  position: static;    
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -196,7 +196,7 @@
   margin-top: -4px;
   /* Fixed height across all viewports */
   height: var(--mypages-btn-h);
-  padding: 0 14px; /* keep horizontal padding only */
+  padding: 0 14px; 
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -402,7 +402,7 @@
   /* Seat chips wrap and create extra breathing room */
   .my-pages .profile-card ul > li .seat-list { margin-bottom: 12px; }
 
-  /* Let the actions live in normal flow so nothing sits on top of text */
+  
   .my-pages .profile-card ul > li .booking-actions {
     position: static;
     background: transparent;
@@ -411,7 +411,7 @@
     margin-top: 20px;
   }
 
-  /* Buttons align neatly and can wrap if needed */
+  
   .booking-buttons {
     display: flex;
     gap: 10px;
@@ -440,12 +440,12 @@
   .stat-label  { font-size: clamp(.62rem, 2.6vw, .72rem); }
 
   .profile-header {
-    grid-template-columns: 1fr;   /* stack vertically on mobile */
+    grid-template-columns: 1fr;   
     gap: 10px;
     align-items: start;
   }
   .stats-top-right {
-    justify-self: end;  /* keep to the right edge of the card */
+    justify-self: end;  
     width: 100%;
     max-width: 100%;
   }
@@ -470,8 +470,8 @@
   min-height: var(--mypages-stats-h);
   flex-wrap: nowrap;
   overflow: hidden;
-  justify-self: end;   /* snap to the right column */
-  align-self: center;  /* align vertically with avatar/text */
+  justify-self: end;  
+  align-self: center;  
 }
 
 .stat-pill {
@@ -484,7 +484,7 @@
   border: 1px solid rgba(255,255,255,0.18);
   backdrop-filter: blur(4px);
   box-shadow: 0 6px 14px rgba(0,0,0,0.30);
-  white-space: nowrap;            /* prevent labels from breaking awkwardly */
+  white-space: nowrap;           
 }
 .stat-pill { line-height: 1; }
 .stat-number { font-weight: 800; font-size: .95rem; color: #fff; line-height: 1; }
