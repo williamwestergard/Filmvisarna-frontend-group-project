@@ -159,7 +159,7 @@ const MyPages: React.FC = () => {
                       </div>
                     </div>
                     <div className="booking-actions">
-                      <span className="booking-hint">Kan avbokas fram till start</span>
+                      <span className="booking-hint">Din bokning</span>
                       <div className="booking-buttons">
                         <button
                           className="view-ticket-btn"
