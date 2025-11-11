@@ -61,12 +61,7 @@ export default function LoginForm({ onClose }: LoginFormProps) {
 
   return (
     <form className="login-form" onSubmit={handleSubmit} aria-label="Logga in">
-      <img
-        className="login-logo-inside"
-        src="/filmvisarnafooterbilden.png"
-        alt="Filmvisarna"
-      />
-
+    
       <h2 className="login-title">Logga in</h2>
       {error && <p className="login-error-message">{error}</p>}
 
