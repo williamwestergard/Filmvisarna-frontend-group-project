@@ -1,0 +1,23 @@
+/* Dialog */
+.loginmodal-dialog {
+  width: min(600px, 96vw);
+  border-radius: 12px;
+  background: #1b1b28;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  /* djup + subtil glow */
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.45),
+    0 0 28px rgba(143, 175, 255, 0.10);
+}
+
+/* Header */
+.loginmodal-header {
+  padding: 16px 18px;
+  background: linear-gradient(180deg, #23233a 0%, #1f1f30 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Body */
+.loginmodal-body {
+  padding: 26px 26px 22px;
+}
