@@ -1,3 +1,4 @@
+// src/components/Auditorium/AuditoriumOne.tsx
 import "./auditorium.css";
 import { useEffect, useState } from "react";
 import AuditoriumScreen from "../../assets/images/auditorium/auditorium-screen.png";
@@ -11,62 +12,21 @@ interface Seat {
 }
 
 interface AuditoriumProps {
-  screeningId: number; 
+  screeningId: number;
 }
 
-function useSeatLogic(seats: Seat[], bookedSeats: number[]) {
-  const { selectedSeats, toggleSeat, totalTickets } = useBooking();
-
-  function onToggle(row: string, number: number) {
-    const seat = seats.find(
-      (s) => s.rowLabel === row && s.seatNumber === number
-    );
-    if (!seat) {
-      console.error(`❌ Kunde inte hitta seatId för ${row}-${number}`);
-      return;
-    }
-
-    const seatId = seat.seatId;
-    const alreadySelected = selectedSeats.some((s) => s.seatId === seatId);
-
-    if (alreadySelected) {
-      toggleSeat({ seatId, row, number, auditorium: "Halvan" });
-      return;
-    }
-
-    if (totalTickets <= 0 || selectedSeats.length >= totalTickets) return;
-    toggleSeat({ seatId, row, number, auditorium: "Halvan" });
-  }
-
-  function isSelected(row: string, number: number) {
-    const seat = seats.find(
-      (s) => s.rowLabel === row && s.seatNumber === number
-    );
-    if (!seat) return false;
-    return selectedSeats.some((s) => s.seatId === seat.seatId);
-  }
-
-  function isOccupied(row: string, number: number) {
-    const seat = seats.find(
-      (s) => s.rowLabel === row && s.seatNumber === number
-    );
-    if (!seat) return false;
-    return bookedSeats.includes(seat.seatId);
-  }
-
-  return { onToggle, isSelected, isOccupied, totalTickets, selectedSeats };
-}
-
-type SeatBoxProps = {
-  row: string;
-  number: number;
+// Component representing a single seat
+function SeatBox({
+  onClick,
+  selected,
+  occupied,
+  disabled,
+}: {
   onClick: () => void;
   selected: boolean;
   occupied: boolean;
   disabled: boolean;
-};
-
-function SeatBox({ onClick, selected, occupied, disabled }: SeatBoxProps) {
+}) {
   const className = [
     "auditorium-seat",
     selected ? "is-selected" : "",
@@ -75,6 +35,7 @@ function SeatBox({ onClick, selected, occupied, disabled }: SeatBoxProps) {
   ]
     .filter(Boolean)
     .join(" ");
+
   return (
     <article
       className={className}
@@ -87,14 +48,16 @@ function SeatBox({ onClick, selected, occupied, disabled }: SeatBoxProps) {
   );
 }
 
-export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
-  const { setAvailableSeatsCount } = useBooking();
+export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
+  const { totalTickets, selectedSeats, toggleSeat, setAvailableSeatsCount } =
+    useBooking();
 
   const [seats, setSeats] = useState<Seat[]>([]);
   const [bookedSeats, setBookedSeats] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch all seats for this screening
   useEffect(() => {
     let intervalId: ReturnType<typeof setInterval>;
 
@@ -112,8 +75,8 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
           .map((s: Seat) => s.seatId);
         setBookedSeats(booked);
 
-        const available = data.seats.length - booked.length;
-        setAvailableSeatsCount(available);
+        setAvailableSeatsCount(data.seats.length - booked.length);
+        setError(null);
       } catch (err) {
         console.error("Error fetching seats:", err);
         setError("Kunde inte hämta bokade platser.");
@@ -127,11 +90,7 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
     return () => clearInterval(intervalId);
   }, [screeningId, setAvailableSeatsCount]);
 
-  const { onToggle, isSelected, isOccupied, totalTickets, selectedSeats } =
-    useSeatLogic(seats, bookedSeats);
-
-  const maxReached = totalTickets > 0 && selectedSeats.length >= totalTickets;
-
+  // Group seats by row
   const rowsMap = seats.reduce((acc, seat) => {
     if (!acc[seat.rowLabel]) acc[seat.rowLabel] = [];
     acc[seat.rowLabel].push(seat);
@@ -142,21 +101,126 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
     rowsMap[r].sort((a, b) => a.seatNumber - b.seatNumber)
   );
 
+  /**
+   *  Find the best available connected group of seats
+   * Requirements:
+   *  - Seats must be adjacent (no booked seat in between)
+   *  - As close to the row center as possible
+   *  - If no row fits group size, skip recommendation
+   */
+  useEffect(() => {
+    if (totalTickets <= 0 || seats.length === 0) return;
+
+    // Clear previous auto-selections when user changes tickets
+    selectedSeats.forEach((s) =>
+      toggleSeat({
+        seatId: s.seatId,
+        row: s.row,
+        number: s.number,
+        auditorium: "Helan",
+      })
+    );
+
+    const rowOrder = ["E", "D", "F", "C", "G", "B", "H", "A"];
+    let bestGroup: Seat[] = [];
+    let bestRow = "";
+
+    for (const row of rowOrder) {
+      const rowSeats = rowsMap[row];
+      if (!rowSeats) continue;
+
+      const free = rowSeats.filter((s) => !bookedSeats.includes(s.seatId));
+      if (free.length < totalTickets) continue;
+
+      // Build groups of *adjacent* free seats
+      const groups: Seat[][] = [];
+      let currentGroup: Seat[] = [];
+
+      for (let i = 0; i < rowSeats.length; i++) {
+        const seat = rowSeats[i];
+        const isFree = !bookedSeats.includes(seat.seatId);
+
+        if (isFree) {
+          // Add to current group
+          currentGroup.push(seat);
+        } else if (currentGroup.length > 0) {
+          // End of a free group
+          groups.push([...currentGroup]);
+          currentGroup = [];
+        }
+      }
+      if (currentGroup.length > 0) groups.push([...currentGroup]);
+
+      // Only consider groups big enough
+      const validGroups = groups.filter((g) => g.length >= totalTickets);
+      if (validGroups.length === 0) continue;
+
+      // Find the group whose center is closest to the row center
+      const firstNum = rowSeats[0].seatNumber;
+      const lastNum = rowSeats[rowSeats.length - 1].seatNumber;
+      const mid = (firstNum + lastNum) / 2;
+
+      let bestDist = Infinity;
+      let closestGroup: Seat[] = [];
+
+      for (const g of validGroups) {
+        for (let start = 0; start <= g.length - totalTickets; start++) {
+          const sub = g.slice(start, start + totalTickets);
+          const subMid =
+            sub.reduce((sum, s) => sum + s.seatNumber, 0) / sub.length;
+          const dist = Math.abs(mid - subMid);
+          if (dist < bestDist) {
+            bestDist = dist;
+            closestGroup = sub;
+          }
+        }
+      }
+
+      // Found a valid closest group
+      if (closestGroup.length > 0) {
+        bestGroup = closestGroup;
+        bestRow = row;
+        break; // stop at first suitable row (closest to center)
+      }
+    }
+
+    if (bestGroup.length > 0) {
+      bestGroup.forEach((seat) => {
+        toggleSeat({
+          seatId: seat.seatId,
+          row: seat.rowLabel,
+          number: seat.seatNumber,
+          auditorium: "Helan",
+        });
+      });
+    } else {
+      console.log("⚠️ No suitable connected group found");
+    }
+  }, [totalTickets, seats]);
+
+  const maxReached = totalTickets > 0 && selectedSeats.length >= totalTickets;
+
+  // Render visual layout
   const renderRow = (rowLabel: string, rowSeats: Seat[]) => (
     <section className={`auditorium-row row-${rowLabel}`} key={rowLabel}>
       {rowSeats.map((seat) => {
-        const selected = isSelected(seat.rowLabel, seat.seatNumber);
-        const occupied = isOccupied(seat.rowLabel, seat.seatNumber);
+        const selected = selectedSeats.some((s) => s.seatId === seat.seatId);
+        const occupied = bookedSeats.includes(seat.seatId);
         const disabled = occupied || (maxReached && !selected);
         return (
           <SeatBox
             key={seat.seatId}
-            row={seat.rowLabel}
-            number={seat.seatNumber}
             selected={selected}
             occupied={occupied}
             disabled={disabled}
-            onClick={() => onToggle(seat.rowLabel, seat.seatNumber)}
+            onClick={() =>
+              toggleSeat({
+                seatId: seat.seatId,
+                row: seat.rowLabel,
+                number: seat.seatNumber,
+                auditorium: "Helan",
+              })
+            }
           />
         );
       })}
@@ -164,8 +228,8 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
   );
 
   return (
-    <section className="auditorium-one-content">
-      <p className="auditorium-text">Salong - Halvan</p>
+    <section className="auditorium-two-content">
+      <p className="auditorium-text">Salong - Helan</p>
       <h2>Välj platser</h2>
 
       <section className="auditorium-container">
@@ -185,9 +249,9 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
             ) : error ? (
               <p>{error}</p>
             ) : (
-              Object.entries(rowsMap).map(([rowLabel, rowSeats]) =>
-                renderRow(rowLabel, rowSeats)
-              )
+              Object.entries(rowsMap)
+                .sort(([a], [b]) => a.localeCompare(b))
+                .map(([label, rowSeats]) => renderRow(label, rowSeats))
             )}
           </section>
         </article>
