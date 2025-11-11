@@ -110,13 +110,15 @@
   font-size: clamp(2rem, 3vw, 3rem);
   position: relative;
   left: -0.4vw;
+  margin-bottom: 2rem;
 }
 
 .movie-lang-sub {
   font-size: clamp(1.2rem, 1.6vw, 1.5rem);
   color: #999999;
-  position: relative;
-  top: -3vh;
+  position: static; /* or remove position/top entirely */
+  margin-top: -2rem;
+  margin-bottom: 3rem;
 }
 
 .movie-desc {
@@ -749,7 +751,7 @@ iframe {
 }
 
 /*Phone screen sizes*/
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 880px) {
   .booking-page {
     padding: 0vw 0vw;
     gap: 3vh;
@@ -766,9 +768,6 @@ iframe {
     width: 100%;
   }
 
-  .movie-lang-sub {
-    top: -2vh;
-  }
   .booking-price-card-top {
     display: none;
   }
@@ -793,10 +792,6 @@ iframe {
 
   .booking-page-left-side-content {
     width: 100%;
-  }
-
-  .movie-lang-sub {
-    top: -2vh;
   }
 }
 

@@ -1,6 +1,8 @@
 .available-dates-content {
   display: flex;
   flex-direction: column;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .choose-day-and-month {
@@ -39,7 +41,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 0.6vw;
+  gap: clamp(4px, 0.6vw, 12px);
 }
 
 .choose-week-arrow-left,
@@ -62,12 +64,12 @@
 }
 
 .dates-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: clamp(4px, 0.6vw, 10px);
   width: 85%;
-  margin: 0 auto;
-  margin-bottom: 6vh;
+  max-width: 700px;
+  margin: 0 auto 6vh;
 }
 
 .date-card {
@@ -101,6 +103,8 @@
   justify-content: space-evenly;
   text-align: center;
   width: 80%;
+  max-width: 800px;
+  gap: clamp(4px, 0.8vw, 10px);
   margin: 0 auto;
 }
 
@@ -122,7 +126,7 @@
 }
 
 .choose-day-time {
-  font-size: clamp(1rem, 1svw, 1¨1rem);
+  font-size: clamp(1rem, 1svw, 1.1rem);
   font-weight: 700;
 }
 
@@ -189,7 +193,7 @@
   }
 
   .day-and-month-container {
-    gap: 5vw;
+    gap: clamp(6px, 1vw, 20px);
   }
   .day-and-month-container h3 {
     font-size: clamp(1.1rem, 1.5svw, 1.2rem);
@@ -231,7 +235,8 @@
     background-color: #4a4a5f;
     border: 1px solid #070714;
     padding: 0.5vh 1.2vh;
-    width: clamp(12px, 2svw, 15px);
+    width: clamp(25px, 1.5vw, 32px);
+    padding: 0.4vh clamp(8px, 1.5vw, 16px);
   }
 
   .date-card {

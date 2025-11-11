@@ -181,50 +181,95 @@ function createBookingsRouter(pool) {
         }
 
         const htmlBody = `
-    <div style="font-family: Arial, sans-serif; background: #e9e9e9ff; color:black;padding:1vh 1vh;">
-      <div style="max-width:460px;margin:0 auto; background: #FFFFFF;padding:0px 30px;border-radius:5px 5px 0 0;margin-top:.1vh;box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.28);">
-      <br/>  <br/> 
-      <div style="margin-top:.1vh;padding:2px;text-align:center;border-bottom:1px solid #8d8d8dff;"> 
-       <img src="https://res.cloudinary.com/dbvcotnqt/image/upload/v1762520999/filmvisarna-email-checkmark_j8p8dz.png" alt="Checkmark" style="width:42px; height:auto; display:block; margin:0 auto;">
-        <h1 style="line-height:1.5;font-size:3vh;"> Tack för din bokning!</h1>
-        </div>
-        <div style="line-height:1.8;font-size:.9rem;"> 
-        <p style="margin-top:30px;">Här är detaljerna för din bokning:</p>
-          <strong>Film:</strong> ${movieTitle} <br/>
-         <strong>Salong:</strong> ${auditoriumName}<br/>
-         <strong>Datum:</strong> ${new Date(screeningTime).toLocaleDateString(
-           "sv-SE"
-         )}<br/>
-          <strong>Tid:</strong> ${new Date(screeningTime).toLocaleTimeString(
-            "sv-SE",
-            {
-              hour: "2-digit",
-              minute: "2-digit",
-            }
-          )}<br/>
-         <strong>Platser:</strong> ${seatsList}
-         </div>
-     <br/><br/>
-          <div style="background-color:#F3F3F3;color:black;margin:0 auto;text-align:center;width:85%;padding:1.6vh .7vh;border:1px solid #9f9f9fc2;border-radius:5px;margin-top:5px;">
-          <h3 style="text-transform:uppercase;margin:0;padding:0;position:relative;top:25px;font-size:1.55vh;letter-spacing:.8px;margin:0px;">Bokningsnummer: </h3>
-          <h1 style="font-size:5.5vh;text-transform:uppercase;color:#DB1133;font-weight:900;letter-spacing:5px;margin:0;padding:0;"> ${bookingNumber}</h1>
-          <p style="font-style:italic;position:relative;top:5px;margin:3px;font-size:1.38vh"> Visa upp bokningsnumret till kassören. </p>
-       </div>
-       <br/>
-       <br/>
-       <div style="text-align:center;font-size:1rem;">
-        <p style="margin:0 auto;margin-top:7px;margin-bottom:10px;margin-left:15px">Vi ses på bion! 🍿</p>
-        <br/>
-        <a style="font-weight:500;margin:0 auto; margin-bottom:80px;margin-left:-12px;" href="http://localhost:5173/ticket/${bookingUrl}">Avboka biljetter </a> <br/><br/><br/><br/>
-        </div>
-          <br/>
-    </div>
-       <div style="text-align:center;background:#C41230;margin:0 auto;margin-bottom:1vh; max-width:460px;padding:29px 30px;border-radius:0 0 5px 5px;">
-      <img src="https://res.cloudinary.com/dbvcotnqt/image/upload/v1762426970/filmvisarna-email-logo.png" alt="Filmvisarna" style="width:100px; height:auto; display:block; margin:0 auto 10px;">
-      <p style="font-size:12px;color:white; margin:0; margin-top:15px;">Filmvisarna AB | Småstad, Sverige</p>
+<!-- Force light mode where supported -->
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light">
 
-      </div>
-    </div>
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#E9E9E9" style="background-color:#E9E9E9 !important; padding: 20px 0;">
+  <tr>
+    <td align="center">
+
+      <!-- White main card -->
+      <table width="530" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF !important; border-radius:5px 5px 0 0; border-collapse:separate;">
+        <tr>
+          <td align="center" style="padding:30px; background-color:#FFFFFF !important;">
+            <img src="https://res.cloudinary.com/dbvcotnqt/image/upload/v1762520999/filmvisarna-email-checkmark_j8p8dz.png" width="42" alt="Checkmark" style="display:block;">
+            <h1 style="font-family:Arial,sans-serif; font-size:25px; line-height:1.6; color:#111111 !important; margin:10px 0;">Tack för din bokning!</h1>
+            <hr style="border:none; border-top:1px solid #8D8D8D; margin:15px 0;">
+          </td>
+        </tr>
+
+        <!-- Booking details -->
+        <tr>
+          <td style="font-family:Arial,sans-serif; font-size:16px; color:#111111 !important; padding:0 30px 25px 30px; line-height:1.9; background-color:#FFFFFF !important;">
+            <p>Här är detaljerna för din bokning:</p>
+            <p>
+              <strong>Film:</strong> ${movieTitle}<br>
+              <strong>Salong:</strong> ${auditoriumName}<br>
+              <strong>Datum:</strong> ${new Date(
+                screeningTime
+              ).toLocaleDateString("sv-SE")}<br>
+              <strong>Tid:</strong> ${new Date(
+                screeningTime
+              ).toLocaleTimeString("sv-SE", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}<br>
+              <strong>Platser:</strong> ${seatsList}
+            </p>
+          </td>
+        </tr>
+
+        <!-- Booking number box -->
+        <tr>
+          <td align="center" style="padding:15px 15px; background-color:#FFFFFF !important;">
+            <table cellpadding="0" cellspacing="0" border="0" bgcolor="#F3F3F3" style="background-color:#F3F3F3 !important; border:1px solid #9F9F9F; border-radius:5px; box-shadow:1px 2px 6px rgba(0,0,0,0.14);">
+              <tr>
+                <td align="center" style="padding:12px 25px; background-color:#F3F3F3 !important;">
+                  <h3 style="font-size:14px; letter-spacing:1px; text-transform:uppercase; margin:0; color:#111111 !important;">Bokningsnummer:</h3>
+                  <h1 style="font-size:60px; color:#DB1133 !important; font-weight:900; letter-spacing:4px; margin:5px 0;">${bookingNumber}</h1>
+                  <p style="font-size:14px; font-style:italic; margin:0; color:#111111 !important;">Visa upp bokningsnumret till kassören.</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Message + link -->
+        <tr>
+          <td align="center" style="font-family:Arial,sans-serif;font-size:16px; padding:35px; background-color:#FFFFFF !important;">
+            <p style="margin:0; color:#111111 !important;">Vi ses på bion! 🍿</p>
+            <p style="margin-top:15px;">
+            <br/>
+              <a href="http://localhost:5173/ticket/${bookingUrl}" 
+                 style="color:#0066CC !important;margin-right:5px;">Avboka biljetter</a>
+                  <br/>
+            </p>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Footer (red bar) -->
+      <table width="530" cellpadding="0" cellspacing="0" border="0" bgcolor="#C41230" style="background-color:#C41230 !important; border-radius:0 0 5px 5px;">
+        <tr>
+          <td align="center" style="padding:30px; background-color:#C41230 !important;">
+            <table cellpadding="0" cellspacing="0" border="0" style="background-color:#C41230 !important;">
+              <tr>
+                <td align="center">
+                  <img src="https://res.cloudinary.com/dbvcotnqt/image/upload/v1762426970/filmvisarna-email-logo.png" width="100" alt="Filmvisarna" style="display:block; margin-bottom:10px;">
+                  <p style="font-size:12px; color:#FFFFFF !important; margin:0;">Filmvisarna AB | Småstad, Sverige</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+    </td>
+  </tr>
+</table>
+
+
   `;
 
         await sendEmail({
