@@ -56,6 +56,7 @@
   margin: 0 auto;
   width: 100%;
   z-index: 1;
+  max-width: 900px;
 }
 
 /* Varje rad med stolar (A, B, C...) */
@@ -63,7 +64,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.6vw;
+  gap: clamp(4px, 0.6vw, 12px);
 }
 
 /* === Stolar === */
