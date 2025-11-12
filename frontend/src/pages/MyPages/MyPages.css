@@ -17,11 +17,48 @@
 .my-pages .article,
 .my-pages .profile-card,
 .my-pages .booking-card {
-  background: transparent;
-  border: none;
-  border-radius: 12px;
-  padding: 16px 18px;
-  backdrop-filter: none;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 4px;
+  padding: 6px 8px;
+  backdrop-filter: blur(2px);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+/* Ensure My Pages cards keep their compact layout even if other pages share class names */
+.my-pages .profile-card ul > li.booking-card {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  min-height: 0;
+  padding: 6px 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.my-pages .profile-card ul > li.booking-card .booking-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.my-pages .profile-card ul > li .seat-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  min-width: 0;
+  line-height: 1.35;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  color: #fff;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.20);
   box-shadow: none;
 }
 
@@ -97,14 +134,6 @@
 }
 
 /* booking header */
-.my-pages .profile-card ul > li > header,
-.my-pages .profile-card ul > li .booking-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 8px;
-}
 .my-pages .profile-card ul > li h4,
 .my-pages .profile-card ul > li .booking-title {
   margin: 0;
