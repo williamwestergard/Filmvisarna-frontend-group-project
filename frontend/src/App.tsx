@@ -50,6 +50,11 @@ function App() {
           {/* Booking and confirmation routes */}
           <Route path="/booking" element={<BookingPage />} />
           <Route path="/booking/:movieTitle" element={<BookingPage />} />
+
+          {/* ✅ NEW: confirmation route without bookingUrl */}
+          <Route path="/confirmation" element={<ConfirmationPage />} />
+
+          {/* Existing route for already booked confirmation */}
           <Route path="/confirmation/:bookingUrl" element={<ConfirmationPage />} />
           <Route path="/ticket/:bookingUrl" element={<TicketPage />} />
 
@@ -69,15 +74,10 @@ function App() {
       </main>
 
       {/* LOGIN MODAL */}
-      <LoginModal
-        open={loginOpen}
-        onRequestClose={() => setLoginOpen(false)}
-      />
+      <LoginModal open={loginOpen} onRequestClose={() => setLoginOpen(false)} />
+
       {/* REGISTER MODAL */}
-      <RegisterModal
-        open={registerOpen}
-        onRequestClose={() => setRegisterOpen(false)}
-      />
+      <RegisterModal open={registerOpen} onRequestClose={() => setRegisterOpen(false)} />
 
       <Footer />
     </>
