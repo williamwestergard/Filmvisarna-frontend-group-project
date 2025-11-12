@@ -21,7 +21,8 @@ type MovieListProps = {
   selectedCategory: string;
   selectedDate: string;
   showtimes: Showtime[];
-  searchTerm: string; 
+  searchTerm: string;
+  showAllMovies: boolean;
 };
 
 export default function MovieList({
@@ -29,9 +30,9 @@ export default function MovieList({
   selectedDate,
   showtimes,
   searchTerm,
+  showAllMovies,
 }: MovieListProps) {
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [showAllMovies, setShowAllMovies] = useState(false);
 
   useEffect(() => {
     getMovies()
@@ -45,16 +46,15 @@ export default function MovieList({
         const ordered = titanic ? [titanic, ...others] : data;
         setMovies(ordered);
       })
-      .catch((err) => console.error("Error fetching movies:", err));
   }, []);
 
-  // Filtrering efter kategori
+  
   const filteredMovies =
   selectedCategory === "all"
     ? movies
     : movies.filter((movie) => movie.category.includes(selectedCategory));
 
-// Filtrera på söktermen (titel eller kategori)
+
 const searchFilteredMovies = filteredMovies.filter((movie) => {
   const lowerSearch = searchTerm.toLowerCase();
   return (
@@ -63,31 +63,23 @@ const searchFilteredMovies = filteredMovies.filter((movie) => {
   );
 });
 
-// Filtrera filmer som har en visning för valt datum
 const fullyFilteredMovies =
-  !selectedDate || showAllMovies
-    ? searchFilteredMovies // show all movies before date is chosen
-    : searchFilteredMovies.filter((movie) =>
+  showAllMovies
+    ? searchFilteredMovies 
+    : selectedDate
+    ? searchFilteredMovies.filter((movie) =>
         showtimes.some((show) => show.movieId === movie.id)
-      );
+      )
+    : searchFilteredMovies;
 
   return (
     <>
-    {selectedDate && (
-  <div className="show-all-container">
-    <button
-      className={`show-all-button ${showAllMovies ? "active" : ""}`}
-      onClick={() => setShowAllMovies((prev) => !prev)}
-    >
-      {showAllMovies
-        ? "Visa bara filmer med visning i dag"
-        : "Visa alla filmer"}
-    </button>
-  </div>
-)}
     <section
-  className={`movie-grid ${!showAllMovies ? "centered-mode" : ""}`}
+  className={`movie-grid ${
+    selectedDate && !showAllMovies ? "centered-mode" : ""
+  }`}
 >
+
       {fullyFilteredMovies.map((movie) => {
         const slug = movie.title.toLowerCase().replace(/\s+/g, "-");
 

@@ -1,3 +1,5 @@
+
+
 .bg-overlay {
   background-image: url("../assets/images/home-bg.png");
   background-repeat: no-repeat;
@@ -30,7 +32,7 @@ a {
   text-decoration: none;
 }
 
-/* Main container */
+
 .home-container {
   min-height: 100vh;
   padding: 1rem;
@@ -42,14 +44,15 @@ a {
   font-family: Arial, sans-serif;
 }
 
-/* Page title */
+
 .home-title {
   text-align: center;
   font-size: 2.5rem;
   margin-bottom: 1rem;
+ 
 }
 
-/* Filter section */
+
 .filter-section {
   display: flex;
   justify-content: center;
@@ -58,7 +61,7 @@ a {
 }
 
 .filter-dropdown {
-  /* remove native arrows */
+  
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -74,113 +77,152 @@ a {
   cursor: pointer;
   transition: background-color 0.3s;
 
-  /* custom arrow (SVG) placed left from the right edge */
+  
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%23f9f9f9' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: calc(100% - 0.8rem) center;
 }
 
-/* hide IE/Edge default arrow */
+
 .filter-dropdown::-ms-expand {
   display: none;
 }
 
-/* hover state */
+
 .filter-dropdown:hover {
   background-color: #2a2a45;
 }
 
-/* Movie grid */
+
 .movie-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
   justify-items: center;
   width: 100%;
-  max-width: 1200px; /* keeps grid centered on large screens */
-  grid-template-columns: repeat(2, 1fr); /* default mobile: 2 per row */
+  max-width: 1200px; 
+  grid-template-columns: repeat(2, 1fr); 
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.7s forwards;
   animation-timing-function: ease-in-out;
 }
 
-/* Calendar */
-.filter-dropdown[type="date"] {
-  position: relative;
-  cursor: pointer;
-  padding-right: 2.5rem;
+.centered-mode {
+  justify-content: center; /* centers entire grid horizontally */
+  justify-items: center;   /* centers each movie card */
 }
 
-.filter-dropdown[type="date"]::-webkit-calendar-picker-indicator {
-  position: absolute;
-  right: 0;
+
+.filter-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
   width: 100%;
-  height: 100%;
-  opacity: 0;
+  max-width: 1200px;
+  margin: 0 auto 1.5rem auto;
+}
+
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+
+.filter-dropdown {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  height: 2.6rem;
+  padding: 0.5rem 2.6rem 0.5rem 1rem;
+  box-sizing: border-box;
+  background: #1b1b2f;
+  color: #f9f9f9;
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%23f9f9f9' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 0.8rem) center;
 }
 
-.filter-dropdown[type="date"]::after {
-  content: "";
-  position: absolute;
-  right: 0.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  font-size: 1.1rem;
-  opacity: 0.9;
-  transition: opacity 0.2s ease;
+.filter-dropdown:hover {
+  background-color: #2a2a45;
 }
 
-.filter-dropdown[type="date"]:hover::after {
-  opacity: 1;
+
+.filter-dropdown::-webkit-calendar-picker-indicator {
+  display: none;
 }
 
-/* Visa alla filmer */
-.show-all-container {
-  text-align: center;
-  margin: 1.5rem 0;
-}
-
-.show-all-container {
-  text-align: center;
-  margin: 1.5rem 0;
-}
 
 .show-all-button {
-  background-color: #c41230; 
-  color: white;
-  border: none;
-  padding: 0.7rem 1.4rem;
+  height: 2.6rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f9f9f9;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0 1.2rem;
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-}
-
-.show-all-button:hover {
-  background-color: #490d1c; 
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
 }
 
 .show-all-button.active {
-  background-color: #c41230; 
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25); 
-}
-.show-all-button.active:hover {
-  background-color: #490d1c;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f9f9f9;
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-/* Tablet: 3 movies per row */
+.show-all-button.inactive {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+
+
+@media (max-width: 800px) {
+  .filter-section {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .filter-controls {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .show-all-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+  .filter-dropdown,
+  .show-all-button {
+    width: 90%;
+    max-width: 500px; 
+  }
+}
+
 @media screen and (min-width: 768px) {
   .movie-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-/* Desktop: 4 movies per row */
 @media screen and (min-width: 1024px) {
   .movie-grid {
     grid-template-columns: repeat(4, 1fr);
@@ -198,7 +240,7 @@ a {
   transform: translateY(-5px);
 }
 
-/* Movie title and genre */
+
 .movie-title {
   font-size: 1.14rem;
   font-weight: 600;
@@ -211,7 +253,7 @@ a {
   color: #a6a5a5;
 }
 
-/* Fade-in animation */
+
 @keyframes fadeInUp {
   0% {
     opacity: 0;
@@ -227,7 +269,7 @@ a {
   }
 }
 
-/* Phone screen layout */
+
 @media only screen and (max-width: 600px) {
   .bg-overlay {
     display: none;
@@ -246,7 +288,7 @@ a {
     filter: contrast(141%) saturate(14%) brightness(150%);
   }
 
-  /* Main container */
+ 
   .home-container {
     min-height: 100vh;
     padding: 1rem;
@@ -259,21 +301,21 @@ a {
     position: relative;
   }
 
-  /* Page title */
+ 
   .home-title {
     text-align: center;
     font-size: clamp(1.5rem, 10vw, 2rem);
     margin-bottom: 1rem;
   }
-  /* Movie grid */
+
   .movie-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 0rem;
     justify-items: center;
     width: 100%;
-    max-width: 1200px; /* keeps grid centered on large screens */
-    grid-template-columns: repeat(2, 1fr); /* default mobile: 2 per row */
+    max-width: 1200px; 
+    grid-template-columns: repeat(2, 1fr); 
   }
 
   .movie-card {
@@ -292,18 +334,31 @@ a {
   }
 }
 
-/* Phone sizes */
-@media only screen and (max-width: 1000px) {
-  /* Filter section */
+
+@media (max-width: 800px) {
   .filter-section {
-    display: flex;
-    justify-content: center;
-    gap: 0.8rem;
-    margin-bottom: 2rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
   }
 
-  .filter-dropdown {
-    height: 2.6rem;
-    padding: 0.5rem 1.6rem 0.5rem 1rem;
+  .filter-controls {
+    width: 100%;
+    justify-content: center;
   }
+
+  .show-all-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+ @media (max-width: 800px) {
+  .filter-dropdown,
+  .show-all-button {
+    width: 100%;
+    max-width: 450px; 
+  }
+}
 }
