@@ -1,5 +1,5 @@
 .shop {
-  width: 70%;
+  width: 60%;
   max-width: 1100px;
   margin: 0 auto;
   padding: 32px 16px;
@@ -14,17 +14,17 @@
   justify-content: center;
   text-align: left;
   margin-bottom: 40px;
+  margin-top: 40px;
 }
 
 .shop-title {
   margin: 0 0 12px;
   font-size: 38px;
   font-weight: 800;
-  text-align: left; 
+  text-align: left;
   position: relative;
 }
 
-/* underline */
 .shop-title::after {
   content: "";
   display: block;
@@ -52,9 +52,7 @@
   margin: 48px 0;
 }
 
-.shop-text {
-  flex: 1 1 55%;
-}
+.shop-text { flex: 1 1 55%; }
 
 .shop-subtitle {
   margin: 0 0 8px;
@@ -84,24 +82,13 @@
 }
 
 @media (max-width: 1024px) {
-  .shop-section {
-    gap: 20px;
-  }
-
-  .shop-image {
-    max-width: 360px;
-  }
+  .shop-section { gap: 20px; }
+  .shop-image { max-width: 360px; }
 }
 
 @media (max-width: 900px) {
-  .shop {
-    padding: 24px 12px;
-  }
-
-  .shop-header {
-    margin-bottom: 28px;
-  }
-
+  .shop { padding: 24px 12px; }
+  .shop-header { margin-bottom: 28px; }
   .shop-section {
     flex-direction: column;
     align-items: center;
@@ -110,36 +97,21 @@
     margin: 28px 0;
     text-align: left;
   }
-
-  .shop-image-wrap {
-    order: 1;
-    justify-content: center;
-  }
-
-  .shop-text {
-    order: 2;
-  }
-
+  .shop-image-wrap { order: 1; justify-content: center; }
+  .shop-text { order: 2; }
   .shop-text,
   .shop-image-wrap {
     flex: none;
     width: 100%;
     max-width: 720px;
   }
-
   .shop-image {
     width: 90%;
     max-width: 320px;
     border-radius: 10px;
   }
-
-  .shop-title {
-    font-size: 26px;
-  }
-
-  .shop-subtitle {
-    font-size: 20px;
-  }
+  .shop-title { font-size: 32px; }
+  .shop-subtitle { font-size: 20px; }
 }
 
 @media (max-width: 400px) {
@@ -147,8 +119,5 @@
     width: 100%;
     max-width: 260px;
   }
-
-  .shop-subtitle {
-    font-size: 18px;
-  }
+  .shop-subtitle { font-size: 18px; }
 }

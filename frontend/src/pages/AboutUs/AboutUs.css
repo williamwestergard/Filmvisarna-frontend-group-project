@@ -1,9 +1,10 @@
 .about {
-  width: 70%;
+  width: 60%;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 48px 16px 64px;
+  padding: 32px 16px;
   color: var(--text-light);
+  margin-top: 40px;
 }
 
 /* Header */
@@ -16,14 +17,14 @@
 }
 
 .about-title {
-  margin: 0 0 8px;
+  margin: 0 0 12px;
   font-weight: 800;
   font-size: 32px;
   text-align: left;
   position: relative;
 }
 
-/*underline*/
+/* underline */
 .about-title::after {
   content: "";
   display: block;
@@ -31,41 +32,42 @@
   height: 3px;
   background: var(--red-primary);
   border-radius: 2px;
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
 /* text-block */
 .about-section {
-  max-width: 760px;
-  margin: 42px 0;
-  line-height: 1.7; 
+  max-width: 720px; 
+  margin: 28px 0;  
+  line-height: 1.6;
   font-size: 1rem;
   text-align: left;
 }
 
 .about-section p {
-  margin: 0 0 14px; 
+  margin: 0 0 12px;
 }
 
 .about-subtitle {
-  font-size: 24px;
+  font-size: 26px; 
   font-weight: 700;
-  margin: 56px 0 0px;
+  margin: 40px 0 6px;
 }
 
 .about-lead {
   line-height: 1.6;
   font-style: italic;
-  opacity: 0.8;
-  margin-bottom: 40px;
+  opacity: 0.9;
+  margin-bottom: 32px;
 }
 
 /* pictures */
 .about-gallery {
+  max-width: 720px; 
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 22px;
-  margin: 36px 0 12px;
+  margin: 32px 0 12px;
 }
 
 .about-figure {
@@ -96,13 +98,14 @@
 
 @media (max-width: 640px) {
   .about {
-    padding-top: 32px;
+    padding-top: 24px;
   }
 
   .about-gallery {
     grid-template-columns: 1fr;
     justify-items: center;
     gap: 20px;
+    max-width: 100%;
   }
 
   .about-figure {
