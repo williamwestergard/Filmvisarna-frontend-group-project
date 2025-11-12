@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./Home.css";
 import MoviesList from "../../components/Movies/MoviesList";
 import BgOverlay from "../../assets/images/home-bg.jpg";
-import { getCategories, getShowtimes } from "../../api/MoviesApi";
+import { getCategories, getShowtimes } from "../../api/moviesApi";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import AgeLimitInfo from "../../components/AgeLimitInfo/AgeLimitInfo";
 
@@ -23,33 +23,27 @@ function Home() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [showtimes, setShowtimes] = useState<Showtime[]>([]);
   const [selectedDate, setSelectedDate] = useState("");
-  const [searchTerm, setSearchTerm] = useState(""); //nytt state
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showAllMovies, setShowAllMovies] = useState(false);
 
+  // Restore date from sessionStorage
   useEffect(() => {
-  const savedDate = sessionStorage.getItem("selectedDate");
-  if (savedDate) {
-    setSelectedDate(savedDate);
-  }
-}, []);
-
-  useEffect(() => {
-    getCategories()
-      .then((data) => setCategories(data))
-      .catch((err) => console.error("Error fetching categories:", err));
+    const savedDate = sessionStorage.getItem("selectedDate");
+    if (savedDate) setSelectedDate(savedDate);
   }, []);
 
-useEffect(() => {
-  if (!selectedDate) {
-    setShowtimes([]); // clear or reset showtimes if no date selected
-    return;
-  }
+  useEffect(() => {
+    getCategories().then(setCategories).catch(console.error);
+  }, []);
 
-  getShowtimes(selectedDate)
-    .then((data) => setShowtimes(data))
-    .catch((err) => console.error("Error fetching showtimes:", err));
-}, [selectedDate]);
-
-  
+  useEffect(() => {
+    if (!selectedDate) {
+      setShowtimes([]);
+      return;
+    }
+    getShowtimes(selectedDate)
+      .then(setShowtimes)
+  }, [selectedDate]);
 
   return (
     <>
@@ -58,61 +52,75 @@ useEffect(() => {
         src={BgOverlay}
         alt="Image of a man and woman watching a movie"
       />
-      
 
       <main className="home-container">
-              <AgeLimitInfo />
-        <h1 className="home-title">Aktuella filmer</h1>
+        <AgeLimitInfo />
+        <h1 className="home-title">På bio nu</h1>
 
+        <SearchBar onSearch={setSearchTerm} />
 
-        <SearchBar onSearch={(value) => setSearchTerm(value)} />
-
-        {/* Filter section */}
         <section className="filter-section">
-         <input
-          type="date"
-          lang="sv-SE"
-          className="filter-dropdown"
-          value={selectedDate || ""}
-          placeholder="Välj datum"
-          onChange={(event) => {
-            const newDate = event.target.value;
-            setSelectedDate(newDate);
-            sessionStorage.setItem("selectedDate", newDate);
-          }}
-          min={new Date().toISOString().split("T")[0]}
-          max={(() => {
-            const date = new Date();
-            date.setDate(date.getDate() + 14);
-            return date.toISOString().split("T")[0];
-          })()}
-        />
+          <div className="filter-controls">
+           
+            <input
+              type="date"
+              lang="sv-SE"
+              className="filter-dropdown"
+              value={selectedDate || ""}
+              onClick={(e) => (e.target as HTMLInputElement).showPicker?.()}
+              onChange={(e) => {
+                const newDate = e.target.value;
+                setSelectedDate(newDate);
+                sessionStorage.setItem("selectedDate", newDate);
+                setShowAllMovies(false); 
+              }}
+              min={new Date().toISOString().split("T")[0]}
+              max={(() => {
+                const d = new Date();
+                d.setDate(d.getDate() + 14);
+                return d.toISOString().split("T")[0];
+              })()}
+            />
 
-          <select
-          className="filter-dropdown"
-          value={selectedCategory}
-          onChange={(event) => setSelectedCategory(event.target.value)}
-        >
-          <option value="all">Alla kategorier</option>
-          {categories.map((category) => (
-          <option key={category.id} value={category.title}>
-            {category.title}
-          </option>
-          ))}
-        </select>
+           
+            <select
+              className="filter-dropdown"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <option value="all">Alla kategorier</option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.title}>
+                  {c.title}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          
+          {selectedDate && (
+            <div className="show-all-container">
+              <button
+                className={`show-all-button ${
+                  showAllMovies ? "inactive" : "active"
+                }`}
+                onClick={() => setShowAllMovies((prev) => !prev)}
+              >
+                {showAllMovies ? "Visa dagens filmer" : "Visa alla filmer"}
+              </button>
+            </div>
+          )}
         </section>
-        {/* {!selectedDate && (
-          <p className="date-hint">Välj ett datum för att se dagens visningar</p> // HINT 
-        )} */}
 
-        {/* Movies list */}
         <MoviesList
           selectedCategory={selectedCategory}
           selectedDate={selectedDate}
           showtimes={showtimes}
-          searchTerm={searchTerm} 
+          searchTerm={searchTerm}
+          showAllMovies={showAllMovies}
         />
 
+        
         {selectedDate && showtimes.length === 0 && (
           <p className="no-screenings-message">
             Inga visningar finns för valt datum.
