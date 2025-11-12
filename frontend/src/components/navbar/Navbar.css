@@ -396,14 +396,14 @@ ul {
     border-radius: 16px;
     font-size: 1.05rem;
     font-weight: 600;
-    background-color: #490d1c;
+    background-color: #c41230;
     color: var(--text-light);
     transition: background-color 0.2s ease, color 0.2s ease;
     border: none; /*removed border*/
   }
 
   .nav-button-account:hover {
-    background-color: var(--button-bg-hover);
+    background-color: #9f0f24;
   }
 
   .nav-button-account.open {
@@ -430,9 +430,11 @@ ul {
     width: 100%;
   }
 
-  .nav-button {
+  .navbar-mobile .nav-button {
     padding: 0.7rem 1rem;
     font-size: 1rem;
+    background-color: #c41230;
+    color: var(--text-light);
   }
 
   .mobile-account-panel {
@@ -461,12 +463,12 @@ ul {
     border-radius: 16px;
     font-size: 1.05rem;
     font-weight: 600;
-    background-color: #490d1c;
+    background-color: #c41230;
     color: var(--text-light);
   }
 
   .mobile-account-panel .nav-button:hover {
-    background-color: #661a2d;
+    background-color: #9f0f24;
   }
 
   .nav-link-back {
