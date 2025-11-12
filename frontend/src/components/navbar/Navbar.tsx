@@ -78,21 +78,12 @@ useEffect(() => {
   };
 }, [isLogOutOpen]);
 
-  // Effekt för att förhindra scrolling av body när mobilmenyn är öppen
+  // Säkerställ att paneler stängs när menyn stängs utan att låsa sidscroll
   useEffect(() => {
-    if (isMenuOpen) {
-      document.body.classList.add('no-scroll');
-    } else {
-      document.body.classList.remove('no-scroll');
-      // Stäng även dropdown och konto-panel när huvudmenyn stängs
+    if (!isMenuOpen) {
       setIsDropdownOpen(false);
       setIsAccountOpen(false);
     }
-
-    // Cleanup-funktion för att ta bort klassen om komponenten tas bort
-    return () => {
-      document.body.classList.remove('no-scroll');
-    };
   }, [isMenuOpen]);
 
   useEffect(() => {
@@ -350,14 +341,14 @@ useEffect(() => {
             {user ? (
             <>
               {/* Display user profile information when logged in */}
-              <div className="nav-item" style={{ display: "flex", alignItems: "center", gap: 10, padding: "0.5rem 0.9rem" }}>
+              <div className="mobile-account-user">
                 <img
                   className="nav-user-avatar"
                    src={UserProfilePic}
                   alt="Användarbild"
                   referrerPolicy="no-referrer"
                 />
-                <Link to="/mina-sidor" className="nav-user-name" style={{ color: "var(--text-light)", fontWeight: 600 }}>
+                <Link to="/mina-sidor" className="nav-user-name mobile">
                   {user.firstName} {user.lastName}
                 </Link>
               </div>

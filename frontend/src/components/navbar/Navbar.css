@@ -178,7 +178,12 @@ ul {
   color: var(--text-light);
   font-weight: 500;
   text-decoration: none;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.nav-button:hover {
+  background-color: #9a0e26;
+  box-shadow: 0 0 12px rgba(196, 18, 48, 0.55);
 }
 
 /* ---------- Dropdown (desktop) ---------- */
@@ -366,7 +371,8 @@ ul {
     width: min(92vw, 200px);
     padding: 14px 12px 12px;
     background-color: var(--menu-panel-bg, #1b1b2f);
-    border-radius: 14px 0 0 14px; /* round only left edge */
+    border-radius: 18px; /* round all corners for mobile panel */
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.45);
     opacity: 0;
     pointer-events: none;
@@ -387,7 +393,7 @@ ul {
     box-sizing: content-box;
   }
 
-  .nav-button-account {
+  .navbar-mobile .nav-button-account {
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -396,19 +402,17 @@ ul {
     border-radius: 16px;
     font-size: 1.05rem;
     font-weight: 600;
-    background-color: #490d1c;
+    background-color: #c41230;
     color: var(--text-light);
-    transition: background-color 0.2s ease, color 0.2s ease;
-    border: none; /*removed border*/
+    transition: background-color 0.25s ease, color 0.25s ease,
+      box-shadow 0.25s ease;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
   }
 
-  .nav-button-account:hover {
-    background-color: var(--button-bg-hover);
-  }
-
-  .nav-button-account.open {
-    background-color: var(--text-light);
-    color: var(--menu-panel-bg, #1b1b2f);
+  .navbar-mobile .nav-button-account.open {
+    background-color: #c41230;
+    color: var(--text-light);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.15);
   }
 
   .nav-menu-mobile {
@@ -428,11 +432,32 @@ ul {
     font-size: 0.95rem;
     border-radius: 12px;
     width: 100%;
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
   }
 
-  .nav-button {
+  .nav-menu-mobile .nav-link {
+    max-width: 167px; /* max length for link text */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .nav-menu-mobile .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
+  }
+
+  .navbar-mobile .nav-button-account:hover {
+    background-color: #9a0e26 !important;
+    box-shadow: 0 0 12px rgba(196, 18, 48, 0.55);
+  }
+
+  .navbar-mobile .nav-button {
     padding: 0.7rem 1rem;
     font-size: 1rem;
+    background-color: #c41230;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
   }
 
   .mobile-account-panel {
@@ -441,13 +466,15 @@ ul {
     z-index: 1;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 20px;
     padding: 14px 12px 12px;
     background-color: var(--menu-panel-bg, #1b1b2f);
-    border-radius: 14px;
+    border-radius: 18px;
+    border: 0px solid rgba(255, 255, 255, 0.18) !important;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.25s ease;
+    box-sizing: border-box;
   }
 
   .mobile-account-panel.open {
@@ -456,17 +483,46 @@ ul {
   }
 
   .mobile-account-panel .nav-button {
-    width: 80%;
-    padding: 0.9rem 1.2rem;
-    border-radius: 16px;
+    width: 100%;
+    padding: 0.5rem 0.9rem;
+    border-radius: 12px;
     font-size: 1.05rem;
     font-weight: 600;
-    background-color: #490d1c;
+    background-color: #c41230;
     color: var(--text-light);
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
   }
 
   .mobile-account-panel .nav-button:hover {
-    background-color: #661a2d;
+    background-color: #9a0e26;
+    box-shadow: 0 0 12px rgba(196, 18, 48, 0.55);
+  }
+
+  .mobile-account-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 85%;
+    padding: 0.65rem 0.85rem;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    margin: 0 auto;
+    
+  }
+
+  .mobile-account-user .nav-user-avatar {
+    width: 60px;
+    height: 60px;
+    left: 0;
+  }
+
+  .nav-user-name.mobile {
+    color: var(--text-light);
+    font-weight: 600;
+    text-decoration: none;
+    margin: 0;
   }
 
   .nav-link-back {
@@ -475,11 +531,14 @@ ul {
     padding: 0.6rem 0.8rem;
     border-radius: 12px;
     background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
   }
 
   .nav-link-back:hover {
     opacity: 1;
-    background-color: rgba(255, 255, 255, 0.14);
+    background-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
   }
 
   .nav-menu-mobile .nav-item + .nav-item .nav-link {
@@ -539,7 +598,8 @@ ul {
 }
 
 .nav-button.logout:hover {
-  background-color: #661a2d;
+  background-color: #9a0e26;
+  box-shadow: 0 0 12px rgba(196, 18, 48, 0.55);
 }
 
 .nav-button,
