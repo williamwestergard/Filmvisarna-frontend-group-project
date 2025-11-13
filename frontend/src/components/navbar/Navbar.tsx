@@ -375,6 +375,12 @@ useEffect(() => {
               </div>
             )}
 
+            {typeof activeBookingsCount === "number" && (
+              <p className="mobile-booking-count">
+                {activeBookingsCount} {activeBookingsCount === 1 ? "aktiv bokning" : "aktiva bokningar"}
+              </p>
+            )}
+
             <button
               type="button"
               className="nav-link nav-link-back"
@@ -382,6 +388,7 @@ useEffect(() => {
             >
                Tillbaka
             </button>
+
 
             <Link
               to="/mina-sidor"
@@ -391,11 +398,6 @@ useEffect(() => {
               Bokningar
             </Link>
 
-            {typeof activeBookingsCount === "number" && (
-              <p className="mobile-booking-count">
-                {activeBookingsCount} {activeBookingsCount === 1 ? "aktiv bokning" : "aktiva bokningar"}
-              </p>
-            )}
 
             {/* Conditional rendering based on authentication status */}
             {user ? (

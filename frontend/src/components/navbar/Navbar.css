@@ -589,6 +589,7 @@ ul {
     font-weight: 500;
     align-self: flex-start;
     padding-left: 0.4rem;
+   
   }
 
   .nav-menu-mobile .nav-item + .nav-item .nav-link {
