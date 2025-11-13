@@ -16,6 +16,7 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import LoginModal from "./components/LoginModal/LoginModal";
 import RegisterModal from "./components/RegisterModal/RegisterModal";
 import CookiePolicy from "./pages/CookiePolicy/CookiePolicy";
+import CookieBanner from "./components/CookieBanner/CookieBanner";
 
 // Scrolls to top when route changes
 function ScrollToTop() {
@@ -53,6 +54,7 @@ function App() {
           <Route path="/booking" element={<BookingPage />} />
           <Route path="/booking/:movieTitle" element={<BookingPage />} />
 
+          {/* confirmation route without bookingUrl */}
           <Route path="/confirmation" element={<ConfirmationPage />} />
 
           {/* Existing route for already booked confirmation */}
@@ -79,6 +81,8 @@ function App() {
 
       {/* REGISTER MODAL */}
       <RegisterModal open={registerOpen} onRequestClose={() => setRegisterOpen(false)} />
+
+      <CookieBanner /> 
 
       <Footer />
     </>
