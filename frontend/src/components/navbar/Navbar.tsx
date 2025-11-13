@@ -380,7 +380,7 @@ useEffect(() => {
               className="nav-link nav-link-back"
               onClick={() => setIsAccountOpen(false)}
             >
-              ‹ Tillbaka
+               Tillbaka
             </button>
 
             <Link
@@ -400,7 +400,7 @@ useEffect(() => {
             {/* Conditional rendering based on authentication status */}
             {user ? (
               <>
-                <button className="nav-button" onClick={() => { handleLogout(); closeMenu(); }}>Logga ut</button>
+              <button className="nav-link nav-link-bookings nav-link-logout" onClick={() => { handleLogout(); closeMenu(); }}>Logga ut</button>
             </>
           ) : (
             <>
