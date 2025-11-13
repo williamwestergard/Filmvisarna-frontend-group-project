@@ -12,50 +12,52 @@ export default function CookiePolicy() {
 
         <section className="cookiepolicy-section">
           <p>
-            På Filmvisarna använder vi främst tekniska, nödvändiga cookies för att webbplatsen
-            ska fungera på ett säkert och stabilt sätt. Dessa cookies behövs exempelvis för
-            inloggning, säkerhet och grundläggande funktioner.
+            Filmvisarna använder ingen extern spårning och vi sätter inga cookies för
+            marknadsföring eller statistik. För att webbplatsen ska fungera använder vi istället
+            webbläsarens localStorage för att spara grundläggande information.
           </p>
           <p>
-            Du kan även välja om du vill tillåta statistikcookies. Statistiska cookies används
-            för analys och är alltid frivilliga. Om du inte ger samtycke aktiveras inga
-            statistikcookies.
+            Denna lagring är tekniskt nödvändig, till exempel för att du ska kunna vara inloggad
+            och för att vi ska komma ihåg om du har gjort ett val i vår cookie-banner.
           </p>
         </section>
 
         <section className="cookiepolicy-section">
-          <h2 className="cookiepolicy-subtitle">Nödvändiga cookies</h2>
-          <p>Dessa cookies krävs för att webbplatsen ska fungera.</p>
+          <h2 className="cookiepolicy-subtitle">Nödvändig lagring</h2>
+          <p>
+            Vi sparar endast sådan information som behövs för att webbplatsen ska fungera på ett
+            säkert och stabilt sätt. Följande värden kan sparas i din webbläsare:
+          </p>
 
           <ul className="cookiepolicy-list">
             <li>
-              <strong>session_id</strong> – håller dig inloggad under ditt besök.
+              <strong>authUser</strong> – håller reda på att du är inloggad.
             </li>
             <li>
-              <strong>csrf_token</strong> – skyddar formulär och inloggning.
+              <strong>authToken</strong> –
+              används för att validera din session under besöket.
             </li>
             <li>
-              <strong>preferenser</strong> – kan spara exempelvis språkval.
+              <strong>cookieConsent</strong> – sparar ditt val i cookiebannern
+              (t.ex. ”acceptera” eller ”endast nödvändiga”).
             </li>
           </ul>
         </section>
 
         <section className="cookiepolicy-section">
-          <h2 className="cookiepolicy-subtitle">Statistikcookies </h2>
+          <h2 className="cookiepolicy-subtitle">Statistik och tredjepart</h2>
           <p>
-            Statistikcookies används endast om du ger samtycke i vår cookie-banner. Om du inte
-            accepterar statistikcookies sätts inga sådana cookies.
+            Filmvisarna använder inga statistikverktyg, inga analyscookies och ingen
+            marknadsföringsspårning. Ingen information delas med tredje part.
           </p>
         </section>
 
         <section className="cookiepolicy-section">
           <h2 className="cookiepolicy-subtitle">Dina val</h2>
           <p>
-            I cookie-bannern kan du välja om du vill tillåta statistikcookies eller inte. Det
-            är alltid lika enkelt att avvisa som att acceptera.
-          </p>
-          <p>
-            Du kan när som helst ändra ditt val genom att rensa cookies i din webbläsare.
+            I cookie-bannern kan du välja om du vill tillåta frivillig lagring eller endast
+            nödvändig lagring. Du kan när som helst ändra ditt val genom att rensa
+            localStorage i din webbläsare.
           </p>
         </section>
       </article>
