@@ -329,6 +329,21 @@ useEffect(() => {
           )}
         </ul>
         <div className={isAccountOpen ? 'mobile-account-panel open' : 'mobile-account-panel'}>
+          {/* Display user profile when logged in */}
+          {user && (
+            <div className="mobile-account-user">
+              <img
+                className="nav-user-avatar"
+                src={UserProfilePic}
+                alt="Användarbild"
+                referrerPolicy="no-referrer"
+              />
+              <Link to="/mina-sidor" className="nav-user-name mobile">
+                {user.firstName} {user.lastName}
+              </Link>
+            </div>
+          )}
+
           <button
             type="button"
             className="nav-link nav-link-back"
@@ -337,32 +352,18 @@ useEffect(() => {
             ‹ Tillbaka
           </button>
 
-            {/* Conditional rendering based on user authentication status */}
-            {user ? (
+          {/* Conditional rendering based on authentication status */}
+          {user ? (
             <>
-              {/* Display user profile information when logged in */}
-              <div className="mobile-account-user">
-                <img
-                  className="nav-user-avatar"
-                   src={UserProfilePic}
-                  alt="Användarbild"
-                  referrerPolicy="no-referrer"
-                />
-                <Link to="/mina-sidor" className="nav-user-name mobile">
-                  {user.firstName} {user.lastName}
-                </Link>
-              </div>
-              {/* Logout button that both logs out and closes mobile menu */}
               <button className="nav-button" onClick={() => { handleLogout(); closeMenu(); }}>Logga ut</button>
             </>
-            ) : (
+          ) : (
             <>
-              {/* Login and register links for non-authenticated users */}
               <button className="nav-button" onClick={() => { onOpenLogin?.(); openAccountLink(); }}>Logga in</button>
-              <button className="nav-button" onClick={() => { onOpenRegister?.(); openAccountLink(); }}>Skapa konto</button> {/* <-- CHANGED */}
+              <button className="nav-button" onClick={() => { onOpenRegister?.(); openAccountLink(); }}>Skapa konto</button>
             </>
-            )}
-          </div>
+          )}
+        </div>
           </div>
         </nav>
         );
