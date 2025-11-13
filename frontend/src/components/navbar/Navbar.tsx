@@ -21,6 +21,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenLogin, onOpenRegister }) => {
   const [isLogOutOpen, setisLogOutOpen] = useState(false);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [activeBookingsCount, setActiveBookingsCount] = useState<number | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -43,8 +44,26 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenLogin, onOpenRegister }) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const dropdownCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const cancelDropdownClose = () => {
+    if (dropdownCloseTimerRef.current) {
+      clearTimeout(dropdownCloseTimerRef.current);
+      dropdownCloseTimerRef.current = null;
+    }
+  };
+
+  const scheduleDropdownClose = () => {
+    cancelDropdownClose();
+    dropdownCloseTimerRef.current = setTimeout(() => {
+      setIsDropdownOpen(false);
+      dropdownCloseTimerRef.current = null;
+    }, 300);
+  };
+
   const toggleDropdown = (e?: React.MouseEvent | React.KeyboardEvent) => {
     e?.preventDefault(); // Förhindra att sidan hoppar till toppen
+    cancelDropdownClose();
     setIsDropdownOpen((prev) => !prev);
   };
 
@@ -52,7 +71,14 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenLogin, onOpenRegister }) => {
     setIsMenuOpen(false);
     setIsDropdownOpen(false);
     setIsAccountOpen(false);
+    cancelDropdownClose();
   };
+
+  useEffect(() => {
+    return () => {
+      cancelDropdownClose();
+    };
+  }, []);
 
   // Gör så att "är du säker" sektionen om användaren vill logga ut stängs om man klickar utanför sektionen.
   const logoutDropdownRef = useRef<HTMLDivElement | null>(null);
@@ -78,21 +104,12 @@ useEffect(() => {
   };
 }, [isLogOutOpen]);
 
-  // Effekt för att förhindra scrolling av body när mobilmenyn är öppen
+  // Säkerställ att paneler stängs när menyn stängs utan att låsa sidscroll
   useEffect(() => {
-    if (isMenuOpen) {
-      document.body.classList.add('no-scroll');
-    } else {
-      document.body.classList.remove('no-scroll');
-      // Stäng även dropdown och konto-panel när huvudmenyn stängs
+    if (!isMenuOpen) {
       setIsDropdownOpen(false);
       setIsAccountOpen(false);
     }
-
-    // Cleanup-funktion för att ta bort klassen om komponenten tas bort
-    return () => {
-      document.body.classList.remove('no-scroll');
-    };
   }, [isMenuOpen]);
 
   useEffect(() => {
@@ -112,6 +129,36 @@ useEffect(() => {
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
   }, []);
+
+  useEffect(() => {
+    if (!user?.id) {
+      setActiveBookingsCount(null);
+      return;
+    }
+
+    const controller = new AbortController();
+    fetch(`/api/users/${user.id}`, { signal: controller.signal })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok && Array.isArray(data.bookings)) {
+          const now = new Date();
+          const activeCount = data.bookings.filter((booking: { screeningTime: string }) => {
+            return new Date(booking.screeningTime) > now;
+          }).length;
+          setActiveBookingsCount(activeCount);
+        } else {
+          setActiveBookingsCount(0);
+        }
+      })
+      .catch((err) => {
+        if (err.name !== "AbortError") {
+          console.error("Unable to fetch user bookings:", err);
+          setActiveBookingsCount(null);
+        }
+      });
+
+    return () => controller.abort();
+  }, [user?.id]);
 
   const handleLogout = () => {
     localStorage.removeItem("authUser");
@@ -190,7 +237,11 @@ useEffect(() => {
           </li>
           <li
             className={`nav-item dropdown ${isDropdownOpen ? 'open' : ''}`}
-            onMouseLeave={() => setIsDropdownOpen(false)}
+            onMouseEnter={() => {
+              cancelDropdownClose();
+              setIsDropdownOpen(true);
+            }}
+            onMouseLeave={scheduleDropdownClose}
           >
             <Link to="#" className="nav-link" onClick={toggleDropdown} onKeyDown={(e) => e.key === 'Enter' && toggleDropdown(e)}>
               Mer <span className="dropdown-arrow">▼</span>
@@ -337,41 +388,58 @@ useEffect(() => {
             </li>
           )}
         </ul>
-        <div className={isAccountOpen ? 'mobile-account-panel open' : 'mobile-account-panel'}>
-          <button
-            type="button"
-            className="nav-link nav-link-back"
-            onClick={() => setIsAccountOpen(false)}
-          >
-            ‹ Tillbaka
-          </button>
-
-            {/* Conditional rendering based on user authentication status */}
-            {user ? (
-            <>
-              {/* Display user profile information when logged in */}
-              <div className="nav-item" style={{ display: "flex", alignItems: "center", gap: 10, padding: "0.5rem 0.9rem" }}>
-                <img
-                  className="nav-user-avatar"
-                   src={UserProfilePic}
-                  alt="Användarbild"
-                  referrerPolicy="no-referrer"
-                />
-                <Link to="/mina-sidor" className="nav-user-name" style={{ color: "var(--text-light)", fontWeight: 600 }}>
-                  {user.firstName} {user.lastName}
-                </Link>
-              </div>
-              {/* Logout button that both logs out and closes mobile menu */}
-              <button className="nav-button" onClick={() => { handleLogout(); closeMenu(); }}>Logga ut</button>
-            </>
-            ) : (
-            <>
-              {/* Login and register links for non-authenticated users */}
-              <button className="nav-button" onClick={() => { onOpenLogin?.(); openAccountLink(); }}>Logga in</button>
-              <button className="nav-button" onClick={() => { onOpenRegister?.(); openAccountLink(); }}>Skapa konto</button> {/* <-- CHANGED */}
-            </>
+          <div className={isAccountOpen ? 'mobile-account-panel open' : 'mobile-account-panel'}>
+            {/* Display user profile when logged in */}
+            {user && (
+            <div className="mobile-account-user">
+              <img
+                className="nav-user-avatar"
+                src={user.avatarUrl ?? UserProfilePic}
+                alt="Användarbild"
+                referrerPolicy="no-referrer"
+              />
+              <Link to="/mina-sidor" className="nav-user-name mobile">
+                {user.firstName} {user.lastName}
+              </Link>
+            </div>
             )}
-          </div>
+
+            {typeof activeBookingsCount === "number" && (
+              <p className="mobile-booking-count">
+                {activeBookingsCount} {activeBookingsCount === 1 ? "aktiv bokning" : "aktiva bokningar"}
+              </p>
+            )}
+
+            <button
+              type="button"
+              className="nav-link nav-link-back"
+              onClick={() => setIsAccountOpen(false)}
+            >
+               Tillbaka
+            </button>
+
+
+            <Link
+              to="/mina-sidor"
+              className="nav-link nav-link-bookings"
+              onClick={() => { closeMenu(); setIsAccountOpen(false); }}
+            >
+              Bokningar
+            </Link>
+
+
+            {/* Conditional rendering based on authentication status */}
+            {user ? (
+              <>
+              <button className="nav-link nav-link-bookings nav-link-logout" onClick={() => { handleLogout(); closeMenu(); }}>Logga ut</button>
+            </>
+          ) : (
+            <>
+              <button className="nav-button" onClick={() => { onOpenLogin?.(); openAccountLink(); }}>Logga in</button>
+              <button className="nav-button" onClick={() => { onOpenRegister?.(); openAccountLink(); }}>Skapa konto</button>
+            </>
+          )}
+        </div>
           </div>
         </nav>
         );

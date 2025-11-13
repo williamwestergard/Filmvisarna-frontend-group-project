@@ -178,7 +178,12 @@ ul {
   color: var(--text-light);
   font-weight: 500;
   text-decoration: none;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.nav-button:hover {
+  background-color: #9a0e26;
+  box-shadow: 0 0 12px rgba(196, 18, 48, 0.55);
 }
 
 /* ---------- Dropdown (desktop) ---------- */
@@ -194,15 +199,21 @@ ul {
 
 .dropdown-menu {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 16px);
   left: 0;
   z-index: 1100;
   min-width: 150px;
   padding: 5px 0;
-  border-radius: 5px;
+  border-radius: 16px;
+  border: 0.5px solid rgba(255, 255, 255, 0.193);
   background-color: #1b1b2f;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
   display: none;
+}
+
+.navbar-desktop .dropdown-menu {
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .navbar-desktop .nav-item.dropdown:hover .dropdown-menu,
@@ -216,14 +227,22 @@ ul {
 
 .dropdown-link {
   display: block;
-  padding: 0.8rem 1.2rem;
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
   color: #f9f9f9;
   text-decoration: none;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.dropdown-menu li + li {
+  margin-top: 8px;
 }
 
 .dropdown-link:hover {
-  background-color: #2a2a45;
+  background-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
 }
 
 .navbar-logout-dropdown {
@@ -366,14 +385,15 @@ ul {
     width: min(92vw, 200px);
     padding: 14px 12px 12px;
     background-color: var(--menu-panel-bg, #1b1b2f);
-    border-radius: 14px 0 0 14px; /* round only left edge */
+    border-radius: 18px; /* round all corners for mobile panel */
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.45);
     opacity: 0;
     pointer-events: none;
     transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
       opacity 0.3s ease;
     will-change: transform;
-    gap: 12px;
+    gap: 6px;
     overflow: visible;
   }
 
@@ -387,28 +407,28 @@ ul {
     box-sizing: content-box;
   }
 
-  .nav-button-account {
+  .navbar-mobile .nav-button-account {
     display: inline-flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    padding: 0.9rem 1.2rem;
-    border-radius: 16px;
-    font-size: 1.05rem;
+    padding: 0.6rem 1rem;
+    border-radius: 14px;
+    font-size: 1rem;
     font-weight: 600;
-    background-color: #490d1c;
+    max-height: 40px;
+    background-color: #c41230;
     color: var(--text-light);
-    transition: background-color 0.2s ease, color 0.2s ease;
-    border: none; /*removed border*/
+    transition: background-color 0.25s ease, color 0.25s ease,
+      box-shadow 0.25s ease;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    min-height: 0;
   }
 
-  .nav-button-account:hover {
-    background-color: var(--button-bg-hover);
-  }
-
-  .nav-button-account.open {
-    background-color: var(--text-light);
-    color: var(--menu-panel-bg, #1b1b2f);
+  .navbar-mobile .nav-button-account.open {
+    background-color: #c41230;
+    color: var(--text-light);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.15);
   }
 
   .nav-menu-mobile {
@@ -428,11 +448,32 @@ ul {
     font-size: 0.95rem;
     border-radius: 12px;
     width: 100%;
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
   }
 
-  .nav-button {
+  .nav-menu-mobile .nav-link {
+    max-width: 167px; /* max length for link text */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .nav-menu-mobile .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
+  }
+
+  .navbar-mobile .nav-button-account:hover {
+    background-color: #9a0e26 !important;
+    box-shadow: 0 0 12px rgba(196, 18, 48, 0.55);
+  }
+
+  .navbar-mobile .nav-button {
     padding: 0.7rem 1rem;
     font-size: 1rem;
+    background-color: #c41230;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
   }
 
   .mobile-account-panel {
@@ -442,12 +483,14 @@ ul {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding: 14px 12px 12px;
+    padding: 12px 10px;
     background-color: var(--menu-panel-bg, #1b1b2f);
-    border-radius: 14px;
+    border-radius: 18px;
+    border: 0px solid rgba(255, 255, 255, 0.18) !important;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.25s ease;
+    box-sizing: border-box;
   }
 
   .mobile-account-panel.open {
@@ -456,17 +499,52 @@ ul {
   }
 
   .mobile-account-panel .nav-button {
-    width: 80%;
-    padding: 0.9rem 1.2rem;
-    border-radius: 16px;
+    width: 100%;
+    padding: 0.5rem 0.9rem;
+    border-radius: 12px;
     font-size: 1.05rem;
     font-weight: 600;
-    background-color: #490d1c;
+    background-color: #c41230;
     color: var(--text-light);
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
   }
 
   .mobile-account-panel .nav-button:hover {
-    background-color: #661a2d;
+    background-color: #9a0e26;
+    box-shadow: 0 0 12px rgba(196, 18, 48, 0.55);
+  }
+
+  .mobile-account-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 0;
+    border-radius: 0;
+    background-color: transparent;
+    border: none;
+    margin: 0;
+  }
+
+  .mobile-account-user .nav-user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #ffffff50;
+    filter: none;
+  }
+
+  .nav-user-name.mobile {
+    color: var(--text-light);
+    font-weight: 600;
+    text-decoration: none;
+    margin: 0;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .nav-link-back {
@@ -475,11 +553,60 @@ ul {
     padding: 0.6rem 0.8rem;
     border-radius: 12px;
     background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
   }
 
   .nav-link-back:hover {
     opacity: 1;
-    background-color: rgba(255, 255, 255, 0.14);
+    background-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
+  }
+
+  .nav-link-bookings {
+    justify-content: flex-start;
+    font-size: 0.95rem;
+    padding: 0.6rem 0.8rem;
+    max-width: 173px;
+    min-width: 173px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
+    text-decoration: none;
+    color: var(--text-light);
+  }
+
+  .nav-link-bookings:hover {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
+  }
+
+  .nav-link-bookings.nav-link-logout {
+    background-color: #c41230;
+    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--text-light);
+    font-weight: 700;
+    max-width: 200px;
+    min-width: 200px;
+    max-height: 35px;
+    margin: 0;
+  }
+
+  .nav-link-bookings.nav-link-logout:hover {
+    background-color: #a00b26;
+    box-shadow: 0 0 10px rgba(196, 18, 48, 0.55);
+  }
+
+  .mobile-booking-count {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    font-weight: 500;
+    align-self: flex-start;
+    padding-left: 0.4rem;
+   
   }
 
   .nav-menu-mobile .nav-item + .nav-item .nav-link {
@@ -520,6 +647,7 @@ ul {
   left: 0.8vw;
   object-fit: cover;
   filter: invert(100%) drop-shadow(1px 0px 2px rgba(0, 0, 0, 0.143));
+  border-radius: 50%;
 }
 
 .nav-user-name {
@@ -539,7 +667,8 @@ ul {
 }
 
 .nav-button.logout:hover {
-  background-color: #661a2d;
+  background-color: #9a0e26;
+  box-shadow: 0 0 12px rgba(196, 18, 48, 0.55);
 }
 
 .nav-button,

@@ -105,26 +105,28 @@ const MyPages: React.FC = () => {
     <div className="my-pages">
       <section className="profile-container">
         <div className="profile-card">
-          <div className="profile-top">
-            <div className="profile-img-placeholder">
-              <FontAwesomeIcon icon={faCircleUser} className="profile-icon" />
+          <div className="profile-header">
+            <div className="profile-top">
+              <div className="profile-img-placeholder">
+                <FontAwesomeIcon icon={faCircleUser} className="profile-icon" />
+              </div>
+              <div className="profile-info">
+                <h2>{`${user.firstName} ${user.lastName}`}</h2>
+                <p>{user.email}</p>
+                {user.phoneNumber && <p>{user.phoneNumber}</p>}
+              </div>
             </div>
-            <div className="profile-info">
-              <h2>{`${user.firstName} ${user.lastName}`}</h2>
-              <p>{user.email}</p>
-              {user.phoneNumber && <p>{user.phoneNumber}</p>}
-            </div>
-          </div>
 
-          {/* Top-right counters */}
-          <div className="stats-top-right" aria-label="Mina statistik">
-            <div className="stat-pill" title="Bokade (kommande)">
-              <span className="stat-number">{upcomingBookings.length}</span>
-              <span className="stat-label">bokade</span>
-            </div>
-            <div className="stat-pill" title="Sedda (historik)">
-              <span className="stat-number">{seenBookings.length}</span>
-              <span className="stat-label">sedda</span>
+            {/* Top-right counters */}
+            <div className="stats-top-right" aria-label="Mina statistik">
+              <div className="stat-pill" title="Bokade (kommande)">
+                <span className="stat-number">{upcomingBookings.length}</span>
+                <span className="stat-label">bokade</span>
+              </div>
+              <div className="stat-pill" title="Sedda (historik)">
+                <span className="stat-number">{seenBookings.length}</span>
+                <span className="stat-label">sedda</span>
+              </div>
             </div>
           </div>
 
