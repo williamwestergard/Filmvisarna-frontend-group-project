@@ -15,6 +15,7 @@ import MyPages from "./pages/MyPages/MyPages";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import LoginModal from "./components/LoginModal/LoginModal";
 import RegisterModal from "./components/RegisterModal/RegisterModal";
+import CookiePolicy from "./pages/CookiePolicy/CookiePolicy";
 
 // Scrolls to top when route changes
 function ScrollToTop() {
@@ -46,12 +47,12 @@ function App() {
           <Route path="/om-oss" element={<About />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/upptack" element={<Discover />} />
+          <Route path="/cookies" element={<CookiePolicy />} />
 
           {/* Booking and confirmation routes */}
           <Route path="/booking" element={<BookingPage />} />
           <Route path="/booking/:movieTitle" element={<BookingPage />} />
 
-          {/* ✅ NEW: confirmation route without bookingUrl */}
           <Route path="/confirmation" element={<ConfirmationPage />} />
 
           {/* Existing route for already booked confirmation */}
