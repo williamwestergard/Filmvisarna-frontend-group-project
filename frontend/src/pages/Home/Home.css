@@ -26,11 +26,11 @@
   }
 }
 
+/* Base  */
 a {
   text-decoration: none;
 }
 
-/* Main container */
 .home-container {
   min-height: 100vh;
   padding: 1rem;
@@ -42,119 +42,143 @@ a {
   font-family: Arial, sans-serif;
 }
 
-/* Page title */
 .home-title {
+  font-size: 2.6rem;
+  font-weight: 700;
   text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
 }
 
 /* Filter section */
 .filter-section {
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  margin-bottom: 0;
+  margin-bottom: 1rem;
+  width: 100%;
 }
 
-.filter-dropdown {
-  /* remove native arrows */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  height: 2.6rem;
-  padding: 0.5rem 2.6rem 0.5rem 1rem;
-  box-sizing: border-box;
+.filter-controls {
+    display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
 
+/* Date picker button */
+.date-picker-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.custom-date-button {
   background-color: #1b1b2f;
   color: #f9f9f9;
-  border: none;
-  border: 1px solid rgba(255, 255, 255, 0.065);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  height: 2.6rem;
+  padding: 0 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 160px;
+  transition: background-color 0.3s;
+}
+
+.custom-date-button:hover {
+  background-color: #2a2a45;
+}
+
+.custom-date-button::after {
+  content: "▼";
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin-left: 0.5rem;
+}
+
+.real-date-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Dropdowns */
+.filter-dropdown {
+  width: 160px;
+  height: 2.6rem;
+  padding: 0.5rem 2.6rem 0.5rem 1rem;
+  background: #1b1b2f;
+  color: #f9f9f9;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
-
-  /* custom arrow (SVG) placed left from the right edge */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%23f9f9f9' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: calc(100% - 0.8rem) center;
 }
 
-/* hide IE/Edge default arrow */
-.filter-dropdown::-ms-expand {
-  display: none;
-}
-
-/* hover state */
 .filter-dropdown:hover {
   background-color: #2a2a45;
 }
 
-/* Movie grid */
+/* Show All Button */
+.show-all-button {
+  height: 2.6rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f9f9f9;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 0 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.show-all-button:hover {
+  background-color: #2a2a45;
+}
+
+.show-all-button.active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.show-all-button.inactive {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Movies Grid */
 .movie-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
   justify-items: center;
   width: 100%;
-  max-width: 1200px; /* keeps grid centered on large screens */
-  grid-template-columns: repeat(2, 1fr); /* default mobile: 2 per row */
+  max-width: 1200px;
   opacity: 0;
   transform: translateY(20px);
-  animation: fadeInUp 0.7s forwards;
-  animation-timing-function: ease-in-out;
+  animation: fadeInUp 0.7s forwards ease-in-out;
 }
 
-/* Calendar */
-.filter-dropdown[type="date"] {
-  position: relative;
-  cursor: pointer;
-  padding-right: 2.5rem;
-}
-
-.filter-dropdown[type="date"]::-webkit-calendar-picker-indicator {
-  position: absolute;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.filter-dropdown[type="date"]::after {
-  content: "";
-  position: absolute;
-  right: 0.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  font-size: 1.1rem;
-  opacity: 0.9;
-  transition: opacity 0.2s ease;
-}
-
-.filter-dropdown[type="date"]:hover::after {
-  opacity: 1;
-}
-
-/* Tablet: 3 movies per row */
-@media screen and (min-width: 768px) {
-  .movie-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* Desktop: 4 movies per row */
-@media screen and (min-width: 1024px) {
-  .movie-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
+/* Movie Card */
 .movie-card {
   border: 1px solid rgba(255, 255, 255, 0.067);
   border-radius: 5px;
-  box-shadow: 0 0px 25px rgba(0, 0, 0, 0.401);
+  box-shadow: 0 0px 25px rgba(0, 0, 0, 0.4);
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
@@ -162,7 +186,6 @@ a {
   transform: translateY(-5px);
 }
 
-/* Movie title and genre */
 .movie-title {
   font-size: 1.14rem;
   font-weight: 600;
@@ -175,13 +198,9 @@ a {
   color: #a6a5a5;
 }
 
-/* Fade-in animation */
+/* Animation */
 @keyframes fadeInUp {
   0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  20% {
     opacity: 0;
     transform: translateY(20px);
   }
@@ -191,83 +210,55 @@ a {
   }
 }
 
-/* Phone screen layout */
-@media only screen and (max-width: 600px) {
-  .bg-overlay {
-    display: none;
-  }
-  .gradient-bottom {
-    width: 100%;
-    height: auto;
-    margin: 0;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: -1;
-    padding: 0;
-    mix-blend-mode: screen;
-    opacity: 0.4;
-    filter: contrast(141%) saturate(14%) brightness(150%);
-  }
-
-  /* Main container */
-  .home-container {
-    min-height: 100vh;
-    padding: 1rem;
-    display: flex;
+/* Responsive */
+@media (max-width: 800px) {
+  .filter-section {
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
-    color: #f9f9f9;
-    font-family: Arial, sans-serif;
-    position: relative;
+    width: 100%;
+    gap: 1rem;
   }
 
-  /* Page title */
-  .home-title {
-    text-align: center;
-    font-size: clamp(1.5rem, 10vw, 2rem);
-    margin-bottom: 1rem;
-  }
-  /* Movie grid */
-  .movie-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0rem;
-    justify-items: center;
+  .filter-controls {
+    flex-direction: column;
+    align-items: center;
     width: 100%;
-    max-width: 1200px; /* keeps grid centered on large screens */
-    grid-template-columns: repeat(2, 1fr); /* default mobile: 2 per row */
+    gap: 0.75rem;
+  }
+
+  
+  .date-picker-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  
+  .custom-date-button {
+    width: 100%;
+    max-width: 450px;
+  }
+
+  
+  .filter-dropdown,
+  .show-all-button {
+    width: 100%;
+    max-width: 450px;
+  }
+}
+
+@media (max-width: 600px) {
+  .movie-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
   }
 
   .movie-card {
     width: clamp(100px, 36vw, 130px);
     border-radius: 3px;
-    border: 1px solid rgba(255, 255, 255, 0.326);
-  }
-  .movie-title {
-    font-size: 1.1rem;
-    margin-bottom: 0.3rem;
   }
 
-  .movie-genre {
-    font-size: 0.9rem;
-    margin-bottom: 5vh;
-  }
-}
-
-/* Phone sizes */
-@media only screen and (max-width: 1000px) {
-  /* Filter section */
-  .filter-section {
-    display: flex;
-    justify-content: center;
-    gap: 0.8rem;
-    margin-bottom: 2rem;
-  }
-
-  .filter-dropdown {
-    height: 2.6rem;
-    padding: 0.5rem 1.6rem 0.5rem 1rem;
+  .home-title {
+    font-size: clamp(1.5rem, 10vw, 2rem);
   }
 }

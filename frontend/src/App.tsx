@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { Routes, Route, useLocation } from "react-router-dom";
-import Navbar from "./components/navbar/Navbar";
+import Navbar from "./components/Navbar/Navbar";
 import Home from "./pages/Home/Home";
 import About from "./pages/AboutUs/AboutUs";
 import BookingPage from "./pages/Booking/Booking";
@@ -15,6 +15,8 @@ import MyPages from "./pages/MyPages/MyPages";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import LoginModal from "./components/LoginModal/LoginModal";
 import RegisterModal from "./components/RegisterModal/RegisterModal";
+import CookiePolicy from "./pages/CookiePolicy/CookiePolicy";
+import CookieBanner from "./components/CookieBanner/CookieBanner";
 
 // Scrolls to top when route changes
 function ScrollToTop() {
@@ -46,10 +48,16 @@ function App() {
           <Route path="/om-oss" element={<About />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/upptack" element={<Discover />} />
+          <Route path="/cookies" element={<CookiePolicy />} />
 
           {/* Booking and confirmation routes */}
           <Route path="/booking" element={<BookingPage />} />
           <Route path="/booking/:movieTitle" element={<BookingPage />} />
+
+          {/* confirmation route without bookingUrl */}
+          <Route path="/confirmation" element={<ConfirmationPage />} />
+
+          {/* Existing route for already booked confirmation */}
           <Route path="/confirmation/:bookingUrl" element={<ConfirmationPage />} />
           <Route path="/ticket/:bookingUrl" element={<TicketPage />} />
 
@@ -69,15 +77,12 @@ function App() {
       </main>
 
       {/* LOGIN MODAL */}
-      <LoginModal
-        open={loginOpen}
-        onRequestClose={() => setLoginOpen(false)}
-      />
+      <LoginModal open={loginOpen} onRequestClose={() => setLoginOpen(false)} />
+
       {/* REGISTER MODAL */}
-      <RegisterModal
-        open={registerOpen}
-        onRequestClose={() => setRegisterOpen(false)}
-      />
+      <RegisterModal open={registerOpen} onRequestClose={() => setRegisterOpen(false)} />
+
+      <CookieBanner /> 
 
       <Footer />
     </>
