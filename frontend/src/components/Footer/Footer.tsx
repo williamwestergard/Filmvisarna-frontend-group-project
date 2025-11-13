@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Footer.css";
 
 export default function Footer() {
@@ -14,6 +15,7 @@ export default function Footer() {
   <a href="/om-oss">Om oss</a>
   <a href="/shop">Vår kiosk</a>
   <a href="/upptack">Veckans film</a>
+  <Link to="/cookies">Cookiepolicy</Link>
 </address>
 
     </footer>
