@@ -362,17 +362,17 @@ useEffect(() => {
           <div className={isAccountOpen ? 'mobile-account-panel open' : 'mobile-account-panel'}>
             {/* Display user profile when logged in */}
             {user && (
-              <div className="mobile-account-user">
-                <img
-                  className="nav-user-avatar"
-                  src={UserProfilePic}
-                  alt="Användarbild"
-                  referrerPolicy="no-referrer"
-                />
-                <Link to="/mina-sidor" className="nav-user-name mobile">
-                  {user.firstName} {user.lastName}
-                </Link>
-              </div>
+            <div className="mobile-account-user">
+              <img
+                className="nav-user-avatar"
+                src={user.avatarUrl ?? UserProfilePic}
+                alt="Användarbild"
+                referrerPolicy="no-referrer"
+              />
+              <Link to="/mina-sidor" className="nav-user-name mobile">
+                {user.firstName} {user.lastName}
+              </Link>
+            </div>
             )}
 
             {typeof activeBookingsCount === "number" && (
