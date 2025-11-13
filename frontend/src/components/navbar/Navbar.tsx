@@ -44,8 +44,26 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenLogin, onOpenRegister }) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const dropdownCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const cancelDropdownClose = () => {
+    if (dropdownCloseTimerRef.current) {
+      clearTimeout(dropdownCloseTimerRef.current);
+      dropdownCloseTimerRef.current = null;
+    }
+  };
+
+  const scheduleDropdownClose = () => {
+    cancelDropdownClose();
+    dropdownCloseTimerRef.current = setTimeout(() => {
+      setIsDropdownOpen(false);
+      dropdownCloseTimerRef.current = null;
+    }, 300);
+  };
+
   const toggleDropdown = (e?: React.MouseEvent | React.KeyboardEvent) => {
     e?.preventDefault(); // Förhindra att sidan hoppar till toppen
+    cancelDropdownClose();
     setIsDropdownOpen((prev) => !prev);
   };
 
@@ -53,7 +71,14 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenLogin, onOpenRegister }) => {
     setIsMenuOpen(false);
     setIsDropdownOpen(false);
     setIsAccountOpen(false);
+    cancelDropdownClose();
   };
+
+  useEffect(() => {
+    return () => {
+      cancelDropdownClose();
+    };
+  }, []);
 
   // Gör så att "är du säker" sektionen om användaren vill logga ut stängs om man klickar utanför sektionen.
   const logoutDropdownRef = useRef<HTMLDivElement | null>(null);
@@ -212,7 +237,11 @@ useEffect(() => {
           </li>
           <li
             className={`nav-item dropdown ${isDropdownOpen ? 'open' : ''}`}
-            onMouseLeave={() => setIsDropdownOpen(false)}
+            onMouseEnter={() => {
+              cancelDropdownClose();
+              setIsDropdownOpen(true);
+            }}
+            onMouseLeave={scheduleDropdownClose}
           >
             <Link to="#" className="nav-link" onClick={toggleDropdown} onKeyDown={(e) => e.key === 'Enter' && toggleDropdown(e)}>
               Mer <span className="dropdown-arrow">▼</span>
