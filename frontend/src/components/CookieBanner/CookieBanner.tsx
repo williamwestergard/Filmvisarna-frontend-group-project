@@ -33,9 +33,7 @@ export default function CookieBanner() {
         <div className="cookiebanner-text">
           <h2 className="cookiebanner-title">Vi använder cookies</h2>
           <p className="cookiebanner-body">
-            Vi använder nödvändiga tekniska cookies för att sidan och inloggning ska fungera.
-            Framöver vill vi även kunna använda cookies för statistik, som i sin tur kan
-            användas som underlag för marknadsföring. Du kan välja att endast tillåta
+            Vi använder nödvändiga tekniska cookies för att sidan och inloggning ska fungera. Du kan välja att endast tillåta
             nödvändiga cookies.
           </p>
           <p className="cookiebanner-linktext">
