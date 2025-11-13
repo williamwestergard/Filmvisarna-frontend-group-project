@@ -21,6 +21,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenLogin, onOpenRegister }) => {
   const [isLogOutOpen, setisLogOutOpen] = useState(false);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [activeBookingsCount, setActiveBookingsCount] = useState<number | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -103,6 +104,36 @@ useEffect(() => {
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
   }, []);
+
+  useEffect(() => {
+    if (!user?.id) {
+      setActiveBookingsCount(null);
+      return;
+    }
+
+    const controller = new AbortController();
+    fetch(`/api/users/${user.id}`, { signal: controller.signal })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok && Array.isArray(data.bookings)) {
+          const now = new Date();
+          const activeCount = data.bookings.filter((booking: { screeningTime: string }) => {
+            return new Date(booking.screeningTime) > now;
+          }).length;
+          setActiveBookingsCount(activeCount);
+        } else {
+          setActiveBookingsCount(0);
+        }
+      })
+      .catch((err) => {
+        if (err.name !== "AbortError") {
+          console.error("Unable to fetch user bookings:", err);
+          setActiveBookingsCount(null);
+        }
+      });
+
+    return () => controller.abort();
+  }, [user?.id]);
 
   const handleLogout = () => {
     localStorage.removeItem("authUser");
@@ -328,34 +359,48 @@ useEffect(() => {
             </li>
           )}
         </ul>
-        <div className={isAccountOpen ? 'mobile-account-panel open' : 'mobile-account-panel'}>
-          {/* Display user profile when logged in */}
-          {user && (
-            <div className="mobile-account-user">
-              <img
-                className="nav-user-avatar"
-                src={UserProfilePic}
-                alt="Användarbild"
-                referrerPolicy="no-referrer"
-              />
-              <Link to="/mina-sidor" className="nav-user-name mobile">
-                {user.firstName} {user.lastName}
-              </Link>
-            </div>
-          )}
+          <div className={isAccountOpen ? 'mobile-account-panel open' : 'mobile-account-panel'}>
+            {/* Display user profile when logged in */}
+            {user && (
+              <div className="mobile-account-user">
+                <img
+                  className="nav-user-avatar"
+                  src={UserProfilePic}
+                  alt="Användarbild"
+                  referrerPolicy="no-referrer"
+                />
+                <Link to="/mina-sidor" className="nav-user-name mobile">
+                  {user.firstName} {user.lastName}
+                </Link>
+              </div>
+            )}
 
-          <button
-            type="button"
-            className="nav-link nav-link-back"
-            onClick={() => setIsAccountOpen(false)}
-          >
-            ‹ Tillbaka
-          </button>
+            <button
+              type="button"
+              className="nav-link nav-link-back"
+              onClick={() => setIsAccountOpen(false)}
+            >
+              ‹ Tillbaka
+            </button>
 
-          {/* Conditional rendering based on authentication status */}
-          {user ? (
-            <>
-              <button className="nav-button" onClick={() => { handleLogout(); closeMenu(); }}>Logga ut</button>
+            <Link
+              to="/mina-sidor"
+              className="nav-link nav-link-bookings"
+              onClick={() => { closeMenu(); setIsAccountOpen(false); }}
+            >
+              Bokningar
+            </Link>
+
+            {typeof activeBookingsCount === "number" && (
+              <p className="mobile-booking-count">
+                {activeBookingsCount} {activeBookingsCount === 1 ? "aktiv bokning" : "aktiva bokningar"}
+              </p>
+            )}
+
+            {/* Conditional rendering based on authentication status */}
+            {user ? (
+              <>
+                <button className="nav-button" onClick={() => { handleLogout(); closeMenu(); }}>Logga ut</button>
             </>
           ) : (
             <>

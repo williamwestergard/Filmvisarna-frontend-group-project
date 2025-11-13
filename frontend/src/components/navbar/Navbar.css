@@ -544,6 +544,35 @@ ul {
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
   }
 
+  .nav-link-bookings {
+    justify-content: flex-start;
+    font-size: 0.95rem;
+    padding: 0.6rem 0.8rem;
+    max-width: 173px;
+    min-width: 173px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
+    text-decoration: none;
+    color: var(--text-light);
+  }
+
+  .nav-link-bookings:hover {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
+  }
+
+  .mobile-booking-count {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    font-weight: 500;
+    align-self: flex-start;
+    padding-left: 0.4rem;
+  }
+
   .nav-menu-mobile .nav-item + .nav-item .nav-link {
     border-top: none;
   }
