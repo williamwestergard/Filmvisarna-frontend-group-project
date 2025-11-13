@@ -26,24 +26,31 @@ function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showAllMovies, setShowAllMovies] = useState(false);
 
-  // Restore date from sessionStorage
+  // Restore saved date
   useEffect(() => {
     const savedDate = sessionStorage.getItem("selectedDate");
     if (savedDate) setSelectedDate(savedDate);
   }, []);
 
+  // Get categories
   useEffect(() => {
     getCategories().then(setCategories).catch(console.error);
   }, []);
 
+  // Get showtimes when date changes
   useEffect(() => {
     if (!selectedDate) {
       setShowtimes([]);
       return;
     }
-    getShowtimes(selectedDate)
-      .then(setShowtimes)
+    getShowtimes(selectedDate).then(setShowtimes);
   }, [selectedDate]);
+
+  // Format date for display
+  const formatDate = (dateStr: string) => {
+    if (!dateStr) return "Alla dagar";
+    return new Date(dateStr).toLocaleDateString("sv-SE");
+  };
 
   return (
     <>
@@ -59,59 +66,85 @@ function Home() {
 
         <SearchBar onSearch={setSearchTerm} />
 
+        
         <section className="filter-section">
-          <div className="filter-controls">
-           
-            <input
-              type="date"
-              lang="sv-SE"
-              className="filter-dropdown"
-              value={selectedDate || ""}
-              onClick={(e) => (e.target as HTMLInputElement).showPicker?.()}
-              onChange={(e) => {
-                const newDate = e.target.value;
-                setSelectedDate(newDate);
-                sessionStorage.setItem("selectedDate", newDate);
-                setShowAllMovies(false); 
-              }}
-              min={new Date().toISOString().split("T")[0]}
-              max={(() => {
-                const d = new Date();
-                d.setDate(d.getDate() + 14);
-                return d.toISOString().split("T")[0];
-              })()}
-            />
+  <div className="filter-controls">
 
-           
-            <select
-              className="filter-dropdown"
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-            >
-              <option value="all">Alla kategorier</option>
-              {categories.map((c) => (
-                <option key={c.id} value={c.title}>
-                  {c.title}
-                </option>
-              ))}
-            </select>
-          </div>
+    
+    <div className="date-picker-wrapper">
+      <button
+        type="button"
+        className="custom-date-button"
+        onClick={(e) =>
+          (e.currentTarget.nextElementSibling as HTMLInputElement).showPicker?.()
+        }
+      >
+        {selectedDate
+          ? new Date(selectedDate).toLocaleDateString("sv-SE")
+          : "Alla dagar"}
+      </button>
 
-          
-          {selectedDate && (
-            <div className="show-all-container">
-              <button
-                className={`show-all-button ${
-                  showAllMovies ? "inactive" : "active"
-                }`}
-                onClick={() => setShowAllMovies((prev) => !prev)}
-              >
-                {showAllMovies ? "Visa dagens filmer" : "Visa alla filmer"}
-              </button>
-            </div>
-          )}
-        </section>
+      <input
+        type="date"
+        lang="sv-SE"
+        className="real-date-input"
+        value={selectedDate || ""}
+        onChange={(e) => {
+          const newDate = e.target.value;
+          setSelectedDate(newDate);
+          sessionStorage.setItem("selectedDate", newDate);
+          setShowAllMovies(false);
+        }}
+        min={new Date().toISOString().split("T")[0]}
+        max={(() => {
+          const d = new Date();
+          d.setDate(d.getDate() + 14);
+          return d.toISOString().split("T")[0];
+        })()}
+      />
+    </div>
 
+    
+    <select
+      className="filter-dropdown"
+      value={selectedCategory}
+      onChange={(e) => setSelectedCategory(e.target.value)}
+    >
+      <option value="all">Alla kategorier</option>
+      {categories.map((c) => (
+        <option key={c.id} value={c.title}>
+          {c.title}
+        </option>
+      ))}
+    </select>
+
+    
+    {selectedDate && (
+      <button
+        className={`show-all-button ${
+          showAllMovies ? "inactive" : "active"
+        }`}
+        onClick={() => setShowAllMovies((prev) => !prev)}
+      >
+        {showAllMovies
+          ? `Visa filmer för ${new Date(selectedDate).toLocaleDateString("sv-SE")}`
+          : "Visa alla filmer"}
+      </button>
+    )}
+  </div>
+</section>
+    
+
+        
+        {selectedDate && (
+          <p className="view-info">
+            {showAllMovies
+              ? "Du ser alla filmer just nu."
+              : `Du ser filmer som visas ${formatDate(selectedDate)}.`}
+          </p>
+        )}
+
+        
         <MoviesList
           selectedCategory={selectedCategory}
           selectedDate={selectedDate}
