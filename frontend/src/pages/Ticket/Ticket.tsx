@@ -174,7 +174,7 @@ const canCancel = now < oneHourBefore;
           <div className="ticket-number-slot">{booking.bookingNumber}</div>
 
           <button
-            className="book-btn"
+            className="bts-btn"
             style={{ marginTop: "1rem" }}
             onClick={() => navigate("/")}
           >
