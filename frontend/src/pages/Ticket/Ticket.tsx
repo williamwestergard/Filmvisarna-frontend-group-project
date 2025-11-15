@@ -1,6 +1,7 @@
 import "./Ticket.css";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import CancelBookingModal from "../../components/CancelBookingModal/CancelBookingModal";
 
 interface BookingSeat {
   seatId: number;
@@ -41,7 +42,6 @@ interface Seat {
 }
 
 export default function TicketPage() {
-  const { bookingId } = useParams();
   const navigate = useNavigate();
 
   const [booking, setBooking] = useState<Booking | null>(null);
@@ -51,7 +51,9 @@ export default function TicketPage() {
   const [seats, setSeats] = useState<Seat[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-   const { bookingUrl } = useParams<{ bookingUrl: string }>();
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
+  const { bookingUrl } = useParams<{ bookingUrl: string }>();
 
   useEffect(() => {
     async function loadTicket() {
@@ -129,6 +131,26 @@ const screeningTime = new Date(screening.time);
 const oneHourBefore = new Date(screeningTime.getTime() - 60 * 60 * 1000);
 const canCancel = now < oneHourBefore;
 
+  const handleCancelBooking = async () => {
+    if (!booking) return;
+    try {
+      setIsCancelling(true);
+      const res = await fetch(`/api/bookings/${booking.id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Kunde inte avboka bokningen.");
+
+      setIsCancelModalOpen(false);
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+      alert("Något gick fel vid avbokningen.");
+    } finally {
+      setIsCancelling(false);
+    }
+  };
+
   return (
     <section className="ticket-page">
       <div className="ticket">
@@ -181,39 +203,35 @@ const canCancel = now < oneHourBefore;
             Tillbaka till startsidan
           </button>
           <button
-  className={`cancel-btn ${!canCancel ? "disabled" : ""}`}
-  disabled={!canCancel}
-  onClick={async () => {
-    if (!canCancel) return;
+            className={`cancel-btn ${!canCancel ? "disabled" : ""}`}
+            disabled={!canCancel}
+            onClick={() => {
+              if (!canCancel) return;
+              setIsCancelModalOpen(true);
+            }}
+          >
+            Avboka biljett
+          </button>
 
-    const confirmDelete = window.confirm("Är du säker på att du vill avboka?");
-    if (!confirmDelete) return;
-
-    try {
-      const res = await fetch(`/api/bookings/${booking.id}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) throw new Error("Kunde inte avboka bokningen.");
-
-      alert("Din bokning har avbokats.");
-      navigate("/");
-    } catch (err) {
-      console.error(err);
-      alert("Något gick fel vid avbokningen.");
-    }
-  }}
->
-  Avboka biljett
-</button>
-
-{!canCancel && (
-  <p className="cancel-note">
-    Du kan inte avboka mindre än en timme innan filmen startar.
-  </p>
-)}
+          {!canCancel && (
+            <p className="cancel-note">
+              Du kan inte avboka mindre än en timme innan filmen startar.
+            </p>
+          )}
         </footer>
       </div>
+      <CancelBookingModal
+        isOpen={isCancelModalOpen}
+        bookingTitle={movie.title}
+        screeningTime={screening.time}
+        auditoriumName={auditorium?.name ?? ""}
+        onCancel={() => {
+          if (isCancelling) return;
+          setIsCancelModalOpen(false);
+        }}
+        onConfirm={handleCancelBooking}
+        isProcessing={isCancelling}
+      />
     </section>
   );
 }
