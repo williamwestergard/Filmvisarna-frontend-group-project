@@ -226,17 +226,6 @@ const MyPages: React.FC = () => {
             )}
           </div>
 
-          {/* Logout-button */}
-          <button
-            className="logout-btn"
-            onClick={() => {
-              localStorage.removeItem("authUser");
-              localStorage.removeItem("authToken");
-              window.location.href = "/login";
-            }}
-          >
-            Logga ut
-          </button>
         </div>
       </section>
       {bookingToCancel && (
