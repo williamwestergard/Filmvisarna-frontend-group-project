@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./MyPages.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
+import CancelBookingModal from "../../components/CancelBookingModal/CancelBookingModal";
 
 interface Seat {
   row: string;
@@ -228,24 +229,15 @@ const MyPages: React.FC = () => {
 
         </div>
       </section>
-      {bookingToCancel && (
-        <div className="cancel-modal" role="dialog" aria-modal="true" aria-labelledby="cancel-dialog-title">
-          <div className="cancel-modal__dialog">
-            <h3 id="cancel-dialog-title">Avboka {bookingToCancel.movieTitle}?</h3>
-            <p className="cancel-modal__text">
-              Bokning {new Date(bookingToCancel.screeningTime).toLocaleString("sv-SE")} i {bookingToCancel.auditoriumName}. Är du säker på att du vill ta bort bokningen?
-            </p>
-            <div className="cancel-modal__actions">
-              <button className="cancel-modal__keep" onClick={closeCancelDialog} disabled={isCancelling}>
-                Behåll bokningen
-              </button>
-              <button className="cancel-modal__confirm" onClick={confirmCancelBooking} disabled={isCancelling}>
-                {isCancelling ? "Avbokar..." : "Avboka"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <CancelBookingModal
+        isOpen={Boolean(bookingToCancel)}
+        bookingTitle={bookingToCancel?.movieTitle ?? ""}
+        screeningTime={bookingToCancel?.screeningTime ?? ""}
+        auditoriumName={bookingToCancel?.auditoriumName ?? ""}
+        onCancel={closeCancelDialog}
+        onConfirm={confirmCancelBooking}
+        isProcessing={isCancelling}
+      />
     </div>
   );
 };
