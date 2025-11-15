@@ -275,39 +275,39 @@ useEffect(() => {
                 </span>
               </li>
           
-               <li className="nav-item nav-logout">
-  <div className="logout-container" style={{ position: "relative" }}>
+              <li className="nav-item nav-logout">
+                <div className="logout-container">
+                  <button
+                    className="nav-button"
+                    onClick={() => setisLogOutOpen((prev) => !prev)}
+                  >
+                    Logga ut
+                  </button>
 
-    <button
-      className="nav-button"
-      onClick={() => setisLogOutOpen((prev) => !prev)}
-    >
-      Logga ut
-    </button>
-
-    {isLogOutOpen && (
-      <div
-        className="navbar-logout-dropdown"
-          ref={logoutDropdownRef}>
-        <p style={{ color: "#fff", marginBottom: "10px" }}>
-          Är du säker?
-        </p>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <button
-            className="navbar-logout-confirm-button"
-            onClick={handleLogout}>
-            Ja
-          </button>
-          <button
-            className="navbar-logout-cancel-button"
-            onClick={() => setisLogOutOpen(false)} >
-            Avbryt
-          </button>
-        </div>
-      </div>
-    )}
-  </div>
-</li>
+                  {isLogOutOpen && (
+                    <div
+                      className="navbar-logout-dropdown"
+                      ref={logoutDropdownRef}
+                    >
+                      <p className="navbar-logout-text">Är du säker?</p>
+                      <div className="navbar-logout-actions">
+                        <button
+                          className="navbar-logout-confirm-button"
+                          onClick={handleLogout}
+                        >
+                          Ja
+                        </button>
+                        <button
+                          className="navbar-logout-cancel-button"
+                          onClick={() => setisLogOutOpen(false)}
+                        >
+                          Avbryt
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </li>
 
             
             </>

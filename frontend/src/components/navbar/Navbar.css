@@ -245,40 +245,73 @@ ul {
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
 }
 
+.logout-container {
+  position: relative;
+}
+
 .navbar-logout-dropdown {
   position: absolute;
-  top: 100%;
-  left: -2vw;
+  top: calc(100% + 0.9rem);
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1100;
-  min-width: 150px;
-  padding: 5px 10px;
-  border-radius: 5px;
+  min-width: 190px;
+  padding: 0.9rem 1rem;
+  border-radius: 16px;
+  border: 0.5px solid rgba(255, 255, 255, 0.25);
   background-color: #1b1b2f;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
 }
+
+.navbar-logout-text {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #f9f9f9;
+  font-weight: 500;
+}
+
+.navbar-logout-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .navbar-logout-confirm-button,
 .navbar-logout-cancel-button {
+  flex: 1;
   cursor: pointer;
-  background: none;
-  border: none;
-  color: white;
-  padding: 0.7vh 1vw;
-  margin: 0.5vw;
-  width: 0 auto;
+  border-radius: 12px;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .navbar-logout-confirm-button {
   background-color: #c41230;
-  border-radius: 3px;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(196, 18, 48, 0.35);
 }
 
 .navbar-logout-cancel-button {
-  border: 1px solid rgba(255, 255, 255, 0.46);
-  border-radius: 3px;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.08);
 }
+
 .navbar-logout-confirm-button:hover,
 .navbar-logout-cancel-button:hover {
-  filter: brightness(80%);
+  transform: translateY(-1px);
+}
+
+.navbar-logout-confirm-button:focus-visible,
+.navbar-logout-cancel-button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
 }
 
 /* ---------- Hamburgare & animation ---------- */
