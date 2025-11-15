@@ -247,12 +247,15 @@ ul {
 
 .logout-container {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .navbar-logout-dropdown {
   position: absolute;
-  top: calc(100% + 0.9rem);
-  left: 50%;
+  top: calc(100% + 1.1rem);
+  left: 15%;
   transform: translateX(-50%);
   z-index: 1100;
   min-width: 190px;
@@ -260,10 +263,11 @@ ul {
   border-radius: 16px;
   border: 0.5px solid rgba(255, 255, 255, 0.25);
   background-color: #1b1b2f;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
+  margin-top: 5px;
 }
 
 .navbar-logout-text {
