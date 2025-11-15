@@ -383,7 +383,9 @@ ul {
     align-items: stretch;
     justify-content: flex-start;
     width: min(92vw, 200px);
-    padding: 14px 12px 12px;
+    padding: 14px 12px 20px;
+    min-height: min(80vh, 220px);
+    max-height: min(92vh, 250px); /* adjust this value as needed for the dropdown */
     background-color: var(--menu-panel-bg, #1b1b2f);
     border-radius: 18px; /* round all corners for mobile panel */
     border: 1px solid rgba(255, 255, 255, 0.18) !important;
@@ -436,6 +438,7 @@ ul {
     width: 100%;
     text-align: left;
     gap: 6px;
+    margin-top: 18px;
   }
 
   .nav-item {
