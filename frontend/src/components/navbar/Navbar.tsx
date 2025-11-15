@@ -382,11 +382,6 @@ useEffect(() => {
           <li className="nav-item">
             <Link to="/shop" className="nav-link" onClick={closeMenu}>Vår kiosk</Link>
           </li>
-          {user && (
-            <li className="nav-item">
-              <Link to="/mina-sidor" className="nav-link" onClick={closeMenu}>Mina bokningar</Link>
-            </li>
-          )}
         </ul>
           <div className={isAccountOpen ? 'mobile-account-panel open' : 'mobile-account-panel'}>
             {/* Display user profile when logged in */}
