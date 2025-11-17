@@ -29,9 +29,9 @@ const WeeklyMovie: React.FC = () => {
 
   if (!film) return <p>Laddar veckans film...</p>;
 
-  const posterSrc = film.posterUrl
-    ? `http://localhost:4000/images/posters/${film.posterUrl}`
-    : "/placeholder-poster.jpg";
+ const posterSrc = film.posterUrl
+  ? `/images/posters/${film.posterUrl}`
+  : "/placeholder-poster.jpg";
 
   const slugify = (title: string) =>
     title
