@@ -77,38 +77,48 @@ function Home() {
   <div className="filter-controls">
 
     
-    <div className="date-picker-wrapper">
-      <button
-        type="button"
-        className="custom-date-button"
-        onClick={(e) =>
-          (e.currentTarget.nextElementSibling as HTMLInputElement).showPicker?.()
-        }
-      >
-        {selectedDate
-          ? new Date(selectedDate).toLocaleDateString("sv-SE")
-          : "Alla dagar"}
-      </button>
+<div className="date-picker-wrapper">
+  <button
+    type="button"
+    className="custom-date-button"
+    onClick={(e) => {
+      const input = e.currentTarget.nextElementSibling as HTMLInputElement | null;
+      if (!input) return;
 
-      <input
-        type="date"
-        lang="sv-SE"
-        className="real-date-input"
-        value={selectedDate || ""}
-        onChange={(e) => {
-          const newDate = e.target.value;
-          setSelectedDate(newDate);
-          sessionStorage.setItem("selectedDate", newDate);
-          setShowAllMovies(false);
-        }}
-        min={new Date().toISOString().split("T")[0]}
-        max={(() => {
-          const d = new Date();
-          d.setDate(d.getDate() + 14);
-          return d.toISOString().split("T")[0];
-        })()}
-      />
-    </div>
+      
+      if (input.showPicker) {
+        input.showPicker();
+      } else {
+        // iPhone fallback
+        input.focus();
+        input.click();
+      }
+    }}
+  >
+    {selectedDate
+      ? new Date(selectedDate).toLocaleDateString("sv-SE")
+      : "Alla dagar"}
+  </button>
+
+  <input
+    type="date"
+    lang="sv-SE"
+    className="hidden-date-input"
+    value={selectedDate || ""}
+    onChange={(e) => {
+      const newDate = e.target.value;
+      setSelectedDate(newDate);
+      sessionStorage.setItem("selectedDate", newDate);
+      setShowAllMovies(false);
+    }}
+    min={new Date().toISOString().split("T")[0]}
+    max={(() => {
+      const d = new Date();
+      d.setDate(d.getDate() + 14);
+      return d.toISOString().split("T")[0];
+    })()}
+  />
+</div>
 
     
     <select
