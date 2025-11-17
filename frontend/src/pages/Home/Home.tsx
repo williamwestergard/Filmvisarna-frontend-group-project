@@ -46,11 +46,17 @@ function Home() {
     getShowtimes(selectedDate).then(setShowtimes);
   }, [selectedDate]);
 
-  // Format date for display
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return "Alla dagar";
-    return new Date(dateStr).toLocaleDateString("sv-SE");
-  };
+ const formatDate = (dateStr: string) => {
+  if (!dateStr) return "";
+  const date = new Date(dateStr);
+
+  return date.toLocaleDateString("sv-SE", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
 
   return (
     <>
@@ -110,7 +116,7 @@ function Home() {
       value={selectedCategory}
       onChange={(e) => setSelectedCategory(e.target.value)}
     >
-      <option value="all">Alla kategorier</option>
+      <option value="all">Kategorier</option>
       {categories.map((c) => (
         <option key={c.id} value={c.title}>
           {c.title}
