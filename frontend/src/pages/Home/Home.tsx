@@ -46,17 +46,17 @@ function Home() {
     getShowtimes(selectedDate).then(setShowtimes);
   }, [selectedDate]);
 
- const formatDate = (dateStr: string) => {
-  if (!dateStr) return "";
-  const date = new Date(dateStr);
+  const formatDate = (dateStr: string) => {
+    if (!dateStr) return "";
+    const date = new Date(dateStr);
 
-  return date.toLocaleDateString("sv-SE", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-};
+    return date.toLocaleDateString("sv-SE", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   return (
     <>
@@ -72,86 +72,84 @@ function Home() {
 
         <SearchBar onSearch={setSearchTerm} />
 
-        
         <section className="filter-section">
-  <div className="filter-controls">
+          <div className="filter-controls">
+            <div
+              className="date-picker-wrapper"
+              onClick={(e) => {
+                const input = e.currentTarget.querySelector(
+                  ".hidden-date-input"
+                ) as HTMLInputElement | null;
+                if (!input) return;
 
-    
-<div className="date-picker-wrapper">
-  <button
-    type="button"
-    className="custom-date-button"
-    onClick={(e) => {
-      const input = e.currentTarget.nextElementSibling as HTMLInputElement | null;
-      if (!input) return;
+                if (input.showPicker) {
+                  input.showPicker();
+                } else {
+                  // iPhone fallback
+                  input.focus();
+                  input.click();
+                }
+              }}
+            >
+              <button
+                type="button"
+                className="custom-date-button"
+              >
+                {selectedDate
+                  ? new Date(selectedDate).toLocaleDateString("sv-SE")
+                  : "Alla dagar"}
+              </button>
 
-      
-      if (input.showPicker) {
-        input.showPicker();
-      } else {
-        // iPhone fallback
-        input.focus();
-        input.click();
-      }
-    }}
-  >
-    {selectedDate
-      ? new Date(selectedDate).toLocaleDateString("sv-SE")
-      : "Alla dagar"}
-  </button>
+              <input
+                type="date"
+                lang="sv-SE"
+                className="hidden-date-input"
+                value={selectedDate || ""}
+                onChange={(e) => {
+                  const newDate = e.target.value;
+                  setSelectedDate(newDate);
+                  sessionStorage.setItem("selectedDate", newDate);
+                  setShowAllMovies(false);
+                }}
+                min={new Date().toISOString().split("T")[0]}
+                max={(() => {
+                  const d = new Date();
+                  d.setDate(d.getDate() + 14);
+                  return d.toISOString().split("T")[0];
+                })()}
+              />
+            </div>
 
-  <input
-    type="date"
-    lang="sv-SE"
-    className="hidden-date-input"
-    value={selectedDate || ""}
-    onChange={(e) => {
-      const newDate = e.target.value;
-      setSelectedDate(newDate);
-      sessionStorage.setItem("selectedDate", newDate);
-      setShowAllMovies(false);
-    }}
-    min={new Date().toISOString().split("T")[0]}
-    max={(() => {
-      const d = new Date();
-      d.setDate(d.getDate() + 14);
-      return d.toISOString().split("T")[0];
-    })()}
-  />
-</div>
+            <select
+              className="filter-dropdown"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <option value="all">Kategorier</option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.title}>
+                  {c.title}
+                </option>
+              ))}
+            </select>
 
-    
-    <select
-      className="filter-dropdown"
-      value={selectedCategory}
-      onChange={(e) => setSelectedCategory(e.target.value)}
-    >
-      <option value="all">Kategorier</option>
-      {categories.map((c) => (
-        <option key={c.id} value={c.title}>
-          {c.title}
-        </option>
-      ))}
-    </select>
+            {selectedDate && (
+              <button
+                className={`show-all-button ${
+                  showAllMovies ? "inactive" : "active"
+                }`}
+                onClick={() => setShowAllMovies((prev) => !prev)}
+              >
+                {showAllMovies
+                  ? `Visa filmer för ${new Date(
+                      selectedDate
+                    ).toLocaleDateString("sv-SE")}`
+                  : "Visa alla filmer"}
+              </button>
+            )}
+          </div>
+        </section>
 
-    
-    {selectedDate && (
-      <button
-        className={`show-all-button ${
-          showAllMovies ? "inactive" : "active"
-        }`}
-        onClick={() => setShowAllMovies((prev) => !prev)}
-      >
-        {showAllMovies
-          ? `Visa filmer för ${new Date(selectedDate).toLocaleDateString("sv-SE")}`
-          : "Visa alla filmer"}
-      </button>
-    )}
-  </div>
-</section>
-    
-
-        
         {selectedDate && (
           <p className="view-info">
             {showAllMovies
@@ -160,7 +158,6 @@ function Home() {
           </p>
         )}
 
-        
         <MoviesList
           selectedCategory={selectedCategory}
           selectedDate={selectedDate}
@@ -169,7 +166,6 @@ function Home() {
           showAllMovies={showAllMovies}
         />
 
-        
         {selectedDate && showtimes.length === 0 && (
           <p className="no-screenings-message">
             Inga visningar finns för valt datum.
