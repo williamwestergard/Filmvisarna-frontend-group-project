@@ -56,34 +56,43 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
   const [bookedSeats, setBookedSeats] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   // Fetch seats for this screening
   useEffect(() => {
     let intervalId: ReturnType<typeof setInterval>;
 
     async function fetchSeats() {
-      setLoading(true);
-      try {
-        const res = await fetch(`/api/screenings/${screeningId}/seats`);
-        if (!res.ok) throw new Error("Failed to load seats");
-        const data = await res.json();
-        if (!data.ok) throw new Error("Invalid response");
+      // Only show loader on first load
+  if (isInitialLoad) setLoading(true);
 
-        setSeats(data.seats);
-        const booked = data.seats
-          .filter((s: Seat) => s.isBooked === 1)
-          .map((s: Seat) => s.seatId);
-        setBookedSeats(booked);
+  try {
+    const res = await fetch(`/api/screenings/${screeningId}/seats`);
+    if (!res.ok) throw new Error("Failed to load seats");
+    const data = await res.json();
+    if (!data.ok) throw new Error("Invalid response");
 
-        setAvailableSeatsCount(data.seats.length - booked.length);
-        setError(null);
-      } catch (err) {
-        console.error("Error fetching seats:", err);
-        setError("Kunde inte hämta bokade platser.");
-      } finally {
-        setLoading(false);
-      }
+    // These MUST run on EVERY fetch
+    setSeats(data.seats);
+
+    const booked = data.seats
+      .filter((s: Seat) => s.isBooked === 1)
+      .map((s: Seat) => s.seatId);
+    setBookedSeats(booked);
+
+    setAvailableSeatsCount(data.seats.length - booked.length);
+    setError(null);
+  } catch (err) {
+    console.error("Error fetching seats:", err);
+    setError("Kunde inte hämta bokade platser.");
+  } finally {
+    // Only hide loader once — on the first load
+    if (isInitialLoad) {
+      setLoading(false);
+      setIsInitialLoad(false);
     }
+  }
+}
 
     fetchSeats();
     intervalId = setInterval(fetchSeats, 60000);
@@ -105,8 +114,20 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
    *  Smart automatic seat recommendation
    * Works like AuditoriumOne but adapted to fewer rows
    */
-  useEffect(() => {
-    if (totalTickets <= 0 || seats.length === 0) return;
+function userSeatsStillAvailable() {
+  return selectedSeats.every((s) => !bookedSeats.includes(s.seatId));
+}
+
+useEffect(() => {
+  if (totalTickets <= 0 || seats.length === 0) return;
+
+  // Do NOT auto-pick if user already chose seats AND they are still free
+  if (
+  selectedSeats.length === totalTickets &&
+  userSeatsStillAvailable()
+) {
+  return;
+}
 
     // Deselect previous automatic seats
     selectedSeats.forEach((s) =>
@@ -234,16 +255,10 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
             src={AuditoriumScreen}
             alt="Bioduk"
           />
-
-          <section className="auditorium-seats-container">
-            {loading ? (
-              <div className="auditorium-seats-loading">
-                <div className="auditorium-loader"></div>
-                <p>Laddar platser...</p>
-              </div>
-            ) : error ? (
-              <p>{error}</p>
-            ) : (
+       <section className="auditorium-seats-container">
+          {error ? (
+  <p>{error}</p>
+) : (
               Object.entries(rowsMap)
                 .sort(([a], [b]) => a.localeCompare(b))
                 .map(([label, rowSeats]) => renderRow(label, rowSeats))
