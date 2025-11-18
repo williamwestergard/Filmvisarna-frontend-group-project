@@ -407,7 +407,7 @@ useEffect(() => {
               onClick={() => setIsAccountOpen(false)}
               aria-label="Stäng konto-menyn"
             >
-               <span aria-hidden="true">X</span>
+               <span aria-hidden="true">Tillbaka</span>
             </button>
 
 
