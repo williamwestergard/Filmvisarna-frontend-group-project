@@ -60,6 +60,7 @@ function Home() {
 
   return (
     <>
+      {/* Background */}
       <img
         className="bg-overlay"
         src={BgOverlay}
