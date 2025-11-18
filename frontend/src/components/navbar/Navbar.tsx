@@ -353,11 +353,7 @@ useEffect(() => {
         onClick={toggleMenu}
         aria-label="Öppna meny"
         aria-expanded={isMenuOpen}
-      >
-        <span className={isMenuOpen ? 'bar open' : 'bar'}></span>
-        <span className={isMenuOpen ? 'bar open' : 'bar'}></span>
-        <span className={isMenuOpen ? 'bar open' : 'bar'}></span>
-      </button>
+      ></button>
 
       <div className={isMenuOpen ? 'mobile-menu-panel active' : 'mobile-menu-panel'}>
         <button
