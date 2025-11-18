@@ -409,8 +409,9 @@ useEffect(() => {
               type="button"
               className="nav-link nav-link-back"
               onClick={() => setIsAccountOpen(false)}
+              aria-label="Stäng konto-menyn"
             >
-               Tillbaka
+               <span aria-hidden="true">X</span>
             </button>
 
 
