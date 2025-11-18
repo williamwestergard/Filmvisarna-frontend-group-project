@@ -5,6 +5,7 @@ import logo from './navbar-logo.png';
 import UserProfilePic from "./navbar-user-profile-picture.png"
 
 type User = {
+  id: number;
   firstName: string;
   lastName: string;
   avatarUrl?: string;
