@@ -1,3 +1,4 @@
+import type React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./RegisterForm.css";
@@ -19,7 +20,7 @@ export default function RegisterForm({ onSuccess, onCancel }: RegisterFormProps)
 
   const navigate = useNavigate();
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
 
@@ -31,7 +32,9 @@ export default function RegisterForm({ onSuccess, onCancel }: RegisterFormProps)
     // Password requires at least one letter and one number, and at least 8 characters
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     if (!passwordRegex.test(password)) {
-      setError("Lösenordet måste vara minst 8 tecken långt och innehålla minst en bokstav och en siffra.");
+      setError(
+        "Lösenordet måste vara minst 8 tecken långt och innehålla minst en bokstav och en siffra."
+      );
       return;
     }
 
@@ -57,9 +60,14 @@ export default function RegisterForm({ onSuccess, onCancel }: RegisterFormProps)
         // close modal if embedded in one
         onSuccess?.();
       }
-    } catch (err: any) {
-      setError(err.message || "Ett fel uppstod vid registrering.");
+    } catch (err: unknown) {
       console.error(err);
+
+      if (err instanceof Error) {
+        setError(err.message || "Ett fel uppstod vid registrering.");
+      } else {
+        setError("Ett fel uppstod vid registrering.");
+      }
     }
   }
 
@@ -164,7 +172,11 @@ export default function RegisterForm({ onSuccess, onCancel }: RegisterFormProps)
         <button type="submit" className="btn btn-primary">
           Skapa konto
         </button>
-        <button type="button" className="btn btn-secondary" onClick={handleCancel}>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={handleCancel}
+        >
           Avbryt
         </button>
       </div>

@@ -15,7 +15,7 @@ type Screening = {
 type Movie = {
   id: number;
   title: string;
-  ageLimit?: number; //to control child ticket visibility
+  ageLimit?: number; // to control child ticket visibility
   paketpris?: {
     liten: { antal: number; pris: number };
     litenEn: { antal: number; pris: number };
@@ -108,13 +108,14 @@ export function BookingProvider({ children }: { children: ReactNode }) {
 
   // Total available seats in the auditorium (update from Auditorium)
   // Default to Infinity to avoid blocking ticket selection before data loads
-  const [availableSeatsCount, setAvailableSeatsCount] = useState<number>(Infinity);
+  const [availableSeatsCount, setAvailableSeatsCount] =
+    useState<number>(Infinity);
 
   // total tickets = adult + senior + (child if allowed)
   const totalTickets =
     counts.adult + counts.senior + (childAllowed ? counts.child : 0);
 
-  //Calculate total price dynamically
+  // Calculate total price dynamically
   const totalAmount =
     counts.adult * prices.adult +
     counts.senior * prices.senior +
@@ -125,7 +126,8 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     if (type === "child" && !childAllowed) return; // prevent adding child tickets if not allowed
 
     setCounts((prev) => {
-      const baseTotal = prev.adult + prev.senior + (childAllowed ? prev.child : 0);
+      const baseTotal =
+        prev.adult + prev.senior + (childAllowed ? prev.child : 0);
       const nextTotal = baseTotal + 1; // adding one ticket
       if (nextTotal > availableSeatsCount) {
         alert("Det finns inte så många lediga platser på vald visning.");
@@ -141,11 +143,13 @@ export function BookingProvider({ children }: { children: ReactNode }) {
       [type]: Math.max(0, prev[type] - 1),
     }));
   };
+
   // Set specific ticket count with validation
   const setCount = (type: TicketType, value: number) => {
     setCounts((prev) => {
       const sanitized = Math.max(0, value);
-      const currentTotal = prev.adult + prev.senior + (childAllowed ? prev.child : 0);
+      const currentTotal =
+        prev.adult + prev.senior + (childAllowed ? prev.child : 0);
       const totalWithoutThisType = currentTotal - prev[type];
       const nextTotal = totalWithoutThisType + sanitized;
 
@@ -162,7 +166,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  //Seat selection logic (hard cap: cannot pick more than totalTickets)
+  // Seat selection logic (hard cap: cannot pick more than totalTickets)
   const toggleSeat = (seat: Seat) => {
     setSelectedSeats((prev) => {
       const isSelected = prev.some((s) => s.seatId === seat.seatId);
@@ -187,44 +191,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     }
   }, [totalTickets, selectedSeats.length]);
 
-  // Determine if child tickets should be shown based on ageLimit
-  // Swedish age rule simplified:
-  // 0 or 7 allowed
-  // 11, 15, 18  not allowed
-  // missing ageLimit → not allowed
-  useEffect(() => {
-    if (movie && typeof movie.ageLimit === "number") {
-      setChildAllowed(movie.ageLimit <= 7);
-      // if movie isn’t child-friendly, reset child count
-      if (movie.ageLimit > 7) {
-        setCounts((prev) => ({ ...prev, child: 0 }));
-      }
-    } else {
-      setChildAllowed(false);
-      setCounts((prev) => ({ ...prev, child: 0 }));
-    }
-  }, [movie?.id, movie?.ageLimit]);
-
-  // Load saved booking data per movie 
-  useEffect(() => {
-    if (!movie?.id) return; // wait until we know the movie
-    const key = `filmvisarna-booking-${movie.id}`;
-    const saved = localStorage.getItem(key);
-
-    if (saved) {
-      try {
-        const data = JSON.parse(saved);
-        if (data.counts) setCounts(data.counts);
-        if (data.selectedSeats) setSelectedSeats(data.selectedSeats);
-        if (typeof data.childAllowed === "boolean") setChildAllowed(data.childAllowed);
-        if (data.screening) setScreening(data.screening);
-      } catch (err) {
-        console.warn("Could not parse saved booking data", err);
-      }
-    }
-  }, [movie?.id]);
-
-  // Handle childAllowed logic AFTER loading data
+  // Handle childAllowed logic (based on ageLimit)
   useEffect(() => {
     if (movie && typeof movie.ageLimit === "number") {
       const allowChildren = movie.ageLimit <= 7;
@@ -238,7 +205,27 @@ export function BookingProvider({ children }: { children: ReactNode }) {
       setChildAllowed(false);
       setCounts((prev) => ({ ...prev, child: 0 }));
     }
-  }, [movie?.id, movie?.ageLimit]);
+  }, [movie]); // dependency: movie
+
+  // Load saved booking data per movie
+  useEffect(() => {
+    if (!movie?.id) return; // wait until we know the movie
+    const key = `filmvisarna-booking-${movie.id}`;
+    const saved = localStorage.getItem(key);
+
+    if (saved) {
+      try {
+        const data = JSON.parse(saved);
+        if (data.counts) setCounts(data.counts);
+        if (data.selectedSeats) setSelectedSeats(data.selectedSeats);
+        if (typeof data.childAllowed === "boolean")
+          setChildAllowed(data.childAllowed);
+        if (data.screening) setScreening(data.screening);
+      } catch (err) {
+        console.warn("Could not parse saved booking data", err);
+      }
+    }
+  }, [movie]); // movie dependency
 
   // Save to localStorage when data changes
   useEffect(() => {
@@ -254,15 +241,16 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     };
 
     localStorage.setItem(key, JSON.stringify(data));
-  }, [movie?.id, screening, counts, selectedSeats, childAllowed]);
+  }, [movie, screening, counts, selectedSeats, childAllowed]); // movie dependency
 
+  // Cleanup: remove booking data for movie on unmount/change
   useEffect(() => {
     return () => {
       if (movie?.id) {
         localStorage.removeItem(`filmvisarna-booking-${movie.id}`);
       }
     };
-  }, [movie?.id]);
+  }, [movie]); // movie dependency
 
   return (
     <BookingContext.Provider
@@ -293,6 +281,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useBooking() {
   const context = useContext(BookingContext);
   if (!context) {
