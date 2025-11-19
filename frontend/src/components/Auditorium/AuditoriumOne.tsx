@@ -58,40 +58,36 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
   const [error, setError] = useState<string | null>(null);
 
   // Fetch all seats for this screening
-  useEffect(() => {
-    let intervalId: ReturnType<typeof setInterval>;
-    // Polling interval in milliseconds (default: 3 minutes)
-    const POLLING_INTERVAL_MS = 180000;
-
-    async function fetchSeats() {
-      setLoading(true);
-      try {
-        const res = await fetch(`/api/screenings/${screeningId}/seats`);
-        if (!res.ok) throw new Error("Failed to load seats");
-        const data = await res.json();
-        if (!data.ok) throw new Error("Invalid response");
-
-        setSeats(data.seats);
-        const booked = data.seats
-          .filter((s: Seat) => s.isBooked === 1)
-          .map((s: Seat) => s.seatId);
-        setBookedSeats(booked);
-
-        setAvailableSeatsCount(data.seats.length - booked.length);
-        setError(null);
-      } catch (err) {
-        console.error("Error fetching seats:", err);
-        setError("Kunde inte hämta bokade platser.");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchSeats();
-    intervalId = setInterval(fetchSeats, POLLING_INTERVAL_MS);
-    return () => clearInterval(intervalId);
-  }, [screeningId, setAvailableSeatsCount]);
-
+ useEffect(() => {
+     async function fetchSeats() {
+       setLoading(true);
+       try {
+         const res = await fetch(`/api/screenings/${screeningId}/seats`);
+         if (!res.ok) throw new Error("Failed to load seats");
+         const data = await res.json();
+         if (!data.ok) throw new Error("Invalid response");
+ 
+         setSeats(data.seats);
+         const booked = data.seats
+           .filter((s: Seat) => s.isBooked === 1)
+           .map((s: Seat) => s.seatId);
+         setBookedSeats(booked);
+ 
+         setAvailableSeatsCount(data.seats.length - booked.length);
+         setError(null);
+       } catch (err) {
+         console.error("Error fetching seats:", err);
+         setError("Kunde inte hämta bokade platser.");
+       } finally {
+         setLoading(false);
+       }
+     }
+ 
+     fetchSeats();
+     const intervalId = setInterval(fetchSeats, 60000);
+     return () => clearInterval(intervalId);
+   }, [screeningId, setAvailableSeatsCount]);
+ 
   // Group seats by row
   const rowsMap = seats.reduce((acc, seat) => {
     if (!acc[seat.rowLabel]) acc[seat.rowLabel] = [];
