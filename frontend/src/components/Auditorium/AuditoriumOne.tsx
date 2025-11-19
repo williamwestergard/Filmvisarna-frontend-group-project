@@ -123,7 +123,7 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
 
     const rowOrder = ["E", "D", "F", "C", "G", "B", "H", "A"];
     let bestGroup: Seat[] = [];
-    let bestRow = "";
+    
 
     for (const row of rowOrder) {
       const rowSeats = rowsMap[row];
@@ -179,7 +179,7 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
       // Found a valid closest group
       if (closestGroup.length > 0) {
         bestGroup = closestGroup;
-        bestRow = row;
+        
         break; // stop at first suitable row (closest to center)
       }
     }
