@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="site-footer">
       <article className="footer-overlay"></article>
       <section className="footer-brand">
-        <img  className="footer-logo-image" src="/public/filmvisarna-footer-logo.png" alt="filmvisarna footer bild" />
+        <img  className="footer-logo-image" src="/filmvisarna-footer-logo.png" alt="filmvisarna footer bild" />
         
       </section>
 
