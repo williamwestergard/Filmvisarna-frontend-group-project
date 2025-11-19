@@ -15,7 +15,7 @@ interface AuditoriumProps {
   screeningId: number;
 }
 
-// Component representing a single seat
+// Reusable seat component
 function SeatBox({
   onClick,
   selected,
@@ -57,7 +57,7 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch all seats for this screening
+  // Loads seat data for the current screening and refreshes every 60s
   useEffect(() => {
     let intervalId: ReturnType<typeof setInterval>;
 
@@ -70,11 +70,12 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
         if (!data.ok) throw new Error("Invalid response");
 
         setSeats(data.seats);
+
         const booked = data.seats
           .filter((s: Seat) => s.isBooked === 1)
           .map((s: Seat) => s.seatId);
-        setBookedSeats(booked);
 
+        setBookedSeats(booked);
         setAvailableSeatsCount(data.seats.length - booked.length);
         setError(null);
       } catch (err) {
@@ -90,7 +91,7 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
     return () => clearInterval(intervalId);
   }, [screeningId, setAvailableSeatsCount]);
 
-  // Group seats by row
+  // Groups all seats by row label
   const rowsMap = seats.reduce((acc, seat) => {
     if (!acc[seat.rowLabel]) acc[seat.rowLabel] = [];
     acc[seat.rowLabel].push(seat);
@@ -101,17 +102,11 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
     rowsMap[r].sort((a, b) => a.seatNumber - b.seatNumber)
   );
 
-  /**
-   *  Find the best available connected group of seats
-   * Requirements:
-   *  - Seats must be adjacent (no booked seat in between)
-   *  - As close to the row center as possible
-   *  - If no row fits group size, skip recommendation
-   */
+  // Automatic seat selection based on adjacency and center alignment
   useEffect(() => {
     if (totalTickets <= 0 || seats.length === 0) return;
 
-    // Clear previous auto-selections when user changes tickets
+    // Clear previous selection when ticket count changes
     selectedSeats.forEach((s) =>
       toggleSeat({
         seatId: s.seatId,
@@ -123,7 +118,6 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
 
     const rowOrder = ["E", "D", "F", "C", "G", "B", "H", "A"];
     let bestGroup: Seat[] = [];
-    let bestRow = "";
 
     for (const row of rowOrder) {
       const rowSeats = rowsMap[row];
@@ -132,7 +126,7 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
       const free = rowSeats.filter((s) => !bookedSeats.includes(s.seatId));
       if (free.length < totalTickets) continue;
 
-      // Build groups of *adjacent* free seats
+      // Build groups of adjacent free seats
       const groups: Seat[][] = [];
       let currentGroup: Seat[] = [];
 
@@ -141,21 +135,18 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
         const isFree = !bookedSeats.includes(seat.seatId);
 
         if (isFree) {
-          // Add to current group
           currentGroup.push(seat);
         } else if (currentGroup.length > 0) {
-          // End of a free group
           groups.push([...currentGroup]);
           currentGroup = [];
         }
       }
       if (currentGroup.length > 0) groups.push([...currentGroup]);
 
-      // Only consider groups big enough
       const validGroups = groups.filter((g) => g.length >= totalTickets);
       if (validGroups.length === 0) continue;
 
-      // Find the group whose center is closest to the row center
+      // Choose group closest to the midpoint of the row
       const firstNum = rowSeats[0].seatNumber;
       const lastNum = rowSeats[rowSeats.length - 1].seatNumber;
       const mid = (firstNum + lastNum) / 2;
@@ -176,37 +167,36 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
         }
       }
 
-      // Found a valid closest group
       if (closestGroup.length > 0) {
         bestGroup = closestGroup;
-        bestRow = row;
-        break; // stop at first suitable row (closest to center)
+        break;
       }
     }
 
+    // Select the best group found
     if (bestGroup.length > 0) {
-      bestGroup.forEach((seat) => {
+      bestGroup.forEach((seat) =>
         toggleSeat({
           seatId: seat.seatId,
           row: seat.rowLabel,
           number: seat.seatNumber,
           auditorium: "Helan",
-        });
-      });
-    } else {
-      console.log("⚠️ No suitable connected group found");
+        })
+      );
     }
   }, [totalTickets, seats]);
 
-  const maxReached = totalTickets > 0 && selectedSeats.length >= totalTickets;
+  const maxReached =
+    totalTickets > 0 && selectedSeats.length >= totalTickets;
 
-  // Render visual layout
+  // Renders a full row of seats
   const renderRow = (rowLabel: string, rowSeats: Seat[]) => (
     <section className={`auditorium-row row-${rowLabel}`} key={rowLabel}>
       {rowSeats.map((seat) => {
         const selected = selectedSeats.some((s) => s.seatId === seat.seatId);
         const occupied = bookedSeats.includes(seat.seatId);
         const disabled = occupied || (maxReached && !selected);
+
         return (
           <SeatBox
             key={seat.seatId}
@@ -262,6 +252,7 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
           <article className="auditorium-information-bottom-user-seat"></article>
           <p>Ditt val</p>
         </article>
+
         <article className="auditorium-information-bottom-occupied-seatcontainer">
           <article className="auditorium-information-bottom-occupied-seat"></article>
           <p>Upptagen</p>
