@@ -34,19 +34,20 @@ function BookingContent() {
 
   const [movieLoaded, setMovieLoaded] = useState(false);
   const [weeklyMovie, setWeeklyMovie] = useState<Movie | null>(null);
+
+  // NOTE: we keep loadingBooking to control button UI while we validate/draft (we are NOT booking here anymore)
   const [loadingProceed, setLoadingProceed] = useState(false);
 
-  // Controls timeout modal after 10 minutes on the booking page
+  // Simple 10 minute timeout popup (unchanged)
   const [timeoutOpen, setTimeoutOpen] = useState(false);
 
   const location = useLocation();
+  const selectedDateFromHome = (location.state as any)?.selectedDate || "";
   const navigate = useNavigate();
   const [showScrollInfo, setShowScrollInfo] = useState(true);
 
-  // Optional package pricing, passed from previous page or from weekly movie data
   const paketprisFromState = (location.state as any)?.paketpris;
 
-  // Fetch weekly movie data (used for package pricing logic)
   useEffect(() => {
     fetch("/api/movies/weekly")
       .then((res) => res.json())
@@ -54,7 +55,7 @@ function BookingContent() {
       .catch((err) => console.error("Error fetching weekly movie:", err));
   }, []);
 
-  // Starts a 10-minute session timeout for the booking flow
+  // Start a simple 10-minute timer when the booking page mounts
   useEffect(() => {
     const id = window.setTimeout(() => setTimeoutOpen(true), 10 * 60 * 1000);
     return () => window.clearTimeout(id);
@@ -64,7 +65,7 @@ function BookingContent() {
   const paketprisToShow =
     paketprisFromState || (isWeekly ? weeklyMovie?.paketpris : null);
 
-  // Guest email handling (only required if user is not logged in)
+  // --- Guest email handling (unchanged) ---
   const [guestEmail, setGuestEmail] = useState("");
   const [guestEmailError, setGuestEmailError] = useState("");
 
@@ -72,7 +73,6 @@ function BookingContent() {
   const authUser = storedUser ? JSON.parse(storedUser) : null;
   const userId = authUser?.id || null;
 
-  // Determines if the user can proceed to confirmation
   const canProceed =
     !!movie &&
     !!screening &&
@@ -84,10 +84,12 @@ function BookingContent() {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
-  // Stores draft data and navigates to the confirmation step
+  // ⬇️ NEW: “Proceed” instead of “Book”
+  // This does NOT call /api/bookings. It only saves a draft and navigates.
   async function handleProceedToConfirmation() {
     if (!canProceed || !screening) return;
 
+    // Validate guest email (no userId)
     if (!userId) {
       if (!guestEmail) {
         setGuestEmailError("Vänligen ange din e-postadress för att boka.");
@@ -98,12 +100,14 @@ function BookingContent() {
         return;
       }
     }
-
     setGuestEmailError("");
-    setLoadingProceed(true);
 
     try {
+      setLoadingProceed(true);
+
+      // Save a lightweight “draft” to localStorage (NO server booking yet)
       const draft = {
+        // movie & screening
         movie: movie
           ? { id: movie.id, title: movie.title }
           : null,
@@ -115,25 +119,33 @@ function BookingContent() {
               time: screening.time,
             }
           : null,
+
+        // ticket composition
         counts,
         totalTickets,
         totalAmount,
+
+        // seats (we already have seatId/row/number from your Context)
         selectedSeats,
+
+        // who will receive confirmation
         email: userId ? authUser.email : guestEmail,
         userId: userId || null,
+
+        // optional extra UI info
         paketprisToShow,
       };
 
-      // Saved so Confirmation page can retrieve it
       localStorage.setItem("filmvisarna-draft", JSON.stringify(draft));
 
+      // Navigate to confirmation page WITHOUT bookingUrl
       navigate("/confirmation");
     } finally {
       setLoadingProceed(false);
     }
   }
 
-  // Ensures layout updates based on header visibility and screen size
+  // Sticky relationship between the booking card and navbar (unchanged)
   useEffect(() => {
     const navbar = document.querySelector(".site-header") as HTMLElement;
     const root = document.documentElement;
@@ -148,6 +160,7 @@ function BookingContent() {
     }
 
     updateOffset();
+
     window.addEventListener("scroll", updateOffset, { passive: true });
     window.addEventListener("resize", updateOffset);
 
@@ -157,7 +170,6 @@ function BookingContent() {
     };
   }, []);
 
-  // Controls "scroll down" hint visibility
   useEffect(() => {
     function handleScroll() {
       const scrollY = window.scrollY;
@@ -167,11 +179,11 @@ function BookingContent() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // --- Render ---
   return (
     <main className={`booking-page-content ${movieLoaded ? "loaded" : ""}`}>
       <section className="booking-page-left-side">
         <section className="booking-page-left-side-content">
-          {/* Loads movie and sets the active movie in context */}
           <MovieBooking
             onMovieLoaded={(loadedMovie) => {
               setMovie(loadedMovie as any);
@@ -187,10 +199,12 @@ function BookingContent() {
             <section className="paketpris">
               <strong>Veckans film:</strong>
               <p>
-                {paketprisToShow.liten.antal} liten popcorn – {paketprisToShow.liten.pris} kr
+                {paketprisToShow.liten.antal} liten popcorn –{" "}
+                {paketprisToShow.liten.pris} kr
               </p>
               <p>
-                {paketprisToShow.litenEn.antal} liten popcorn – {paketprisToShow.litenEn.pris} kr
+                {paketprisToShow.litenEn.antal} liten popcorn –{" "}
+                {paketprisToShow.litenEn.pris} kr
               </p>
               <p className="paketpris-note">(Gäller endast vid betalning i kassan)</p>
             </section>
@@ -215,6 +229,7 @@ function BookingContent() {
             </div>
           )}
 
+          {/* Proceed button (NOT booking) */}
           <section className="confirm-actions">
             <button
               className={`confirm-btn ${canProceed ? "active" : "disabled"}`}
@@ -261,6 +276,7 @@ function BookingContent() {
               justifyContent: "flex-end",
             }}
           >
+            {/* Secondary proceed button mirrors the main one */}
             <button
               onClick={handleProceedToConfirmation}
               disabled={!canProceed || loadingProceed}

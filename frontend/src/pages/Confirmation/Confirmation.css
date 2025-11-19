@@ -1,4 +1,8 @@
-/* Layout wrapper */
+/* ==============================
+   Booking Confirmation (scoped)
+   ============================== */
+
+/* Page wrapper to center the card */
 .confirmation-page {
   display: flex;
   flex-direction: column;
@@ -9,7 +13,7 @@
   background-color: transparent;
 }
 
-/* Main confirmation card */
+/* === MAIN BOOKING CARD === */
 .confirmation-page .booking-card {
   display: flex;
   justify-content: space-between;
@@ -23,17 +27,7 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 }
 
-/* Movie poster image */
-.confirmation-page .booking-movie-card {
-  width: 300px;
-  height: 430px;
-  border-radius: 6px;
-  object-fit: cover;
-  align-self: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-}
-
-/* Left text/info section */
+/* === LEFT INFO SECTION === */
 .confirmation-page .booking-info {
   display: flex;
   flex-direction: column;
@@ -42,40 +36,6 @@
   position: relative;
   top: -10px;
   left: -10px;
-}
-
-/* Back navigation button */
-.confirmation-page .confirmation-back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin: 0 0 1.8rem 0;
-  padding: 0.4rem 1.1rem;
-  width: fit-content;
-  border-radius: 999px;
-  background: #232232;
-  border: 1px solid rgba(255, 255, 255, 0.067);
-  color: #f1f4ff;
-  font-size: clamp(0.85rem, 1vw, 1rem);
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.confirmation-page .confirmation-back-link:hover,
-.confirmation-page .confirmation-back-link:focus-visible {
-  background: #2d2d3d;
-  border-color: rgba(255, 255, 255, 0.214);
-  box-shadow: 0 0 18px rgba(117, 158, 255, 0.146);
-  transform: translateY(-1px);
-}
-
-.confirmation-page .confirmation-back-link:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(151, 179, 251, 0.486);
 }
 
 /* Movie title */
@@ -87,7 +47,7 @@
   margin-top: 10px;
 }
 
-/* Language label */
+/* Subtitle (language info) */
 .confirmation-page .booking-info .language {
   color: #bdbdbd;
   font-size: 1rem;
@@ -96,14 +56,14 @@
   margin-left: 7px;
 }
 
-/* Standard text lines */
+/* General booking text (date, time, auditorium) */
 .confirmation-page .booking-info p {
   margin: 0.25rem 7px;
   color: #e0e0e0;
   font-size: 1.2rem;
 }
 
-/* Total price positioning */
+/* Sum line - positioned lower within text area */
 .confirmation-page .sum {
   position: absolute;
   bottom: 104px;
@@ -111,7 +71,18 @@
   color: #fff;
 }
 
-/* Action button container */
+/* === MOVIE POSTER === */
+.confirmation-page .poster {
+  display: flex;
+  position: relative;
+  width: 270px;
+  height: 350px;
+  border-radius: 6px;
+  align-self: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* === BUTTON GROUP BELOW TEXT === */
 .confirmation-page .button-group {
   display: flex;
   margin-top: 6.2rem;
@@ -119,25 +90,38 @@
   height: 63px;
 }
 
-/* Primary action button */
+/* Red booking button */
 .confirmation-page .book-btn {
   background-color: #c41230;
   border: none;
   padding: 1.3rem 3rem;
   color: #fff;
   font-weight: 700;
-  margin-left: -75px;
   font-size: 1rem;
   border-radius: 6px;
   cursor: pointer;
   transition: 0.2s;
 }
+.confirmation-page .book-btn:hover { background-color: #b40f2b; }
 
-.confirmation-page .book-btn:hover {
-  background-color: #b40f2b;
+/* Top “back” button (above card) */
+.confirmation-page .back-btn-top {
+  position: relative;
+  right: 340px;
+  bottom: 190px;
+  background-color: #3c3a4b;
+  border: none;
+  padding: 0.9rem 0.7rem;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
 }
+.confirmation-page .back-btn-top:hover { background-color: #5b5a6b; }
 
-/* Loading text */
+/* Loading state */
 .confirmation-page .loading {
   color: #fff;
   text-align: center;
@@ -145,83 +129,59 @@
   font-size: 1.2rem;
 }
 
-/* ---------- Laptop ---------- */
-@media (max-width: 1024px) {
-  .confirmation-page .booking-card {
-    width: 600px;
-    padding: 2rem;
-  }
-
-  .confirmation-page .booking-movie-card {
-    width: 250px;
-    height: 360px;
-  }
+/* Secondary "Ändra val" button */
+.confirmation-page .secondary-btn {
+  background-color: #232232;      /* mörkröd */
+  border: none;
+  padding: 1.3rem 3rem;           /* samma storlek som "Boka biljetter" */
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-left: 1.2rem;            /* lite mellanrum från första knappen */
 }
 
-/* ---------- Tablet ---------- */
+.confirmation-page .secondary-btn:hover {
+  background-color: #1a1924;      /* något ljusare vid hover */
+}
+
+/* === RESPONSIVE DESIGN === */
+/* Laptop / medium screens */
+@media (max-width: 1024px) {
+  .confirmation-page .booking-card { width: 600px; height: auto; padding: 2rem; }
+  .confirmation-page .poster { width: 220px; height: 300px; }
+  .confirmation-page .booking-info h2 { font-size: 2.2rem; }
+  .confirmation-page .book-btn { padding: 0.5rem 2rem; font-size: 0.95rem; }
+  .confirmation-page .back-btn-top { right: 250px; }
+}
+
+/* Tablet layout */
 @media (max-width: 768px) {
   .confirmation-page .booking-card {
-    flex-direction: column;
+    flex-direction: column; /* Stack content vertically */
     align-items: center;
     text-align: center;
     width: 90%;
+    height: auto;
     padding: 1.5rem;
-    margin-top: 0;
   }
-
-  .confirmation-page .booking-info {
-    align-items: center;
-    text-align: center;
-    position: static;
-  }
-
-  .confirmation-page .sum {
-    position: static;
-    margin-top: 1rem;
-  }
-
-  .confirmation-page .booking-movie-card {
-    width: 240px;
-    height: 330px;
-    margin-top: 1.5rem;
-  }
-
-  .confirmation-page .button-group {
-    justify-content: center;
-    margin: 1.5rem 0 0 0;
-  }
-
-  .confirmation-page .book-btn {
-    margin-left: 0;
-  }
+  .confirmation-page .poster { width: 200px; height: auto; margin-top: 1rem; }
+  .confirmation-page .booking-info { align-items: center; text-align: center; position: static; }
+  .confirmation-page .sum { position: static; margin-top: 1rem; }
+  .confirmation-page .button-group { justify-content: center; margin: 1.5rem 0 0 0; }
+  .confirmation-page .back-btn-top { position: static; margin-bottom: 1rem; align-self: center; }
 }
 
-/* ---------- Mobile ---------- */
+/* Mobile layout */
 @media (max-width: 480px) {
-  .confirmation-page .booking-card {
-    width: 95%;
-    padding: 1rem;
-  }
-
-  .confirmation-page .booking-info h2 {
-    font-size: 2rem;
-  }
-
-  .confirmation-page .booking-info p {
-    font-size: 1rem;
-  }
-
-  
-  .confirmation-page .book-btn {
-    padding: 1.3rem 3rem;
-    width: auto;
-    margin-left: 0;
-  }
-
-  .confirmation-page .confirmation-back-link {
-    align-self: flex-start;
-    margin-left: 0;
-    left: -6px;
-    position: relative;
-  }
+  .confirmation-page .booking-card { width: 95%; padding: 1rem; }
+  .confirmation-page .booking-info h2 { font-size: 1.8rem; }
+  .confirmation-page .booking-info p { font-size: 1rem; }
+  .confirmation-page .poster { width: 220px; height: 190px; }
+  .confirmation-page .book-btn { width: 100%; padding: 0.8rem; }
+  .confirmation-page .back-btn-top { padding: 0.8rem; font-size: 0.9rem; }
 }
+
+
