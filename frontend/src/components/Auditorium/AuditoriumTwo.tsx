@@ -54,13 +54,11 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
 
   const [seats, setSeats] = useState<Seat[]>([]);
   const [bookedSeats, setBookedSeats] = useState<number[]>([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch seats for this screening
   useEffect(() => {
     async function fetchSeats() {
-      setLoading(true);
       try {
         const res = await fetch(`/api/screenings/${screeningId}/seats`);
         if (!res.ok) throw new Error("Failed to load seats");
@@ -79,7 +77,6 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
         console.error("Error fetching seats:", err);
         setError("Kunde inte hämta bokade platser.");
       } finally {
-        setLoading(false);
       }
     }
 
@@ -234,18 +231,13 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
           />
 
           <section className="auditorium-seats-container">
-            {loading ? (
-              <div className="auditorium-seats-loading">
-                <div className="auditorium-loader"></div>
-                <p>Laddar platser...</p>
-              </div>
-            ) : error ? (
-              <p>{error}</p>
-            ) : (
-              Object.entries(rowsMap)
-                .sort(([a], [b]) => a.localeCompare(b))
-                .map(([label, rowSeats]) => renderRow(label, rowSeats))
-            )}
+      {error ? (
+  <p>{error}</p>
+) : (
+  Object.entries(rowsMap)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([label, rowSeats]) => renderRow(label, rowSeats))
+)}
           </section>
         </article>
       </section>

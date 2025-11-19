@@ -54,13 +54,12 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
 
   const [seats, setSeats] = useState<Seat[]>([]);
   const [bookedSeats, setBookedSeats] = useState<number[]>([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch all seats for this screening
  useEffect(() => {
      async function fetchSeats() {
-       setLoading(true);
+
        try {
          const res = await fetch(`/api/screenings/${screeningId}/seats`);
          if (!res.ok) throw new Error("Failed to load seats");
@@ -79,7 +78,7 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
          console.error("Error fetching seats:", err);
          setError("Kunde inte hämta bokade platser.");
        } finally {
-         setLoading(false);
+     
        }
      }
  
@@ -239,12 +238,7 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
           />
 
           <section className="auditorium-seats-container">
-            {loading ? (
-              <div className="auditorium-seats-loading">
-                <div className="auditorium-loader"></div>
-                <p>Laddar platser...</p>
-              </div>
-            ) : error ? (
+            { error ? (
               <p>{error}</p>
             ) : (
               Object.entries(rowsMap)
