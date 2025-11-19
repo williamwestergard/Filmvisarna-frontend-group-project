@@ -167,7 +167,7 @@
   align-items: center;
   gap: 1vw;
   margin-top: 2.3vh;
-  width: 120%;
+  width: 100%;
   position: relative;
   top: -1vh;
 }
@@ -175,7 +175,11 @@
 .movie-runtime {
   font-size: clamp(1.2rem, 1.6vw, 1.5rem);
   color: #999999;
-  margin-right: 1.5vw;
+  margin-right: 0.5vw;
+}
+
+.movie-runtime-genre-container > * {
+  flex-shrink: 0;
 }
 
 .movie-booking-genre {
@@ -189,7 +193,7 @@
   color: #999999;
   border: 1px solid #999999;
   border-radius: 5px;
-  padding: 0.2vw 0.8vw;
+  padding: 0.3vw 0.8vw;
   background: transparent;
   font-size: inherit;
   font-weight: 500;
@@ -594,6 +598,9 @@ iframe {
     align-items: left;
     gap: 2rem;
     max-width: 85%;
+  }
+  .agepill-button {
+    display: none;
   }
 
   .booking-movie-backdrop {

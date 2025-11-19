@@ -4,6 +4,11 @@ import { getMovies, getMoviesInformation } from "../../api/moviesApi";
 import { useBooking } from "../../Context/BookingContext";
 import AgeLimitInfo from "../AgeLimitInfo/AgeLimitInfo";
 
+type CastMember = {
+  actorName: string;
+  characterName?: string; // optional if we don’t have character names yet
+};
+
 type Movie = {
   id: number;
   title: string;
@@ -14,40 +19,43 @@ type Movie = {
   language: string;
   description: string;
   runtimeMin: number;
-  ageLimit?: number | string;
+  ageLimit?: number;        // number representing age limit
   castJson: CastMember[];
 };
 
 type MovieBookingProps = {
-  onMovieLoaded?: (movie: Movie) => void; //it accepts a movie
-};
-
-type CastMember = {
-  actorName: string;
-  characterName?: string; // optional if ew don’t have character names yet
+  onMovieLoaded?: (movie: Movie) => void; // it accepts a movie
 };
 
 function formatRuntime(minutes: number) {
   if (!minutes) return "N/A";
   const hours = Math.floor(minutes / 60);
   const mins = minutes % 60;
-  return `${hours} ${hours === 1 ? "tim" : "tim"}${mins > 0 ? ` ${mins} min` : ""}`;
+  return `${hours} ${hours === 1 ? "tim" : "tim"}${
+    mins > 0 ? ` ${mins} min` : ""
+  }`;
 }
 
 function getVideoId(url: string) {
   if (!url) return "";
   if (url.includes("youtu.be")) return url.split("/").pop()?.split("?")[0];
-  if (url.includes("youtube.com/watch?v=")) return url.split("v=")[1]?.split("&")[0];
+  if (url.includes("youtube.com/watch?v="))
+    return url.split("v=")[1]?.split("&")[0];
   return "";
 }
 
 /** Format age label to show as a pill */
-function formatAgeLabel(age?: number | string) {
+function formatAgeLabel(age?: number) {
   if (age == null) return null;
+
+  // same logic as backend for age labels 
   const s = String(age).trim().toLowerCase();
+
   if (s.includes("barn") || s === "0" || s === "bt") return "Barntillåten";
+
   const n = parseInt(s, 10);
   if (!Number.isNaN(n) && n > 0) return `${n}+`; // age limit and format like 7+
+
   return String(age); // fallback
 }
 
@@ -70,7 +78,7 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
               t.posterUrl && t.posterUrl.trim() === movie.posterUrl.trim()
           );
 
-        return {
+          return {
             ...movie,
             trailerUrl: infoMatch?.trailerUrl || "",
             backdropUrl: infoMatch?.backdropUrl || movie.backdropUrl,
@@ -78,13 +86,15 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
             runtimeMin: infoMatch?.runtimeMin || movie.runtimeMin,
             language: infoMatch?.language || movie.language,
             castJson: infoMatch?.castJson || movie.castJson || [],
-            ageLimit: infoMatch?.ageLimit,
+            ageLimit: infoMatch?.ageLimit ?? movie.ageLimit, // prefer infoMatch ageLimit
           } as Movie;
         });
 
         setMovies(merged);
       })
-      .catch((err) => console.error("Error fetching movie or trailer data:", err))
+      .catch((err) =>
+        console.error("Error fetching movie or trailer data:", err)
+      )
       .finally(() => setIsLoading(false));
   }, []);
 
@@ -122,7 +132,7 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
               <br />
               <br />
               <br />
-              <strong>Skådespelare:</strong>{" "}
+              <strong>Skådespelare:</strong>
               <br />
               {movie.castJson.map((c) => c.actorName).join(", ")}
             </p>
@@ -135,7 +145,9 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
             </p>
 
             <section className="movie-runtime-genre-container">
-              <p className="movie-runtime">{formatRuntime(movie.runtimeMin)}</p>
+              <p className="movie-runtime">
+                {formatRuntime(movie.runtimeMin)}
+              </p>
 
               {/* Age limit pill */}
               {formatAgeLabel(movie.ageLimit) && (
@@ -162,7 +174,7 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
                 externalOpen={ageOpen}
                 onRequestClose={() => setAgeOpen(false)}
               />
-               <AgeLimitInfo />
+              <AgeLimitInfo />
             </section>
           </section>
 
@@ -178,10 +190,19 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
         <article className="trailer">
           {movie.trailerUrl ? (
             <div
-              className={`trailer-frame-container ${isTrailerExpanded ? "expanded" : ""}`}
+              className={`trailer-frame-container ${
+                isTrailerExpanded ? "expanded" : ""
+              }`}
             >
-              {!isTrailerExpanded && <p className="trailer-text"   onClick={() => setIsTrailerExpanded(true)}
-    style={{ cursor: "pointer" }}>Se trailer</p>}
+              {!isTrailerExpanded && (
+                <p
+                  className="trailer-text"
+                  onClick={() => setIsTrailerExpanded(true)}
+                  style={{ cursor: "pointer" }}
+                >
+                  Se trailer
+                </p>
+              )}
 
               {!isTrailerExpanded ? (
                 <div
@@ -189,14 +210,18 @@ function MovieBooking({ onMovieLoaded }: MovieBookingProps) {
                   onClick={() => setIsTrailerExpanded(true)}
                 >
                   <img
-                    src={`https://img.youtube.com/vi/${getVideoId(movie.trailerUrl)}/hqdefault.jpg`}
+                    src={`https://img.youtube.com/vi/${getVideoId(
+                      movie.trailerUrl
+                    )}/hqdefault.jpg`}
                     alt={`${movie.title} Trailer`}
                     className="trailer-thumbnail"
                   />
                 </div>
               ) : (
                 <iframe
-                  src={`https://www.youtube.com/embed/${getVideoId(movie.trailerUrl)}?autoplay=1&controls=1&modestbranding=1&rel=0&iv_load_policy=3`}
+                  src={`https://www.youtube.com/embed/${getVideoId(
+                    movie.trailerUrl
+                  )}?autoplay=1&controls=1&modestbranding=1&rel=0&iv_load_policy=3`}
                   title={`${movie.title} Trailer`}
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

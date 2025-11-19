@@ -48,6 +48,8 @@ function SeatBox({
   );
 }
 
+
+
 export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
   const { totalTickets, selectedSeats, toggleSeat, setAvailableSeatsCount } =
     useBooking();
@@ -56,34 +58,44 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
   const [bookedSeats, setBookedSeats] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
 
   // Fetch all seats for this screening
   useEffect(() => {
     let intervalId: ReturnType<typeof setInterval>;
+async function fetchSeats() {
+  // Only show loader on first load
+  if (isInitialLoad) setLoading(true);
 
-    async function fetchSeats() {
-      setLoading(true);
-      try {
-        const res = await fetch(`/api/screenings/${screeningId}/seats`);
-        if (!res.ok) throw new Error("Failed to load seats");
-        const data = await res.json();
-        if (!data.ok) throw new Error("Invalid response");
+  try {
+    const res = await fetch(`/api/screenings/${screeningId}/seats`);
+    if (!res.ok) throw new Error("Failed to load seats");
+    const data = await res.json();
+    if (!data.ok) throw new Error("Invalid response");
 
-        setSeats(data.seats);
-        const booked = data.seats
-          .filter((s: Seat) => s.isBooked === 1)
-          .map((s: Seat) => s.seatId);
-        setBookedSeats(booked);
+    // These MUST run on EVERY fetch
+    setSeats(data.seats);
 
-        setAvailableSeatsCount(data.seats.length - booked.length);
-        setError(null);
-      } catch (err) {
-        console.error("Error fetching seats:", err);
-        setError("Kunde inte hämta bokade platser.");
-      } finally {
-        setLoading(false);
-      }
+    const booked = data.seats
+      .filter((s: Seat) => s.isBooked === 1)
+      .map((s: Seat) => s.seatId);
+    setBookedSeats(booked);
+
+    setAvailableSeatsCount(data.seats.length - booked.length);
+    setError(null);
+  } catch (err) {
+    console.error("Error fetching seats:", err);
+    setError("Kunde inte hämta bokade platser.");
+  } finally {
+    // Only hide loader once — on the first load
+    if (isInitialLoad) {
+      setLoading(false);
+      setIsInitialLoad(false);
     }
+  }
+}
+
 
     fetchSeats();
     intervalId = setInterval(fetchSeats, 60000);
@@ -108,8 +120,30 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
    *  - As close to the row center as possible
    *  - If no row fits group size, skip recommendation
    */
-  useEffect(() => {
-    if (totalTickets <= 0 || seats.length === 0) return;
+function userSeatsStillAvailable() {
+  return selectedSeats.every((s) => !bookedSeats.includes(s.seatId));
+}
+
+useEffect(() => {
+  if (totalTickets <= 0 || seats.length === 0) return;
+
+  // Do NOT auto-pick if user already chose seats AND they are still free
+if (
+  selectedSeats.length === totalTickets &&
+  userSeatsStillAvailable()
+) {
+  return;
+}
+
+  // If user's seats were taken, clear their selection & repick
+  selectedSeats.forEach((s) =>
+    toggleSeat({
+      seatId: s.seatId,
+      row: s.row,
+      number: s.number,
+      auditorium: "Helan", // or Tian for auditoriumTwo
+    })
+  );
 
     // Clear previous auto-selections when user changes tickets
     selectedSeats.forEach((s) =>
@@ -241,14 +275,9 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
           />
 
           <section className="auditorium-seats-container">
-            {loading ? (
-              <div className="auditorium-seats-loading">
-                <div className="auditorium-loader"></div>
-                <p>Laddar platser...</p>
-              </div>
-            ) : error ? (
-              <p>{error}</p>
-            ) : (
+          {error ? (
+  <p>{error}</p>
+) : (
               Object.entries(rowsMap)
                 .sort(([a], [b]) => a.localeCompare(b))
                 .map(([label, rowSeats]) => renderRow(label, rowSeats))
