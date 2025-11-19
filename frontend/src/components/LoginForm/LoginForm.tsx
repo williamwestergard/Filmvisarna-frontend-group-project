@@ -1,3 +1,4 @@
+import type React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginForm.css";
@@ -18,7 +19,7 @@ export default function LoginForm({ onClose }: LoginFormProps) {
   // Error message for user feedback
   const [error, setError] = useState<string>("");
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
 
@@ -44,9 +45,14 @@ export default function LoginForm({ onClose }: LoginFormProps) {
         // Handle unsuccessful login (wrong credentials)
         setError("Felaktig e-post eller lösenord.");
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Login error:", err);
-      setError(err.message || "Ett fel uppstod vid inloggning.");
+
+      if (err instanceof Error) {
+        setError(err.message || "Ett fel uppstod vid inloggning.");
+      } else {
+        setError("Ett fel uppstod vid inloggning.");
+      }
     }
   }
 
@@ -61,7 +67,6 @@ export default function LoginForm({ onClose }: LoginFormProps) {
 
   return (
     <form className="login-form" onSubmit={handleSubmit} aria-label="Logga in">
-    
       <h2 className="login-title">Logga in</h2>
       {error && <p className="login-error-message">{error}</p>}
 

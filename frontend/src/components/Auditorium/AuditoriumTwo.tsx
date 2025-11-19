@@ -56,6 +56,7 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
   const [bookedSeats, setBookedSeats] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   // Loads seat data for the given screening and refreshes periodically
   useEffect(() => {
@@ -85,6 +86,8 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
         setLoading(false);
       }
     }
+  }
+}
 
     fetchSeats();
     intervalId = setInterval(fetchSeats, 60000);
@@ -230,16 +233,10 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
             src={AuditoriumScreen}
             alt="Bioduk"
           />
-
-          <section className="auditorium-seats-container">
-            {loading ? (
-              <div className="auditorium-seats-loading">
-                <div className="auditorium-loader"></div>
-                <p>Laddar platser...</p>
-              </div>
-            ) : error ? (
-              <p>{error}</p>
-            ) : (
+       <section className="auditorium-seats-container">
+          {error ? (
+  <p>{error}</p>
+) : (
               Object.entries(rowsMap)
                 .sort(([a], [b]) => a.localeCompare(b))
                 .map(([label, rowSeats]) => renderRow(label, rowSeats))
