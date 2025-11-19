@@ -29,7 +29,7 @@ export default function Auditorium() {
 
   // Loads seat data for the active screening and refreshes periodically
   useEffect(() => {
-    if (!screening?.id) return;
+    if (!screening?.id || !pickerOpen) return;
     let intervalId: ReturnType<typeof setInterval>;
 
     async function fetchSeats() {
@@ -60,8 +60,12 @@ export default function Auditorium() {
     }
 
     fetchSeats();
-    intervalId = setInterval(fetchSeats, 60000);
-    return () => clearInterval(intervalId);
+    if (screening?.id) {
+      intervalId = setInterval(fetchSeats, 60000);
+    }
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
   }, [screening?.id, setAvailableSeatsCount]);
 
   // Locks page scroll when the seat picker panel is open
