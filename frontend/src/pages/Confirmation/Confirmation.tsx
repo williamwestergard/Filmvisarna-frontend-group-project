@@ -66,13 +66,14 @@ interface Draft {
 }
 
 export default function Confirmation() {
-  const navigate = useNavigate();
+ const navigate = useNavigate();
   const { bookingUrl } = useParams<{ bookingUrl?: string }>();
 
+  // common UI state
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Legacy booking state
+  // --- State for legacy (already-booked) flow ---
   const [booking, setBooking] = useState<Booking | null>(null);
   const [movie, setMovie] = useState<Movie | null>(null);
   const [screening, setScreening] = useState<Screening | null>(null);
@@ -80,25 +81,28 @@ export default function Confirmation() {
   const [allSeats, setAllSeats] = useState<SeatRow[]>([]);
   const [totalPriceFromApi, setTotalPriceFromApi] = useState<number | null>(null);
 
-  // Draft booking state
+  // --- State for draft (new) flow ---
   const [draft, setDraft] = useState<Draft | null>(null);
   const [bookingSubmitting, setBookingSubmitting] = useState(false);
 
-  // Maps seatId -> readable label
+  // --- Popup state ---
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
+
+  // Helper: map seatIds -> label "Row-Number"
   const seatLabelMap = useMemo(() => {
     const m = new Map<number, string>();
     allSeats.forEach((s) => m.set(s.seatId, `${s.rowLabel}-${s.seatNumber}`));
     return m;
   }, [allSeats]);
 
-  // Loads already-booked data if a bookingUrl is present
+  // --- Legacy booking loader ---
   useEffect(() => {
     if (!bookingUrl) return;
 
     (async () => {
       try {
         setLoading(true);
-
         const byUrl = await fetch(`/api/bookings/url/${bookingUrl}`).then((r) => r.json());
         if (!byUrl?.ok || !byUrl.booking) {
           setErrorMsg("Bokningen kunde inte hittas.");
@@ -118,7 +122,6 @@ export default function Confirmation() {
         const st = await fetch(`/api/screenings/${sc.id}/seats`).then((r) => r.json());
         setAllSeats(st?.seats || []);
 
-        // Attempts to load total price from server
         try {
           const tot = await fetch(`/api/booking-totals/${byUrl.booking.id}`).then((r) =>
             r.ok ? r.json() : null
@@ -127,7 +130,51 @@ export default function Confirmation() {
         } catch {}
       } catch (err) {
         console.error(err);
-        setErrorMsg("Kunde inte ladda bokningen.");
+        setPopupMessage("Kunde inte ladda bokningen.");
+        setPopupVisible(true);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [bookingUrl]);
+
+
+  // --- Draft booking loader ---
+  useEffect(() => {
+    if (bookingUrl) return;
+
+    (async () => {
+      try {
+        setLoading(true);
+        const stored = localStorage.getItem("filmvisarna-draft");
+        if (!stored) {
+          setPopupMessage("Ingen bokning pågår. Gå tillbaka och välj biljetter.");
+          setPopupVisible(true);
+          return;
+        }
+        const parsed: Draft = JSON.parse(stored);
+        if (!parsed?.screening?.id || !parsed?.movie?.id) {
+          setPopupMessage("Ofullständigt utkast. Gå tillbaka och välj igen.");
+          setPopupVisible(true);
+          return;
+        }
+        setDraft(parsed);
+
+        const sc = await fetch(`/api/screenings/${parsed.screening.id}`).then((r) => r.json());
+        setScreening(sc);
+
+        const mv = await fetch(`/api/movies/${sc.movieId}`).then((r) => r.json());
+        setMovie(mv);
+
+        const aud = await fetch(`/api/auditoriums/${sc.auditoriumId}`).then((r) => r.json());
+        setAuditorium(aud);
+
+        const st = await fetch(`/api/screenings/${sc.id}/seats`).then((r) => r.json());
+        setAllSeats(st?.seats || []);
+      } catch (err) {
+        console.error(err);
+        setPopupMessage("Kunde inte ladda bekräftelse.");
+        setPopupVisible(true);
       } finally {
         setLoading(false);
       }
@@ -268,7 +315,8 @@ export default function Confirmation() {
 
       const data = await response.json();
       if (!data.ok || !data.booking) {
-        alert("Bokningen misslyckades. Försök igen.");
+         setPopupMessage("Bokningen misslyckades. Försök igen.");
+        setPopupVisible(true);
         return;
       }
 
@@ -283,114 +331,119 @@ export default function Confirmation() {
       }
     } catch (err) {
       console.error("Finalize booking failed:", err);
-      alert("Något gick fel vid bokningen.");
+      setPopupMessage("Något gick fel vid bokningen.");
+       setPopupVisible(true);
     } finally {
       setBookingSubmitting(false);
     }
   }
 
-  if (loading) return <p className="loading">Laddar Bokning...</p>;
+  return (
+  <main className="confirmation-page">
+    {/* Popup overlay */}
+    {popupVisible && (
+      <div className="booking-fail-overlay">
+        <div className="booking-fail-content">
+          <h2 className="booking-fail-h2">{popupMessage}</h2>
+          <button className="booking-fail-button" onClick={() => setPopupVisible(false)}>
+            Stäng
+          </button>
+        </div>
+      </div>
+    )}
 
-  if (errorMsg) {
-    return (
-      <main className="confirmation-page">
-        <p style={{ color: "white", textAlign: "center" }}>{errorMsg}</p>
+    {/* Loading */}
+    {loading && <p className="loading">Laddar Bokning...</p>}
+
+    {/* Error fallback */}
+    {!loading && errorMsg && (
+      <div style={{ textAlign: "center", color: "white" }}>
+        <p>{errorMsg}</p>
         <button className="book-btn" onClick={() => navigate("/")} style={{ marginTop: "2rem" }}>
           Tillbaka till startsidan
         </button>
-      </main>
-    );
-  }
+      </div>
+    )}
 
-  // Legacy booked confirmation
-  if (bookingUrl && booking && movie && screening) {
-    const sumText = totalPriceFromApi != null ? `${totalPriceFromApi} kr` : "Not available";
+    {/* Legacy booked confirmation */}
+    {!loading && bookingUrl && booking && movie && screening && (
+      <section className="booking-card">
+        <div className="booking-info">
+          <button type="button" className="confirmation-back-link" onClick={() => navigate(-1)}>
+            <span className="confirmation-back-arrow">←</span>
+            <span>Tillbaka</span>
+          </button>
 
-    return (
-      <main className="confirmation-page">
-        <section className="booking-card">
-          <div className="booking-info">
-            <button type="button" className="confirmation-back-link" onClick={() => navigate(-1)}>
-              <span className="confirmation-back-arrow">←</span>
-              <span>Tillbaka</span>
+          <h2>{movie.title}</h2>
+          <p className="language">{movie.language}</p>
+          <p><strong>{formattedDate}</strong></p>
+          <p>Tid: {formattedTime}</p>
+          <p>Salong: {getAuditoriumNameFallback(screening.auditoriumId)}</p>
+          <p>Platser {legacySeatLabels}</p>
+          <p className="sum">{totalPriceFromApi != null ? `${totalPriceFromApi} kr` : "N/A"}</p>
+
+          <div className="button-group">
+            <button className="book-btn" onClick={() => navigate(`/ticket/${bookingUrl}`)}>
+              Visa biljetterna
             </button>
-
-            <h2>{movie.title}</h2>
-            <p className="language">{movie.language}</p>
-            <p><strong>{formattedDate}</strong></p>
-            <p>Tid: {formattedTime}</p>
-            <p>Salong: {getAuditoriumNameFallback(screening.auditoriumId)}</p>
-            <p>Platser {legacySeatLabels}</p>
-            <p className="sum">Summa: {sumText}</p>
-
-            <div className="button-group">
-              <button className="book-btn" onClick={() => navigate(`/ticket/${bookingUrl}`)}>
-                Visa biljetterna
-              </button>
-            </div>
           </div>
+        </div>
 
-          {movie.posterUrl && (
-            <img
-              className="booking-movie-card"
-              src={`http://localhost:4000/images/posters/${movie.posterUrl}`}
-              alt={movie.title}
-            />
-          )}
-        </section>
-      </main>
-    );
-  }
+        {movie.posterUrl && (
+          <img
+            className="booking-movie-card"
+            src={`http://localhost:4000/images/posters/${movie.posterUrl}`}
+            alt={movie.title}
+          />
+        )}
+      </section>
+    )}
 
-  // Draft confirmation
-  if (draft && movie && screening) {
-    return (
-      <main className="confirmation-page">
-        <section className="booking-card">
-          <div className="booking-info">
-            <button type="button" className="confirmation-back-link" onClick={() => navigate(-1)}>
-              <span className="confirmation-back-arrow">←</span>
-              <span>Tillbaka</span>
+    {/* Draft confirmation */}
+    {!loading && draft && movie && screening && (
+      <section className="booking-card">
+        <div className="booking-info">
+          <button type="button" className="confirmation-back-link" onClick={() => navigate(-1)}>
+            <span className="confirmation-back-arrow">←</span>
+            <span>Tillbaka</span>
+          </button>
+
+          <h2>{movie.title}</h2>
+          <p className="language">{movie.language}</p>
+          <p><strong>{formattedDate}</strong></p>
+          <p>Tid: {formattedTime}</p>
+          <p>Salong: {getAuditoriumNameFallback(screening.auditoriumId)}</p>
+          <p>Platser {draftSeatLabels || "—"}</p>
+          <p className="sum">{new Intl.NumberFormat("sv-SE").format(draft.totalAmount)} kr</p>
+
+          <div className="button-group">
+            <button className="book-btn" onClick={finalizeBooking} disabled={bookingSubmitting}>
+              {bookingSubmitting ? "Bokar..." : "Boka biljetter"}
             </button>
-
-            <h2>{movie.title}</h2>
-            <p className="language">{movie.language}</p>
-            <p><strong>{formattedDate}</strong></p>
-            <p>Tid: {formattedTime}</p>
-            <p>Salong: {getAuditoriumNameFallback(screening.auditoriumId)}</p>
-            <p>Platser {draftSeatLabels || "—"}</p>
-            <p className="sum">
-              Summa: {new Intl.NumberFormat("sv-SE").format(draft.totalAmount)} kr
-            </p>
-
-            <div className="button-group">
-              <button className="book-btn" onClick={finalizeBooking} disabled={bookingSubmitting}>
-                {bookingSubmitting ? "Bokar..." : "Boka biljetter"}
-              </button>
-            </div>
           </div>
+        </div>
 
-          {movie.posterUrl && (
-            <img
-              className="booking-movie-card"
-              src={`http://localhost:4000/images/posters/${movie.posterUrl}`}
-              alt={movie.title}
-            />
-          )}
-        </section>
-      </main>
-    );
-  }
+        {movie.posterUrl && (
+          <img
+            className="booking-movie-card"
+            src={`http://localhost:4000/images/posters/${movie.posterUrl}`}
+            alt={movie.title}
+          />
+        )}
+      </section>
+    )}
 
-  // Default fallback if no state matches
-  return (
-    <main className="confirmation-page">
-      <p style={{ color: "white", textAlign: "center" }}>
-        Ingen bokning pågår. Gå tillbaka och välj biljetter.
-      </p>
-      <button className="book-btn" onClick={() => navigate("/")}>
-        Tillbaka till startsidan
-      </button>
-    </main>
-  );
+    {/* Default fallback */}
+    {!loading && !booking && !draft && !errorMsg && (
+      <div style={{ textAlign: "center", color: "white" }}>
+        <p>Ingen bokning pågår. Gå tillbaka och välj biljetter.</p>
+        <button className="book-btn" onClick={() => navigate("/")}>
+          Tillbaka till startsidan
+        </button>
+      </div>
+    )}
+  </main>
+);
+
+
 }
