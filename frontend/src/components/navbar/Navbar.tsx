@@ -5,6 +5,7 @@ import logo from './navbar-logo.png';
 import UserProfilePic from "./navbar-user-profile-picture.png"
 
 type User = {
+  id: number;
   firstName: string;
   lastName: string;
   avatarUrl?: string;
@@ -353,11 +354,7 @@ useEffect(() => {
         onClick={toggleMenu}
         aria-label="Öppna meny"
         aria-expanded={isMenuOpen}
-      >
-        <span className={isMenuOpen ? 'bar open' : 'bar'}></span>
-        <span className={isMenuOpen ? 'bar open' : 'bar'}></span>
-        <span className={isMenuOpen ? 'bar open' : 'bar'}></span>
-      </button>
+      ></button>
 
       <div className={isMenuOpen ? 'mobile-menu-panel active' : 'mobile-menu-panel'}>
         <button
@@ -409,8 +406,9 @@ useEffect(() => {
               type="button"
               className="nav-link nav-link-back"
               onClick={() => setIsAccountOpen(false)}
+              aria-label="Stäng konto-menyn"
             >
-               Tillbaka
+               <span aria-hidden="true">Tillbaka</span>
             </button>
 
 

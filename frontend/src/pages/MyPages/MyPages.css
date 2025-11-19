@@ -435,9 +435,11 @@
 
 /* tablet/desktop ≥ 900px (2-col bookings) */
 @media (min-width: 900px) {
-  .my-pages > * {
-    max-width: 1100px;
+  .my-pages .profile-card  {
+    padding-left: 70px; 
+    padding-right: 70px;
   }
+  .my-pages > * { max-width: 1100px; }
   .my-pages .profile-card ul {
     grid-template-columns: 1fr 1fr;
     gap: 18px;
@@ -590,9 +592,10 @@
   }
 }
 /* --- MyPages: Top‑right stats (booked / watched) --- */
-.my-pages .profile-card {
-  position: relative;
+.my-pages .profile-card { 
+  position: relative;  
 }
+
 .stats-top-right {
   display: inline-flex;
   align-items: center;
