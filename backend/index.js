@@ -32,9 +32,9 @@ const pool = mysql.createPool({
 });
 
 // Root route
-app.get("/", (req, res) => {
+/*app.get("/", (req, res) => {
   res.send("Filmvisarna API är igång.");
-});
+}); */
 
 // Health check
 app.get("/health", async (req, res) => {
@@ -79,6 +79,14 @@ app.use("/api/login", createLoginsRouter(pool));
 
 // Mount booking totals routes
 app.use("/api/booking-totals", createBookingTotalsRouter(pool));
+
+//serve dist folder
+app.use(express.static(path.join(__dirname, "..", "frontend", "dist")));
+
+// serve index.html missing routes(let react handle the routing)
+app.get("/*splat", (_req, res) => {
+  res.sendFile(path.join(__dirname, "..", "frontend", "dist", "index.html"))
+});
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`API running on http://localhost:${port}`));
