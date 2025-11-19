@@ -27,11 +27,7 @@ function getWeekNumber(date: Date) {
   );
 }
 
-function getWeekOffset(allDates: string[], selectedDate: string) {
-  const index = allDates.findIndex((d) => d === selectedDate);
-  if (index === -1) return 0;
-  return Math.floor(index / 7);
-}
+
 
 // Get Monday for any given date
 function getMonday(date: Date) {
