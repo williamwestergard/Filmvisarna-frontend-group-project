@@ -15,7 +15,7 @@ interface AuditoriumProps {
   screeningId: number;
 }
 
-// Reusable seat box component
+// A simple reusable seat component
 function SeatBox({
   onClick,
   selected,
@@ -56,9 +56,8 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
   const [bookedSeats, setBookedSeats] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-    const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-  // Loads seat data for the given screening and refreshes periodically
+  // Fetch seats for this screening
   useEffect(() => {
     let intervalId: ReturnType<typeof setInterval>;
 
@@ -71,7 +70,6 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
         if (!data.ok) throw new Error("Invalid response");
 
         setSeats(data.seats);
-
         const booked = data.seats
           .filter((s: Seat) => s.isBooked === 1)
           .map((s: Seat) => s.seatId);
@@ -86,15 +84,13 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
         setLoading(false);
       }
     }
-  }
-}
 
     fetchSeats();
     intervalId = setInterval(fetchSeats, 60000);
     return () => clearInterval(intervalId);
   }, [screeningId, setAvailableSeatsCount]);
 
-  // Creates a map of rows so seats can be rendered in correct row order
+  // Group seats by row
   const rowsMap = seats.reduce((acc, seat) => {
     if (!acc[seat.rowLabel]) acc[seat.rowLabel] = [];
     acc[seat.rowLabel].push(seat);
@@ -105,11 +101,14 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
     rowsMap[r].sort((a, b) => a.seatNumber - b.seatNumber)
   );
 
-  // Automatic seat selection logic based on row priority and center proximity
+  /**
+   *  Smart automatic seat recommendation
+   * Works like AuditoriumOne but adapted to fewer rows
+   */
   useEffect(() => {
     if (totalTickets <= 0 || seats.length === 0) return;
 
-    // Clear previous auto-selected seats
+    // Deselect previous automatic seats
     selectedSeats.forEach((s) =>
       toggleSeat({
         seatId: s.seatId,
@@ -119,10 +118,11 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
       })
     );
 
-    // Priority order for this auditorium layout
+    // Row priority for Halvan (6 rows total)
     const rowOrder = ["C", "D", "B", "E", "A", "F"];
 
     let bestGroup: Seat[] = [];
+    let bestRow = "";
 
     for (const row of rowOrder) {
       const rowSeats = rowsMap[row];
@@ -131,7 +131,7 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
       const free = rowSeats.filter((s) => !bookedSeats.includes(s.seatId));
       if (free.length < totalTickets) continue;
 
-      // Identify connected free seat groups
+      // Find connected groups of free seats
       const groups: Seat[][] = [];
       let currentGroup: Seat[] = [];
 
@@ -151,7 +151,7 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
       const validGroups = groups.filter((g) => g.length >= totalTickets);
       if (validGroups.length === 0) continue;
 
-      // Select the group closest to row center
+      // Find best group based on proximity to center
       const firstNum = rowSeats[0].seatNumber;
       const lastNum = rowSeats[rowSeats.length - 1].seatNumber;
       const mid = (firstNum + lastNum) / 2;
@@ -174,11 +174,11 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
 
       if (closestGroup.length > 0) {
         bestGroup = closestGroup;
+        bestRow = row;
         break;
       }
     }
 
-    // Select the final seat group
     if (bestGroup.length > 0) {
       bestGroup.forEach((seat) => {
         toggleSeat({
@@ -188,13 +188,14 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
           auditorium: "Halvan",
         });
       });
+    } else {
+      console.log("⚠️ No suitable connected group found for Halvan");
     }
   }, [totalTickets, seats]);
 
-  const maxReached =
-    totalTickets > 0 && selectedSeats.length >= totalTickets;
+  const maxReached = totalTickets > 0 && selectedSeats.length >= totalTickets;
 
-  // Renders a single full row of seats
+  // Render layout
   const renderRow = (rowLabel: string, rowSeats: Seat[]) => (
     <section className={`auditorium-row row-${rowLabel}`} key={rowLabel}>
       {rowSeats.map((seat) => {
@@ -233,10 +234,16 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
             src={AuditoriumScreen}
             alt="Bioduk"
           />
-       <section className="auditorium-seats-container">
-          {error ? (
-  <p>{error}</p>
-) : (
+
+          <section className="auditorium-seats-container">
+            {loading ? (
+              <div className="auditorium-seats-loading">
+                <div className="auditorium-loader"></div>
+                <p>Laddar platser...</p>
+              </div>
+            ) : error ? (
+              <p>{error}</p>
+            ) : (
               Object.entries(rowsMap)
                 .sort(([a], [b]) => a.localeCompare(b))
                 .map(([label, rowSeats]) => renderRow(label, rowSeats))
@@ -250,7 +257,6 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
           <article className="auditorium-information-bottom-user-seat"></article>
           <p>Ditt val</p>
         </article>
-
         <article className="auditorium-information-bottom-occupied-seatcontainer">
           <article className="auditorium-information-bottom-occupied-seat"></article>
           <p>Upptagen</p>
