@@ -412,13 +412,15 @@ useEffect(() => {
             </button>
 
 
-            <Link
-              to="/mina-sidor"
-              className="nav-link nav-link-bookings"
-              onClick={() => { closeMenu(); setIsAccountOpen(false); }}
-            >
-              Bokningar
-            </Link>
+            {user && (
+              <Link
+                to="/mina-sidor"
+                className="nav-link nav-link-bookings"
+                onClick={() => { closeMenu(); setIsAccountOpen(false); }}
+              >
+                Bokningar
+              </Link>
+            )}
 
 
             {/* Conditional rendering based on authentication status */}
