@@ -59,8 +59,6 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
 
   // Fetch seats for this screening
   useEffect(() => {
-    let intervalId: ReturnType<typeof setInterval>;
-
     async function fetchSeats() {
       setLoading(true);
       try {
@@ -86,7 +84,7 @@ export default function AuditoriumTwo({ screeningId }: AuditoriumProps) {
     }
 
     fetchSeats();
-    intervalId = setInterval(fetchSeats, 60000);
+    const intervalId = setInterval(fetchSeats, 60000);
     return () => clearInterval(intervalId);
   }, [screeningId, setAvailableSeatsCount]);
 

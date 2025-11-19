@@ -60,6 +60,8 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
   // Fetch all seats for this screening
   useEffect(() => {
     let intervalId: ReturnType<typeof setInterval>;
+    // Polling interval in milliseconds (default: 3 minutes)
+    const POLLING_INTERVAL_MS = 180000;
 
     async function fetchSeats() {
       setLoading(true);
@@ -86,7 +88,7 @@ export default function AuditoriumOne({ screeningId }: AuditoriumProps) {
     }
 
     fetchSeats();
-    intervalId = setInterval(fetchSeats, 60000);
+    intervalId = setInterval(fetchSeats, POLLING_INTERVAL_MS);
     return () => clearInterval(intervalId);
   }, [screeningId, setAvailableSeatsCount]);
 
