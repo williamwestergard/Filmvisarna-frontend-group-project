@@ -6,7 +6,7 @@ Filmvisarna AB är en biografkedja i Småstad som erbjuder en modern och använd
 
 Projektet har utvecklats enligt agila arbetsmetoder med fokus på UX, responsiv design samt korrekt hantering av tekniska cookies enligt GDPR.
 
-![Startsida för Filmvisarna](public/readme/filmscreen.png)
+![Startsida för Filmvisarna](frontend/public/readme/filmscreen.png)
 
 ---
 
