@@ -241,7 +241,7 @@ function createBookingsRouter(pool) {
             <p style="margin:0; color:#111111 !important;">Vi ses på bion! 🍿</p>
             <p style="margin-top:15px;">
             <br/>
-              <a href="https://filmvisarnaretro.nodehill.se/${bookingUrl}" 
+              <a href="https://filmvisarnaretro.nodehill.se/ticket/${bookingUrl}" 
                  style="color:#0066CC !important;margin-right:5px;">Avboka biljetter</a>
                   <br/>
             </p
