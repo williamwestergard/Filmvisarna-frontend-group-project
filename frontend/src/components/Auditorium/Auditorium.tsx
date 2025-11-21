@@ -27,16 +27,18 @@ export default function Auditorium() {
 
   const [pickerOpen, setPickerOpen] = useState(false);
 
+  // Extract the ID separately so we can use it in useEffect without
+  // making the entire 'screening' object a dependency
+  const screeningId = screening?.id;
+
   // Loads seat data for the active screening and refreshes periodically
   useEffect(() => {
-    if (!screening?.id || !pickerOpen) return;
-    let intervalId: ReturnType<typeof setInterval>;
+    if (!screeningId || !pickerOpen) return;
 
     async function fetchSeats() {
       setLoading(true);
       try {
-        if (!screening) throw new Error("No screening selected.");
-        const res = await fetch(`/api/screenings/${screening.id}/seats`);
+        const res = await fetch(`/api/screenings/${screeningId}/seats`);
         if (!res.ok) throw new Error("Failed to load seats");
         const data = await res.json();
         if (!data.ok) throw new Error("Invalid response");
@@ -60,13 +62,12 @@ export default function Auditorium() {
     }
 
     fetchSeats();
-    if (screening?.id) {
-      intervalId = setInterval(fetchSeats, 60000);
-    }
+    const intervalId = setInterval(fetchSeats, 60000);
+
     return () => {
-      if (intervalId) clearInterval(intervalId);
+      clearInterval(intervalId);
     };
-  }, [screening?.id, setAvailableSeatsCount]);
+  }, [screeningId, pickerOpen, setAvailableSeatsCount]);
 
   // Locks page scroll when the seat picker panel is open
   useEffect(() => {
